@@ -1,0 +1,57 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Download Sealshot for Mac"
+  description="Get the latest Sealshot release for macOS 14+. Universal binary for Apple Silicon and Intel."
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Download</p>
+      <h1>Get Sealshot for Mac</h1>
+      <p class="sub">
+        Signed, notarized, and updated automatically. Universal binary for Apple
+        Silicon and Intel, macOS 14 or later.
+      </p>
+      <div class="actions">
+        <a
+          class="button"
+          id="dmg-link"
+          href="https://github.com/raydeng83/Sealshot-Release/releases/latest"
+        >
+          Download for Mac
+        </a>
+      </div>
+      <p class="fine-print" id="dmg-meta">Direct download (.dmg)</p>
+      <p class="fine-print">
+        Coming soon to the Mac App Store. Direct builds update themselves via
+        Sparkle. All releases are published on
+        <a href="https://github.com/raydeng83/Sealshot-Release/releases"
+          >GitHub</a
+        >.
+      </p>
+    </div>
+  </section>
+</SiteLayout>
+
+<script is:inline>
+  fetch(
+    'https://api.github.com/repos/raydeng83/Sealshot-Release/releases/latest'
+  )
+    .then(function (r) {
+      return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status));
+    })
+    .then(function (release) {
+      var dmg = (release.assets || []).find(function (a) {
+        return a.name.endsWith('.dmg');
+      });
+      if (!dmg) return;
+      document.getElementById('dmg-link').href = dmg.browser_download_url;
+      document.getElementById('dmg-meta').textContent =
+        'Direct download (.dmg) · ' + release.tag_name;
+    })
+    .catch(function () {
+      /* fallback href already points at the releases page */
+    });
+</script>
