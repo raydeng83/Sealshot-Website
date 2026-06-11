@@ -1,0 +1,82 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
+---
+
+<SiteLayout
+  title="Support & feedback — Sealshot"
+  description="Report a bug, request a feature, or send us feedback about Sealshot."
+>
+  <section class="section wrap" aria-labelledby="support-title">
+    <p class="kicker">Support</p>
+    <h1 id="support-title">Feedback &amp; support</h1>
+    <p class="sub">
+      Found a bug? Missing a feature? Check the <a href="/docs/faq/">FAQ</a>
+      first — and if that doesn't cover it, tell us below.
+    </p>
+
+    <div id="sent-notice" class="notice" hidden>
+      Thanks — your feedback is on its way. We read everything.
+    </div>
+
+    {
+      accessKey ? (
+        <form
+          class="form-card"
+          action="https://api.web3forms.com/submit"
+          method="post"
+        >
+          <input type="hidden" name="access_key" value={accessKey} />
+          <input
+            type="hidden"
+            name="redirect"
+            value="https://seal-shot.com/support/?sent=1"
+          />
+          <input
+            type="checkbox"
+            name="botcheck"
+            class="visually-hidden"
+            tabindex="-1"
+            autocomplete="off"
+          />
+
+          <label for="fb-name">Name (optional)</label>
+          <input id="fb-name" type="text" name="name" />
+
+          <label for="fb-email">Email (optional — only if you want a reply)</label>
+          <input id="fb-email" type="email" name="email" />
+
+          <label for="fb-type">Type</label>
+          <select id="fb-type" name="type">
+            <option>Bug report</option>
+            <option>Feature request</option>
+            <option>General feedback</option>
+          </select>
+
+          <label for="fb-message">Message</label>
+          <textarea id="fb-message" name="message" rows="6" required />
+
+          <button class="button" type="submit">
+            Send feedback
+          </button>
+          <p class="fine-print">
+            Delivered to our inbox via Web3Forms. Used only to respond to you —
+            see our <a href="/privacy/">privacy policy</a>.
+          </p>
+        </form>
+      ) : (
+        <p>
+          The feedback form isn't wired up in this build — email us instead at
+          <a href="mailto:support@seal-shot.com">support@seal-shot.com</a>.
+        </p>
+      )
+    }
+  </section>
+</SiteLayout>
+
+<script is:inline>
+  if (new URLSearchParams(location.search).get('sent') === '1') {
+    document.getElementById('sent-notice').hidden = false;
+  }
+</script>
