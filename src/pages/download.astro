@@ -18,6 +18,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         <a
           class="button"
           id="dmg-link"
+          aria-describedby="dmg-meta"
           href="https://github.com/raydeng83/Sealshot-Release/releases/latest"
         >
           Download for Mac
@@ -26,32 +27,40 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       <p class="fine-print" id="dmg-meta">Direct download (.dmg)</p>
       <p class="fine-print">
         Coming soon to the Mac App Store. Direct builds update themselves via
-        Sparkle. All releases are published on
-        <a href="https://github.com/raydeng83/Sealshot-Release/releases"
-          >GitHub</a
-        >.
+        Sparkle. Every release is published on the <a href="https://github.com/raydeng83/Sealshot-Release/releases">GitHub releases page</a>.
       </p>
     </div>
   </section>
 </SiteLayout>
 
 <script is:inline>
-  fetch(
-    'https://api.github.com/repos/raydeng83/Sealshot-Release/releases/latest'
-  )
-    .then(function (r) {
-      return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status));
-    })
-    .then(function (release) {
-      var dmg = (release.assets || []).find(function (a) {
-        return a.name.endsWith('.dmg');
-      });
-      if (!dmg) return;
-      document.getElementById('dmg-link').href = dmg.browser_download_url;
-      document.getElementById('dmg-meta').textContent =
-        'Direct download (.dmg) · ' + release.tag_name;
-    })
-    .catch(function () {
-      /* fallback href already points at the releases page */
-    });
+  (function () {
+    var link = document.getElementById('dmg-link');
+    var meta = document.getElementById('dmg-meta');
+    if (!link || !meta) return;
+
+    function useReleasesPageLabel() {
+      meta.textContent = 'See all releases on GitHub';
+    }
+
+    fetch(
+      'https://api.github.com/repos/raydeng83/Sealshot-Release/releases/latest'
+    )
+      .then(function (r) {
+        return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status));
+      })
+      .then(function (release) {
+        var dmg = (release.assets || []).find(function (a) {
+          return a.name.endsWith('.dmg');
+        });
+        if (!dmg) {
+          useReleasesPageLabel();
+          return;
+        }
+        link.href = dmg.browser_download_url;
+        link.textContent = 'Download ' + release.tag_name + ' for Mac';
+        meta.textContent = 'Direct download (.dmg) · ' + release.tag_name;
+      })
+      .catch(useReleasesPageLabel);
+  })();
 </script>
