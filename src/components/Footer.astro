@@ -1,5 +1,6 @@
 ---
 import NewsletterForm from './NewsletterForm.astro';
+const hasNewsletter = Boolean(import.meta.env.PUBLIC_KIT_FORM_ID);
 ---
 
 <footer class="site-footer">
@@ -25,7 +26,7 @@ import NewsletterForm from './NewsletterForm.astro';
       <div>
         <h3>Stay in the loop</h3>
         <p class="fine-print">New features, releases, and tips.</p>
-        <NewsletterForm />
+        {hasNewsletter ? <NewsletterForm /> : <p class="fine-print"><a href="/docs/changelog/v0-4-0/">Follow the changelog</a> for what's new.</p>}
       </div>
     </div>
     <p class="legal">
