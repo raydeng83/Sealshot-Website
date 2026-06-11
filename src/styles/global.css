@@ -183,6 +183,18 @@ h1, h2, h3 {
   margin: 0 auto 2rem;
 }
 
+.section .sub {
+  color: var(--text-300);
+  font-size: 1.1rem;
+  max-width: 44rem;
+  margin: 0;
+}
+
+.section .sub + form,
+.section .sub + p {
+  margin-top: 1.5rem;
+}
+
 .hero .actions {
   display: flex;
   gap: 1rem;

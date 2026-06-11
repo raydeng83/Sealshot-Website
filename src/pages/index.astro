@@ -34,24 +34,26 @@ const features = [
   title="Sealshot — privacy-first screenshots for Mac"
   description="Capture, annotate, and redact screenshots with everything processed on device. No account, no telemetry, no cloud."
 >
-  <section class="hero wrap">
-    <p class="kicker">For macOS 14+</p>
-    <h1>Screenshots that keep your secrets</h1>
-    <p class="sub">
-      Capture, annotate, and redact — all processed on your Mac. No account.
-      No telemetry. No cloud.
-    </p>
-    <div class="actions">
-      <a class="button" href="/download/">Download for Mac</a>
-      <a class="button secondary" href="/docs/">Read the docs</a>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">For macOS 14+</p>
+      <h1>Screenshots that keep your secrets</h1>
+      <p class="sub">
+        Capture, annotate, and redact — all processed on your Mac. No account.
+        No telemetry. No cloud.
+      </p>
+      <div class="actions">
+        <a class="button" href="/download/">Download for Mac</a>
+        <a class="button secondary" href="/docs/">Read the docs</a>
+      </div>
+      <div class="screenshot-placeholder" role="img" aria-label="App screenshot placeholder">App screenshot coming soon</div>
     </div>
-    <div class="screenshot-placeholder">App screenshot coming soon</div>
   </section>
 
-  <section class="section" id="features">
+  <section class="section" id="features" aria-labelledby="features-heading">
     <div class="wrap">
       <p class="kicker">Features</p>
-      <h2>Everything a screenshot tool should do</h2>
+      <h2 id="features-heading">Everything a screenshot tool should do</h2>
       <div class="features">
         {
           features.map((f) => (
@@ -65,11 +67,11 @@ const features = [
     </div>
   </section>
 
-  <section class="section alt">
+  <section class="section alt" aria-labelledby="privacy-heading">
     <div class="wrap">
       <p class="kicker">Privacy</p>
-      <h2>Your screen is your business</h2>
-      <p class="sub" style="margin: 0; max-width: 44rem;">
+      <h2 id="privacy-heading">Your screen is your business</h2>
+      <p class="sub">
         Screenshots routinely contain credentials, customer data, and private
         conversations. Sealshot processes everything — OCR, metadata, search —
         on your Mac. Nothing is uploaded, no account is required, and no
@@ -78,11 +80,11 @@ const features = [
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" aria-labelledby="updates-heading">
     <div class="wrap">
       <p class="kicker">Stay in the loop</p>
-      <h2>Get Sealshot updates</h2>
-      <p class="sub" style="margin: 0 0 1.5rem; max-width: 44rem;">
+      <h2 id="updates-heading">Get Sealshot updates</h2>
+      <p class="sub">
         New features, releases, and tips — or watch the
         <a href="/docs/changelog/v0-4-0/">changelog</a>.
       </p>
