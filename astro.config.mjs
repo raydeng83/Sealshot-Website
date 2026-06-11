@@ -6,6 +6,8 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'Sealshot Docs',
+      logo: { src: './src/assets/icon.png', alt: 'Sealshot' },
+      favicon: '/favicon.png',
     }),
   ],
 });
