@@ -1,15 +1,19 @@
 :root {
-  --ink-950: #070d18;
-  --ink-900: #0b1220;
-  --ink-800: #121c30;
-  --ink-700: #1c2a45;
-  --teal-400: #2dd4bf;
-  --teal-300: #5eead4;
-  --text-100: #eef2f8;
-  --text-300: #b8c2d4;
-  --text-500: #7e8aa0;
+  --surface-page: #ffffff;
+  --surface-band: #f4fbf8;
+  --surface-footer: #f1f5fa;
+  --surface-tint: #e8efec;
+  --border-subtle: #dbe3ee;
+  --orange-700: #c2410c;
+  --orange-600: #ea580c;
+  --mint-50: #e6faf5;
+  --navy-900: #0b1220;
+  --slate-600: #5b6880;
+  --slate-400: #7e8aa0;
   --radius: 12px;
+  --radius-pill: 999px;
   --max-width: 72rem;
+  --shadow-card: 0 1px 3px rgba(11, 18, 32, 0.06);
 }
 
 * {
@@ -18,14 +22,14 @@
 
 body {
   margin: 0;
-  background: var(--ink-900);
-  color: var(--text-100);
+  background: var(--surface-page);
+  color: var(--navy-900);
   font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
   line-height: 1.6;
 }
 
 a {
-  color: var(--teal-300);
+  color: var(--orange-700);
   text-decoration: none;
 }
 
@@ -62,8 +66,8 @@ h1, h2, h3 {
   height: auto;
   clip-path: none;
   padding: 0.5rem 1rem;
-  background: var(--teal-400);
-  color: var(--ink-950);
+  background: var(--orange-700);
+  color: #ffffff;
   border-radius: var(--radius);
 }
 
@@ -71,24 +75,25 @@ h1, h2, h3 {
 .button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   font-weight: 600;
-  background: var(--teal-400);
-  color: var(--ink-950);
+  background: var(--orange-700);
+  color: #ffffff;
 }
 
 .button:hover {
-  background: var(--teal-300);
+  background: var(--orange-600);
   text-decoration: none;
 }
 
 .button.secondary {
-  background: var(--ink-700);
-  color: var(--text-100);
+  background: #ffffff;
+  color: var(--navy-900);
+  border: 1px solid var(--border-subtle);
 }
 
 .button.secondary:hover {
-  background: var(--ink-800);
+  background: var(--surface-footer);
 }
 
 /* Header */
@@ -99,6 +104,7 @@ h1, h2, h3 {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .site-header .brand {
@@ -107,7 +113,7 @@ h1, h2, h3 {
   gap: 0.6rem;
   font-weight: 700;
   font-size: 1.15rem;
-  color: var(--text-100);
+  color: var(--navy-900);
 }
 
 .site-header nav {
@@ -117,18 +123,18 @@ h1, h2, h3 {
 }
 
 .site-header nav a {
-  color: var(--text-300);
+  color: var(--slate-600);
 }
 
 .site-header nav a.cta {
-  color: var(--ink-950);
-  background: var(--teal-400);
+  color: #ffffff;
+  background: var(--orange-700);
   padding: 0.45rem 1rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
 }
 
 .site-header nav a.cta:hover {
-  background: var(--teal-300);
+  background: var(--orange-600);
   text-decoration: none;
 }
 
@@ -149,7 +155,7 @@ h1, h2, h3 {
 }
 
 .section.alt {
-  background: var(--ink-950);
+  background: var(--surface-band);
 }
 
 .section h2 {
@@ -157,7 +163,7 @@ h1, h2, h3 {
 }
 
 .kicker {
-  color: var(--teal-400);
+  color: var(--orange-700);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -177,14 +183,14 @@ h1, h2, h3 {
 }
 
 .hero .sub {
-  color: var(--text-300);
+  color: var(--slate-600);
   font-size: 1.25rem;
   max-width: 38rem;
   margin: 0 auto 2rem;
 }
 
 .section .sub {
-  color: var(--text-300);
+  color: var(--slate-600);
   font-size: 1.1rem;
   max-width: 44rem;
   margin: 0;
@@ -207,11 +213,11 @@ h1, h2, h3 {
   max-width: 56rem;
   aspect-ratio: 16 / 10;
   border-radius: var(--radius);
-  border: 1px solid var(--ink-700);
-  background: linear-gradient(135deg, var(--ink-800), var(--ink-700));
+  border: 1px solid var(--border-subtle);
+  background: linear-gradient(135deg, var(--surface-footer), var(--surface-tint));
   display: grid;
   place-items: center;
-  color: var(--text-500);
+  color: var(--slate-400);
 }
 
 /* Feature grid */
@@ -223,10 +229,11 @@ h1, h2, h3 {
 }
 
 .feature {
-  background: var(--ink-800);
-  border: 1px solid var(--ink-700);
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius);
   padding: 1.5rem;
+  box-shadow: var(--shadow-card);
 }
 
 .feature h3 {
@@ -234,17 +241,18 @@ h1, h2, h3 {
 }
 
 .feature p {
-  color: var(--text-300);
+  color: var(--slate-600);
   margin: 0;
 }
 
 /* Forms */
 .form-card {
-  background: var(--ink-800);
-  border: 1px solid var(--ink-700);
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius);
   padding: 2rem;
   max-width: 36rem;
+  box-shadow: var(--shadow-card);
 }
 
 .form-card label {
@@ -259,9 +267,9 @@ h1, h2, h3 {
   width: 100%;
   padding: 0.6rem 0.8rem;
   border-radius: var(--radius);
-  border: 1px solid var(--ink-700);
-  background: var(--ink-900);
-  color: var(--text-100);
+  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  color: var(--navy-900);
   font: inherit;
 }
 
@@ -270,10 +278,11 @@ h1, h2, h3 {
 }
 
 .notice {
-  background: var(--ink-700);
+  background: var(--mint-50);
   border-radius: var(--radius);
   padding: 0.75rem 1rem;
   margin-bottom: 1.5rem;
+  color: #134e4a;
 }
 
 .newsletter {
@@ -287,35 +296,35 @@ h1, h2, h3 {
   min-width: 14rem;
   padding: 0.6rem 0.8rem;
   border-radius: var(--radius);
-  border: 1px solid var(--ink-700);
-  background: var(--ink-900);
-  color: var(--text-100);
+  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  color: var(--navy-900);
   font: inherit;
 }
 
 .newsletter button {
   padding: 0.6rem 1.25rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   border: none;
-  background: var(--teal-400);
-  color: var(--ink-950);
+  background: var(--orange-700);
+  color: #ffffff;
   font-weight: 600;
   cursor: pointer;
 }
 
 .newsletter button:hover {
-  background: var(--teal-300);
+  background: var(--orange-600);
 }
 
 .fine-print {
-  color: var(--text-500);
+  color: var(--slate-400);
   font-size: 0.85rem;
 }
 
 /* Footer */
 .site-footer {
-  background: var(--ink-950);
-  border-top: 1px solid var(--ink-700);
+  background: var(--surface-footer);
+  border-top: 1px solid var(--border-subtle);
   padding: 3rem 0 2rem;
   margin-top: 4rem;
 }
@@ -328,7 +337,7 @@ h1, h2, h3 {
 
 .site-footer h3 {
   font-size: 0.95rem;
-  color: var(--text-300);
+  color: var(--slate-600);
 }
 
 .site-footer ul {
@@ -343,7 +352,7 @@ h1, h2, h3 {
 
 .site-footer .legal {
   margin-top: 2.5rem;
-  color: var(--text-500);
+  color: var(--slate-400);
   font-size: 0.85rem;
 }
 
@@ -358,5 +367,5 @@ h1, h2, h3 {
 }
 
 .prose p, .prose li {
-  color: var(--text-300);
+  color: var(--slate-600);
 }
