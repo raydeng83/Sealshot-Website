@@ -1,0 +1,92 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+
+const features = [
+  {
+    title: 'Capture anything',
+    body: 'Area, window, fullscreen, delayed, freeze-frame element selection across displays, and scrolling capture with automatic stitching.',
+  },
+  {
+    title: 'Annotate non-destructively',
+    body: 'Shapes, arrows, freehand pen, text, numbered badges — original pixels stay untouched, and undo history survives relaunch.',
+  },
+  {
+    title: 'Redact with confidence',
+    body: 'Pixelate, mosaic, gaussian, or solid-fill regions to keep keys, tokens, and faces out of what you share.',
+  },
+  {
+    title: 'Search everything',
+    body: 'On-device OCR powers Live Text selection and full-text search across your entire screenshot library.',
+  },
+  {
+    title: 'Smart metadata',
+    body: 'Titles, tags, and categories generated automatically from capture context and OCR — entirely on device.',
+  },
+  {
+    title: 'The .seal format',
+    body: 'Original pixels plus annotations in one package. Re-edit anytime; export flat PNG when you need it.',
+  },
+];
+---
+
+<SiteLayout
+  title="Sealshot — privacy-first screenshots for Mac"
+  description="Capture, annotate, and redact screenshots with everything processed on device. No account, no telemetry, no cloud."
+>
+  <section class="hero wrap">
+    <p class="kicker">For macOS 14+</p>
+    <h1>Screenshots that keep your secrets</h1>
+    <p class="sub">
+      Capture, annotate, and redact — all processed on your Mac. No account.
+      No telemetry. No cloud.
+    </p>
+    <div class="actions">
+      <a class="button" href="/download/">Download for Mac</a>
+      <a class="button secondary" href="/docs/">Read the docs</a>
+    </div>
+    <div class="screenshot-placeholder">App screenshot coming soon</div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="wrap">
+      <p class="kicker">Features</p>
+      <h2>Everything a screenshot tool should do</h2>
+      <div class="features">
+        {
+          features.map((f) => (
+            <div class="feature">
+              <h3>{f.title}</h3>
+              <p>{f.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="wrap">
+      <p class="kicker">Privacy</p>
+      <h2>Your screen is your business</h2>
+      <p class="sub" style="margin: 0; max-width: 44rem;">
+        Screenshots routinely contain credentials, customer data, and private
+        conversations. Sealshot processes everything — OCR, metadata, search —
+        on your Mac. Nothing is uploaded, no account is required, and no
+        telemetry is collected.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">Stay in the loop</p>
+      <h2>Get Sealshot updates</h2>
+      <p class="sub" style="margin: 0 0 1.5rem; max-width: 44rem;">
+        New features, releases, and tips — or watch the
+        <a href="/docs/changelog/v0-4-0/">changelog</a>.
+      </p>
+      <NewsletterForm />
+    </div>
+  </section>
+</SiteLayout>
