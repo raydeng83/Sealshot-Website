@@ -16,7 +16,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
       first — and if that doesn't cover it, tell us below.
     </p>
 
-    <div id="sent-notice" class="notice" hidden>
+    <div id="sent-notice" class="notice" role="status" hidden>
       Thanks — your feedback is on its way. We read everything.
     </div>
 
@@ -31,7 +31,7 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
           <input
             type="hidden"
             name="redirect"
-            value="https://seal-shot.com/support/?sent=1"
+            value={new URL('/support/?sent=1', Astro.site).href}
           />
           <input
             type="checkbox"
@@ -49,13 +49,14 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
 
           <label for="fb-type">Type</label>
           <select id="fb-type" name="type">
+            <option value="" disabled selected>Choose a type…</option>
             <option>Bug report</option>
             <option>Feature request</option>
             <option>General feedback</option>
           </select>
 
           <label for="fb-message">Message</label>
-          <textarea id="fb-message" name="message" rows="6" required />
+          <textarea id="fb-message" name="message" rows="6" required></textarea>
 
           <button class="button" type="submit">
             Send feedback
