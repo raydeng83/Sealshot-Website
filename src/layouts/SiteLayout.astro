@@ -23,10 +23,14 @@ const { title, description } = Astro.props;
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL('/og-image.png', Astro.site)} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={new URL('/og-image.png', Astro.site)} />
   </head>
   <body>
+    <a class="visually-hidden skip-link" href="#main-content">Skip to content</a>
     <Header />
-    <main>
+    <main id="main-content">
       <slot />
     </main>
     <Footer />
