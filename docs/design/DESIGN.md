@@ -15,10 +15,10 @@ colors:
   inverse-on-surface: '#ebf2ef'
   outline: '#6b7a76'
   outline-variant: '#bacac5'
-  surface-tint: '#006b5f'
-  primary: '#006b5f'
+  surface-tint: '#c2410c'
+  primary: '#c2410c'
   on-primary: '#ffffff'
-  primary-container: '#2dd4bf'
+  primary-container: '#ea580c'
   on-primary-container: '#00574d'
   inverse-primary: '#3cddc7'
   secondary: '#006a63'
@@ -127,9 +127,9 @@ Sealshot is a privacy-first macOS screenshot application. The brand personality 
 - **Text Primary**: `#0b1220` (Deep navy for headlines and main copy)
 - **Text Secondary**: `#5b6880` (Slate for sublines and secondary info)
 - **Text Muted**: `#7e8aa0` (Small captions and fine print)
-- **Accent Primary**: `#2dd4bf` (Bright teal for primary CTAs and active states)
-- **Accent Secondary**: `#0f766e` (Deep teal for links, kickers, and small labels)
-- **Accent Highlight**: `#c9f6ef` (Pale mint for navigation backgrounds)
+- **Accent Primary**: `#c2410c` (Warm orange for primary CTAs, links, and kickers — #ea580c fails WCAG AA on white, so it is reserved for decorative use; hover state darkens to `#9a3412`)
+- **Accent Secondary**: `#ea580c` (Bright orange, decorative only — never as text on white)
+- **Accent Highlight**: `#ffedd5` (Pale orange for docs navigation highlights)
 - **Success Surface**: `#e6faf5` (Notice banners)
 
 ## Typography
@@ -137,15 +137,15 @@ Sealshot is a privacy-first macOS screenshot application. The brand personality 
 - **H1**: Bold, deep navy, tight tracking.
 - **H2/H3**: Semi-bold, navy.
 - **Body**: Regular, slate, comfortable line-height (1.6).
-- **Kicker**: 12px, bold, uppercase, deep teal, letter-spaced.
+- **Kicker**: 12px, bold, uppercase, deep orange, letter-spaced.
 
 ## Components & Patterns
-- **Radius**: `12px` everywhere (buttons, cards, inputs).
+- **Radius**: `12px` for cards and inputs; buttons and header CTA are pill-shaped (`999px`).
 - **Cards**: White background, 1px `#dbe3ee` border, subtle drop shadow.
 - **Buttons**:
-  - **Primary**: Bright teal background, deep navy text, 12px radius.
+  - **Primary**: Warm orange (`#c2410c`) background, white text, pill radius.
   - **Secondary**: Light gray or white with border, navy text.
-- **Header**: Slim white bar, app icon + wordmark, nav links, teal pill button.
+- **Header**: Slim white bar, app icon + wordmark, nav links, orange pill button.
 - **Footer**: Three columns on ice-blue background, muted legal line.
 - **Inputs**: White background, light gray borders, 12px radius.
 
@@ -153,3 +153,9 @@ Sealshot is a privacy-first macOS screenshot application. The brand personality 
 - **Max Content Width**: `1152px`.
 - **Spacing**: Generous whitespace, airy composition.
 - **Grid**: 3-column features grid, single-column prose for privacy/support.
+
+## Source
+
+Generated with Google Stitch (warm-accent variant), adjusted for WCAG AA:
+text/CTA orange is #c2410c (5.2:1 on white) rather than the mockups' #ea580c
+(3.9:1). Original Stitch exports: stitch_sealshot_design_system/.

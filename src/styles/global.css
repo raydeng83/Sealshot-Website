@@ -6,6 +6,7 @@
   --border-subtle: #dbe3ee;
   --orange-700: #c2410c;
   --orange-600: #ea580c;
+  --orange-800: #9a3412;
   --mint-50: #e6faf5;
   --navy-900: #0b1220;
   --slate-600: #5b6880;
@@ -82,7 +83,7 @@ h1, h2, h3 {
 }
 
 .button:hover {
-  background: var(--orange-600);
+  background: var(--orange-800);
   text-decoration: none;
 }
 
@@ -134,7 +135,7 @@ h1, h2, h3 {
 }
 
 .site-header nav a.cta:hover {
-  background: var(--orange-600);
+  background: var(--orange-800);
   text-decoration: none;
 }
 
@@ -217,7 +218,7 @@ h1, h2, h3 {
   background: linear-gradient(135deg, var(--surface-footer), var(--surface-tint));
   display: grid;
   place-items: center;
-  color: var(--slate-400);
+  color: var(--slate-600);
 }
 
 /* Feature grid */
@@ -313,11 +314,11 @@ h1, h2, h3 {
 }
 
 .newsletter button:hover {
-  background: var(--orange-600);
+  background: var(--orange-800);
 }
 
 .fine-print {
-  color: var(--slate-400);
+  color: var(--slate-600);
   font-size: 0.85rem;
 }
 
@@ -352,7 +353,7 @@ h1, h2, h3 {
 
 .site-footer .legal {
   margin-top: 2.5rem;
-  color: var(--slate-400);
+  color: var(--slate-600);
   font-size: 0.85rem;
 }
 
