@@ -1,0 +1,36 @@
+---
+import NewsletterForm from './NewsletterForm.astro';
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h3>Product</h3>
+        <ul>
+          <li><a href="/#features">Features</a></li>
+          <li><a href="/download/">Download</a></li>
+          <li><a href="/docs/changelog/v0-4-0/">Changelog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="/docs/">Documentation</a></li>
+          <li><a href="/docs/faq/">FAQ</a></li>
+          <li><a href="/support/">Support &amp; feedback</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Stay in the loop</h3>
+        <p class="fine-print">New features, releases, and tips.</p>
+        <NewsletterForm />
+      </div>
+    </div>
+    <p class="legal">
+      Sealshot — privacy-first screenshots for macOS 14+. No account, no
+      telemetry, no cloud.
+    </p>
+  </div>
+</footer>

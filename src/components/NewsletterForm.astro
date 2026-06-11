@@ -1,0 +1,32 @@
+---
+const formId = import.meta.env.PUBLIC_KIT_FORM_ID;
+---
+
+{
+  formId && (
+    <form
+      class="newsletter"
+      action={`https://app.kit.com/forms/${formId}/subscriptions`}
+      method="post"
+    >
+      <label class="visually-hidden" for="newsletter-email">
+        Email address
+      </label>
+      <input
+        id="newsletter-email"
+        type="email"
+        name="email_address"
+        placeholder="you@example.com"
+        required
+      />
+      <button type="submit">Get updates</button>
+    </form>
+  )
+}
+{
+  formId && (
+    <p class="fine-print">
+      Product updates only. Double opt-in, unsubscribe anytime, never shared.
+    </p>
+  )
+}
