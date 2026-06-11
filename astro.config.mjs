@@ -23,6 +23,7 @@ export default defineConfig({
         { label: 'FAQ', slug: 'docs/faq' },
         {
           label: 'Changelog',
+          collapsed: true,
           autogenerate: { directory: 'docs/changelog' },
         },
         { label: 'Support & feedback', link: '/support/' },
