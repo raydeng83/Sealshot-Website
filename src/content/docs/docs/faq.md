@@ -30,11 +30,24 @@ only when you take a capture, and the pixels never leave your device.
 Sealshot's native format: your original pixels plus annotations in one
 editable package. See [The .seal format](/docs/guide/seal-format/).
 
-## Can Sealshot automatically detect API keys and faces?
+## Can Sealshot automatically detect sensitive information?
 
-Not yet — Smart Redaction (automatic flagging of API keys, PII, and faces)
-is the headline roadmap feature. Today you redact manually with the
-[blur tools](/docs/guide/editor/#blur-and-redaction).
+Yes. [Smart Redaction](/docs/guide/redaction/) scans captures on your Mac —
+on demand, or automatically if you enable it — for emails, phone numbers,
+credit-card numbers, and API keys/tokens, and proposes redactions for you to
+review. It detects sensitive **text**, not faces — use the
+[blur tool](/docs/guide/editor/#blur-and-redaction) for faces, logos, and
+other imagery.
+
+## Do my edits and undo history survive a relaunch?
+
+Yes. The editor's undo/redo history is persistent across switching captures
+and relaunching, and so is undo/redo for deleting and restoring captures.
+
+## Is my library encrypted?
+
+It can be. Turn on [Enhanced Security](/docs/guide/security/) to encrypt your
+captures, search index, and OCR text at rest and lock viewing behind Touch ID.
 
 ## I found a bug / I want a feature
 
