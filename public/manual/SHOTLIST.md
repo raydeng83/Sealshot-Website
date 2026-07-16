@@ -12,44 +12,54 @@ Tips for consistent shots:
 - Crop tightly to the relevant UI; leave a little breathing room.
 
 ## Getting started (`getting-started.md`)
-- `install-drag.png` — the opened .dmg with Sealshot being dragged onto the Applications alias.
-- `permission-screen-recording.png` — macOS System Settings → Privacy & Security → Screen Recording with Sealshot toggled on.
-- `menu-bar.png` — the Sealshot menu-bar icon with its menu open (capture commands visible).
+- `install-drag.png` — the opened .dmg with Sealshot being dragged onto the Applications alias. ✓ have
+- `permission-screen-recording.png` — macOS System Settings → Privacy & Security → Screen Recording with Sealshot toggled on. ✓ have
+- `menu-bar.png` — the Sealshot menu-bar icon with its menu open (capture + recording commands with inline shortcuts). ⟳ retake for 0.7.0 (menu was rebuilt)
 
 ## Capture modes (`capture.md`)
-- `capture-area.png` — the area-selection overlay mid-drag with the dimmed surround and selection handles.
-- `capture-window.png` — window capture with a window highlighted by boundary detection.
-- `capture-delayed.png` — the on-screen delayed-capture countdown.
-- `capture-element.png` — freeze-frame element selection highlighting one UI element.
-- `capture-scrolling.png` — scrolling capture in progress (the coach card / progress), or the stitched result.
-- `capture-destination.png` — Settings → General → Capture Defaults showing the Clipboard/File/Both picker.
+- `capture-area.png` — the unified overlay mid-drag with the dimmed surround and selection handles. ✓ have
+- `capture-window.png` — the unified overlay with an element/window highlighted by boundary detection. ⟳ retake if the old shot shows the pre-0.7.0 overlay
+- `capture-delayed.png` — the on-screen delayed-capture countdown. ✓ have
+- `capture-scrolling.png` — scrolling capture in progress, or the stitched result. ✓ have
+- `capture-destination.png` — Settings → Capture → Capture Defaults showing the Clipboard/File/Both picker. ⟳ retake (setting moved to the Capture tab)
+- ~~`capture-element.png`~~ — no longer referenced (element selection folded into unified capture).
+
+## Screen recording (`recording.md`) — NEW
+- `record-prompt.png` — the Record prompt with system audio / microphone / cursor / countdown options.
+- `recording-hud.png` — the floating recording HUD, hovered so Pause/Stop are visible.
 
 ## The editor (`editor.md`)
-- `editor-overview.png` — a capture open in the editor: toolbar, canvas, side panels, strip.
+- `editor-overview.png` — a capture open in the editor: toolbar, canvas, right Info panel, strip. ⟳ retake (Info panel moved right in 0.7.0)
 - `editor-toolbar.png` — close-up of the annotation toolbar with tools labeled.
 - `blur-panel.png` — the blur tool selected, showing brush-width + Gaussian/Solid controls and the strength slider.
 - `focus-crop.png` — the focus/crop viewfinder brackets over an image.
 - `transform-handles.png` — a selected object showing rotate handle + resize handles.
-- `ocr-live-text.png` — text being selected (highlighted) inside a screenshot.
+- `ocr-live-text.png` — text being selected (highlighted) inside a screenshot; bonus: a QR code detected.
 
 ## Smart Redaction (`redaction.md`)
-- `redaction-review.png` — the Smart Redaction panel listing detected items (category, masked snippet, confidence) with checkboxes and Apply/Cancel.
-- `redaction-setting.png` — Settings → General → Smart Redaction toggle.
+- `redaction-review.png` — the review panel: flagged text leading each row, high-risk items pre-checked, Select all/Deselect all visible. ⟳ retake for 0.7.0 (panel redesigned)
+- `redaction-setting.png` — Settings → On-Device AI → Smart Redaction card (auto-scan, enhanced model row, Thorough scan). ⟳ retake (moved from General)
+
+## On-device AI (`ai.md`) — NEW
+- `extract-data.png` — the Extract Structured Data window on a capture containing a table, CSV or Table tab active.
 
 ## Library & search (`library.md`)
-- `library-grid.png` — the Library in grid view with several captures.
-- `library-strip.png` — the editor's recent-captures strip along the bottom.
+- `library-grid.png` — the Library in grid view: sidebar with All Files / Recents / Collections (Favorites) / Trash visible. ⟳ retake (sidebar changed in 0.7.0)
+- `library-strip.png` — the editor's recent-captures strip along the bottom (include a video with its play badge).
 - `library-search.png` — a search query matching text *inside* a capture (OCR), results shown.
 - `library-marquee.png` — a rubber-band selection rectangle drawn across several grid cards.
-- `library-info-pane.png` — the left Info pane showing a capture's metadata + object summary.
-- `library-deleted.png` — the Deleted (trash) section with Restore available.
+- `library-info-pane.png` — the Info panel showing name, summary, Smart Keywords, and tags. ⟳ retake (panel redesigned)
+- `library-deleted.png` — the Trash section with Restore available.
+
+## Sharing & export (`sharing.md`) — NEW
+- `export-package.png` — the Export to Package dialog: format choice, passcode with Copy/Regenerate, expiry.
 
 ## Enhanced Security (`security.md`)
-- `security-setting.png` — Settings → Privacy & Security with Enhanced security toggled on.
-- `security-recovery-key.png` — the recovery-key ceremony sheet.
+- `security-setting.png` — Settings → Privacy & Security with Enhanced security toggled on (recovery code + auto-lock rows visible).
+- `security-recovery-key.png` — the recovery-code ceremony sheet.
 - `lock-screen.png` — the lock screen prompting for Touch ID / password.
 
 ## Settings (`settings.md`)
-- `settings-general.png` — Settings → General (full page).
-- `settings-shortcuts.png` — Settings → Shortcuts with recorders.
-- `settings-permissions.png` — Settings → Permissions status list.
+- `settings-general.png` — Settings → General (full page). ⟳ retake for 0.7.0 (tabs reorganized)
+- `settings-shortcuts.png` — Settings → Shortcuts with the Capture / Recording / App cards. ⟳ retake (recording shortcuts added)
+- `settings-permissions.png` — Settings → Permissions status list (Screen Recording, Microphone, Accessibility).

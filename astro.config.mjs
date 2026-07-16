@@ -15,9 +15,12 @@ export default defineConfig({
           items: [
             { slug: 'docs/guide/getting-started' },
             { slug: 'docs/guide/capture' },
+            { slug: 'docs/guide/recording' },
             { slug: 'docs/guide/editor' },
             { slug: 'docs/guide/redaction' },
+            { slug: 'docs/guide/ai' },
             { slug: 'docs/guide/library' },
+            { slug: 'docs/guide/sharing' },
             { slug: 'docs/guide/security' },
             { slug: 'docs/guide/settings' },
             { slug: 'docs/guide/shortcuts' },

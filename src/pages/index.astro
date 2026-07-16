@@ -5,42 +5,42 @@ import NewsletterForm from '../components/NewsletterForm.astro';
 const features = [
   {
     title: 'Capture anything',
-    body: 'Area, window, fullscreen, delayed, freeze-frame element selection across displays, and scrolling capture with automatic stitching.',
+    body: 'Area, window, fullscreen, delayed, and scrolling capture with automatic stitching — across all your displays.',
   },
   {
-    title: 'Annotate non-destructively',
-    body: 'Shapes, arrows, freehand pen, text, numbered badges — original pixels stay untouched, and undo history survives relaunch.',
+    title: 'Record your screen',
+    body: 'Record the screen, a window, or a region with system audio and mic, pause from a floating HUD, export .mov or .mp4.',
   },
   {
     title: 'Redact with confidence',
-    body: 'Pixelate, mosaic, gaussian, or solid-fill regions to keep keys, tokens, and faces out of what you share.',
+    body: 'Smart Redaction finds emails, card numbers, IDs, and API keys on device and covers them with unrecoverable solid fill.',
   },
   {
-    title: 'Search everything',
-    body: 'On-device OCR powers Live Text selection and full-text search across your entire screenshot library.',
+    title: 'Annotate non-destructively',
+    body: 'Shapes, arrows, pen, text, numbered badges, shadows — original pixels stay untouched, and undo history survives relaunch.',
   },
   {
-    title: 'Smart metadata',
-    body: 'Titles, tags, and categories generated automatically from capture context and OCR — entirely on device.',
+    title: 'On-device AI',
+    body: 'Automatic titles, summaries, and keywords; extract tables and form fields to CSV or JSON — entirely on your Mac.',
   },
   {
-    title: 'The .seal format',
-    body: 'Original pixels plus annotations in one package. Re-edit anytime; export flat PNG when you need it.',
+    title: 'Organize and search',
+    body: 'Collections, favorites, and OCR full-text search across your library. Share as encrypted .sealshare packages.',
   },
 ];
 ---
 
 <SiteLayout
-  title="Sealshot — privacy-first screenshots for Mac"
-  description="Capture, annotate, and redact screenshots with everything processed on device. No account, no telemetry, no cloud."
+  title="Sealshot — privacy-first screenshots and recordings for Mac"
+  description="Capture, record, annotate, and redact with everything processed on device. No account, no telemetry, no cloud."
 >
   <section class="hero">
     <div class="wrap">
       <p class="kicker">For macOS 14+</p>
       <h1>Screenshots that keep your secrets</h1>
       <p class="sub">
-        Capture, annotate, and redact — all processed on your Mac. No account.
-        No telemetry. No cloud.
+        Capture, record, annotate, and redact — all processed on your Mac. No
+        account. No telemetry. No cloud.
       </p>
       <div class="actions">
         <a class="button" href="/download/">Download for Mac</a>
@@ -53,7 +53,7 @@ const features = [
   <section class="section" id="features" aria-labelledby="features-heading">
     <div class="wrap">
       <p class="kicker">Features</p>
-      <h2 id="features-heading">Everything a screenshot tool should do</h2>
+      <h2 id="features-heading">Everything a capture tool should do</h2>
       <div class="features">
         {
           features.map((f) => (
@@ -86,7 +86,7 @@ const features = [
       <h2 id="updates-heading">Get Sealshot updates</h2>
       <p class="sub">
         New features, releases, and tips — or watch the
-        <a href="/docs/changelog/v0-4-0/">changelog</a>.
+        <a href="/docs/changelog/v0-7-0/">changelog</a>.
       </p>
       <NewsletterForm />
     </div>

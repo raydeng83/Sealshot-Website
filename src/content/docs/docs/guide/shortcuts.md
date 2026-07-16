@@ -1,25 +1,45 @@
 ---
 title: Keyboard shortcuts
-description: Global capture shortcuts and in-editor keys.
+description: Global capture, recording, and app shortcuts, plus editor and Library keys.
 ---
 
-## Capture shortcuts (global)
+## Global shortcuts
 
-Capture commands work from any app. These are the **defaults** — change or
-clear any of them in **Settings → Shortcuts**.
+These work from any app. They're the **defaults** — change or clear any of
+them in **Settings → Shortcuts**, which groups them the same way.
+
+### Capture
 
 | Command | Default |
 | --- | --- |
-| Unified capture | ⌘⇧C |
+| Unified capture (area or window) | ⌘⇧C |
 | Delayed capture | ⌘⇧D |
-| Scrolling capture | ⌘⇧L |
+| Scrolling capture | ⌘⇧W |
 | Capture fullscreen | ⌘⇧F |
 | Save-as capture | ⌘⇧S |
-| Open editor | ⌘⇧E |
 
-:::tip
-If a default clashes with another app, rebind it in Settings → Shortcuts —
-each command has its own recorder.
+### Recording
+
+| Command | Default |
+| --- | --- |
+| Record screen | ⌘⇧V |
+| Record selection (region or window) | ⌘⇧R |
+| Pause / resume recording | ⌘⇧P |
+
+### App
+
+| Command | Default |
+| --- | --- |
+| Open editor | ⌘⇧E |
+| Open Library | ⌘⇧B |
+| New from clipboard | ⌘⇧Q |
+| Lock now | ⌘⇧L |
+
+:::note[Changed in 0.7.0]
+**Scrolling capture moved from ⌘⇧L to ⌘⇧W** (⌘⇧L now locks the library).
+If you had customized your shortcuts, your bindings carry over. The
+recorder also rejects a combo that's already assigned to another Sealshot
+action.
 :::
 
 ## During a capture
@@ -27,26 +47,37 @@ each command has its own recorder.
 | Action | Key |
 | --- | --- |
 | Confirm selection | Return |
-| Cancel capture | Esc |
+| Cancel capture / recording setup | Esc |
 | Finish scrolling capture (manual) | Return |
+
+## File menu
+
+| Action | Key |
+| --- | --- |
+| New Canvas | ⌘N |
+| New from Clipboard | ⇧⌘N |
+| Insert Image on Canvas… | ⇧⌘I |
+| Import to Library… (images & `.sealshare`) | ⌘O |
+| Export to Image | ⌘S |
+| Export to Package… | ⇧⌘E |
 
 ## In the editor
 
 | Action | Key |
 | --- | --- |
 | Undo / Redo | ⌘Z / ⇧⌘Z |
-| New capture on canvas | ⌘N |
-| New from clipboard | ⇧⌘N |
-| Open / import image | ⌘O |
 | Copy | ⌘C |
+| Zoom toward cursor | ⌘-scroll |
 
-Undo and redo also cover [deleting and restoring captures](/docs/guide/library/#delete-restore-and-undo),
+Undo and redo also cover resizing, enhancing, imports, metadata edits, and
+[deleting and restoring captures](/docs/guide/library/#delete-restore-and-undo),
 and the history survives switching captures and relaunching.
 
 ## In the Library
 
 | Action | Key / gesture |
 | --- | --- |
+| Quick Look preview | Space |
 | Add / remove from selection | ⌘-click |
 | Select a range | ⇧-click |
 | Marquee select | drag across empty space |

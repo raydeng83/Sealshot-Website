@@ -11,12 +11,14 @@ never miss a shot; only *viewing* your library requires you to unlock.
 
 When Enhanced Security is on:
 
-- Stored captures are **encrypted on disk** (AES-256-GCM).
+- Stored captures **and recordings** are **encrypted on disk** (AES-256-GCM).
 - The **search index, undo history, and extracted OCR text** are encrypted
   too.
 - Viewing requires **Touch ID**, your Apple Watch, or your Mac's password.
-- A **recovery key** is shown once at setup, in case your Mac's keys are ever
+- A **recovery code** is created at setup, in case your Mac's keys are ever
   lost.
+- The **Privacy & Security settings themselves** require authentication to
+  open, so no one can quietly change them.
 
 ## Turning it on
 
@@ -27,18 +29,23 @@ then walks you through the recovery-key ceremony.
 ![The Enhanced security setting](/manual/security-setting.png)
 *Enable Enhanced security in Settings → Privacy & Security.*
 
-### Save your recovery key
+### Save your recovery code
 
-During setup Sealshot shows a one-time **recovery key**. Store it somewhere
-safe (a password manager is ideal). If your Mac's keychain is ever lost, this
-key is the only way back into your encrypted library.
+During setup Sealshot shows a **recovery code**. Store it somewhere safe (a
+password manager is ideal). If your Mac's keychain is ever lost, this code
+is the only way back into your encrypted library.
+
+If you lose it (but can still unlock), open **Settings → Privacy &
+Security** and use **Recovery code → View…** or **Generate New…** — a new
+code replaces the old one. **Replace encryption key** rotates the underlying
+encryption key itself.
 
 ![The recovery-key ceremony](/manual/security-recovery-key.png)
-*Write down the recovery key — it's shown only once.*
+*Save the recovery code somewhere safe.*
 
 :::caution
 There is no account and no cloud backup. If you lose **both** your Mac's
-unlock methods **and** your recovery key, your encrypted captures cannot be
+unlock methods **and** your recovery code, your encrypted captures cannot be
 recovered. That's the price of true on-device privacy.
 :::
 
@@ -50,11 +57,13 @@ Touch ID, Apple Watch, or your password to view your captures.
 ![The lock screen](/manual/lock-screen.png)
 *Unlock with Touch ID, Apple Watch, or your Mac password.*
 
-## Auto-lock
+## Locking
 
-Set Sealshot to re-lock automatically after a period of inactivity — **Off**,
-**1**, **5**, or **15 minutes** — in **Settings → Privacy & Security →
-Auto-lock when idle**.
+Set Sealshot to re-lock automatically after a period of inactivity — **Off**
+(default), **1**, **5**, or **15 minutes** — in **Settings → Privacy &
+Security → Auto-lock when idle**. Sealshot also locks when the Mac sleeps,
+the screen sleeps, or you switch users, and you can lock on demand from
+anywhere with **⌘⇧L** (Lock now).
 
 ## Turning it off
 
