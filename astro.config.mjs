@@ -27,6 +27,15 @@ export default defineConfig({
             { slug: 'docs/guide/seal-format' },
           ],
         },
+        {
+          label: 'Workflows',
+          items: [
+            { slug: 'docs/workflows/bug-reports', label: 'Report bugs safely' },
+            { slug: 'docs/workflows/sensitive-documents', label: 'Share sensitive documents' },
+            { slug: 'docs/workflows/walkthrough-videos', label: 'Record a walkthrough' },
+            { slug: 'docs/workflows/receipts-to-data', label: 'Receipts into data' },
+          ],
+        },
         { label: 'FAQ', slug: 'docs/faq' },
         {
           label: 'Changelog',
