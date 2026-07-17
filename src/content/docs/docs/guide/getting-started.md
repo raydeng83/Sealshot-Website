@@ -13,6 +13,14 @@ account, and there's no telemetry.
 Sealshot runs on **macOS 14 (Sonoma) or later**, on both Apple Silicon and
 Intel Macs (universal binary).
 
+Everything core works the same on both: capture, recording, the editor,
+OCR and search, and Smart Redaction's built-in detectors. Two extras need
+newer hardware — the **enhanced redaction model** requires an Apple Silicon
+Mac, and the **Apple Intelligence** features (generated summaries, smarter
+search, Thorough scan) require macOS 26 on an Apple Intelligence-capable
+Mac. On Intel, Sealshot automatically uses its built-in on-device
+processing instead. See [On-device AI](/docs/guide/ai/#which-macs-run-what).
+
 ## Install
 
 1. [Download the latest `.dmg`](/download/) from seal-shot.com.

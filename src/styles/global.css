@@ -209,16 +209,33 @@ h1, h2, h3 {
   flex-wrap: wrap;
 }
 
-.screenshot-placeholder {
+.hero-carousel {
   margin: 3rem auto 0;
   max-width: 56rem;
-  aspect-ratio: 16 / 10;
   border-radius: var(--radius);
   border: 1px solid var(--border-subtle);
   background: linear-gradient(135deg, var(--surface-footer), var(--surface-tint));
+  overflow: hidden;
+}
+
+.hero-carousel .splide__slide {
+  aspect-ratio: 16 / 10;
   display: grid;
   place-items: center;
-  color: var(--slate-600);
+}
+
+.hero-carousel .splide__slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.hero-carousel .splide__pagination__page.is-active {
+  background: var(--orange-700);
+}
+
+.hero-carousel .splide__arrow svg {
+  fill: var(--orange-800);
 }
 
 /* Feature grid */

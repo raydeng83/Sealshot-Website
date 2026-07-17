@@ -59,10 +59,26 @@ Everything lives in **Settings → On-Device AI**:
   Thorough scan, are here too — see
   [Smart Redaction](/docs/guide/redaction/).
 
-:::note[What runs where]
-Apple Intelligence features (query expansion, generated summaries at their
-best, the Thorough redaction scan) need **macOS 26 on an Apple
-Intelligence-capable Mac**. On other Macs, Sealshot uses built-in on-device
-fallbacks — features degrade gracefully rather than disappearing, and
-nothing ever leaves your machine either way.
-:::
+## Which Macs run what
+
+Sealshot is a universal binary, and every feature has an on-device path —
+but the AI extras scale with your hardware:
+
+| Feature | Intel | Apple Silicon | Apple Silicon + macOS 26 (Apple Intelligence) |
+| --- | --- | --- | --- |
+| OCR, Live Text, full-text search | ✓ | ✓ | ✓ |
+| Smart Redaction (built-in detectors) | ✓ | ✓ | ✓ |
+| Extract Structured Data | ✓ | ✓ | ✓ |
+| Titles & keywords | built-in fallback | built-in fallback | Apple Intelligence |
+| [Enhanced redaction model](/docs/guide/redaction/#the-enhanced-on-device-model) | — | ✓ (optional download) | ✓ (optional download) |
+| Generated summaries, smarter search, Thorough scan | — | — | ✓ |
+
+On an **Intel Mac**, everything core works — capture, recording, the
+editor, OCR, search, rule-based redaction, and structured extraction — and
+Sealshot generates titles and keywords with its built-in fallback. The
+enhanced redaction model is Apple Silicon-only (Settings shows *"Requires a
+Mac with Apple silicon"*), and the Apple Intelligence features additionally
+need macOS 26 on Apple Intelligence-capable hardware.
+
+Features degrade gracefully rather than disappearing — and whichever Mac
+you're on, nothing ever leaves your machine.

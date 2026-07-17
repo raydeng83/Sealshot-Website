@@ -1,6 +1,26 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
+import '@splidejs/splide/css';
+
+const heroSlides = [
+  {
+    src: '/manual/editor-overview.png',
+    alt: 'The Sealshot editor with a capture open: annotation toolbar, canvas, and Info panel',
+  },
+  {
+    src: '/manual/redaction-review.png',
+    alt: 'Smart Redaction review panel with detected sensitive items pre-checked',
+  },
+  {
+    src: '/manual/library-grid.png',
+    alt: 'The Library in grid view with OCR full-text search',
+  },
+  {
+    src: '/manual/extract-data.png',
+    alt: 'Extract Structured Data pulling an invoice table out of a screenshot',
+  },
+];
 
 const features = [
   {
@@ -46,7 +66,19 @@ const features = [
         <a class="button" href="/download/">Download for Mac</a>
         <a class="button secondary" href="/docs/">Read the docs</a>
       </div>
-      <div class="screenshot-placeholder" role="img" aria-label="App screenshot placeholder">App screenshot coming soon</div>
+      <section class="hero-carousel splide" aria-label="Sealshot app screenshots">
+        <div class="splide__track">
+          <ul class="splide__list">
+            {
+              heroSlides.map((slide, i) => (
+                <li class="splide__slide">
+                  <img src={slide.src} alt={slide.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
     </div>
   </section>
 
@@ -92,3 +124,17 @@ const features = [
     </div>
   </section>
 </SiteLayout>
+
+<script>
+  import Splide from '@splidejs/splide';
+
+  new Splide('.hero-carousel', {
+    type: 'loop',
+    autoplay: true,
+    interval: 6000,
+    pauseOnHover: true,
+    pauseOnFocus: true,
+    speed: 500,
+    reducedMotion: { speed: 0, rewindSpeed: 0, autoplay: 'pause' },
+  }).mount();
+</script>
