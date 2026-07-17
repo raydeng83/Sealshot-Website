@@ -11,7 +11,9 @@ processed on your Mac. No account, no telemetry, no cloud.
 - **Have a job to do?** Follow a workflow —
   [report bugs safely](/docs/workflows/bug-reports/),
   [share sensitive documents](/docs/workflows/sensitive-documents/),
-  [record a walkthrough](/docs/workflows/walkthrough-videos/), or
-  [turn receipts into data](/docs/workflows/receipts-to-data/).
+  [record a walkthrough](/docs/workflows/walkthrough-videos/),
+  [turn receipts into data](/docs/workflows/receipts-to-data/),
+  [write documentation](/docs/workflows/documentation/), or
+  [build a library that remembers](/docs/workflows/knowledge-library/).
 - **Stuck?** Check the [FAQ](/docs/faq/) or [send us feedback](/support/).
 - **What's new?** See the [changelog](/docs/changelog/v0-7-0/).

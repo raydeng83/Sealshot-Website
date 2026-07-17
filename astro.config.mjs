@@ -34,6 +34,8 @@ export default defineConfig({
             { slug: 'docs/workflows/sensitive-documents', label: 'Share sensitive documents' },
             { slug: 'docs/workflows/walkthrough-videos', label: 'Record a walkthrough' },
             { slug: 'docs/workflows/receipts-to-data', label: 'Receipts into data' },
+            { slug: 'docs/workflows/documentation', label: 'Write documentation' },
+            { slug: 'docs/workflows/knowledge-library', label: 'A library that remembers' },
           ],
         },
         { label: 'FAQ', slug: 'docs/faq' },
