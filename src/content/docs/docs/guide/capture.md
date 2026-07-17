@@ -7,7 +7,7 @@ Sealshot offers several ways to capture your screen. Start any of them from
 the menu-bar icon, or use the [keyboard shortcut](/docs/guide/shortcuts/) —
 each has a default you can change in Settings.
 
-## Area & window (unified capture)
+## Smart Capture (area & window)
 
 **Default: ⌘⇧C.** One overlay does it all, over a frozen screen (so menus
 and hover states survive):
@@ -77,11 +77,13 @@ See [Screen recording](/docs/guide/recording/).
 
 What happens to a finished capture — copy to the **Clipboard**, save to a
 **File**, or **Both** — is set in **Settings → Capture → Capture Defaults**,
-along with the filename format. The default is **Both**.
+along with the filename format. The default is **Both**. Saved files land in
+the folder chosen under **Settings → General → Storage**.
 
 Captures that produce a file open in the [editor](/docs/guide/editor/),
 ready to annotate. A **Clipboard-only** capture skips the editor — it goes
 straight to your clipboard so you can paste and move on.
 
-![Capture destination setting](/manual/capture-destination.png)
-*Choose Clipboard, File, or Both as the default destination.*
+![The save-location setting](/manual/capture-destination.png)
+*The save location in Settings → General; the Clipboard/File/Both default
+lives in Settings → Capture.*

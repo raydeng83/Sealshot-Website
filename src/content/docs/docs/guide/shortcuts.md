@@ -12,7 +12,7 @@ them in **Settings → Shortcuts**, which groups them the same way.
 
 | Command | Default |
 | --- | --- |
-| Unified capture (area or window) | ⌘⇧C |
+| Smart Capture (area or window) | ⌘⇧C |
 | Delayed capture | ⌘⇧D |
 | Scrolling capture | ⌘⇧W |
 | Capture fullscreen | ⌘⇧F |
