@@ -35,14 +35,16 @@ Click the **star** on any capture (or in its Info panel) to add it to
 ## Quick Look
 
 Press **Space** on any selected item for an instant floating preview — no
-need to open the editor. Resize it with **⌘-scroll**; videos play right in
-the preview. Press Space again (or open the item) to dismiss.
+need to open the editor. Resize it with the **−/+ buttons** on the card or
+with **⌘-scroll**; videos play right in the preview. Press Space again (or
+open the item) to dismiss.
 
 ## Grid and list views
 
-Switch between a thumbnail **grid** (with adjustable tile size) and a
-detailed **list** — a sortable table with app, dimensions, file size, date,
-and favorite columns, grouped by date.
+Switch between a thumbnail **grid** and a detailed **list** — a sortable
+table with app, dimensions, file size, date, and favorite columns, grouped
+by date. Resize grid tiles with **⌘-scroll** over the grid or the slider in
+the footer.
 
 ## Selecting captures
 
@@ -59,7 +61,7 @@ and favorite columns, grouped by date.
 *Drag from empty space to rubber-band-select multiple captures.*
 
 Once you've selected captures you can act on the whole set — delete,
-restore, show in Finder, add to a collection, or
+restore, duplicate, show in Finder, add to a collection, or
 [export](/docs/guide/sharing/) — from the toolbar or the right-click menu.
 
 ## The recent strip
@@ -111,4 +113,5 @@ cannot be undone.
 *Trashed captures wait until you restore or purge them.*
 
 Trashed captures are purged automatically after a number of days you set in
-**Settings → General → Trash** (default **30**).
+**Settings → General → Trash** (default **7**), or clear them all at once
+with the **Empty Trash** button in the Trash header.

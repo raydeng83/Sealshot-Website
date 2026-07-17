@@ -18,7 +18,7 @@ All**.
 - **Storage** — the save location for captures *and* recordings (default
   `~/Pictures/Sealshot`).
 - **Trash** — how many days trashed captures are kept before being purged
-  (1–365; default **30**).
+  (1–365; default **7**).
 - **Startup** — launch Sealshot at login, and show the welcome tour cards.
 - **Updates** — check for updates automatically (once a day). *(Direct build
   only.)*

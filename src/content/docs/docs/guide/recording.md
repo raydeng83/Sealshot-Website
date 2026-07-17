@@ -29,11 +29,13 @@ moment to set the stage.
 
 ## While recording
 
-A small **floating HUD** shows a red dot and the elapsed time. Hover to
-reveal **Pause** and **Stop**; drag the dot to move it out of the way. You
-can also pause and resume from the keyboard (**⌘⇧P**) — handy because it
-keeps the mouse out of your recording — or control everything from the menu
-bar.
+A small **floating HUD** shows a **Recording / Paused** label and the
+elapsed time, and stays visible even over full-screen apps. Hover to reveal
+**Pause** and **Stop**; drag the dot to move it out of the way. You can
+also pause and resume from the keyboard (**⌘⇧P**) — handy because it keeps
+the mouse out of your recording — or control everything from the menu bar.
+Each shortcut stops its own recording: ⌘⇧V ends a full-screen recording,
+⌘⇧R a selection recording.
 
 ![The recording HUD](/manual/recording-hud.png)
 *The HUD: elapsed time, pause, and stop. Drag it anywhere.*

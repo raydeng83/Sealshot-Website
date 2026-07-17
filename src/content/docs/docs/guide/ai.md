@@ -29,14 +29,17 @@ canvas right-click menu) reads the capture and pulls out its *structure*:
 tables, form fields, contacts, URLs, emails, phone numbers, addresses,
 amounts, dates — even stack traces.
 
-Results open in their own window with tabs for **Plain text**, **Markdown**,
-**Table**, **CSV**, and **JSON** — each with **Copy** and **Export…**
-buttons. A table in a screenshot becomes a real CSV; a form becomes
-key-value pairs. The result is cached in the capture's `.seal` package, so
-it's instant next time.
+Results open in an **Extracted Data** window as cleanly formatted text —
+tables become real Markdown tables — with **Copy**, **Export…** (saved
+under the capture's name), and **Re-extract** buttons. The result is cached
+in the capture's `.seal` package, so it's instant next time.
 
-![The Extract Structured Data window](/manual/extract-data.png)
-*One screenshot of a table, exported as CSV.*
+When the [enhanced on-device model](/docs/guide/redaction/#the-enhanced-on-device-model)
+is downloaded, extraction uses it too, recognizing entities by meaning
+rather than pattern.
+
+![The Extracted Data window](/manual/extract-data.png)
+*A screenshot's tables and fields, extracted into clean, copyable text.*
 
 ## Smarter search
 

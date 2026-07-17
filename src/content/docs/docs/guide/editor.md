@@ -14,12 +14,12 @@ removed later — even after you reopen the file.
 
 Pick a tool from the toolbar, then draw on the canvas. Tools include:
 
-- **Arrow** and **Line** — with adjustable end-caps and solid/dashed/dotted
-  styles.
-- **Rectangle** and **Ellipse**.
+- **Arrow** — straight (**Line Arrow**) or free-drawn (**Free Arrow**), with
+  adjustable end-caps and solid/dashed/dotted styles.
+- **Line**, **Rectangle**, and **Ellipse**.
 - **Pen** — smoothed freehand strokes.
-- **Text** — click to type; a full font picker with rich styling and
-  per-word colour, size, and weight.
+- **Text** — click to type; a full font picker with rich styling, a weight
+  slider, and per-word colour and size. Typography is remembered per tool.
 - **Numbered badges** — auto-incrementing step markers.
 - **Blur** — see below.
 - **Live Text** — select and copy recognized text (see OCR below).
@@ -27,10 +27,13 @@ Pick a tool from the toolbar, then draw on the canvas. Tools include:
 - **Hand** — pan around a zoomed canvas.
 
 Each tool has its own colour, opacity, and stroke controls in the properties
-panel — and each remembers its last-used style. Annotations can carry a
-**drop shadow** (toggle it on, then aim it with the position pad or the
-eight direction presets). Annotations live on their own layer above the
-image, reorderable (send forward / send backward) from the properties panel.
+panel — and each remembers its last-used style. An **Outline** colour chip
+adds a contrasting casing around pen, line, arrow, shape, step, and text
+annotations (with its own width control) so marks stay readable on any
+background. Annotations can carry a **drop shadow** (toggle it on, then aim
+it with the position pad or the eight direction presets). Annotations live
+on their own layer above the image, reorderable (send forward / send
+backward) from the properties panel.
 
 ![The annotation toolbar](/manual/editor-toolbar.png)
 *Each tool carries its own colour, width, and style options.*
@@ -103,8 +106,10 @@ are one click away.
 ## OCR Live Text
 
 Select and copy text straight out of a screenshot — error messages, code,
-addresses. **QR codes and barcodes** are recognized too: click one to open
-its URL or copy its payload. Text recognition runs entirely on your Mac.
+addresses — with automatic language detection, so non-Latin scripts come out
+right too. **QR codes and barcodes** are recognized as well: click one to
+open its URL or copy its payload. Text recognition runs entirely on your
+Mac.
 
 ![Selecting recognized text inside a screenshot](/manual/ocr-live-text.png)
 *Select and copy text directly from the image.*
@@ -121,9 +126,10 @@ generated.
 
 The editor's undo history is **persistent**: quit and relaunch, switch
 between captures, and you can still step backwards (⌘Z) and forwards (⇧⌘Z).
-One history covers everything — annotations, resize, enhance, background
-removal, metadata edits, and
-[deleting and restoring captures](/docs/guide/library/#delete-restore-and-undo).
+It's a single app-wide timeline covering everything — annotations, resize,
+enhance, background removal, metadata edits, recordings, and
+[deleting and restoring captures](/docs/guide/library/#delete-restore-and-undo)
+— and each undo shows a brief label naming what it undid, on which item.
 
 ## Export
 

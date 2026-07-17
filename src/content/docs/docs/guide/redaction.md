@@ -17,6 +17,7 @@ The built-in detectors (always available) look for:
   and money amounts on financial documents.
 - **Identity** — Social Security numbers and passport machine-readable
   zones (MRZ).
+- **Recovery secrets** — 2FA backup codes and recovery-code grids.
 - **API keys & tokens** — AWS, Stripe, GitHub, GitLab, Google, Slack,
   OpenAI, Anthropic, SendGrid, and Twilio keys; JWTs and `Bearer` tokens;
   private keys; URLs with embedded credentials; and other high-entropy

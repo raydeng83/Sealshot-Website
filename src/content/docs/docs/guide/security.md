@@ -61,9 +61,18 @@ Touch ID, Apple Watch, or your password to view your captures.
 
 Set Sealshot to re-lock automatically after a period of inactivity — **Off**
 (default), **1**, **5**, or **15 minutes** — in **Settings → Privacy &
-Security → Auto-lock when idle**. Sealshot also locks when the Mac sleeps,
-the screen sleeps, or you switch users, and you can lock on demand from
-anywhere with **⌘⇧L** (Lock now).
+Security → Auto-lock when idle**. Idle means you've stepped away from the
+Mac (no keyboard or mouse activity anywhere, the same signal the
+screensaver uses) — working in another app doesn't count as idle, and an
+in-progress capture or recording is never interrupted. Sealshot also locks
+when the Mac sleeps, the screen sleeps, or you switch users, and you can
+lock on demand from anywhere with **⌘⇧L** (Lock now).
+
+While locked, everything that could reveal your library goes quiet: the
+editor, Library, import/export menus, and the open-editor / open-library /
+clipboard shortcuts are all disabled. **Capture and recording shortcuts
+keep working** — new captures are written encrypted, sight unseen, and wait
+for you to unlock.
 
 ## Turning it off
 
