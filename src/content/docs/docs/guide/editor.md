@@ -57,8 +57,8 @@ Blur regions can be a **rectangle**, **ellipse**, or a freehand **brush**. A
 **strength** slider controls the intensity (it's labelled *Opacity* for Solid
 fill), and for the brush a width control sizes the stroke.
 
-![The blur tool's controls](/manual/blur-panel.png)
-*Gaussian or Solid, with brush width and a strength slider.*
+![Gaussian blur and Solid fill compared](/manual/blur-panel.png)
+*Gaussian blur hints at what's there; Solid fill makes it unrecoverable.*
 
 :::tip[Let Sealshot find sensitive text for you]
 Instead of redacting by hand, run [Smart Redaction](/docs/guide/redaction/)
