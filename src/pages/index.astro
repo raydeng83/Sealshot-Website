@@ -5,20 +5,46 @@ import '@splidejs/splide/css';
 
 const heroSlides = [
   {
+    src: '/manual/capture-area.png',
+    alt: 'Area capture in progress: selection rectangle, pixel loupe, and live dimensions readout',
+    subtitle: 'Capture with precision',
+    description: 'A pixel loupe and live dimensions — select exactly what you mean, down to the pixel.',
+  },
+  {
+    src: '/manual/record-prompt.png',
+    alt: 'The Record prompt with system audio, microphone, cursor, and countdown options',
+    subtitle: 'Record on your terms',
+    description: 'Screen, window, or region — with system audio and mic, and a countdown to set the stage.',
+  },
+  {
     src: '/manual/editor-overview.png',
     alt: 'The Sealshot editor with a capture open: annotation toolbar, canvas, and Info panel',
+    subtitle: 'Annotate without damage',
+    description: 'Arrows, labels, and blurs stay editable forever; your original pixels are never touched.',
   },
   {
     src: '/manual/redaction-review.png',
     alt: 'Smart Redaction review panel with detected sensitive items pre-checked',
+    subtitle: 'Redact with confidence',
+    description: 'Smart Redaction finds emails, cards, and keys on device — and covers them for good.',
   },
   {
-    src: '/manual/library-grid.png',
-    alt: 'The Library in grid view with OCR full-text search',
+    src: '/manual/lock-screen.png',
+    alt: 'Sealshot locked: captures encrypted on this Mac, unlocking with Touch ID',
+    subtitle: "Locked until it's you",
+    description: 'Encrypt everything Sealshot stores and unlock with Touch ID. Capturing still works while locked.',
   },
   {
     src: '/manual/extract-data.png',
     alt: 'Extract Structured Data pulling an invoice table out of a screenshot',
+    subtitle: 'Data out of pixels',
+    description: 'Pull tables and form fields from any screenshot as clean, copyable text — on your Mac.',
+  },
+  {
+    src: '/manual/library-grid.png',
+    alt: 'The Library in grid view with OCR full-text search',
+    subtitle: 'Find any capture',
+    description: 'Search the text inside your screenshots, organized with collections and favorites.',
   },
 ];
 
@@ -72,7 +98,15 @@ const features = [
             {
               heroSlides.map((slide, i) => (
                 <li class="splide__slide">
-                  <img src={slide.src} alt={slide.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+                  <figure class="hero-slide">
+                    <div class="hero-slide-media">
+                      <img src={slide.src} alt={slide.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+                    </div>
+                    <figcaption>
+                      <strong>{slide.subtitle}</strong>
+                      <span>{slide.description}</span>
+                    </figcaption>
+                  </figure>
                 </li>
               ))
             }
