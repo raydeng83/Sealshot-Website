@@ -38,6 +38,7 @@ export default defineConfig({
             { slug: 'docs/workflows/knowledge-library', label: 'A library that remembers' },
           ],
         },
+        { label: 'Tips & tricks', slug: 'docs/tips' },
         { label: 'FAQ', slug: 'docs/faq' },
         {
           label: 'Changelog',
