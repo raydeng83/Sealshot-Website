@@ -179,7 +179,7 @@ h1, h2, h3 {
 
 .hero h1 {
   font-size: clamp(2.2rem, 5vw, 3.5rem);
-  max-width: 46rem;
+  max-width: 58rem;
   margin: 0 auto 0.5em;
   text-wrap: balance;
 }
