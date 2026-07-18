@@ -48,6 +48,31 @@ const heroSlides = [
   },
 ];
 
+const trustPoints = [
+  'On-device only',
+  'No account',
+  'No telemetry',
+  'AES-256 encryption',
+];
+
+const pillars = [
+  {
+    label: 'Private',
+    title: 'Nothing leaves your Mac',
+    body: 'Capture, OCR, redaction, AI, and search all run locally. No account, no telemetry, no cloud — the only network traffic is checking for updates.',
+  },
+  {
+    label: 'Secure',
+    title: 'Encrypted, locked to you',
+    body: 'Enhanced Security encrypts everything on disk (AES-256-GCM) behind Touch ID, auto-locks when you step away, and keeps capturing even while locked.',
+  },
+  {
+    label: 'Intelligent',
+    title: 'AI that stays home',
+    body: 'Titles, summaries, and structured-data extraction run on your Mac — Apple Intelligence where available, a built-in fallback everywhere else.',
+  },
+];
+
 const features = [
   {
     title: 'Capture anything',
@@ -92,6 +117,9 @@ const features = [
         <a class="button" href="/download/">Download for Mac</a>
         <a class="button secondary" href="/docs/">Read the docs</a>
       </div>
+      <ul class="trust-strip" aria-label="Privacy guarantees">
+        {trustPoints.map((point) => <li>{point}</li>)}
+      </ul>
       <section class="hero-carousel splide" aria-label="Sealshot app screenshots">
         <div class="splide__track">
           <ul class="splide__list">
@@ -113,6 +141,28 @@ const features = [
           </ul>
         </div>
       </section>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="pillars-heading">
+    <div class="wrap">
+      <p class="kicker">Why Sealshot</p>
+      <h2 id="pillars-heading">Private, secure, and smart — by design</h2>
+      <div class="features pillars">
+        {
+          pillars.map((p) => (
+            <div class="feature pillar">
+              <p class="pillar-label">{p.label}</p>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="pillars-note">
+        Two downloads, ever: app updates and an optional redaction model you
+        approve first. Your captures are never one of them.
+      </p>
     </div>
   </section>
 
@@ -166,20 +216,7 @@ const features = [
     </div>
   </section>
 
-  <section class="section alt" aria-labelledby="privacy-heading">
-    <div class="wrap">
-      <p class="kicker">Privacy</p>
-      <h2 id="privacy-heading">Your screen is your business</h2>
-      <p class="sub">
-        Screenshots routinely contain credentials, customer data, and private
-        conversations. Sealshot processes everything — OCR, metadata, search —
-        on your Mac. Nothing is uploaded, no account is required, and no
-        telemetry is collected.
-      </p>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="updates-heading">
+  <section class="section alt" aria-labelledby="updates-heading">
     <div class="wrap">
       <p class="kicker">Stay in the loop</p>
       <h2 id="updates-heading">Get Sealshot updates</h2>
