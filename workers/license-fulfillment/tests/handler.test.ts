@@ -54,10 +54,41 @@ describe('worker handler', () => {
     const req1 = await signedRequest(ORDER, SECRET_B64);
     const req2 = await signedRequest(ORDER, SECRET_B64);
     expect((await worker.fetch(req1, env)).status).toBe(200);
+    const rec1 = JSON.parse((await env.ORDERS.get('order:ord_1'))!);
+    expect(rec1.state).toBe('sent');
+    const firstLicenseId = rec1.licenseId;
+
     expect((await worker.fetch(req2, env)).status).toBe(200);
-    // one email per delivery is fine; the key assertion is a single stored license id
-    const rec = JSON.parse((await env.ORDERS.get('order:ord_1'))!);
-    expect(rec.state).toBe('sent');
+    // one email per delivery is fine; the key assertion is that the license id is reused, not re-minted
+    const rec2 = JSON.parse((await env.ORDERS.get('order:ord_1'))!);
+    expect(rec2.state).toBe('sent');
+    expect(rec2.licenseId).toBe(firstLicenseId);
+  });
+
+  it('returns 404 for anything other than POST /webhooks/polar, never calling fetch', async () => {
+    const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
+    const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
+
+    const getRes = await worker.fetch(new Request('https://w/webhooks/polar', { method: 'GET' }), env);
+    expect(getRes.status).toBe(404);
+
+    const wrongPathRes = await worker.fetch(new Request('https://w/something-else', { method: 'POST', body: ORDER }), env);
+    expect(wrongPathRes.status).toBe(404);
+
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
+
+  it('returns 200 with no side effects for a signed, non-order.paid event', async () => {
+    const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
+    const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
+    const body = JSON.stringify({
+      type: 'checkout.created',
+      data: { id: 'ord_2', created_at: '2026-07-20T10:00:00Z', customer: { email: 'buyer@example.com', name: 'Buy Er' } },
+    });
+    const res = await worker.fetch(await signedRequest(body, SECRET_B64), env);
+    expect(res.status).toBe(200);
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(await env.ORDERS.get('order:ord_2')).toBeNull();
   });
 
   it('rejects a bad signature with 401', async () => {
