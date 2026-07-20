@@ -30,3 +30,29 @@ export async function textHash(preamble: string): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', utf8ToBytes(preamble));
   return bytesToBase64(new Uint8Array(digest));
 }
+
+export function buildPreamble(p: {
+  name: string;
+  email: string;
+  id: string;
+  issued: string;
+  updatesThrough: string;
+  seats: number;
+}): string {
+  const field = (label: string, value: string) =>
+    label.padEnd(Math.max(label.length, 17), ' ') + value;
+  return [
+    'Sealshot License',
+    '='.repeat(16),
+    field('Licensed to:', p.name),
+    field('Email:', p.email),
+    field('License ID:', p.id),
+    field('Issued:', p.issued),
+    field('Updates through:', p.updatesThrough),
+    field('Seats:', String(p.seats)),
+    '',
+    'Keep this file exactly as received. It is personally identifying and',
+    'cryptographically bound to the information above - any change to this',
+    'file, including removing this text, invalidates the license.',
+  ].join('\n');
+}
