@@ -21,6 +21,7 @@ Tips for consistent shots:
 - `capture-window.png` — the unified overlay with an element/window highlighted by boundary detection. ⟳ retake if the old shot shows the pre-0.7.0 overlay
 - `capture-delayed.png` — the on-screen delayed-capture countdown. ✓ have
 - `capture-scrolling.png` — scrolling capture in progress, or the stitched result. ✓ have
+- `capture-live.png` — a Live Capture scene open in the editor: several windows as separate layers over the desktop wallpaper, one selected. NEW
 - `capture-destination.png` — Settings → Capture → Capture Defaults showing the Clipboard/File/Both picker. ⟳ retake (setting moved to the Capture tab)
 - ~~`capture-element.png`~~ — no longer referenced (element selection folded into unified capture).
 

@@ -72,7 +72,7 @@ ready to annotate, redact, or export.
 From here, explore:
 
 - [Capture modes](/docs/guide/capture/) — area, window, fullscreen, delayed,
-  and scrolling capture, across all your displays.
+  scrolling, and Live Capture, across all your displays.
 - [Screen recording](/docs/guide/recording/) — record the screen, a window,
   or a region, with audio.
 - [The editor](/docs/guide/editor/) — annotations, blur, crop and resize,

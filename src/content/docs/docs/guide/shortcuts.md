@@ -16,6 +16,7 @@ them in **Settings → Shortcuts**, which groups them the same way.
 | Delayed capture | ⌘⇧D |
 | Scrolling capture | ⌘⇧W |
 | Capture fullscreen | ⌘⇧F |
+| Live Capture (layered desktop scene) | ⌘⇧X |
 | Save-as capture | ⌘⇧S |
 
 ### Recording

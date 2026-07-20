@@ -1,6 +1,6 @@
 ---
 title: Capture modes
-description: Area, window, fullscreen, delayed, and scrolling capture — across all your displays.
+description: Area, window, fullscreen, delayed, scrolling, and Live Capture — across all your displays.
 ---
 
 Sealshot offers several ways to capture your screen. Start any of them from
@@ -61,6 +61,35 @@ Press **Esc** at any time to cancel.
 
 ![Scrolling capture in progress](/manual/capture-scrolling.png)
 *Sealshot scrolls and stitches a tall page into one image.*
+
+## Live Capture
+
+**Default: ⌘⇧X.** Capture your whole desktop as a **layered scene**. Live
+Capture grabs *every* on-screen window as its own layer — plus each
+display's wallpaper as the backdrop — and opens them in the
+[editor](/docs/guide/editor/#live-capture-scenes) as a stack of movable
+objects. Every window is captured **in full**, even ones buried behind
+others at the time, so you can raise a hidden window, rearrange the desktop,
+remove what you don't want, and annotate over the result.
+
+- **All windows, in full.** Nothing is cut off by whatever was on top —
+  each window is captured completely and sits on its own layer.
+- **Multi-display.** On one display it captures immediately. With several, a
+  picker opens — click a display to capture its windows and wallpaper, or
+  **⌘-click to capture every display** into one combined scene.
+- **In the editor**, drag windows around, bring one forward or send it back,
+  delete the ones you don't need, and **Export This Window…** to save a
+  single window on its own. See
+  [Live Capture scenes](/docs/guide/editor/#live-capture-scenes).
+
+:::note
+A Live Capture is a snapshot — the captured windows are images, not live
+apps. It captures the windows on your current desktop (Space); minimized
+windows and windows on other Spaces aren't included.
+:::
+
+![A Live Capture scene open in the editor](/manual/capture-live.png)
+*Every window becomes its own movable layer over the desktop wallpaper.*
 
 ## Save as…
 

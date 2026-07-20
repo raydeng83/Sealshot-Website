@@ -97,6 +97,27 @@ Add another image on top of your capture — a logo, a second screenshot — via
 **File → Insert Image on Canvas…** (⇧⌘I), or just drop a file onto the
 canvas. Inserted images move, resize, and rotate like any other object.
 
+## Live Capture scenes
+
+A [Live Capture](/docs/guide/capture/#live-capture) opens as a **layered
+scene**: each captured window is its own image object, stacked over the
+desktop wallpaper. Because every window was captured in full, you can
+rebuild the desktop however you like:
+
+- **Raise a buried window** — select it and bring it forward; its whole
+  contents are there, even the parts that were hidden.
+- **Rearrange and remove** — drag windows around, resize them, send them
+  forward or back, or delete the ones you don't need.
+- **Auto Arrange** — with two or more windows, tidy them into a neat,
+  non-overlapping layout in one step.
+- **Export This Window…** — right-click a selected window to save just that
+  window as its own PNG.
+- **Revert to Original Image** puts every window back where it was captured.
+
+Annotate over the whole scene with any tool, then **Export to Image** (⌘S)
+to flatten the wallpaper, windows, and annotations into one picture — just
+like any other capture.
+
 ## Zoom and navigation
 
 **⌘-scroll** zooms toward the cursor from any tool; type an exact percentage
