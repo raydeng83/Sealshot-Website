@@ -1,0 +1,12 @@
+name = "license-fulfillment"
+main = "src/index.ts"
+compatibility_date = "2026-07-01"
+
+# kv_namespaces filled in during Task 12 (wrangler kv namespace create ORDERS)
+# [[kv_namespaces]]
+# binding = "ORDERS"
+# id = "<filled by wrangler>"
+
+[vars]
+EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
+# Secrets (SIGNING_KEY_B64, POLAR_WEBHOOK_SECRET, RESEND_API_KEY) set via `wrangler secret put`
