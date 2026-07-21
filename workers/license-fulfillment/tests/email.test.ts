@@ -3,11 +3,11 @@ import { sendLicenseEmail } from '../src/email';
 
 describe('sendLicenseEmail', () => {
   it('posts to Resend with a base64 attachment', async () => {
-    const fetchImpl = vi.fn(async () => new Response(JSON.stringify({ id: 'e1' }), { status: 200 }));
+    const fetchImpl = vi.fn<typeof fetch>(async () => new Response(JSON.stringify({ id: 'e1' }), { status: 200 }));
     const res = await sendLicenseEmail({
       apiKey: 'rk', from: 'Sealshot <license@mail.seal-shot.com>', to: 'buyer@example.com',
       name: 'Buy Er', fileName: 'buyer@example.com.sealshotlicense', fileText: 'FILE',
-      fetchImpl: fetchImpl as unknown as typeof fetch,
+      fetchImpl,
     });
     expect(res).toEqual({ ok: true, status: 200 });
     const [url, init] = fetchImpl.mock.calls[0];

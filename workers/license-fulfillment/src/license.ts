@@ -1,6 +1,6 @@
 import { ed25519 } from '@noble/curves/ed25519';
 import { canonicalize, textHash, buildPreamble } from './canonical';
-import { bytesToBase64, base64ToBytes, utf8ToBytes } from './base64';
+import { bytesToBase64, utf8ToBytes } from './base64';
 
 export type LicenseInput = {
   name: string;

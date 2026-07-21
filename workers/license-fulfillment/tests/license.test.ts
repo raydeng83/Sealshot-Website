@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { ed25519 } from '@noble/curves/ed25519';
 import { issueLicense, addMonthsUTC } from '../src/license';
 import { canonicalize, textHash } from '../src/canonical';
-import { base64ToBytes, utf8ToBytes } from '../src/base64';
+import { base64ToBytes } from '../src/base64';
 
 const priv = ed25519.utils.randomPrivateKey();
 const pub = ed25519.getPublicKey(priv);
