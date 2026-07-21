@@ -10,8 +10,8 @@ function fakeKV() {
 const SECRET_RAW = 'unit_test_secret_key_padding____';
 const SECRET_B64 = btoa(SECRET_RAW);
 
-async function signedRequest(body: string, secretB64: string) {
-  const id = 'msg_1', ts = '1721470000';
+async function signedRequest(body: string, secretB64: string, ts = String(Math.floor(Date.now() / 1000))) {
+  const id = 'msg_1';
   const key = await crypto.subtle.importKey('raw', utf8ToBytes(atob(secretB64)), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   const mac = await crypto.subtle.sign('HMAC', key, utf8ToBytes(`${id}.${ts}.${body}`));
   return new Request('https://w/webhooks/polar', {
@@ -48,7 +48,7 @@ describe('worker handler', () => {
     expect(fetchImpl).toHaveBeenCalledOnce();
   });
 
-  it('is idempotent: second delivery does not mint a new license, still 200', async () => {
+  it('is idempotent: second delivery skips re-issue and re-email, still 200', async () => {
     const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
     const req1 = await signedRequest(ORDER, SECRET_B64);
@@ -59,10 +59,21 @@ describe('worker handler', () => {
     const firstLicenseId = rec1.licenseId;
 
     expect((await worker.fetch(req2, env)).status).toBe(200);
-    // one email per delivery is fine; the key assertion is that the license id is reused, not re-minted
+    // Already-sent orders are not re-issued or re-emailed: the fetch injected
+    // for the email send must fire exactly once across both deliveries.
+    expect(fetchImpl).toHaveBeenCalledOnce();
     const rec2 = JSON.parse((await env.ORDERS.get('order:ord_1'))!);
     expect(rec2.state).toBe('sent');
     expect(rec2.licenseId).toBe(firstLicenseId);
+  });
+
+  it('rejects a stale (replayed) timestamp with 400, even with a valid signature', async () => {
+    const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
+    const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
+    const staleTs = String(Math.floor(Date.now() / 1000) - 3600); // ~1 hour ago
+    const res = await worker.fetch(await signedRequest(ORDER, SECRET_B64, staleTs), env);
+    expect(res.status).toBe(400);
+    expect(fetchImpl).not.toHaveBeenCalled();
   });
 
   it('returns 404 for anything other than POST /webhooks/polar, never calling fetch', async () => {

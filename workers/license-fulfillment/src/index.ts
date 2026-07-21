@@ -18,6 +18,11 @@ function isoToUTCDay(iso: string): string {
   return new Date(iso).toISOString().slice(0, 10);
 }
 
+// Signature timestamps outside this window are rejected as stale, even
+// when the signature itself is valid (protects against replay of a
+// captured-but-genuine webhook delivery).
+const MAX_TIMESTAMP_SKEW_SECONDS = 300;
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -28,6 +33,14 @@ export default {
     if (!(await verifyPolarSignature(rawBody, request.headers, env.POLAR_WEBHOOK_SECRET))) {
       return new Response('bad signature', { status: 401 });
     }
+
+    // Signature is verified above, so this timestamp is authenticated —
+    // reject stale deliveries (replay) with a 4xx so Polar doesn't retry.
+    const ts = request.headers.get('webhook-timestamp');
+    if (!ts || Math.abs(Date.now() / 1000 - Number(ts)) > MAX_TIMESTAMP_SKEW_SECONDS) {
+      return new Response('stale', { status: 400 });
+    }
+
     const order = parseOrderPaid(rawBody);
     if (!order) return new Response('ignored', { status: 200 }); // non-order.paid or unparsable-but-signed
 
@@ -39,6 +52,10 @@ export default {
 
     // Idempotency: reuse the stored license id if we've seen this order.
     const existing = await getOrder(env.ORDERS, order.orderId);
+
+    // Already delivered — don't re-issue or re-email a duplicate/replayed
+    // (but still-fresh) webhook delivery.
+    if (existing?.state === 'sent') return new Response('ok', { status: 200 });
 
     // Untrusted buyer name/email: reject control and bidi-override
     // characters (mirrors licensegen's sanitizeOrDie). Unsafe input is a
