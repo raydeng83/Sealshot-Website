@@ -2,7 +2,7 @@ export type OrderRecord = {
   licenseId: string;
   email: string;
   issued: string;
-  state: 'sent' | 'pending';
+  state: 'sent' | 'pending' | 'rejected';
 };
 
 const keyFor = (orderId: string) => `order:${orderId}`;

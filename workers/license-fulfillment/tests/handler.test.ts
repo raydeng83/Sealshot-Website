@@ -107,4 +107,18 @@ describe('worker handler', () => {
     const rec = JSON.parse((await env.ORDERS.get('order:ord_1'))!);
     expect(rec.state).toBe('pending');
   });
+
+  it('rejects unsafe (bidi-override) buyer name without issuing or emailing, returns 200', async () => {
+    const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
+    const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
+    const body = JSON.stringify({
+      type: 'order.paid',
+      data: { id: 'ord_3', created_at: '2026-07-20T10:00:00Z', customer: { email: 'buyer@example.com', name: 'Buy‮Er' } },
+    });
+    const res = await worker.fetch(await signedRequest(body, SECRET_B64), env);
+    expect(res.status).toBe(200);
+    expect(fetchImpl).not.toHaveBeenCalled();
+    const rec = JSON.parse((await env.ORDERS.get('order:ord_3'))!);
+    expect(rec.state).toBe('rejected');
+  });
 });

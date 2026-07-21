@@ -3,6 +3,7 @@ import { issueLicense, addMonthsUTC } from './license';
 import { sendLicenseEmail } from './email';
 import { getOrder, putOrder } from './store';
 import { base64ToBytes } from './base64';
+import { hasUnsafeChars } from './sanitize';
 
 export interface Env {
   ORDERS: KVNamespace;
@@ -38,6 +39,18 @@ export default {
 
     // Idempotency: reuse the stored license id if we've seen this order.
     const existing = await getOrder(env.ORDERS, order.orderId);
+
+    // Untrusted buyer name/email: reject control and bidi-override
+    // characters (mirrors licensegen's sanitizeOrDie). Unsafe input is a
+    // permanent condition, so we return 200 to avoid a Polar retry storm;
+    // the stored `rejected` record is the manual-follow-up signal.
+    if (hasUnsafeChars(order.name) || hasUnsafeChars(order.email)) {
+      await putOrder(env.ORDERS, order.orderId, {
+        licenseId: existing?.licenseId ?? '', email: order.email, issued, state: 'rejected',
+      });
+      return new Response('rejected: unsafe input', { status: 200 });
+    }
+
     const id = existing?.licenseId ?? crypto.randomUUID().toUpperCase();
 
     const fileText = await issueLicense(
