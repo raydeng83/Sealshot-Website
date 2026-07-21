@@ -1,0 +1,19 @@
+{
+  "name": "license-fulfillment",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260702.1",
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0",
+    "wrangler": "^3.60.0"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.4.0"
+  }
+}

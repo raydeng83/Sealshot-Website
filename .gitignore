@@ -6,3 +6,7 @@ dist/
 
 # Playwright MCP screenshot artifacts
 .playwright-mcp/
+
+# Worker dev secrets / local state
+**/.dev.vars
+**/.wrangler/

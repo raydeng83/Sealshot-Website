@@ -1,0 +1,55 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { activePromo, formatUSD, REGULAR_PRICE_CENTS, BASE_CHECKOUT_URL } from '../config/promos';
+
+const promo = activePromo(new Date());
+const checkoutUrl = promo?.polarCheckoutUrl ?? BASE_CHECKOUT_URL;
+const priceCents = promo?.priceCents ?? REGULAR_PRICE_CENTS;
+---
+
+<SiteLayout
+  title="Buy Sealshot"
+  description="Buy Sealshot for Mac — a one-time purchase with 12 months of updates. Signed, notarized, on-device only."
+>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Buy Sealshot</p>
+      <h1>One purchase. Yours to keep.</h1>
+
+      <p class="price">
+        {promo && <span class="was">{formatUSD(REGULAR_PRICE_CENTS)}</span>}
+        <span class="now">{formatUSD(priceCents)}</span>
+        {promo && <span class="badge">{promo.label}</span>}
+      </p>
+
+      <div class="actions">
+        <a class="button" href={checkoutUrl}>Buy Sealshot — {formatUSD(priceCents)}</a>
+      </div>
+
+      <ul class="whatyouget">
+        <li>Perpetual license — the app never stops working.</li>
+        <li>12 months of updates included.</li>
+        <li>14-day free trial, no account required.</li>
+        <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
+        <li>macOS 14 or later · Apple Silicon &amp; Intel.</li>
+      </ul>
+
+      <p class="fine-print">
+        Delivered instantly by email as a license file. Prices in USD; tax handled at checkout.
+        Already bought? Your license arrived in your purchase email — open it or drag it onto
+        Settings ▸ License.
+      </p>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .price { font-size: 2rem; display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+  .price .was { text-decoration: line-through; opacity: .55; font-size: 1.3rem; }
+  .price .now { font-weight: 700; }
+  .price .badge {
+    font-size: .8rem; font-weight: 600; padding: .15rem .5rem; border-radius: 999px;
+    background: var(--sl-color-accent-low, #e7f0ff); color: var(--sl-color-accent-high, #14396b);
+  }
+  .whatyouget { margin: 1.5rem 0; line-height: 1.9; }
+</style>
