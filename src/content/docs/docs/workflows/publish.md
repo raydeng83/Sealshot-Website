@@ -30,7 +30,11 @@ screenshots.
 
 ## The loop
 
-1. **Capture exactly the control you mean.** **⌘⇧C** and hover — the
+*[Capture](/docs/workflows/#1-capture) → [Refine](/docs/workflows/#3-refine)
+→ [Organize](/docs/workflows/#4-organize) →
+[Deliver](/docs/workflows/#5-deliver) — then back to Refine next release*
+
+1. **Capture** — exactly the control you mean. **⌘⇧C** and hover — the
    [unified overlay](/docs/guide/capture/#smart-capture-area--window)
    highlights the element under the cursor, and scrolling steps the
    selection outward from a single button to the panel to the whole
@@ -40,16 +44,16 @@ screenshots.
    [scrolling capture](/docs/guide/capture/#scrolling-capture)
    (**⌘⇧W**) stitches it into one image.
 
-2. **Annotate in the house style.** Your saved defaults do the work.
+2. **Refine** — annotate in the house style. Your saved defaults do the work.
    Numbered badges keep multi-step figures readable; the **Outline**
    color keeps marks legible against any background.
 
-3. **Keep it editable.** Save the
+3. **Refine** — and keep it editable. Save the
    [`.seal` package](/docs/guide/seal-format/) — annotations stay live
    objects, not baked pixels.
 
-4. **File it in the collection** for its manual or release, so figure #37
-   is findable a year from now.
+4. **Organize** — file it in the collection for its manual or release, so
+   figure #37 is findable a year from now.
 
 ## Deliver
 

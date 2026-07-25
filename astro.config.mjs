@@ -30,7 +30,7 @@ export default defineConfig({
         {
           label: 'Workflows',
           items: [
-            { slug: 'docs/workflows', label: 'Which workflow?' },
+            { slug: 'docs/workflows', label: 'Overview' },
             { slug: 'docs/workflows/explain', label: 'Explain' },
             { slug: 'docs/workflows/publish', label: 'Publish' },
             { slug: 'docs/workflows/demonstrate', label: 'Demonstrate' },

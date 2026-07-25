@@ -30,11 +30,15 @@ sits encrypted behind Touch ID.
 
 ## The loop
 
-1. **Capture without ceremony.** **⌘⇧C** anything worth keeping. Don't
+*[Capture](/docs/workflows/#1-capture) →
+[Encrypt](/docs/workflows/#2-encrypt-optional) →
+[Organize](/docs/workflows/#4-organize) — and no Deliver at all*
+
+1. **Capture** — without ceremony. **⌘⇧C** anything worth keeping. Don't
    name it, don't file it — the point of this workflow is that you don't
    have to.
 
-2. **Let the Mac do the filing.** Sealshot OCRs every capture on arrival
+2. **Organize** — let your Mac do the filing. Sealshot OCRs every capture on arrival
    and [generates a title, summary, and Smart
    Keywords](/docs/guide/ai/) from what's visible, all on your Mac.
 

@@ -27,15 +27,21 @@ findability.
 
 ## The loop
 
-1. **Capture as it crosses your screen.** Whenever a receipt, invoice, or
+*[Capture](/docs/workflows/#1-capture) →
+[Organize](/docs/workflows/#4-organize) → [Refine](/docs/workflows/#3-refine)
+→ [Deliver](/docs/workflows/#5-deliver) — the one workflow that files
+before it refines, because you capture all year and extract at the end*
+
+1. **Capture** — as it crosses your screen. Whenever a receipt, invoice, or
    confirmation appears, **⌘⇧C** it. For a long statement,
    [scrolling capture](/docs/guide/capture/#scrolling-capture) (**⌘⇧W**)
    stitches the whole page into one image.
 
-2. **File it.** Right-click → add to the collection, and add a tag or two
-   if it helps. Don't bother renaming — search reads the contents.
+2. **Organize** — file it. Right-click → add to the collection, and add a
+   tag or two if it helps. Don't bother renaming — search reads the
+   contents.
 
-3. **Extract when you need the fields.** Open the capture and hit
+3. **Refine** — extract when you need the fields. Open the capture and hit
    [**Extract Structured Data**](/docs/guide/ai/#extract-structured-data)
    — tables, line items, totals, dates, and vendor fields come out as
    clean, copyable text. The result is cached in the `.seal`, so

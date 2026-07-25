@@ -1,39 +1,178 @@
 ---
 title: "Workflows"
-description: Six shapes of work — explain, publish, demonstrate, protect, extract, remember — and the steps for each.
+description: The five stages every Sealshot workflow runs through — capture, encrypt, refine, organize, deliver.
 ---
 
 The [guide](/docs/guide/getting-started/) covers Sealshot feature by
 feature. These pages go the other way: they start from what you're trying
-to accomplish, and every one of them follows the same spine.
+to accomplish. And however different those jobs look, every one of them
+runs through the same five stages.
 
-> Capture → refine → protect → file → deliver
+> **Capture → Encrypt** *(optional)* **→ Refine → Organize → Deliver**
 
-There are six shapes of work. Find yours:
+Only the first is mandatory. Encryption is a setting you turn on once and
+then forget. Refine, Organize, and Deliver each carry as much or as little
+weight as the job needs — which is exactly what distinguishes one workflow
+from another.
 
-- **[Explain something visually](/docs/workflows/explain/)** — a bug, a
-  confusing control, a document someone needs to understand. One-off,
-  aimed at one person.
-- **[Publish screenshots you'll maintain](/docs/workflows/publish/)** — a
-  manual, a tutorial, release notes. A *set* of figures that has to
-  survive the next UI change.
-- **[Demonstrate it in motion](/docs/workflows/demonstrate/)** — a
-  narrated walkthrough, a demo, a bug that only reproduces live.
-- **[Share sensitive captures
-  safely](/docs/workflows/protect-and-share/)** — statements, IDs,
-  contracts. Redacted, encrypted at rest, encrypted in transit.
-- **[Extract data from a capture](/docs/workflows/extract/)** — receipts,
-  tables, on-screen text that isn't selectable.
-- **[Remember what you saw](/docs/workflows/remember/)** — capture it,
-  forget it, find it again in three weeks.
+## 1. Capture
 
-## Which one am I?
+Everything starts here, and the mode you pick decides how much cleanup you
+avoid later.
+
+- **[Smart Capture](/docs/guide/capture/#smart-capture-area--window)**
+  (**⌘⇧C**) is the one you'll use most. Drag across a region, or hover and
+  let smart boundary detection highlight the panel, toolbar, or window
+  under your cursor — then **scroll** to step the selection outward from
+  the smallest element to the whole window. The screen is frozen
+  throughout, so menus and hover states survive.
+- **[Fullscreen](/docs/guide/capture/#fullscreen)** (**⌘⇧F**) takes one
+  display; ⌘-click in the picker to stitch all of them into a single
+  image.
+- **[Delayed](/docs/guide/capture/#delayed)** (**⌘⇧D**) runs a countdown —
+  3, 5, 10, or 15 seconds — before the overlay opens. This is how you
+  capture anything that closes when you click it.
+- **[Scrolling capture](/docs/guide/capture/#scrolling-capture)**
+  (**⌘⇧W**) handles content taller than the screen, scrolling and
+  stitching a long page, thread, or statement into one seamless image.
+- **[Recording](/docs/guide/recording/#starting-a-recording)** (**⌘⇧R**
+  for a window or region, **⌘⇧V** for the whole screen) covers anything
+  that only makes sense in motion.
+
+## 2. Encrypt *(optional)*
+
+Turn on [Enhanced Security](/docs/guide/security/) once, in **Settings →
+Privacy & Security**. Sealshot encrypts the captures you already have —
+there's a progress bar — walks you through the
+[recovery-code ceremony](/docs/guide/security/#save-your-recovery-code),
+and from then on **every new capture is encrypted the moment it's
+stored**. There is nothing to do per capture, and nothing to remember.
+
+[What that covers](/docs/guide/security/#what-it-protects) is broader than
+the images: captures and recordings are AES-256-GCM encrypted on disk, and
+so are the **search index, the undo history, and the extracted OCR text** —
+the places where a copy of your content would otherwise sit in the clear.
+Viewing then requires Touch ID, your Apple Watch, or your Mac's password,
+and the Privacy & Security settings themselves need authentication to
+open.
+
+This stage sits second for a reason: it never slows down the first one.
+**Capturing works even while the library is locked** — only *viewing*
+needs you to unlock — so protection at rest costs you nothing at the
+moment you press the shortcut.
+
+:::caution
+There's no account and no cloud backup. If you lose both your Mac's unlock
+methods **and** your recovery code, the encrypted library cannot be
+recovered. That is the price of keys that only exist on your Mac.
+:::
+
+## 3. Refine
+
+Two different things happen in this stage: the work you do, and the work
+your Mac has already done for you.
+
+**What you do.** [Annotation
+tools](/docs/guide/editor/#annotation-tools) — arrows (straight or
+free-drawn), lines, shapes, pen, text with a full font picker, and
+auto-incrementing numbered badges. Each tool remembers its own colour,
+opacity, and stroke, and an **Outline** chip keeps marks readable against
+any background. [Crop and
+resize](/docs/guide/editor/#crop-and-resize) removes what isn't the point.
+[Blur and redaction](/docs/guide/editor/#blur-and-redaction) removes what
+shouldn't be there at all — and **Smart Redact** will
+[find it for you](/docs/guide/redaction/), flagging API keys, tokens,
+account numbers, SSNs, and passport MRZ lines, pre-checked for review.
+Redaction is a solid fill, not a blur someone can undo. [Undo survives
+relaunch](/docs/guide/editor/#undo-that-survives-relaunch), so a mistake
+three days ago is still reversible.
+
+**What your Mac does.** Every capture is OCR'd on arrival and given a
+[title, summary, and Smart
+Keywords](/docs/guide/ai/#automatic-titles-summaries-and-smart-keywords)
+from what's visible. On demand, [Extract Structured
+Data](/docs/guide/ai/#extract-structured-data) pulls tables, line items,
+totals, and vendor fields out as copyable text; [OCR Live
+Text](/docs/guide/editor/#ocr-live-text) lets you select text straight off
+the image; [Enhance Clarity and Remove
+Background](/docs/guide/editor/#enhance-clarity-and-remove-background)
+clean up the image itself. All of it runs on your Mac.
+
+Everything here stays editable. A [`.seal`
+package](/docs/guide/seal-format/) keeps annotations as live objects above
+the image rather than baked pixels, so next month you move the arrow
+instead of re-shooting the screenshot.
+
+## 4. Organize
+
+Half of this stage is already done before you think about it.
+
+**Automatic.** OCR text and Smart Keywords are indexed on arrival, which
+means a capture is findable without being named, tagged, or filed. If you
+never organize anything deliberately, [search](/docs/guide/library/#search)
+still works — it reads *inside* the images, and on Apple Intelligence Macs
+it [expands your query](/docs/guide/ai/#smarter-search) to related terms,
+so "invoice" also finds "receipt".
+
+**Deliberate.** Give a capture a real [title or your own
+tags](/docs/guide/library/#titles-tags-and-the-info-panel) — your tags stay
+yours, kept separate from the read-only generated keywords. Group captures
+into [collections](/docs/guide/library/#collections-and-favorites) (a
+capture can live in several), and star the ones you keep coming back to,
+which pins them to **Favorites**.
+
+**Finding it again.** The
+[sidebar](/docs/guide/library/#sections-and-filters) gives you All Files,
+Recents, Collections, and Trash, with filters by tag, by date, and by
+media type. **Space** opens a [Quick
+Look](/docs/guide/library/#quick-look) without an editor round-trip.
+
+The rule of thumb: organize deliberately only when a real project emerges.
+Everything else stays findable anyway.
+
+## 5. Deliver
+
+The last stage is where the workflows differ most, because the right
+output form depends entirely on who's receiving it.
+
+- **A flattened image.** **⌘S** writes a PNG with annotations and
+  redactions baked in. Select several and export to a folder to do a whole
+  set at once. See [plain exports](/docs/guide/sharing/#plain-exports).
+- **A video.** **File → Export to Video…** writes a standard `.mp4`/`.mov`
+  at your chosen [quality and
+  format](/docs/guide/recording/#quality-and-format).
+- **An encrypted package.** **⇧⌘E** — [Export to
+  Package](/docs/guide/sharing/#export-to-package) generates a strong
+  passcode, takes an optional expiry date and hint, and writes a
+  `.sealshare` only Sealshot plus the passcode can open. Send the passcode
+  over a different channel than the file; otherwise one intercepted inbox
+  gets both halves.
+- **Nothing at all.** Some workflows never export. If the capture was for
+  future-you, stage 4 was the destination.
+
+:::caution
+The flattened export bakes redaction in **permanently** — that's the point,
+and it's why it isn't a blur that can be undone. The consequence: the
+`.seal` original still holds the un-redacted pixels, so share the export,
+never the original.
+:::
+
+## Which workflow am I in?
 
 Ask what the capture is *for*. If it's for another person, you're
 explaining or demonstrating. If it's for many people over time, you're
 publishing. If the risk is what's *on* it, start with protect & share. If
 you want the text and not the picture, that's extract. If it's for
 future-you, that's remember.
+
+| Workflow | Leans on |
+| --- | --- |
+| **[Explain something visually](/docs/workflows/explain/)** — a bug, a confusing control, a document someone needs to understand | Capture · Refine · Deliver |
+| **[Publish screenshots you'll maintain](/docs/workflows/publish/)** — a manual, a tutorial, release notes | Refine · Organize · Deliver → back to Refine next release |
+| **[Demonstrate it in motion](/docs/workflows/demonstrate/)** — a narrated walkthrough, a demo, a bug that only reproduces live | Capture · Deliver |
+| **[Share sensitive captures safely](/docs/workflows/protect-and-share/)** — statements, IDs, contracts | Encrypt · Refine · Deliver |
+| **[Extract data from a capture](/docs/workflows/extract/)** — receipts, tables, text that isn't selectable | Capture · Refine · Organize |
+| **[Remember what you saw](/docs/workflows/remember/)** — capture it, forget it, find it again in three weeks | Capture · Encrypt · Organize |
 
 Real jobs chain two of them — a bug repro is explain plus protect — so
 each page ends with what it combines with.

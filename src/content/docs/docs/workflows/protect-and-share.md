@@ -34,11 +34,21 @@ detection accordingly.
 
 ## The loop
 
-1. **Capture the document** with **⌘⇧C**, or a
+*[Capture](/docs/workflows/#1-capture) →
+[Encrypt](/docs/workflows/#2-encrypt-optional) →
+[Refine](/docs/workflows/#3-refine) → [Deliver](/docs/workflows/#5-deliver)*
+
+1. **Capture** — the document, with **⌘⇧C**, or a
    [scrolling capture](/docs/guide/capture/#scrolling-capture) (**⌘⇧W**)
    for a long statement.
 
-2. **Let document-aware redaction read it.** Run **Smart Redact**.
+2. **Encrypt** — already handled. The un-redacted original is encrypted
+   the moment it's stored, viewable only after Touch ID, and auto-lock
+   takes over if you step away. There's nothing to do at this step; it's
+   the setting above doing its job, which is the point of turning it on
+   once.
+
+3. **Refine** — let document-aware redaction read it. Run **Smart Redact**.
    Sealshot flags account and card numbers, SSNs, passport MRZ lines,
    addresses, and money amounts on financial documents. High-risk items
    start pre-checked —
@@ -48,8 +58,7 @@ detection accordingly.
 
    ![The redaction review panel over a capture full of secrets](/manual/redaction-review.png)
 
-3. **Confirm the original stays sealed.** The redacted result is what
-   leaves; the original stays encrypted behind Touch ID.
+   The redacted result is what leaves. The original stays sealed.
 
 ## Deliver
 

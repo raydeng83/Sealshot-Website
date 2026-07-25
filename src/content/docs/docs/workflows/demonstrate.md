@@ -30,21 +30,25 @@ wander into the take.
 
 ## The loop
 
-1. **Set the stage.** Close what shouldn't be on screen, or commit to
-   recording just the one window.
+*[Capture](/docs/workflows/#1-capture) → [Refine](/docs/workflows/#3-refine)
+→ [Deliver](/docs/workflows/#5-deliver)*
 
-2. **Start.** **⌘⇧R** picks a window or region, **⌘⇧V** takes the
+1. **Before you start** — set the stage. Close what shouldn't be on
+   screen, or commit to recording just the one window.
+
+2. **Capture** — start recording. **⌘⇧R** picks a window or region,
+   **⌘⇧V** takes the
    [whole screen](/docs/guide/recording/).
 
    ![The Record prompt](/manual/record-prompt.png)
 
-3. **Pause between steps.** When you need to set up the next part, hit
+3. **Capture** — pause between steps. When you need to set up the next part, hit
    **⌘⇧P**. Pausing from the keyboard keeps the mouse trip to the HUD out
    of your recording; press it again to resume. The
    [HUD](/docs/guide/recording/#while-recording) shows Recording or
    Paused status the whole time.
 
-4. **Stop and review.** The recording lands in your
+4. **Refine** — stop and review. The recording lands in your
    [Library](/docs/guide/library/) as a video `.seal` and plays right in
    the editor — press **Space** in the Library for a
    [quick look](/docs/guide/library/#quick-look).

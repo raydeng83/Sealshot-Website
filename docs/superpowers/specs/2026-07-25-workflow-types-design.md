@@ -1,7 +1,13 @@
 # Workflow types: generalizing the six workflow docs
 
 **Date:** 2026-07-25
-**Status:** approved, ready for implementation planning
+**Status:** implemented
+
+**Revision (same day):** the spine was renamed and reordered after review —
+see [The spine](#the-spine). "File" read as a noun (and as the File menu),
+and encryption belonged early as an automatic at-rest stage rather than
+being conflated with redaction. The overview page now explains all five
+stages in detail, and each type page names the stages it uses.
 
 ## Problem
 
@@ -19,10 +25,40 @@ Two consequences:
    from scratch, with no shared vocabulary and no single owner for the
    explanation.
 
-All six already walk the same spine without ever naming it:
+All six already walk the same spine without ever naming it.
 
-> Capture → refine/annotate → protect (redact) → file & find (OCR,
-> library) → deliver (export/share)
+## The spine
+
+> **Capture → Encrypt** *(optional)* **→ Refine → Organize → Deliver**
+
+Only Capture is mandatory. The stages, and why they sit in this order:
+
+| Stage | What it is | Who does it |
+| --- | --- | --- |
+| **Capture** | Smart Capture, fullscreen, delayed, scrolling, recording | You |
+| **Encrypt** *(optional)* | Enhanced Security: AES-256-GCM at rest, covering captures, recordings, search index, undo history, and OCR text; Touch ID to view | Automatic, once enabled |
+| **Refine** | Annotation, crop, blur **and redaction**; plus the AI half — OCR, titles/summaries/Smart Keywords, Extract Structured Data, Enhance Clarity, Remove Background | Both |
+| **Organize** | Titles, tags, collections, favorites — and the automatic index that makes search work without any of them | Both |
+| **Deliver** | Flattened PNG, video export, `.sealshare` package — or nothing at all | You |
+
+Two decisions worth recording:
+
+- **Encrypt sits second** because it never blocks the first stage:
+  capturing works even while the library is locked, so protection at rest
+  costs nothing at the moment of capture. It is a state, not an action —
+  enabled once in Settings, then invisible.
+- **Redaction lives in Refine**, not in Encrypt and not as its own stage.
+  Encrypt is protection *at rest*; redaction permanently removes content
+  from the *export*. Refine owns the explanation because that is where it
+  is in the app (an editor tool, alongside blur and crop), and Deliver
+  carries a one-line reminder that the flattened export bakes it in.
+
+An earlier draft used *Capture → Refine → Protect → File → Deliver*.
+"File" was rejected as reading like a noun — and specifically like the File
+menu — and "Protect" was rejected for conflating at-rest encryption with
+redaction. Note that "Capture" has the same noun ambiguity (the docs say
+"every capture"), but it is established domain vocabulary and not worth
+renaming.
 
 ## Solution
 
@@ -246,9 +282,30 @@ becomes the Remember page itself), so no existing phrasing is lost.
 
 ## Overview page
 
-`/docs/workflows/` — short. One line framing the six as intents, a list
-of the six with a one-sentence "use this when" each, and a pointer to
-the recipes page for readers who want their exact job named.
+`/docs/workflows/`, sidebar label **Overview**. This page teaches
+[the spine](#the-spine), so it is the longest of the set:
+
+1. Intro — the guide is feature-first, these pages are job-first, and
+   every job runs the same five stages.
+2. The spine as a blockquote, with the note that only Capture is
+   mandatory.
+3. **One detailed section per stage** (`## 1. Capture` … `## 5. Deliver`),
+   each covering the modes and features that belong to it and linking into
+   `/docs/guide/*`. Encrypt explains that it is automatic and why it sits
+   second; Refine splits into "what you do" and "what your Mac does";
+   Organize splits into automatic and deliberate; Deliver enumerates the
+   output forms, including "nothing at all."
+4. `## Which workflow am I in?` — the self-selection test, then a table
+   mapping each of the six types to the stages it leans on. This is the
+   payoff: the spine explains the type set rather than decorating it.
+5. Pointer to the recipes page.
+
+Each type page's `## The loop` opens with an italic stage sequence linking
+back to these anchors, so a reader who learns the five stages sees them
+named on every page. Sequences are honest about deviation rather than
+forced: Extract is `Capture → Organize → Refine → Deliver` (it files all
+year and extracts at the end), and Remember is
+`Capture → Encrypt → Organize` with no Deliver.
 
 ## Redirects
 

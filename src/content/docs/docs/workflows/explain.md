@@ -29,7 +29,10 @@ checked for secrets the moment it opens, before you can forget.
 
 ## The loop
 
-1. **Capture exactly the thing.** Press **⌘⇧C** and hover — the
+*[Capture](/docs/workflows/#1-capture) → [Refine](/docs/workflows/#3-refine)
+→ [Deliver](/docs/workflows/#5-deliver)*
+
+1. **Capture** — exactly the thing. Press **⌘⇧C** and hover — the
    [unified overlay](/docs/guide/capture/#smart-capture-area--window)
    highlights the element under the cursor, and scrolling steps the
    selection outward from a button to the panel to the whole window. For
@@ -37,13 +40,13 @@ checked for secrets the moment it opens, before you can forget.
    [delayed capture](/docs/guide/capture/#delayed) (**⌘⇧D**); the screen
    freezes so the menu survives.
 
-2. **Mark what matters.** An arrow for the thing you mean; numbered
+2. **Refine** — mark what matters. An arrow for the thing you mean; numbered
    badges for *1 → 2 → 3* when order matters, auto-incrementing as you
    click. [Crop](/docs/guide/editor/#crop-and-resize) away everything
    that isn't the point — the **Outline** color keeps marks visible on
    any background.
 
-3. **Redact before it leaves.** Click **Smart Redact** — the
+3. **Refine** — and remove what shouldn't leave. Click **Smart Redact** — the
    [on-device scan](/docs/guide/redaction/) flags API keys, tokens, JWTs,
    emails, and URLs with embedded credentials, pre-checked. Apply covers
    them with solid fill.
