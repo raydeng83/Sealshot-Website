@@ -7,11 +7,11 @@
  * the Encrypt section's prose instead.
  */
 const stages = [
-  { n: '01', name: 'Capture', who: 'you', slug: 'capture', href: '#1-capture' },
-  { n: '02', name: 'Encrypt', who: 'automatic', slug: 'encrypt', href: '#2-encrypt-optional' },
-  { n: '03', name: 'Refine', who: 'you + your Mac', slug: 'refine', href: '#3-refine' },
-  { n: '04', name: 'Organize', who: 'you + your Mac', slug: 'organize', href: '#4-organize' },
-  { n: '05', name: 'Deliver', who: 'you', slug: 'deliver', href: '#5-deliver' },
+  { n: '01', name: 'Capture', slug: 'capture', href: '#1-capture' },
+  { n: '02', name: 'Encrypt', slug: 'encrypt', href: '#2-encrypt-optional' },
+  { n: '03', name: 'Refine', slug: 'refine', href: '#3-refine' },
+  { n: '04', name: 'Organize', slug: 'organize', href: '#4-organize' },
+  { n: '05', name: 'Deliver', slug: 'deliver', href: '#5-deliver' },
 ];
 ---
 
@@ -31,7 +31,6 @@ const stages = [
       <span class="spine-labels">
         <span class="num">{stage.n}</span>
         <span class="name">{stage.name}</span>
-        <span class="who">{stage.who}</span>
       </span>
     </a>
   ))}
@@ -82,13 +81,6 @@ const stages = [
     font-weight: 600;
     color: var(--sl-color-white);
     transition: color 0.18s ease;
-  }
-  .who {
-    font-family: var(--__sl-font-mono);
-    font-size: 0.625rem;
-    letter-spacing: 0.06em;
-    color: var(--sl-color-gray-3);
-    line-height: 1.35;
   }
 
   /* ---- the rail itself: each cell draws its own half-segments ---- */
