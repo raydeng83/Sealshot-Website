@@ -51,17 +51,6 @@ re-exportable when the UI moves.
    figure. Annotations flatten on the way out; the `.seal` originals stay
    untouched in your library.
 
-## Later
-
-This is the section the whole workflow exists for. When the next release
-moves a button: reopen the `.seal`, drag the arrow, re-export. No
-re-shoot, no hunting for the original, no rebuilding the annotation from
-memory.
-
-And when you can't remember which figure showed what,
-[OCR search](/docs/guide/library/#search) reads inside the images —
-"which shot shows the proxy settings?" is a two-second question.
-
 ## Combine with
 
 [Explain](/docs/workflows/explain/) for one-off shots nobody will

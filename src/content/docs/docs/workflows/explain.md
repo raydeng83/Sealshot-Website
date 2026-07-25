@@ -31,14 +31,6 @@ or the chat with the thing you mean already marked.
    annotations baked in, or copy straight to the clipboard and paste into
    the ticket or the chat thread.
 
-## Later
-
-Three weeks on, when the ticket bounces back, don't re-reproduce
-anything — [search](/docs/guide/library/#search) for the error message
-text. OCR indexed the capture the moment you took it. The editable
-[`.seal` original](/docs/guide/seal-format/) is still there too, so a
-different crop is a reopen away.
-
 ## Combine with
 
 [Protect & share](/docs/workflows/protect-and-share/) when the shot holds
