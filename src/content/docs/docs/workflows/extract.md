@@ -9,7 +9,8 @@ This workflow turns pixels back into text you can paste.
 
 ## The steps
 
-*[Capture](/docs/workflows/#1-capture) → Extract →
+*[Capture](/docs/workflows/#1-capture) →
+[Extract](/docs/guide/ai/#extract-structured-data) →
 [Deliver](/docs/workflows/#5-deliver)*
 
 1. **Capture** — as it crosses your screen. Whenever a receipt, invoice, or
