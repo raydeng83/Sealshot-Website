@@ -1,18 +1,20 @@
 ---
 title: "Publish screenshots you'll maintain"
-description: A consistent, precise figure set whose annotations you revise next release instead of redoing.
+description: Build a set of related captures in one collection — consistent shot to shot, and re-exportable when the UI moves.
 ---
 
-Good documentation lives and dies by its screenshots — and screenshots
-are the first thing to rot when the UI changes. This workflow produces a
-figure *set*: consistent shot to shot, and editable next release so you
-revise instead of re-shooting.
+Some captures only make sense together: every figure in a manual, every
+step of a tutorial, every image for one release. This workflow builds that
+set. Each capture joins the same
+[collection](/docs/guide/library/#collections-and-favorites) as you make
+it, so the group stays consistent shot to shot, findable a year later, and
+re-exportable when the UI moves.
 
 ## The steps
 
 *[Capture](/docs/workflows/#1-capture) → [Refine](/docs/workflows/#3-refine)
-→ [Organize](/docs/workflows/#4-organize) →
-[Deliver](/docs/workflows/#5-deliver) — then back to Refine next release*
+→ [Organize](/docs/workflows/#4-organize) for each figure, then
+[Deliver](/docs/workflows/#5-deliver) once*
 
 1. **Capture** — exactly the control you mean. **⌘⇧C** and hover — the
    [unified overlay](/docs/guide/capture/#smart-capture-area--window)
@@ -34,14 +36,20 @@ revise instead of re-shooting.
    [`.seal` package](/docs/guide/seal-format/), where annotations remain
    live objects rather than baked pixels.
 
-3. **Organize** — file it in the collection for its manual or release, so
-   figure #37 is findable a year from now.
+3. **Organize** — add it to the set's
+   [collection](/docs/guide/library/#collections-and-favorites), one per
+   manual or per release. Do it as you go and the set assembles itself; do
+   it later and you're hunting for figure #37 among a year of screenshots.
 
-## Deliver
+4. **Repeat** — for every figure in the set. This is where the first three
+   steps pay off: each tool still holds your style and the collection is
+   already chosen, so shot #14 takes a fraction of the time shot #1 did —
+   and matches it.
 
-**⌘S** for a single flattened PNG, or select the whole set and export to
-a folder in your docs repo. Annotations flatten on the way out; the
-`.seal` originals stay untouched in your library.
+5. **Deliver** — export the set. Select the whole collection and write
+   flattened PNGs into a folder in your docs repo, or **⌘S** for a single
+   figure. Annotations flatten on the way out; the `.seal` originals stay
+   untouched in your library.
 
 ## Later
 
