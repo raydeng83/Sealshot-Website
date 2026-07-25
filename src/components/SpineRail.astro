@@ -1,0 +1,259 @@
+---
+/**
+ * The five-stage spine, as a numbered rail carrying a small diagram per
+ * stage. Every stage is styled identically — including the optional one —
+ * because a special-cased line style would compete with the hover state
+ * for the same visual channel. "Optional" and "automatic" are explained in
+ * the Encrypt section's prose instead.
+ */
+const stages = [
+  { n: '01', name: 'Capture', who: 'you', slug: 'capture', href: '#1-capture' },
+  { n: '02', name: 'Encrypt', who: 'automatic', slug: 'encrypt', href: '#2-encrypt-optional' },
+  { n: '03', name: 'Refine', who: 'you + your Mac', slug: 'refine', href: '#3-refine' },
+  { n: '04', name: 'Organize', who: 'you + your Mac', slug: 'organize', href: '#4-organize' },
+  { n: '05', name: 'Deliver', who: 'you', slug: 'deliver', href: '#5-deliver' },
+];
+---
+
+<nav class="spine" aria-label="The five stages">
+  {stages.map((stage) => (
+    <a class="spine-cell" href={stage.href}>
+      <span class="spine-art" aria-hidden="true">
+        <span class={`shot shot--${stage.slug}`}>
+          <span class="bar"><i></i><i></i><i></i></span>
+          <span class="lines"><b></b><b></b><b></b><b></b></span>
+          {stage.slug === 'organize' && (
+            <span class="chips"><span>tax</span><span>2026</span></span>
+          )}
+        </span>
+      </span>
+      <span class="dotrow"><span class="dot"></span></span>
+      <span class="spine-labels">
+        <span class="num">{stage.n}</span>
+        <span class="name">{stage.name}</span>
+        <span class="who">{stage.who}</span>
+      </span>
+    </a>
+  ))}
+</nav>
+
+<style>
+  .spine {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 1.5rem 0 2rem;
+  }
+
+  .spine-cell {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 0.5rem;
+  }
+  .spine-cell:hover { text-decoration: none; }
+  .spine-cell:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 3px;
+  }
+
+  /* The gutter between diagrams comes from these wrappers, never from the
+     dot row — that has to span the full grid cell or the rail breaks up. */
+  .spine-art { padding: 0 0.3rem 0.6rem; }
+  .spine-labels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.35rem 0.25rem 0;
+    text-align: center;
+  }
+
+  .num {
+    font-family: var(--__sl-font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--sl-color-gray-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--sl-color-white);
+    transition: color 0.18s ease;
+  }
+  .who {
+    font-family: var(--__sl-font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    color: var(--sl-color-gray-3);
+    line-height: 1.35;
+  }
+
+  /* ---- the rail itself: each cell draws its own half-segments ---- */
+  .dotrow {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    display: grid;
+    place-items: center;
+  }
+  .dotrow::before,
+  .dotrow::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    height: 0;
+    border-top: 1.5px solid var(--sl-color-gray-5);
+  }
+  .dotrow::before { left: 0; right: 50%; }
+  .dotrow::after { left: 50%; right: 0; }
+  .spine-cell:first-child .dotrow::before,
+  .spine-cell:last-child .dotrow::after { display: none; }
+
+  .dot {
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--sl-color-gray-3);
+    box-shadow: 0 0 0 4px var(--sl-color-bg);
+    transition: background 0.18s ease, transform 0.18s ease;
+  }
+
+  .spine-cell:hover .dot,
+  .spine-cell:focus-visible .dot {
+    background: var(--sl-color-text-accent);
+    transform: scale(1.25);
+  }
+  .spine-cell:hover .name,
+  .spine-cell:focus-visible .name { color: var(--sl-color-text-accent); }
+  .spine-cell:hover .shot,
+  .spine-cell:focus-visible .shot { border-color: var(--sl-color-text-accent); }
+
+  /* ---- the diagrams ---- */
+  .shot {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 11;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 6px;
+    background: var(--sl-color-bg);
+    overflow: hidden;
+    transition: border-color 0.18s ease;
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 10px;
+    padding-left: 3px;
+    background: var(--sl-color-gray-6);
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+  .bar i { display: block; width: 3px; height: 3px; border-radius: 50%; background: var(--sl-color-gray-5); }
+  .lines { display: flex; flex-direction: column; gap: 3px; padding: 5px 5px 0; }
+  .lines b { display: block; height: 2px; border-radius: 1px; background: var(--sl-color-gray-5); }
+  .lines b:nth-child(2) { width: 72%; }
+  .lines b:nth-child(3) { width: 54%; }
+  .lines b:nth-child(4) { width: 64%; }
+
+  /* 01 — a selection, mid-capture */
+  .shot--capture::after {
+    content: '';
+    position: absolute;
+    inset: 14px 5px 5px;
+    border: 1px dashed var(--sl-color-text-accent);
+    border-radius: 2px;
+  }
+  /* 02 — encrypted at rest */
+  .shot--encrypt .lines { opacity: 0.3; }
+  .shot--encrypt::after {
+    content: 'AES';
+    position: absolute;
+    inset: 14px 5px 5px;
+    display: grid;
+    place-items: center;
+    font-family: var(--__sl-font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: var(--sl-color-gray-3);
+    background: var(--sl-color-gray-6);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 2px;
+  }
+  /* 03 — annotated, and one line redacted */
+  .shot--refine .lines b:nth-child(3) {
+    background: var(--sl-color-white);
+    height: 4px;
+    border-radius: 0;
+  }
+  .shot--refine::before {
+    content: '';
+    position: absolute;
+    left: 22%;
+    bottom: 26%;
+    width: 34%;
+    height: 0;
+    border-top: 1.5px solid var(--sl-color-text-accent);
+    transform: rotate(-24deg);
+    transform-origin: left center;
+  }
+  .shot--refine::after {
+    content: '1';
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 11px;
+    height: 11px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--sl-color-text-accent);
+    color: var(--sl-color-bg);
+    font-family: var(--__sl-font-mono);
+    font-size: 0.5rem;
+  }
+  /* 04 — tagged and filed */
+  .chips { position: absolute; left: 5px; bottom: 5px; display: flex; gap: 3px; }
+  .chips span {
+    font-family: var(--__sl-font-mono);
+    font-size: 0.4375rem;
+    padding: 0 3px;
+    border-radius: 999px;
+    background: var(--sl-color-gray-6);
+    border: 1px solid var(--sl-color-gray-5);
+    color: var(--sl-color-gray-3);
+  }
+  /* 05 — sealed into a package */
+  .shot--deliver { box-shadow: 0 0 0 3px var(--sl-color-gray-6); }
+  .shot--deliver .lines { opacity: 0.25; }
+  .shot--deliver::after {
+    content: '••••••';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 3px;
+    text-align: center;
+    font-family: var(--__sl-font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+    color: var(--sl-color-gray-3);
+  }
+
+  /* A five-node rail cannot survive a two-column wrap, so below the
+     breakpoint the connector is dropped and the dots stay as markers. */
+  @media (max-width: 40rem) {
+    .spine { grid-template-columns: repeat(2, 1fr); gap: 1rem 0.5rem; }
+    .spine .dotrow::before,
+    .spine .dotrow::after { display: none; }
+    .shot--deliver { box-shadow: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .name, .dot, .shot { transition: none; }
+  }
+</style>

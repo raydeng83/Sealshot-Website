@@ -3,12 +3,14 @@ title: "Workflows"
 description: The five stages every Sealshot workflow runs through — capture, encrypt, refine, organize, deliver.
 ---
 
+import SpineRail from '../../../../components/SpineRail.astro';
+
 The [guide](/docs/guide/getting-started/) covers Sealshot feature by
 feature. These pages go the other way: they start from what you're trying
 to accomplish. And however different those jobs look, every one of them
 runs through the same five stages.
 
-> **Capture → Encrypt** *(optional)* **→ Refine → Organize → Deliver**
+<SpineRail />
 
 Only the first is mandatory. Encryption is a setting you turn on once and
 then forget. Refine, Organize, and Deliver each carry as much or as little
@@ -41,9 +43,13 @@ avoid later.
 
 ## 2. Encrypt *(optional)*
 
-Turn on [Enhanced Security](/docs/guide/security/) once, in **Settings →
-Privacy & Security**. Sealshot encrypts the captures you already have —
-there's a progress bar — walks you through the
+This stage is the odd one out in two ways: it's the only **optional** one,
+and it's the only **automatic** one. You never perform it. You decide once
+whether it's on, and after that it happens to every capture without you.
+
+Turn on [Enhanced Security](/docs/guide/security/) in **Settings → Privacy
+& Security**. Sealshot encrypts the captures you already have — there's a
+progress bar — walks you through the
 [recovery-code ceremony](/docs/guide/security/#save-your-recovery-code),
 and from then on **every new capture is encrypted the moment it's
 stored**. There is nothing to do per capture, and nothing to remember.
