@@ -22,12 +22,9 @@ wander into the take.
 
 ## The steps
 
-*Record → [Deliver](/docs/workflows/#5-deliver)*
+*[Record](/docs/guide/recording/) → [Deliver](/docs/workflows/#5-deliver)*
 
-1. **Before you start** — set the stage. Close what shouldn't be on
-   screen, or commit to recording just the one window.
-
-2. **Record** — **⌘⇧R** picks a window or region, **⌘⇧V** takes the whole
+1. **Record** — **⌘⇧R** picks a window or region, **⌘⇧V** takes the whole
    screen; see [Screen recording](/docs/guide/recording/) for every
    option. When you need to set up the next part, hit **⌘⇧P** to pause;
    pausing from the keyboard keeps the mouse
@@ -40,7 +37,7 @@ wander into the take.
 
    ![The Record prompt](/manual/record-prompt.png)
 
-3. **Deliver** — **File → Export to Video…** writes a standard
+2. **Deliver** — **File → Export to Video…** writes a standard
    `.mp4`/`.mov` anyone can play, at your chosen
    [quality and format](/docs/guide/recording/#quality-and-format).
 
