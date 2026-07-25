@@ -8,14 +8,6 @@ a feature that needs a voice over it — a ninety-second recording does
 what a page of instructions can't. This workflow produces a walkthrough
 with clean voice audio and no dead air, without a video editor.
 
-## Use this when
-
-- A narrated walkthrough of a process
-- A bug that only reproduces in motion
-- A feature demo for colleagues or customers
-- An async standup or status update
-- Anything where "click here, then here" emails have already failed
-
 ## Set up once
 
 In the Record prompt: turn the **microphone** on for narration, and leave
@@ -28,36 +20,29 @@ Decide up front whether you're recording a window or the whole screen. A
 window recording is the safer habit — nothing else on your desktop can
 wander into the take.
 
-## The loop
+## The steps
 
-*[Capture](/docs/workflows/#1-capture) → [Refine](/docs/workflows/#3-refine)
-→ [Deliver](/docs/workflows/#5-deliver)*
+*Record → [Deliver](/docs/workflows/#5-deliver)*
 
 1. **Before you start** — set the stage. Close what shouldn't be on
    screen, or commit to recording just the one window.
 
-2. **Capture** — start recording. **⌘⇧R** picks a window or region,
-   **⌘⇧V** takes the
-   [whole screen](/docs/guide/recording/).
-
-   ![The Record prompt](/manual/record-prompt.png)
-
-3. **Capture** — pause between steps. When you need to set up the next part, hit
-   **⌘⇧P**. Pausing from the keyboard keeps the mouse trip to the HUD out
-   of your recording; press it again to resume. The
-   [HUD](/docs/guide/recording/#while-recording) shows Recording or
-   Paused status the whole time.
-
-4. **Refine** — stop and review. The recording lands in your
-   [Library](/docs/guide/library/) as a video `.seal` and plays right in
+2. **Record** — **⌘⇧R** picks a window or region, **⌘⇧V** takes the whole
+   screen; see [Screen recording](/docs/guide/recording/) for every
+   option. When you need to set up the next part, hit **⌘⇧P** to pause;
+   pausing from the keyboard keeps the mouse
+   trip to the HUD out of your recording, and pressing it again resumes.
+   The [HUD](/docs/guide/recording/#while-recording) shows Recording or
+   Paused status the whole time. Stop, and the recording lands in your
+   [Library](/docs/guide/library/) as a video `.seal` that plays right in
    the editor — press **Space** in the Library for a
    [quick look](/docs/guide/library/#quick-look).
 
-## Deliver
+   ![The Record prompt](/manual/record-prompt.png)
 
-**File → Export to Video…** writes a standard `.mp4`/`.mov` anyone can
-play, at your chosen
-[quality and format](/docs/guide/recording/#quality-and-format).
+3. **Deliver** — **File → Export to Video…** writes a standard
+   `.mp4`/`.mov` anyone can play, at your chosen
+   [quality and format](/docs/guide/recording/#quality-and-format).
 
 ## Later
 
