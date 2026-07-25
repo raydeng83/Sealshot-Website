@@ -12,14 +12,6 @@ This is the page the other workflows point to. Whenever a capture is
 about to leave your Mac and something on it shouldn't, these are the
 steps.
 
-## Use this when
-
-- A bank statement, pay slip, or tax document
-- An ID, passport, or insurance card
-- Medical paperwork or a contract
-- A screenshot carrying an account number, key, or token
-- Any capture leaving your organization
-
 ## Set up once
 
 Turn on [Enhanced Security](/docs/guide/security/). The un-redacted
@@ -72,12 +64,6 @@ a phone call — never the same channel. Otherwise one intercepted inbox
 gets both halves.
 
 ![The Export to Package dialog](/manual/export-package.png)
-
-## Later
-
-The recipient double-clicks the package, enters the passcode, and chooses
-**Add to Library** or **Save to Folder…**. If you set an expiry, it stops
-opening after that date without you having to chase it.
 
 ## Combine with
 
