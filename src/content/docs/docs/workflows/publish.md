@@ -29,13 +29,12 @@ revise instead of re-shooting.
    [each tool remembers its style](/docs/guide/editor/#annotation-tools),
    so shot #14 matches shot #1 without you thinking about it. Numbered
    badges keep multi-step figures readable; the **Outline** color keeps
-   marks legible against any background.
+   marks legible against any background. Your marks stay editable without
+   you doing anything about it: Sealshot stores every capture as a
+   [`.seal` package](/docs/guide/seal-format/), where annotations remain
+   live objects rather than baked pixels.
 
-3. **Refine** — and keep it editable. Save the
-   [`.seal` package](/docs/guide/seal-format/) — annotations stay live
-   objects, not baked pixels.
-
-4. **Organize** — file it in the collection for its manual or release, so
+3. **Organize** — file it in the collection for its manual or release, so
    figure #37 is findable a year from now.
 
 ## Deliver
