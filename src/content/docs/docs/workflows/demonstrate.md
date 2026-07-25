@@ -41,13 +41,6 @@ wander into the take.
    `.mp4`/`.mov` anyone can play, at your chosen
    [quality and format](/docs/guide/recording/#quality-and-format).
 
-## Later
-
-Pair the video with two or three annotated stills for the steps people
-will want to reference without scrubbing. Captures and recordings live
-side by side in the Library, so grab frames of the key moments and
-[annotate](/docs/guide/editor/) them.
-
 ## Combine with
 
 [Protect & share](/docs/workflows/protect-and-share/) to send it as an
