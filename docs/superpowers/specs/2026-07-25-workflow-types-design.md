@@ -3,6 +3,14 @@
 **Date:** 2026-07-25
 **Status:** implemented
 
+**Status note (2026-07-25, later the same day):** the pages have since been
+reworked past what this spec describes. The seven-part skeleton was cut back
+to a single `## The steps` list (with Deliver folded in as the last step),
+`Use this when` / `Set up once` / `Later` were dropped from most pages, and
+the **Remember** type was withdrawn — six types are now five, thirteen
+recipes are now eleven. Treat the sections below as the original design
+record, not as a description of the current pages.
+
 **Revision (same day):** the spine was renamed and reordered after review —
 see [The spine](#the-spine). "File" read as a noun (and as the File menu),
 and encryption belonged early as an automatic at-rest stage rather than

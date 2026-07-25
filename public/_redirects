@@ -12,5 +12,9 @@
 /docs/workflows/sensitive-documents/ /docs/workflows/protect-and-share/  301
 /docs/workflows/receipts-to-data     /docs/workflows/extract/            301
 /docs/workflows/receipts-to-data/    /docs/workflows/extract/            301
-/docs/workflows/knowledge-library    /docs/workflows/remember/           301
-/docs/workflows/knowledge-library/   /docs/workflows/remember/           301
+# The Remember page is withdrawn for now, so knowledge-library lands on the
+# workflows overview rather than a 404.
+/docs/workflows/knowledge-library    /docs/workflows/                    301
+/docs/workflows/knowledge-library/   /docs/workflows/                    301
+/docs/workflows/remember             /docs/workflows/                    301
+/docs/workflows/remember/            /docs/workflows/                    301

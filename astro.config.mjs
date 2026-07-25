@@ -36,7 +36,6 @@ export default defineConfig({
             { slug: 'docs/workflows/demonstrate', label: 'Demonstrate' },
             { slug: 'docs/workflows/protect-and-share', label: 'Protect & share' },
             { slug: 'docs/workflows/extract', label: 'Extract' },
-            { slug: 'docs/workflows/remember', label: 'Remember' },
             { slug: 'docs/workflows/recipes', label: 'Recipes' },
           ],
         },

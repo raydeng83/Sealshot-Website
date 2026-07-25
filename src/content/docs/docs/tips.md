@@ -80,5 +80,5 @@ where it's covered in full.
 :::tip[Keep exploring]
 Ready to put these together? The [Workflows](/docs/workflows/) show how the
 pieces combine to get real jobs done, and the
-[recipes](/docs/workflows/recipes/) name thirteen specific ones.
+[recipes](/docs/workflows/recipes/) name eleven specific ones.
 :::

@@ -35,8 +35,7 @@ This workflow turns pixels back into text you can paste.
 
 [Protect & share](/docs/workflows/protect-and-share/) before you forward
 a receipt to anyone — a quick Smart Redact pass covers the card number
-and address · [Remember](/docs/workflows/remember/), since these captures
-stay findable whether or not you ever extract them.
+and address.
 
 ## Recipes
 

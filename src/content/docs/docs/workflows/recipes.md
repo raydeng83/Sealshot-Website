@@ -3,7 +3,7 @@ title: "Recipes"
 description: Short, specific jobs — and which workflow each one runs on.
 ---
 
-The [six workflows](/docs/workflows/) cover the shapes. These are the
+The [workflows](/docs/workflows/) cover the shapes. These are the
 specific jobs, each in a few lines, pointing at the workflow that carries
 the detail.
 
@@ -121,27 +121,8 @@ the detail.
 3. Paste into the sheet. The result is cached in the `.seal`, so you can
    come back for it.
 
-## Research clippings you'll want later
-
-**Runs on:** [Remember](/docs/workflows/remember/)
-
-1. **⌘⇧C** the paragraph, chart, or quote. Don't name it.
-2. Let OCR and Smart Keywords index it on arrival.
-3. Weeks later, search the phrase you half-remember.
-4. Make a collection only once the project is real.
-
-## The settings screen you finally got right
-
-**Runs on:** [Remember](/docs/workflows/remember/)
-
-1. **⌘⇧C** the working configuration before you touch anything else.
-2. That's it — search "proxy" or "certificate" when it breaks again.
-3. [OCR Live Text](/docs/guide/editor/#ocr-live-text) lets you copy the
-   exact values back out.
-
 :::tip
 Don't see your job? Pick the [workflow](/docs/workflows/) whose *shape*
-matches — are you explaining, publishing, demonstrating, protecting,
-extracting, or remembering? The steps generalize further than the recipe
-names suggest.
+matches — are you explaining, publishing, demonstrating, protecting, or
+extracting? The steps generalize further than the recipe names suggest.
 :::
