@@ -13,8 +13,8 @@ re-exportable when the UI moves.
 ## The steps
 
 *[Capture](/docs/workflows/#1-capture) → [Refine](/docs/workflows/#3-refine)
-→ [Organize](/docs/workflows/#4-organize) for each figure, then
-[Deliver](/docs/workflows/#5-deliver) once*
+→ [Organize](/docs/workflows/#4-organize) → Repeat →
+[Deliver](/docs/workflows/#5-deliver)*
 
 1. **Capture** — exactly the control you mean. **⌘⇧C** and hover — the
    [unified overlay](/docs/guide/capture/#smart-capture-area--window)
