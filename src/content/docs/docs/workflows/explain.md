@@ -8,26 +8,7 @@ the cell that's wrong in someone's spreadsheet — one annotated screenshot
 replaces three paragraphs. This workflow gets the picture into the ticket
 or the chat, and nothing else along with it.
 
-## Use this when
-
-- Filing a bug and the stack trace is on screen
-- Answering a support ticket that needs a picture
-- Giving feedback on a design or a document
-- Replacing a "click here, then here" email
-- Flagging one thing inside a much busier screen
-
-## Set up once
-
-Set your annotation defaults the first time you use each tool — arrow
-color, stroke width, outline. [Each tool remembers its
-style](/docs/guide/editor/#annotation-tools), so you're not re-picking on
-every shot.
-
-If you screenshot terminals or admin panels all day, turn on **Scan
-captures automatically** (Settings → On-Device AI). Every capture gets
-checked for secrets the moment it opens, before you can forget.
-
-## The loop
+## The steps
 
 *[Capture](/docs/workflows/#1-capture) → [Refine](/docs/workflows/#3-refine)
 → [Deliver](/docs/workflows/#5-deliver)*
