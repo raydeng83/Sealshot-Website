@@ -24,7 +24,7 @@ Redaction uses the
 which recognizes *what kind* of document it's looking at and tunes
 detection accordingly.
 
-## The loop
+## The steps
 
 *[Capture](/docs/workflows/#1-capture) →
 [Encrypt](/docs/workflows/#2-encrypt-optional) →
@@ -52,18 +52,15 @@ detection accordingly.
 
    The redacted result is what leaves. The original stays sealed.
 
-## Deliver
+4. **Deliver** — select the capture and press **⇧⌘E**.
+   [Export to Package](/docs/guide/sharing/) generates a strong passcode
+   (copy it before export unlocks), takes an optional expiry date and
+   hint, and writes a `.sealshare` that only Sealshot plus the passcode
+   can open. **Send the passcode separately** — package by email, passcode
+   by Signal or a phone call, never the same channel. Otherwise one
+   intercepted inbox gets both halves.
 
-Select the capture and press **⇧⌘E** —
-[Export to Package](/docs/guide/sharing/) generates a strong passcode
-(copy it before export unlocks), takes an optional expiry date and hint,
-and writes a `.sealshare` that only Sealshot plus the passcode can open.
-
-**Send the passcode separately.** Package by email, passcode by Signal or
-a phone call — never the same channel. Otherwise one intercepted inbox
-gets both halves.
-
-![The Export to Package dialog](/manual/export-package.png)
+   ![The Export to Package dialog](/manual/export-package.png)
 
 ## Combine with
 
