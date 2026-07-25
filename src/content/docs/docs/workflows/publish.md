@@ -8,27 +8,7 @@ are the first thing to rot when the UI changes. This workflow produces a
 figure *set*: consistent shot to shot, and editable next release so you
 revise instead of re-shooting.
 
-## Use this when
-
-- Screenshots for a product manual or help site
-- A tutorial or onboarding walkthrough
-- Figures for release notes
-- Marketing or landing-page imagery
-- Anything you'll have to redo when a button moves
-
-## Set up once
-
-Pick your convention before shot #1 — say, orange arrows with a white
-outline at 2px. [Each tool remembers its
-style](/docs/guide/editor/#annotation-tools), so shot #14 matches shot #1
-without you thinking about it.
-
-Then make a
-[collection](/docs/guide/library/#collections-and-favorites) per manual,
-or per release. It's the difference between a figure set and a pile of
-screenshots.
-
-## The loop
+## The steps
 
 *[Capture](/docs/workflows/#1-capture) → [Refine](/docs/workflows/#3-refine)
 → [Organize](/docs/workflows/#4-organize) →
@@ -44,9 +24,12 @@ screenshots.
    [scrolling capture](/docs/guide/capture/#scrolling-capture)
    (**⌘⇧W**) stitches it into one image.
 
-2. **Refine** — annotate in the house style. Your saved defaults do the work.
-   Numbered badges keep multi-step figures readable; the **Outline**
-   color keeps marks legible against any background.
+2. **Refine** — annotate in the house style. Pick your convention before
+   shot #1 — say, orange arrows with a white outline at 2px — and
+   [each tool remembers its style](/docs/guide/editor/#annotation-tools),
+   so shot #14 matches shot #1 without you thinking about it. Numbered
+   badges keep multi-step figures readable; the **Outline** color keeps
+   marks legible against any background.
 
 3. **Refine** — and keep it editable. Save the
    [`.seal` package](/docs/guide/seal-format/) — annotations stay live
