@@ -78,6 +78,7 @@ where it's covered in full.
   combo that's already taken.
 
 :::tip[Keep exploring]
-Ready to put these together? The [Workflows](/docs/workflows/bug-reports/)
-show how the pieces combine to get real jobs done.
+Ready to put these together? The [Workflows](/docs/workflows/) show how the
+pieces combine to get real jobs done, and the
+[recipes](/docs/workflows/recipes/) name thirteen specific ones.
 :::

@@ -1,0 +1,16 @@
+# Workflow docs reorganized from scenario pages to intent-based types
+# (2026-07-25). Both slash forms listed — Starlight serves with a trailing
+# slash, but inbound links from elsewhere may omit it.
+
+/docs/workflows/bug-reports          /docs/workflows/explain/            301
+/docs/workflows/bug-reports/         /docs/workflows/explain/            301
+/docs/workflows/documentation        /docs/workflows/publish/            301
+/docs/workflows/documentation/       /docs/workflows/publish/            301
+/docs/workflows/walkthrough-videos   /docs/workflows/demonstrate/        301
+/docs/workflows/walkthrough-videos/  /docs/workflows/demonstrate/        301
+/docs/workflows/sensitive-documents  /docs/workflows/protect-and-share/  301
+/docs/workflows/sensitive-documents/ /docs/workflows/protect-and-share/  301
+/docs/workflows/receipts-to-data     /docs/workflows/extract/            301
+/docs/workflows/receipts-to-data/    /docs/workflows/extract/            301
+/docs/workflows/knowledge-library    /docs/workflows/remember/           301
+/docs/workflows/knowledge-library/   /docs/workflows/remember/           301
