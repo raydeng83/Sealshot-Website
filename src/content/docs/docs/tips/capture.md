@@ -8,10 +8,16 @@ it right the first time.
 
 ## Selection
 
-- **Scroll to grow your selection.** In the
+- **Scroll to resize your selection — either way.** In the
   [unified overlay](/docs/guide/capture/#smart-capture-area--window), hover
-  an element and scroll the wheel to step the highlight outward — button →
-  panel → whole window — then click.
+  and scroll the wheel to step the highlight outward through the regions
+  under your pointer, ending at the whole window. Scroll back and it steps
+  inward again, so overshooting costs you nothing.
+- **Detection works at app scale, not button scale.** Boundary detection
+  offers regions roughly the size of a dialog or larger and deliberately
+  skips buttons, cards, toolbars, and sidebars. In a browser that usually
+  means two stops — the page content, then the window. **Drag** for anything
+  smaller; scrolling won't get you there.
 - **You don't have to drag.** Click once to set a corner, move, and click
   again. Either way, **adjustable handles** let you nudge the edges before
   you confirm, so a selection that's two pixels off doesn't mean starting

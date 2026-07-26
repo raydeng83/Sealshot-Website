@@ -15,8 +15,8 @@ or the chat with the thing you mean already marked.
 
 1. **Capture** — exactly the thing. Press **⌘⇧C** and hover — the
    [unified overlay](/docs/guide/capture/#smart-capture-area--window)
-   highlights the element under the cursor, and scrolling steps the
-   selection outward from a button to the panel to the whole window. For
+   highlights the pane or window under the cursor, and scrolling steps the
+   selection outward to the next region, or back inward. For
    anything that disappears on click — a menu, a tooltip — use
    [delayed capture](/docs/guide/capture/#delayed) (**⌘⇧D**); the screen
    freezes so the menu survives.

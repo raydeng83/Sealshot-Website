@@ -18,9 +18,11 @@ re-exportable when the UI moves.
 
 1. **Capture** — exactly the control you mean. **⌘⇧C** and hover — the
    [unified overlay](/docs/guide/capture/#smart-capture-area--window)
-   highlights the element under the cursor, and scrolling steps the
-   selection outward from a single button to the panel to the whole
-   window. For menus and tooltips that vanish on click, use
+   highlights the pane or window under the cursor, and scrolling steps the
+   selection outward to the next region, or back inward. When you need one
+   small control on its own, drag the region instead — detection works at
+   app scale, not button scale. For menus and tooltips that vanish on click,
+   use
    [delayed capture](/docs/guide/capture/#delayed) (**⌘⇧D**) — the screen
    freezes and the menu survives. For a page taller than the screen,
    [scrolling capture](/docs/guide/capture/#scrolling-capture)

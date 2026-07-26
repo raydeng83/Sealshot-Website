@@ -15,10 +15,13 @@ and hover states survive):
 - **Drag** across a region to capture an area — or click once to set a
   corner, move, and click again. Adjustable handles let you fine-tune the
   selection before confirming.
-- **Hover** and Sealshot highlights what's under the cursor — a panel, a
-  toolbar, a whole window — using smart boundary detection that snaps to
-  real edges. **Scroll** to step the highlight outward from the smallest
-  element to the full window, then **click** to capture exactly that.
+- **Hover** and Sealshot highlights the region under your cursor — a content
+  pane, a dialog, a whole window — using smart boundary detection that snaps
+  to real edges. **Scroll** to step outward through the regions containing
+  the pointer, or back inward again, then **click** to capture exactly that.
+  Detection works at app scale and deliberately ignores buttons, cards,
+  toolbars, and sidebars, so in a browser you'll usually get two stops: the
+  page content, then the whole window. For anything smaller, drag.
 
 Press **Esc** to cancel.
 
