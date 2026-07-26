@@ -39,7 +39,17 @@ export default defineConfig({
             { slug: 'docs/workflows/recipes', label: 'Examples' },
           ],
         },
-        { label: 'Tips & tricks', slug: 'docs/tips' },
+        {
+          label: 'Tips & tricks',
+          items: [
+            { slug: 'docs/tips', label: 'Overview' },
+            { slug: 'docs/tips/capture', label: 'Capture' },
+            { slug: 'docs/tips/encrypt', label: 'Encrypt' },
+            { slug: 'docs/tips/refine', label: 'Refine' },
+            { slug: 'docs/tips/organize', label: 'Organize' },
+            { slug: 'docs/tips/deliver', label: 'Deliver' },
+          ],
+        },
         { label: 'FAQ', slug: 'docs/faq' },
         {
           label: 'Changelog',
