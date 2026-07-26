@@ -14,7 +14,7 @@ processed on your Mac. No account, no telemetry, no cloud.
   [demonstrate](/docs/workflows/demonstrate/),
   [protect & share](/docs/workflows/protect-and-share/), or
   [extract](/docs/workflows/extract/) — or find your exact job in the
-  [recipes](/docs/workflows/recipes/).
+  [examples](/docs/workflows/recipes/).
 - **Want to go faster?** Skim the [Tips & tricks](/docs/tips/).
 - **Stuck?** Check the [FAQ](/docs/faq/) or [send us feedback](/support/).
 - **What's new?** See the [changelog](/docs/changelog/v0-7-0/).

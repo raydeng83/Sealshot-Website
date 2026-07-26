@@ -57,7 +57,7 @@ re-exportable when the UI moves.
 maintain · [Extract](/docs/workflows/extract/) when a figure's text needs
 to become copy.
 
-## Recipes
+## Examples
 
 [Figure for release
 notes](/docs/workflows/recipes/#figure-for-release-notes) ·

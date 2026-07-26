@@ -38,7 +38,7 @@ real secrets rather than incidental ones ·
 [Demonstrate](/docs/workflows/demonstrate/) when the problem only makes
 sense in motion.
 
-## Recipes
+## Examples
 
 [Bug repro for a ticket](/docs/workflows/recipes/#bug-repro-for-a-ticket)
 · [Support reply with a

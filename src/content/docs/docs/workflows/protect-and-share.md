@@ -69,7 +69,7 @@ Any other workflow — this is the sensitive path through
 [Demonstrate](/docs/workflows/demonstrate/), and
 [Extract](/docs/workflows/extract/).
 
-## Recipes
+## Examples
 
 [Send an ID or bank
 statement](/docs/workflows/recipes/#send-an-id-or-bank-statement) ·

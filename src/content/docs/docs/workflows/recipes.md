@@ -1,5 +1,5 @@
 ---
-title: "Recipes"
+title: "Examples"
 description: Short, specific jobs — and which workflow each one runs on.
 ---
 
@@ -124,5 +124,5 @@ the detail.
 :::tip
 Don't see your job? Pick the [workflow](/docs/workflows/) whose *shape*
 matches — are you explaining, publishing, demonstrating, protecting, or
-extracting? The steps generalize further than the recipe names suggest.
+extracting? The steps generalize further than the example names suggest.
 :::

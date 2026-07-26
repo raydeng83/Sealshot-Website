@@ -37,7 +37,7 @@ This workflow turns pixels back into text you can paste.
 a receipt to anyone — a quick Smart Redact pass covers the card number
 and address.
 
-## Recipes
+## Examples
 
 [Receipts for tax time](/docs/workflows/recipes/#receipts-for-tax-time) ·
 [Table into a spreadsheet](/docs/workflows/recipes/#table-into-a-spreadsheet)

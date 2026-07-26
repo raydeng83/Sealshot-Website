@@ -47,7 +47,7 @@ wander into the take.
 encrypted package instead of a plain video file ·
 [Explain](/docs/workflows/explain/) for the companion stills.
 
-## Recipes
+## Examples
 
 [Narrated walkthrough or feature
 demo](/docs/workflows/recipes/#narrated-walkthrough-or-feature-demo) ·
