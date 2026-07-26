@@ -12,9 +12,14 @@ each has a default you can change in Settings.
 **Default: ⌘⇧C.** One overlay does it all, over a frozen screen (so menus
 and hover states survive):
 
-- **Drag** across a region to capture an area — or click once to set a
-  corner, move, and click again. Adjustable handles let you fine-tune the
-  selection before confirming.
+- **Drag** across a region to capture an area — the shot is taken the moment
+  you release.
+- **⌘-drag** — or **⌘-click** — when you want to adjust before capturing.
+  The selection stays on screen with resize handles, an interior you can drag
+  to reposition, and a size readout whose width and height you can type into
+  for exact pixels. **Return** (or the ✓ button) captures; **Esc** (or ✕)
+  cancels. A plain **⌘-click** starts from your last capture's size, so a run
+  of shots can come out identically sized.
 - **Hover** and Sealshot highlights the region under your cursor — a content
   pane, a dialog, a whole window — using smart boundary detection that snaps
   to real edges. **Scroll** to step outward through the regions containing
@@ -26,7 +31,7 @@ and hover states survive):
 Press **Esc** to cancel.
 
 ![Area selection overlay mid-drag](/manual/capture-area.png)
-*Drag to select; refine with the handles, then confirm.*
+*Drag to select. Hold ⌘ to keep the selection adjustable before you confirm.*
 
 ![Window capture with a window highlighted](/manual/capture-window.png)
 *Hover to highlight an element or window; scroll to grow the selection.*

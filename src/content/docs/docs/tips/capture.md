@@ -8,20 +8,17 @@ it right the first time.
 
 ## Selection
 
-- **Scroll to resize your selection — either way.** In the
+- **Scroll to resize your selection.** In the
   [unified overlay](/docs/guide/capture/#smart-capture-area--window), hover
   and scroll the wheel to step the highlight outward through the regions
   under your pointer, ending at the whole window. Scroll back and it steps
   inward again, so overshooting costs you nothing.
-- **Detection works at app scale, not button scale.** Boundary detection
-  offers regions roughly the size of a dialog or larger and deliberately
-  skips buttons, cards, toolbars, and sidebars. In a browser that usually
-  means two stops — the page content, then the window. **Drag** for anything
-  smaller; scrolling won't get you there.
-- **You don't have to drag.** Click once to set a corner, move, and click
-  again. Either way, **adjustable handles** let you nudge the edges before
-  you confirm, so a selection that's two pixels off doesn't mean starting
-  over.
+- **⌘-click to size the shot before you take it.** Hold **⌘** and click in
+  the overlay and Sealshot draws a rectangle at your last capture's size,
+  with handles to resize it and an interior you can drag to reposition. **⌘**
+  and drag instead if you want to start from a size you draw yourself. Either
+  way nothing is captured until you press **Return**, so you can nudge the
+  edges until the size pill reads exactly what you want.
 - **Esc gets you out of anything** — the overlay, a delayed countdown, or a
   scrolling capture mid-stitch.
 
@@ -45,6 +42,14 @@ it right the first time.
   normally scrolls for you, given Accessibility permission — but it also
   has a manual mode where you scroll and press **Return** to finish. Worth
   knowing before you conclude a stubborn app can't be captured.
+- **Keep sticky elements out of your selection.** Check for them before you
+  start — it's the difference between a clean tall capture and one you have
+  to edit. Sticky headers and navbars, cookie bars, floating "jump to bottom"
+  or chat buttons: anything that holds still while the page scrolls under it
+  gets baked into the stitched image, stranded in the middle of content it
+  has nothing to do with. Draw your selection just inside them — start below
+  a pinned header, stop above a pinned footer, and keep clear of any floating
+  button — and the finished page comes out clean.
 
 ## Live Capture
 
