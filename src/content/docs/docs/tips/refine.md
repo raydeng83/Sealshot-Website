@@ -27,6 +27,24 @@ the capture was landing.
 - **Annotations are layers.** Send them forward or backward from the
   properties panel when a label ends up under an arrow.
 
+## Zoom and pan
+
+- **⌘-scroll to zoom at the cursor.** Works from
+  [any tool](/docs/guide/editor/#zoom-and-navigation) — point at the detail
+  and the zoom lands there, no trip to the zoom control.
+- **⌘+ / ⌘− / ⌘0.** Zoom in, zoom out, and back to actual size (100%) from
+  the keyboard.
+- **Right-drag to pan.** Hold the right button and drag to move around a
+  zoomed image — a plain right-click still opens the context menu. The
+  **Hand** tool pans too.
+- **The zoom cluster.** The bar above the canvas has a slider, an exact
+  percentage, and one-click **Fit**, **Fit width**, **Fit height**, and
+  **Actual size** buttons.
+- **Focus on part of the image.** Drag the focus brackets to mark the area
+  you care about, and the **Focus** button zooms straight to it.
+- **Fit never enlarges.** The Fit buttons cap at 100%, so a small capture
+  isn't blown up blurry — going past 100% is deliberate, via **⌘+**, the
+  slider, or a typed percentage.
 
 ## Image state
 
