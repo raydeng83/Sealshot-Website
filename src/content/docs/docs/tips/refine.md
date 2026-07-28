@@ -37,14 +37,11 @@ the capture was landing.
 - **Right-drag to pan.** Hold the right button and drag to move around a
   zoomed image — a plain right-click still opens the context menu. The
   **Hand** tool pans too.
-- **The zoom cluster.** The bar above the canvas has a slider, an exact
-  percentage, and one-click **Fit**, **Fit width**, **Fit height**, and
-  **Actual size** buttons.
 - **Focus on part of the image.** Drag the focus brackets to mark the area
   you care about, and the **Focus** button zooms straight to it.
-- **Fit never enlarges.** The Fit buttons cap at 100%, so a small capture
-  isn't blown up blurry — going past 100% is deliberate, via **⌘+**, the
-  slider, or a typed percentage.
+- **Crop to the focus area — or clear it.** The right-click menu has
+  **Crop to Focus Area** and **Reset Focus Area**. Both are available once
+  the focus brackets mark something smaller than the whole image.
 
 ## Image state
 
