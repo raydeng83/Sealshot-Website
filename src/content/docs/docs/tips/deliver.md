@@ -21,20 +21,7 @@ makes redaction reversible *for you*. **Share the export, never the
 - **Export a batch.** Select several captures and
   [Export to Image](/docs/guide/sharing/#plain-exports) (**⌘S**) writes them
   all into one folder. Recordings batch out the same way.
-- **Export one window from a Live Capture.** Right-click a window in a
-  [layered scene](/docs/guide/editor/#live-capture-scenes) and **Export This
-  Window…** saves just that window as its own PNG.
 
-## Export again later
-
-- **Exports don't spend the original.** ⌘S flattens annotations and
-  redactions into a PNG, and the editable
-  [`.seal`](/docs/guide/seal-format/) stays intact — so a different crop or
-  format next month is an edit, not a re-shoot.
-- **Pick video quality before exporting.** Set
-  [quality and format](/docs/guide/recording/#quality-and-format) before
-  **Export to Video…** rather than re-recording something that came out too
-  large.
 
 ## Encrypted packages
 
@@ -52,8 +39,8 @@ makes redaction reversible *for you*. **Share the export, never the
 
 ## What's in the file
 
-- **Solid-fill redactions are really gone.** In an export the covered
-  content isn't in the file at all — it isn't a layer someone can peel back.
+- **Exported images are flattened.** The annotation objects are baked into
+  the image, so re-importing an export won't recover them as objects.
 - **"Include original un-redacted capture" ships the original.** That one
   package option includes the un-redacted pixels alongside the redacted
   result. Leave it off unless the recipient genuinely needs the original.
