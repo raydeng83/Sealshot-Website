@@ -3,8 +3,7 @@ title: "Tips: Refine"
 description: Annotation that stays consistent, cleanup you didn't know was there, and the AI that already ran before you opened the capture.
 ---
 
-Half of this stage is work you do. The other half already happened while
-the capture was landing.
+This section includes tips and tricks for annotation, image manipulation, image state control and smart features.
 
 ## Regular tools
 
