@@ -3,26 +3,25 @@ title: "Tips: Capture"
 description: Get exactly the right pixels on the first try — selection tricks, frozen screens, and the modes people forget.
 ---
 
-Most cleanup later is caused by a rushed capture. These are the ways to get
-it right the first time.
+Here are some tips and tricks to boost your capturing skills with Sealshot.
 
 ## Selection
 
 - **Scroll to resize your selection.** In the
   [unified overlay](/docs/guide/capture/#smart-capture-area--window), hover
-  and scroll the wheel to step the highlight outward through the regions
-  under your pointer, ending at the whole window. Scroll back and it steps
-  inward again, so overshooting costs you nothing.
-- **⌘-click to size the shot before you take it.** Hold **⌘** and click in
+  and scroll the wheel to step the highlight back and forth through the
+  regions under your pointer.
+- **⌘-click to size the area before you take it.** Hold **⌘** and click in
   the overlay and Sealshot draws a rectangle at your last capture's size,
-  with handles to resize it and an interior you can drag to reposition. **⌘**
-  and drag instead if you want to start from a size you draw yourself. Either
+  with handles to resize it and an interior you can drag to reposition. 
+
+  **⌘** and drag instead if you want to start from a size you draw yourself. Either
   way nothing is captured until you press **Return**, so you can nudge the
   edges until the size pill reads exactly what you want.
-- **Esc gets you out of anything** — the overlay, a delayed countdown, or a
+- **Esc cancels selection** — the overlay, a delayed countdown, or a
   scrolling capture mid-stitch.
 
-## Catching things that won't hold still
+## Catching things as snapshots
 
 - **Freeze the screen to catch menus.**
   [Delayed capture](/docs/guide/capture/#delayed) (**⌘⇧D**) freezes
@@ -35,31 +34,25 @@ it right the first time.
   [fullscreen picker](/docs/guide/capture/#fullscreen) (**⌘⇧F**),
   ⌘-click stitches all your monitors into one image.
 
-## Tall pages
+## Scroll Capture
 
-- **When auto-scroll can't drive the app, do it yourself.**
+- **Auto scroll can switch to manual scroll when preferred.**
   [Scrolling capture](/docs/guide/capture/#scrolling-capture) (**⌘⇧W**)
   normally scrolls for you, given Accessibility permission — but it also
-  has a manual mode where you scroll and press **Return** to finish. Worth
-  knowing before you conclude a stubborn app can't be captured.
-- **Keep sticky elements out of your selection.** Check for them before you
-  start — it's the difference between a clean tall capture and one you have
-  to edit. Sticky headers and navbars, cookie bars, floating "jump to bottom"
-  or chat buttons: anything that holds still while the page scrolls under it
-  gets baked into the stitched image, stranded in the middle of content it
-  has nothing to do with. Draw your selection just inside them — start below
-  a pinned header, stop above a pinned footer, and keep clear of any floating
-  button — and the finished page comes out clean.
+  has a manual mode where you scroll and press **Return** to finish. 
+- **Keep sticky elements out of your selection.** Sticky headers and navbars,
+  cookie bars, floating "jump to bottom" or chat buttons: anything that holds
+  still while the page scrolls under it disturbs the scroll capture. Keep
+  them out of the area you select.
 
 ## Live Capture
 
-- **It rescues the window that was buried.**
-  [Live Capture](/docs/guide/capture/#live-capture) (**⌘⇧X**) grabs every
-  on-screen window as its own layer, each one **captured in full** even
-  where another window was covering it. Take the scene, then raise the
-  window you actually needed.
-- **It's your current Space only.** Minimized windows and windows on other
-  desktops aren't included — so bring what you need into view first.
+- **Save all window content.** A
+  [Live Capture](/docs/guide/capture/#live-capture) (**⌘⇧X**) captures and
+  saves every window's full content as its own layer, even windows buried
+  behind other windows.
+- **Auto arrange windows.** Right-click and select **Auto Arrange Images**
+  to spread the windows out so you can inspect them separately.
 
 ## Two modes people forget
 
@@ -73,12 +66,7 @@ it right the first time.
 
 ## Recording
 
-- **⌘⇧V follows your pointer.** With several displays,
-  [Record screen](/docs/guide/recording/#starting-a-recording) records the
-  one your pointer is on, so put the cursor where you mean before you press
-  it.
-- **Pause from the keyboard.** **⌘⇧P** keeps the trip to the
-  [HUD](/docs/guide/recording/#while-recording) out of your recording while
-  you set up the next step.
-- **Turn the Record prompt off once you know your settings.** *Ask before
-  each recording* lives in that prompt — handy at first, friction later.
+- **Pause from the keyboard.** **⌘⇧P** can pause and resume the
+  [recording](/docs/guide/recording/).
+- **Turn the Record prompt off once you know your settings.** The
+  **Ask before each recording** toggle lives in the prompt itself.

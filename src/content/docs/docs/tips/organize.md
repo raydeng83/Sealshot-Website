@@ -1,59 +1,55 @@
 ---
 title: "Tips: Organize"
-description: Find any capture again without ever filing one — search that reads images, filters, and the safety net under deletes.
+description: Search that reads inside images, filters, collections, and the safety net under deletes.
 ---
 
-The trick to this stage is doing almost none of it. Sealshot indexes every
-capture on arrival, so findability costs you nothing — and the deliberate
-organizing is worth doing only where it earns its keep.
+Sealshot indexes every capture on arrival, so most organizing takes care of
+itself. These tips cover finding things fast and cleaning up safely.
 
-## Don't file, search
+## Search
 
 - **Search inside your screenshots.**
   [Search](/docs/guide/library/#search) reads the *text in the image* — an
   error message, an invoice number, a vendor name — not just filenames.
-- **So don't bother renaming.** A careful filename is effort spent competing
-  with something that already works better.
-- **Your query gets broader on Apple Intelligence Macs.**
+- **No need to rename.** Search reads the contents, so a capture is findable
+  without a careful filename.
+- **Broader queries on Apple Intelligence Macs.**
   [Smarter search](/docs/guide/ai/#smarter-search) expands what you typed to
-  related terms, so "invoice" also turns up "receipt".
+  related terms, so "invoice" also finds "receipt".
 - **Some tags write themselves.** Captures pick up visual tags for things
-  like QR codes and documents, so "document" is a usable search on day one.
+  like QR codes and documents.
 - **Your tags stay yours.** Generated Smart Keywords are read-only and
   refresh over time; the [tags you
   add](/docs/guide/library/#titles-tags-and-the-info-panel) are never
   touched. Search matches both.
 
-## Narrowing a big library
+## Filters and preview
 
-- **Space bar = instant preview.**
+- **Space bar for an instant preview.**
   [Quick Look](/docs/guide/library/#quick-look) any capture without opening
   the editor; ⌘-scroll resizes the preview.
-- **Filter by year, month, or media type.** The
+- **Filter by tag, date, or media type.** The
   [sidebar filters](/docs/guide/library/#sections-and-filters) narrow by tag
-  or date, and the media filter shows images only or videos only — useful
-  when you know you're looking for a recording.
-- **Recents is a 7-day window.** For "where did that just go", it beats
+  or by year and month, and the media filter shows images only or videos
+  only.
+- **Recents shows the last 7 days.** For "where did that just go", it beats
   searching.
 
-## Organize only what earns it
+## Collections and favorites
 
 - **Star what you return to.** Favorites sit pinned at the top of the
   [collections](/docs/guide/library/#collections-and-favorites) list.
-- **A capture can live in several collections.** You're not sorting into
-  folders, so you never have to pick the one right home for something that
-  belongs in two projects.
-- **Make a collection when a project appears**, not in advance. Select a few
-  captures and use **New Collection…** from the right-click menu.
+- **A capture can live in several collections.** You never have to pick the
+  one right home for something that belongs to two projects.
+- **Create a collection from a selection.** Select a few captures and use
+  **New Collection…** from the right-click menu.
 
-## The safety net
+## Trash and undo
 
-- **Deleting is undoable.** Both deleting and restoring are ⌘Z / ⇧⌘Z, and
-  that history survives relaunching the app — see [delete, restore, and
+- **Deleting is undoable.** Deleting and restoring are both ⌘Z / ⌘⇧Z, and
+  the history survives relaunching the app — see [delete, restore, and
   undo](/docs/guide/library/#delete-restore-and-undo).
-- **The Trash gives you a grace period, and you set its length.** Trashed
-  captures purge automatically after a number of days you choose in
-  **Settings → General → Trash** (7 by default) — turn it up if you'd rather
-  have longer, or empty it yourself from the Trash header.
-- **"Delete Forever" is the one that means it.** That's the only action here
-  undo can't reach.
+- **The Trash has a grace period you control.** Trashed captures purge after
+  a number of days you set in **Settings → General → Trash** (7 by default),
+  or empty it yourself from the Trash header.
+- **Delete Forever means it.** That's the one action here undo can't reach.
