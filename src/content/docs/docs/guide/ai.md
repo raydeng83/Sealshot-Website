@@ -1,6 +1,6 @@
 ---
 title: On-device AI
-description: Automatic titles, summaries, and keywords, plus structured-data extraction — all on your Mac.
+description: Automatic titles, summaries, and keywords, Live Text, Find in Image, and structured-data extraction — all on your Mac.
 ---
 
 Sealshot uses on-device AI to make captures self-describing and their
@@ -21,6 +21,30 @@ Smart Keywords are kept separate from your own
 [tags](/docs/guide/library/#titles-tags-and-the-info-panel): generated ones
 are read-only and refresh over time; your tags are always yours. Search
 matches both.
+
+## OCR Live Text
+
+Select and copy text straight out of a screenshot — error messages, code,
+addresses — with automatic language detection, so non-Latin scripts come out
+right too. **QR codes and barcodes** are recognized as well: click one to
+open its URL or copy its payload. Pick the **Live Text** tool at the
+trailing end of the editor toolbar; recognition runs entirely on your Mac.
+
+![Selecting recognized text inside a screenshot](/manual/ocr-live-text.png)
+*Select and copy text directly from the image.*
+
+## Find in Image
+
+Search for text *inside* the open capture. Press **⌘F** (or click the
+magnifying glass on the editor toolbar), type, and every match is
+highlighted on the canvas — **Next** / **Previous** (or **Return**) step
+through them. If you've set a
+[focus area](/docs/guide/editor/#crop-and-resize), you can limit the search
+to it. **Esc** leaves search mode.
+
+Useful when a long scrolling capture or a dense screenshot holds one line
+you need — the same on-device text recognition that powers Live Text does
+the finding.
 
 ## Extract Structured Data
 

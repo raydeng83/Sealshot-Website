@@ -1,6 +1,6 @@
 ---
 title: The editor
-description: Annotations, blur, crop and resize, enhance, background removal, OCR text, Find in Image, and export.
+description: Annotations, blur, crop and resize, enhance, background removal, and export.
 ---
 
 Editor is the place where you can view and modify captured images, view recorded videos and apply AI features.
@@ -10,19 +10,25 @@ Editor is the place where you can view and modify captured images, view recorded
 
 ## Annotation tools
 
-Pick a tool from the toolbar, then draw on the canvas. Tools include:
+Pick a tool from the toolbar, then draw on the canvas. Left to right:
 
-- **Arrow** — straight (**Line Arrow**) or free-drawn (**Free Arrow**), with
-  adjustable end-caps and solid/dashed/dotted styles.
-- **Line**, **Rectangle**, and **Ellipse**.
+- **Select** — select, move, and transform objects.
+- **Hand** — pan around a zoomed canvas.
+- **Crop** — see *Crop and resize* below.
 - **Pen** — smoothed freehand strokes.
+- **Line**.
+- **Arrow** — one grouped pill holding **Line Arrow** (straight) and
+  **Free Arrow** (drawn by hand), with adjustable end-caps and
+  solid/dashed/dotted styles.
+- **Shapes** — one grouped pill holding **Rectangle** and **Ellipse**.
 - **Text** — click to type; a full font picker with rich styling, a weight
   slider, and per-word colour and size. Typography is remembered per tool.
-- **Numbered badges** — auto-incrementing step markers.
+- **Step** — auto-incrementing numbered badges.
 - **Blur** — see below.
-- **Live Text** — select and copy recognized text (see OCR below).
-- **Crop** — see *Crop and resize* below.
-- **Hand** — pan around a zoomed canvas.
+
+The trailing **Live Text** button and the toolbar's **Find in Image**
+search are text-recognition features — see
+[On-device AI](/docs/guide/ai/#ocr-live-text).
 
 Each tool has its own colour, opacity, and stroke controls in the properties
 panel — and each remembers its last-used style. An **Outline** colour chip
@@ -144,29 +150,6 @@ like any other capture.
   [focus area](#crop-and-resize) if you've set one.
 - **Right-drag pans** a zoomed image from any tool (a plain right-click
   still opens the context menu); the **Hand** tool pans too.
-
-## OCR Live Text
-
-Select and copy text straight out of a screenshot — error messages, code,
-addresses — with automatic language detection, so non-Latin scripts come out
-right too. **QR codes and barcodes** are recognized as well: click one to
-open its URL or copy its payload. Text recognition runs entirely on your
-Mac.
-
-![Selecting recognized text inside a screenshot](/manual/ocr-live-text.png)
-*Select and copy text directly from the image.*
-
-## Find in Image
-
-Search for text *inside* the open capture. Press **⌘F** (or click the
-magnifying glass on the toolbar), type, and every match is highlighted on
-the canvas — **Next** / **Previous** (or **Return**) step through them. If
-you've set a [focus area](#crop-and-resize), you can limit the search to
-it. **Esc** leaves search mode.
-
-Useful when a long scrolling capture or a dense screenshot holds one line
-you need — the same on-device text recognition that powers Live Text does
-the finding.
 
 ## The Info panel
 

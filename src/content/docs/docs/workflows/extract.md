@@ -28,7 +28,7 @@ This workflow turns pixels back into text you can paste.
 
 3. **Deliver** — copy the extracted text into your spreadsheet, ledger, or
    expense tool. For a plain text grab rather than structured fields,
-   [OCR Live Text](/docs/guide/editor/#ocr-live-text) lets you select
+   [OCR Live Text](/docs/guide/ai/#ocr-live-text) lets you select
    straight off the image.
 
 ## Combine with

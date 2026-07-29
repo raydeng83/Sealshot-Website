@@ -67,7 +67,7 @@ This section includes tips and tricks for annotation, image manipulation, image 
   [Extract Data](/docs/guide/ai/#extract-structured-data) pulls text data
   out and organizes it under different types.
 - **Select text straight off the image.** [OCR Live
-  Text](/docs/guide/editor/#ocr-live-text) recognizes and highlights text in
+  Text](/docs/guide/ai/#ocr-live-text) recognizes and highlights text in
   the image, so you can select and copy it directly.
 - **Scan for sensitive information automatically.** Turn on auto-scan in
   [Settings → On-Device AI](/docs/guide/redaction/#running-a-scan) and every
