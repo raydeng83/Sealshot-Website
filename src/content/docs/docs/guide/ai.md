@@ -39,8 +39,8 @@ Search for text *inside* the open capture. Press **⌘F** (or click the
 magnifying glass on the editor toolbar), type, and every match is
 highlighted on the canvas — **Next** / **Previous** (or **Return**) step
 through them. If you've set a
-[focus area](/docs/guide/editor/#crop-and-resize), you can limit the search
-to it. **Esc** leaves search mode.
+[focus area](/docs/guide/editor/#focus-area), you can limit the search to
+it. **Esc** leaves search mode.
 
 Useful when a long scrolling capture or a dense screenshot holds one line
 you need — the same on-device text recognition that powers Live Text does

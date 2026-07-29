@@ -26,15 +26,16 @@ Pick a tool from the toolbar, then draw on the canvas. Left to right:
 - **Step** — auto-incrementing numbered badges.
 - **Blur** — see below.
 
-The trailing **Live Text** button and the toolbar's **Find in Image**
-search are text-recognition features — see
-[On-device AI](/docs/guide/ai/#ocr-live-text).
 
 Each tool has its own colour, opacity, and stroke controls in the properties
-panel — and each remembers its last-used style. An **Outline** colour chip
+panel — and each remembers its last-used style. 
+
+An **Outline** colour chip
 adds a contrasting casing around pen, line, arrow, shape, step, and text
 annotations (with its own width control) so marks stay readable on any
-background. Annotations can carry a **drop shadow** (toggle it on, then aim
+background.  
+  
+Annotations can carry a **drop shadow** (toggle it on, then aim
 it with the position pad or the eight direction presets). Annotations live
 on their own layer above the image, reorderable (send forward / send
 backward) from the properties panel.
@@ -77,21 +78,39 @@ Instead of redacting by hand, run [Smart Redaction](/docs/guide/redaction/)
 more, and proposes redactions, all on device.
 :::
 
+## Focus area
+
+From **any tool**, drag the viewfinder brackets at the image's corners and
+edges inward to mark a **focus area** — the part of the capture that
+matters. It's non-destructive: the document doesn't change, and the
+brackets stay adjustable.
+
+- **Exports honor it.** Export to Image and dragging a capture out of the
+  recent strip produce **just the focus area** — a crop that exists only in
+  the export, reversible any time by moving the brackets back out.
+- **The Focus button** in the zoom cluster zooms straight to it.
+- **[Find in Image](/docs/guide/ai/#find-in-image)** can limit its search
+  to it.
+- The right-click menu can make it permanent with **Crop to Focus Area**,
+  or clear it with **Reset Focus Area**.
+
+![Focus viewfinder brackets over an image](/manual/focus-crop.png)
+*Drag the brackets inward to set a focus area.*
+
 ## Crop and resize
 
-- **Focus and crop** — drag the viewfinder brackets to crop or set a
-  **focus** region. The original is preserved, so you can re-crop later.
-  Once the brackets mark something smaller than the whole image, the
-  right-click menu offers **Crop to Focus Area** and **Reset Focus Area**.
-- **Cut or copy a region** — the crop tool can lift a region out (⌘X leaves
-  a transparent hole) or copy it (⌘C) for pasting elsewhere, with an
-  aspect-ratio lock when you need exact proportions.
+- **Crop** — pick the **Crop** tool and drag a region. Adjust it (with an
+  aspect-ratio lock when you need exact proportions), then press
+  **Return** to crop or **Esc** to abandon — the on-canvas hint spells it
+  out. Cropping trims the document and clips annotations to the new
+  bounds.
+- **Cut, copy, or lift a region** — while a crop selection is pending,
+  **⌘C** copies the region, **⌘X** cuts it out leaving a transparent hole,
+  and **⌘↩** lifts it out as its own movable object over the hole — one
+  undo step reverts both.
 - **Resize** — set exact document dimensions from the Resize popover, with
   units and a ratio lock.
 - **Revert to Original Image** returns to the untouched capture at any time.
-
-![Focus/crop viewfinder brackets over an image](/manual/focus-crop.png)
-*Drag the brackets to crop or set a focus region.*
 
 ## Enhance Clarity and Remove Background
 
@@ -147,7 +166,7 @@ like any other capture.
   zoom field.
 - **Fit**, **Fit width**, **Fit height**, and **Actual size** are one click
   away in the zoom cluster, and the **Focus** button zooms straight to the
-  [focus area](#crop-and-resize) if you've set one.
+  [focus area](#focus-area) if you've set one.
 - **Right-drag pans** a zoomed image from any tool (a plain right-click
   still opens the context menu); the **Hand** tool pans too.
 

@@ -48,7 +48,7 @@ on-device OCR). It does not detect faces or other imagery — use the
 
 - **On demand** — click the **Smart Redact** button in the editor toolbar.
   If nothing sensitive is found, the button briefly shows *Nothing found*.
-  When a [focus region](/docs/guide/editor/#crop-and-resize) is set, the
+  When a [focus area](/docs/guide/editor/#focus-area) is set, the
   scan covers just that region.
 - **Automatically** — turn on **Scan captures automatically** in
   **Settings → On-Device AI → Smart Redaction** (off by default) and every
