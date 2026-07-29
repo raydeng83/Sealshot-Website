@@ -5,9 +5,9 @@ description: A tour of Sealshot's settings — general, capture, recording, on-d
 
 Open Settings from the menu-bar icon. Settings are grouped into tabs down
 the left side: **General**, **Capture**, **Recording**, **On-Device AI**,
-**Shortcuts**, **Permissions**, **Privacy & Security**, and **About**. Most
-tabs have a **Reset** for their own options, and General adds a **Reset
-All**.
+**Shortcuts**, **Permissions**, **License** *(direct edition only)*,
+**Privacy & Security**, and **About**. Most tabs have a **Reset** for their
+own options, and General adds a **Reset All**.
 
 ![Settings → General](/manual/settings-general.png)
 *The General tab of Settings.*
@@ -19,7 +19,9 @@ All**.
   `~/Pictures/Sealshot`).
 - **Trash** — how many days trashed captures are kept before being purged
   (1–365; default **7**).
-- **Startup** — launch Sealshot at login, and show the welcome tour cards.
+- **Startup** — launch Sealshot at login, and show the welcome tour cards;
+  a **Show Now** button replays the tour immediately without changing the
+  startup setting.
 - **Updates** — check for updates automatically (once a day). *(Direct build
   only.)*
 
@@ -66,13 +68,23 @@ button to the right System Settings pane.
 ![Settings → Permissions](/manual/settings-permissions.png)
 *Check and grant permissions from one place.*
 
+## License
+
+*(Direct edition only — the App Store build is licensed through the App
+Store and has no License tab.)* Your license and its update window:
+activate with **Open License File…**, or **Remove License…**. When you're
+running a version released outside your license's update window, a
+**Renew** card appears here.
+
 ## Privacy & Security
 
 **Enhanced security** (encryption + Touch ID lock), your **recovery code**
 (view or generate a new one), **Replace encryption key**, and **Auto-lock
-when idle** (Off / 1 / 5 / 15 minutes). While Enhanced Security is on, this
-tab itself requires Touch ID or your password to open. See
-[Enhanced Security](/docs/guide/security/).
+when idle** (Off / 1 / 5 / 15 minutes). If you ever reset encryption after
+losing your recovery code, a **Locked Archive** row appears with a
+**Restore…** button for bringing those captures back once the code turns
+up. While Enhanced Security is on, this tab itself requires Touch ID or
+your password to open. See [Enhanced Security](/docs/guide/security/).
 
 ## About
 

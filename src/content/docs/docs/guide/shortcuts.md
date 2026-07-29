@@ -64,11 +64,16 @@ action.
 
 ## In the editor
 
-| Action | Key |
+| Action | Key / gesture |
 | --- | --- |
 | Undo / Redo | ⌘Z / ⇧⌘Z |
 | Copy | ⌘C |
+| Find in Image | ⌘F |
+| Zoom in / out / actual size | ⌘+ / ⌘− / ⌘0 |
 | Zoom toward cursor | ⌘-scroll |
+| Pan a zoomed image | right-drag (or the Hand tool) |
+| Commit a pending crop / cancel it | Return / Esc |
+| Lift the crop region out as an object | ⌘↩ |
 
 Undo and redo also cover resizing, enhancing, imports, metadata edits, and
 [deleting and restoring captures](/docs/guide/library/#delete-restore-and-undo),

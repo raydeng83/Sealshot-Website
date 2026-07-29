@@ -21,7 +21,15 @@ the capture's own intelligence: the recognized **OCR text** (which powers
 [library search](/docs/guide/library/#search)), the automatic **summary,
 Smart Keywords, and your tags**, capture provenance (which app, when), and
 cached [Extract Structured Data](/docs/guide/ai/#extract-structured-data)
-results. Move a `.seal` to another Mac and all of it comes along.
+results.
+
+The editing state rides along too: any
+[inserted images](/docs/guide/editor/#insert-images), the
+[enhanced](/docs/guide/ai/#enhance-clarity-and-remove-background) and
+background-removed alternates of the base image (with which one you were
+showing), crop and [focus area](/docs/guide/editor/#focus-area), and a
+ready-made composite and thumbnail so previews don't have to re-render.
+Move a `.seal` to another Mac and all of it comes along.
 
 With [Enhanced Security](/docs/guide/security/) on, the package contents
 are encrypted at rest.
