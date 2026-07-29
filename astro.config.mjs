@@ -15,6 +15,8 @@ export default defineConfig({
       components: {
         ThemeProvider: './src/components/starlight/ThemeProvider.astro',
         ThemeSelect: './src/components/starlight/ThemeSelect.astro',
+        // Header brand: icon + "Sealshot" → main site, "Documentation" → /docs/.
+        SiteTitle: './src/components/starlight/SiteTitle.astro',
       },
       sidebar: [
         {
