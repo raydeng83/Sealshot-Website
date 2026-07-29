@@ -5,10 +5,17 @@ export default defineConfig({
   site: 'https://seal-shot.com',
   integrations: [
     starlight({
-      title: 'Sealshot Docs',
+      title: 'Sealshot',
       logo: { src: './src/assets/icon.png', alt: 'Sealshot' },
       favicon: '/favicon.png',
       customCss: ['./src/styles/starlight.css'],
+      // Docs are light-only for now; both overrides together remove the
+      // theme picker and pin data-theme. Delete both lines to restore
+      // light/dark switching.
+      components: {
+        ThemeProvider: './src/components/starlight/ThemeProvider.astro',
+        ThemeSelect: './src/components/starlight/ThemeSelect.astro',
+      },
       sidebar: [
         {
           label: 'Guide',
@@ -57,7 +64,6 @@ export default defineConfig({
           autogenerate: { directory: 'docs/changelog' },
         },
         { label: 'Support & feedback', link: '/support/' },
-        { label: 'seal-shot.com', link: '/' },
       ],
     }),
   ],

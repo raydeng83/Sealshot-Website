@@ -1,0 +1,12 @@
+---
+/**
+ * Starlight component override: the docs are light-only for now, so instead
+ * of reading localStorage / prefers-color-scheme, pin the theme. Inlined
+ * (like the original) to avoid a flash before the script runs. Restore the
+ * default by removing this override from astro.config.mjs.
+ */
+---
+
+<script is:inline>
+	document.documentElement.dataset.theme = 'light';
+</script>
