@@ -48,12 +48,11 @@ the finding.
 
 ## Extract Structured Data
 
-The **Extract Structured Data** pill in the editor toolbar (also in the
-canvas right-click menu) reads the capture and pulls out its *structure*:
-tables, form fields, contacts, URLs, emails, phone numbers, addresses,
-amounts, dates — even stack traces.
+The **Extract Data** pill in the editor toolbar reads the capture and
+pulls out its *structure*: tables, form fields, contacts, URLs, emails,
+phone numbers, addresses, amounts, dates — even stack traces.
 
-Results open in an **Extracted Data** window as cleanly formatted text —
+Results open in an **Extract Structured Data** window as cleanly formatted text —
 tables become real Markdown tables — with **Copy**, **Export…** (saved
 under the capture's name), and **Re-extract** buttons. The result is cached
 in the capture's `.seal` package, so it's instant next time.
@@ -98,7 +97,7 @@ but the AI extras scale with your hardware:
 
 | Feature | Intel | Apple Silicon | Apple Silicon + macOS 26 (Apple Intelligence) |
 | --- | --- | --- | --- |
-| OCR, Live Text, full-text search | ✓ | ✓ | ✓ |
+| OCR, Live Text, Find in Image, full-text search | ✓ | ✓ | ✓ |
 | Smart Redaction (built-in detectors) | ✓ | ✓ | ✓ |
 | Extract Structured Data | ✓ | ✓ | ✓ |
 | Titles & keywords | built-in fallback | built-in fallback | Apple Intelligence |
