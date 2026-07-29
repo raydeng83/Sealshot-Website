@@ -36,13 +36,6 @@ them in **Settings → Shortcuts**, which groups them the same way.
 | New from clipboard | ⌘⇧Q |
 | Lock now | ⌘⇧L |
 
-:::note[Changed in 0.7.0]
-**Scrolling capture moved from ⌘⇧L to ⌘⇧W** (⌘⇧L now locks the library).
-If you had customized your shortcuts, your bindings carry over. The
-recorder also rejects a combo that's already assigned to another Sealshot
-action.
-:::
-
 ## During a capture
 
 | Action | Key |
