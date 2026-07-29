@@ -38,7 +38,7 @@ On-Device AI**. Decline it and the built-in detectors keep working.
 
 ## Where are my captures stored?
 
-In the folder set under **Settings → General → Storage** (default
+In the folder set under **Settings → General → Save location** (default
 `~/Pictures/Sealshot`), as [`.seal` packages](/docs/guide/seal-format/) —
 captures and recordings alike. With
 [Enhanced Security](/docs/guide/security/) on, they're encrypted at rest.
@@ -49,6 +49,17 @@ Not yet — today Sealshot ships as a signed, notarized direct download with
 automatic updates, and a Mac App Store version is planned. A couple of
 features are direct-build-only (auto-scroll for scrolling capture, and the
 in-app update checker).
+
+## How is Sealshot licensed? Is there a trial?
+
+The direct edition starts with a **14-day free trial** — no account
+required. [Buying Sealshot](/buy/) issues a **license file** you activate
+in **Settings → License**; a license covers all versions released during
+its update window, and you can renew from the same tab when that window
+ends. If the trial ends or you're running a version outside your license's
+window, **new captures and recordings pause — but everything you've already
+captured stays fully viewable, editable, and exportable.** Your data is
+never held hostage.
 
 ## Can Sealshot record video?
 
@@ -102,9 +113,16 @@ full editable captures, safely.
 
 If you can still unlock (Touch ID or password), open **Settings → Privacy
 & Security → Recovery code** and **View…** it again or **Generate New…**
-to replace it. If you've lost your Mac's unlock methods *and* the recovery
-key, the encrypted library cannot be recovered — there's no account and no
-cloud copy, by design.
+to replace it — the recovery screen also offers **Save Kit…** and
+**Print…** so a copy can live outside this Mac, and Sealshot occasionally
+asks you to confirm you still have the code.
+
+If you've lost your Mac's unlock methods *and* the recovery code, the
+encrypted captures cannot be decrypted — there's no account and no cloud
+copy, by design. The lock screen's **"I can't unlock…"** option lets you
+keep using the app: it moves the encrypted captures to a read-only
+**Locked Archive** (nothing is deleted) and turns encryption off. Find the
+code later and **Restore…** brings them back.
 
 ## What happens to captures I delete?
 
@@ -119,8 +137,8 @@ permanent.
 Most often another app already owns that key combo — global shortcuts are
 first-come, first-served on macOS. Rebind the command in **Settings →
 Shortcuts** (Sealshot itself won't let two of its own commands share a
-combo). Also check the [defaults](/docs/guide/shortcuts/) — scrolling
-capture moved to **⌘⇧W** in 0.7.0.
+combo). Also check the [defaults](/docs/guide/shortcuts/) in case the
+binding isn't what you remember.
 
 ## Do my edits and undo history survive a relaunch?
 
