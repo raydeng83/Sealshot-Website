@@ -1,6 +1,6 @@
 ---
 title: Settings
-description: A tour of Sealshot's settings — general, capture, recording, on-device AI, shortcuts, permissions, and security.
+description: Every Sealshot setting explained — general, capture, recording, on-device AI, shortcuts, permissions, license, and security.
 ---
 
 Open Settings from the menu-bar icon. Settings are grouped into tabs down
@@ -14,39 +14,74 @@ own options, and General adds a **Reset All**.
 
 ## General
 
-- **Appearance** — match the System theme, or force Light or Dark.
-- **Storage** — the save location for captures *and* recordings (default
-  `~/Pictures/Sealshot`).
-- **Trash** — how many days trashed captures are kept before being purged
-  (1–365; default **7**).
-- **Startup** — launch Sealshot at login, and show the welcome tour cards;
-  a **Show Now** button replays the tour immediately without changing the
-  startup setting.
-- **Updates** — check for updates automatically (once a day). *(Direct build
-  only.)*
+- **Theme** — match the System theme, or force Light or Dark.
+- **Save location** — where captures *and* recordings are saved (default
+  `~/Pictures/Sealshot`). Changing it switches libraries: the editor and
+  Library show the new folder's captures, and your existing captures stay
+  where they were.
+- **Auto-delete trashed captures** — trashed captures are purged after
+  this many days (1–365; default **7**).
+- **Launch at login** — open Sealshot automatically when you log in.
+- **Show welcome tour cards** — show the first-launch tour at startup; the
+  **Show Now** button replays it immediately without changing the setting.
+- **Automatically check for updates** — once a day. Update checks are
+  Sealshot's only network activity. *(Direct edition only.)*
 
 ## Capture
 
-- **Capture Defaults** — the default destination (**Clipboard**, **File**,
-  or **Both** — default Both), the **filename format**, and **Include title
-  & app in filename**.
-- **Scrolling Capture** — the **Auto-scroll** toggle (on by default; needs
-  Accessibility permission). With it off, you scroll yourself and press
-  Return to finish. *(Direct build only.)*
+- **Default destination** — where a finished capture goes: **Clipboard**,
+  **File**, or **Both** (default Both). Clipboard-only skips the editor
+  entirely.
+- **Filename format** — the pattern for saved files, with a live example;
+  the app and window name are added automatically.
+- **Include title & app in filename** — name captures "App Title date"
+  instead of date-only. The filename then reveals the capture's title and
+  source app — turn it off if that's sensitive. Enabling Enhanced Security
+  turns it off by default.
+- **Auto-scroll** — during a [scrolling
+  capture](/docs/guide/capture/#scrolling-capture), Sealshot scrolls the
+  page for you and stops at the end; requires Accessibility permission.
+  With it off, you scroll yourself and press **Return** to finish.
+  *(Direct edition only.)*
 
 ## Recording
 
-Codec (**HEVC (.mov)** or **H.264 (.mp4)**), frame rate (30/60), system
-audio, microphone, **Reduce microphone noise**, cursor visibility, and the
-**Ask before each recording** prompt. See
+- **Format** — the container and codec for screen recordings: **HEVC
+  (.mov)** or **H.264 (.mp4)**.
+- **Frame rate** — 30 or 60 frames per second.
+- **Capture system audio** — record the audio your Mac plays.
+- **Capture microphone** — mix your voice into the recording; requires
+  Microphone permission.
+- **Reduce microphone noise** — suppress background noise and level your
+  voice while recording, processed on your Mac.
+- **Show cursor** — include the pointer in recordings.
+- **Ask before each recording** — show a confirmation when a recording
+  starts, where you can adjust audio, cursor, and the countdown for just
+  that recording.
+
+A status row notes that when [Enhanced
+Security](/docs/guide/security/) is on, recordings are encrypted at rest
+and play back only after unlock. See
 [Screen recording](/docs/guide/recording/).
 
 ## On-Device AI
 
-The **Use on-device AI** master switch, plus the **Smart Redaction**
-options: automatic scanning, the optional ~400 MB enhanced redaction model,
-and **Thorough scan**. See [On-device AI](/docs/guide/ai/) and
-[Smart Redaction](/docs/guide/redaction/).
+- **Use on-device AI** — the master switch. Auto-generates titles,
+  keywords, and summaries, and helps Smart Redaction catch sensitive info
+  the rules miss — Apple Intelligence on supported Macs, a built-in
+  fallback elsewhere, all on your Mac. Tags you add yourself stay editable
+  either way. A status row below explains whether the Apple Intelligence
+  half is running on this Mac, and why not if it isn't.
+- **Scan captures automatically** — check every image for emails, phone
+  numbers, credit cards, and API keys the moment it opens, and propose
+  redactions.
+- **Thorough scan** — also use Apple Intelligence to catch sensitive items
+  the detectors miss; slower. Requires macOS 26 and Apple silicon, and
+  only appears while the master switch is on.
+- The optional **~400 MB enhanced redaction model** downloads from here
+  too — see [Smart Redaction](/docs/guide/redaction/).
+
+See [On-device AI](/docs/guide/ai/) for what each feature does.
 
 ## Shortcuts
 
@@ -62,8 +97,8 @@ combos already assigned to another action are rejected. See
 
 A live status list for the permissions Sealshot can use — **Screen
 Recording** (required to capture), **Microphone** (only if you record your
-voice), and **Accessibility** (auto-scroll, direct build only) — each with a
-button to the right System Settings pane.
+voice), and **Accessibility** (auto-scroll, direct edition only) — each with
+a button to the right System Settings pane.
 
 ![Settings → Permissions](/manual/settings-permissions.png)
 *Check and grant permissions from one place.*
@@ -72,19 +107,31 @@ button to the right System Settings pane.
 
 *(Direct edition only — the App Store build is licensed through the App
 Store and has no License tab.)* Your license and its update window:
-activate with **Open License File…**, or **Remove License…**. When you're
-running a version released outside your license's update window, a
-**Renew** card appears here.
+
+- **Open License File…** activates a license you've bought; **Buy
+  Sealshot…** takes you to the store if you don't have one yet.
+- **Remove License…** deactivates this Mac.
+- When you're running a version released outside your license's update
+  window, a **Renew** card appears — renewing issues a new license file,
+  which you open here to unlock.
 
 ## Privacy & Security
 
-**Enhanced security** (encryption + Touch ID lock), your **recovery code**
-(view or generate a new one), **Replace encryption key**, and **Auto-lock
-when idle** (Off / 1 / 5 / 15 minutes). If you ever reset encryption after
-losing your recovery code, a **Locked Archive** row appears with a
-**Restore…** button for bringing those captures back once the code turns
-up. While Enhanced Security is on, this tab itself requires Touch ID or
-your password to open. See [Enhanced Security](/docs/guide/security/).
+- **Enhanced security** — encrypts everything Sealshot stores on this Mac
+  and locks viewing behind Touch ID.
+- **Recovery code** — **View…** your recovery code, or **Generate New…**
+  (the old one stops working).
+- **Replace encryption key** — rotate to a brand-new key if you think the
+  old key or recovery code was exposed. Your captures stay readable; the
+  old key and recovery code stop working.
+- **Auto-lock when idle** — lock automatically after a period of
+  inactivity: Off, 1, 5, or 15 minutes.
+- **Locked Archive** — appears only if you ever reset encryption after
+  losing your recovery code; its **Restore…** button brings those captures
+  back once the code turns up.
+
+While Enhanced Security is on, this tab itself requires Touch ID or your
+password to open. See [Enhanced Security](/docs/guide/security/).
 
 ## About
 
@@ -92,7 +139,8 @@ Your version, and a **Send Feedback…** button that opens a pre-filled email
 to the developer. See [Support & feedback](/support/).
 
 :::note[About network activity]
-Sealshot's only network activity is the daily update check (direct build)
-and the **optional** enhanced-redaction model download — which happens only
-after you approve it. Your captures and their data never leave your Mac.
+Sealshot's only network activity is the daily update check (direct
+edition) and the **optional** enhanced-redaction model download — which
+happens only after you approve it. Your captures and their data never
+leave your Mac.
 :::
