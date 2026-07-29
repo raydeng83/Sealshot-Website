@@ -1,6 +1,6 @@
 ---
 title: On-device AI
-description: Automatic titles, summaries, and keywords, Live Text, Find in Image, and structured-data extraction — all on your Mac.
+description: Automatic titles, summaries, and keywords, Live Text, Find in Image, structured-data extraction, and image enhancement — all on your Mac.
 ---
 
 Sealshot uses on-device AI to make captures self-describing and their
@@ -64,6 +64,14 @@ rather than pattern.
 
 ![The Extracted Data window](/manual/extract-data.png)
 *A screenshot's tables and fields, extracted into clean, copyable text.*
+
+## Enhance Clarity and Remove Background
+
+- **Enhance Clarity** upscales and sharpens a capture on device, with
+  tunable controls. Toggle between enhanced and original any time — the
+  original is always kept.
+- **Remove Background** cuts the subject out on device, leaving a
+  transparent canvas or a background fill of your choice. Fully undoable.
 
 ## Smarter search
 

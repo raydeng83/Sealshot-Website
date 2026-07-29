@@ -51,7 +51,7 @@ This section includes tips and tricks for annotation, image manipulation, image 
   back to its original pixels in one step.
 - **Enhance Clarity and Remove Background.** Sharpen a low-resolution grab,
   or lift a subject off its background — both under [Enhance Clarity and
-  Remove Background](/docs/guide/editor/#enhance-clarity-and-remove-background).
+  Remove Background](/docs/guide/ai/#enhance-clarity-and-remove-background).
 - **Insert images.** Drop a logo, a callout, or a second screenshot onto the
   canvas rather than compositing somewhere else.
 - **Crop stays adjustable.** [Crop and

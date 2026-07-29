@@ -1,6 +1,6 @@
 ---
 title: The editor
-description: Annotations, blur, crop and resize, enhance, background removal, and export.
+description: Annotations, blur, focus area, crop and resize, and export.
 ---
 
 Editor is the place where you can view and modify captured images, view recorded videos and apply AI features.
@@ -80,15 +80,18 @@ more, and proposes redactions, all on device.
 
 ## Focus area
 
-From **any tool**, drag the viewfinder brackets at the image's corners and
-edges inward to mark a **focus area** — the part of the capture that
-matters. It's non-destructive: the document doesn't change, and the
+The focus area adds another layer on top of the captured image. It helps to provide
+finer level control on the image. By default, it covers the entire image. 
+Drag the viewfinder brackets at the image's corners and
+edges inward to adjust its size. Note that it's non-destructive: the document doesn't change, and the
 brackets stay adjustable.
 
 - **Exports honor it.** Export to Image and dragging a capture out of the
   recent strip produce **just the focus area** — a crop that exists only in
   the export, reversible any time by moving the brackets back out.
 - **The Focus button** in the zoom cluster zooms straight to it.
+- **Right mouse button pans** the image around the adjusted focus area. Note panning works
+on the image, not the focus brackets
 - **[Find in Image](/docs/guide/ai/#find-in-image)** can limit its search
   to it.
 - The right-click menu can make it permanent with **Crop to Focus Area**,
@@ -111,14 +114,6 @@ brackets stay adjustable.
 - **Resize** — set exact document dimensions from the Resize popover, with
   units and a ratio lock.
 - **Revert to Original Image** returns to the untouched capture at any time.
-
-## Enhance Clarity and Remove Background
-
-- **Enhance Clarity** upscales and sharpens a capture on device, with
-  tunable controls. Toggle between enhanced and original any time — the
-  original is always kept.
-- **Remove Background** cuts the subject out on device, leaving a
-  transparent canvas or a background fill of your choice. Fully undoable.
 
 ## Insert images
 
