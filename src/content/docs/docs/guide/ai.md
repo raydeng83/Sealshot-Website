@@ -72,7 +72,7 @@ rather than pattern.
 - **Remove Background** cuts the subject out on device, leaving a
   transparent canvas or a background fill of your choice. Fully undoable.
 
-## Smarter search
+## Smart search
 
 On Apple Intelligence Macs, library search quietly expands your query with
 related terms — searching "invoice" can also surface captures matching
@@ -102,7 +102,7 @@ but the AI extras scale with your hardware:
 | Extract Structured Data | ✓ | ✓ | ✓ |
 | Titles & keywords | built-in fallback | built-in fallback | Apple Intelligence |
 | [Enhanced redaction model](/docs/guide/redaction/#the-enhanced-on-device-model) | — | ✓ (optional download) | ✓ (optional download) |
-| Generated summaries, smarter search, Thorough scan | — | — | ✓ |
+| Generated summaries, Smart search, Thorough scan | — | — | ✓ |
 
 On an **Intel Mac**, everything core works — capture, recording, the
 editor, OCR, search, rule-based redaction, and structured extraction — and

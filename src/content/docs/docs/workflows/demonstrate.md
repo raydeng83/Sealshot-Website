@@ -33,7 +33,7 @@ wander into the take.
    Paused status the whole time. Stop, and the recording lands in your
    [Library](/docs/guide/library/) as a video `.seal` that plays right in
    the editor — press **Space** in the Library for a
-   [quick look](/docs/guide/library/#quick-look).
+   [quick look](/docs/guide/library/#preview).
 
    ![The Record prompt](/manual/record-prompt.png)
 

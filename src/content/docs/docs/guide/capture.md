@@ -56,7 +56,7 @@ during the countdown to cancel.
 
 ## Scrolling capture
 
-**Default: ⌘⇧W** *(changed from ⌘⇧L in 0.7.0)*. Capture content taller than
+**Default: ⌘⇧W**. Capture content taller than
 the screen — long pages, chat threads, documents. Drag to select the scroll
 viewport; Sealshot scrolls the content and stitches the frames into a single
 seamless image.
@@ -76,18 +76,15 @@ Press **Esc** at any time to cancel.
 Capture grabs *every* on-screen window as its own layer — plus each
 display's wallpaper as the backdrop — and opens them in the
 [editor](/docs/guide/editor/#live-capture-scenes) as a stack of movable
-objects. Every window is captured **in full**, even ones buried behind
-others at the time, so you can raise a hidden window, rearrange the desktop,
-remove what you don't want, and annotate over the result.
+objects. 
 
-- **All windows, in full.** Nothing is cut off by whatever was on top —
-  each window is captured completely and sits on its own layer.
+- **All windows.** Nothing is cut off by whatever was on top —
+  each window is captured and sits on its own layer.
 - **Multi-display.** On one display it captures immediately. With several, a
-  picker opens — click a display to capture its windows and wallpaper, or
+  picker opens — click a display to capture its windows, or
   **⌘-click to capture every display** into one combined scene.
-- **In the editor**, drag windows around, bring one forward or send it back,
-  delete the ones you don't need, and **Export This Window…** to save a
-  single window on its own. See
+- **In the editor**, drag windows around or auto arrange layout, bring one forward or send it back,
+  and delete the ones you don't need. See
   [Live Capture scenes](/docs/guide/editor/#live-capture-scenes).
 
 :::note

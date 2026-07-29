@@ -173,6 +173,17 @@ favorite star — all editable in place. See
 [On-device AI](/docs/guide/ai/) for how the summary and keywords are
 generated.
 
+## The recent strip
+
+A **recent-captures strip** runs along the bottom of the editor so your
+latest shots are one click away. Click a thumbnail to open it, right-click
+for actions, or **drag a thumbnail out** to Finder, Mail, or any app.
+Videos show a play badge — click it to play, or click the thumbnail to
+open paused.
+
+![The recent-captures strip](/manual/library-strip.png)
+*Jump between recent captures without leaving the editor.*
+
 ## Undo that survives relaunch
 
 The editor's undo history is **persistent**: quit and relaunch, switch

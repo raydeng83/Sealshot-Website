@@ -16,7 +16,7 @@ makes redaction reversible *for you*. **Share the export, never the
 ## Quick exports
 
 - **Drag straight out.** Drag a thumbnail from the
-  [recent strip](/docs/guide/library/#the-recent-strip) into Finder, Mail,
+  [recent strip](/docs/guide/editor/#the-recent-strip) into Finder, Mail,
   Slack, or any app — no save dialog, no export menu.
 - **Export a batch.** Select several captures and
   [Export to Image](/docs/guide/sharing/#plain-exports) (**⌘S**) writes them

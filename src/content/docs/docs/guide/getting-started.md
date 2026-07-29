@@ -65,8 +65,7 @@ away from any app. See [Keyboard shortcuts](/docs/guide/shortcuts/).
 
 ## Your first capture
 
-Start an **area capture** and drag across the region you want. Fine-tune the
-selection with the handles, then confirm — the capture opens in the editor,
+Start an **area capture** and drag across the region you want. The capture opens in the editor,
 ready to annotate, redact, or export.
 
 From here, explore:

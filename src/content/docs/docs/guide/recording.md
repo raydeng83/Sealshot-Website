@@ -3,7 +3,7 @@ title: Screen recording
 description: Record your screen, a window, or a region — with system audio and microphone.
 ---
 
-Sealshot records video as well as stills: the full screen, a window, or a
+Sealshot records video as well as images: the full screen, a window, or a
 region you draw, with system audio and your microphone if you want them.
 Recordings land in the same [Library](/docs/guide/library/) as your
 screenshots, protected by the same
@@ -65,5 +65,5 @@ play right in the editor. With Enhanced Security on, recordings are
 encrypted at rest like everything else.
 
 When you need a regular video file, use **File → Export to Video…** to write
-a `.mov`/`.mp4` — for one recording or a whole selection at once. See
+a `.mov` — for one recording or a whole selection at once. See
 [Sharing & export](/docs/guide/sharing/).

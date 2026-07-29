@@ -21,7 +21,7 @@ itself. These tips cover finding things fast and cleaning up safely.
 ## Filters and preview
 
 - **Space bar for an instant preview.**
-  [Quick Look](/docs/guide/library/#quick-look) any capture without opening
+  [Quick Look](/docs/guide/library/#preview) any capture without opening
   the editor; ⌘-scroll resizes the preview.
 - **Filter by tag, date, or media type.** The
   [sidebar filters](/docs/guide/library/#sections-and-filters) narrow by tag

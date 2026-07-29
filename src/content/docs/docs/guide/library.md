@@ -32,7 +32,7 @@ collections.
 Click the **star** on any capture (or in its Info panel) to add it to
 **Favorites**.
 
-## Quick Look
+## Preview
 
 Press **Space** on any selected item for an instant floating preview — no
 need to open the editor. Resize it with the **−/+ buttons** on the card or
@@ -63,17 +63,6 @@ the footer.
 Once you've selected captures you can act on the whole set — delete,
 restore, duplicate, show in Finder, add to a collection, or
 [export](/docs/guide/sharing/) — from the toolbar or the right-click menu.
-
-## The recent strip
-
-While you're editing, a **recent-captures strip** runs along the bottom of
-the window so your latest shots are one click away. Click a thumbnail to
-open it, right-click for actions, or **drag a thumbnail out** to Finder,
-Mail, or any app. Videos show a play badge — click it to play, or click the
-thumbnail to open paused.
-
-![The recent-captures strip](/manual/library-strip.png)
-*Jump between recent captures without leaving the editor.*
 
 ## Titles, tags, and the Info panel
 
