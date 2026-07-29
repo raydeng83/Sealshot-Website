@@ -1,11 +1,9 @@
 ---
 title: The editor
-description: Annotations, blur, crop and resize, enhance, background removal, OCR text, and export.
+description: Annotations, blur, crop and resize, enhance, background removal, OCR text, Find in Image, and export.
 ---
 
-Every capture opens in Sealshot's **non-destructive** editor: your original
-pixels are always preserved, and every annotation can be moved, restyled, or
-removed later — even after you reopen the file.
+Editor is the place where you can view and modify captured images, view recorded videos and apply AI features.
 
 ![A capture open in the Sealshot editor](/manual/editor-overview.png)
 *The editor: toolbar, canvas, Info panel, and the recent-captures strip.*
@@ -45,6 +43,10 @@ Select an object to get resize handles plus a rotate handle. Drag to rotate
 menu to set an exact angle or **flip horizontally / vertically**. Paste keeps
 an object's transform.
 
+To select several objects at once, drag a **selection box** across the
+canvas — starting from empty canvas or from the margin around the image —
+and it selects the objects it fully encloses.
+
 ![A selected object with rotate and resize handles](/manual/transform-handles.png)
 *Resize from the handles; rotate from the top handle.*
 
@@ -73,6 +75,8 @@ more, and proposes redactions, all on device.
 
 - **Focus and crop** — drag the viewfinder brackets to crop or set a
   **focus** region. The original is preserved, so you can re-crop later.
+  Once the brackets mark something smaller than the whole image, the
+  right-click menu offers **Crop to Focus Area** and **Reset Focus Area**.
 - **Cut or copy a region** — the crop tool can lift a region out (⌘X leaves
   a transparent hole) or copy it (⌘C) for pasting elsewhere, with an
   aspect-ratio lock when you need exact proportions.
@@ -97,6 +101,18 @@ Add another image on top of your capture — a logo, a second screenshot — via
 **File → Insert Image on Canvas…** (⇧⌘I), or just drop a file onto the
 canvas. Inserted images move, resize, and rotate like any other object.
 
+## Start from a blank canvas
+
+The editor doesn't need a capture to start from:
+
+- **File → New Canvas** (**⌘N**) opens an empty canvas to annotate on.
+- **File → New from Clipboard** (**⇧⌘N**) turns an image on your clipboard
+  into a canvas — available whenever the clipboard holds one.
+- **File → Import to Library…** (**⌘O**) brings existing image files into
+  your library.
+
+The **+** button on the toolbar offers the same three actions.
+
 ## Live Capture scenes
 
 A [Live Capture](/docs/guide/capture/#live-capture) opens as a **layered
@@ -120,9 +136,14 @@ like any other capture.
 
 ## Zoom and navigation
 
-**⌘-scroll** zooms toward the cursor from any tool; type an exact percentage
-in the zoom field; the **Hand** tool pans. Fit-to-width and fit-to-height
-are one click away.
+- **⌘-scroll** zooms toward the cursor from any tool; **⌘+ / ⌘− / ⌘0** zoom
+  in, out, and back to actual size — or type an exact percentage in the
+  zoom field.
+- **Fit**, **Fit width**, **Fit height**, and **Actual size** are one click
+  away in the zoom cluster, and the **Focus** button zooms straight to the
+  [focus area](#crop-and-resize) if you've set one.
+- **Right-drag pans** a zoomed image from any tool (a plain right-click
+  still opens the context menu); the **Hand** tool pans too.
 
 ## OCR Live Text
 
@@ -134,6 +155,18 @@ Mac.
 
 ![Selecting recognized text inside a screenshot](/manual/ocr-live-text.png)
 *Select and copy text directly from the image.*
+
+## Find in Image
+
+Search for text *inside* the open capture. Press **⌘F** (or click the
+magnifying glass on the toolbar), type, and every match is highlighted on
+the canvas — **Next** / **Previous** (or **Return**) step through them. If
+you've set a [focus area](#crop-and-resize), you can limit the search to
+it. **Esc** leaves search mode.
+
+Useful when a long scrolling capture or a dense screenshot holds one line
+you need — the same on-device text recognition that powers Live Text does
+the finding.
 
 ## The Info panel
 
