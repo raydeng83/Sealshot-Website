@@ -93,7 +93,7 @@ apps. It captures the windows on your current desktop (Space); minimized
 windows and windows on other Spaces aren't included.
 :::
 
-![A Live Capture scene open in the editor](/manual/capture-live.png)
+![A Live Capture scene open in the editor](/manual/capture-live.jpg)
 *Every window becomes its own movable layer over the desktop wallpaper.*
 
 ## Save as…
