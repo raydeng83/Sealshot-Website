@@ -3,10 +3,8 @@ title: Sharing & export
 description: Encrypted .sealshare packages, image and video export, and drag-to-anywhere.
 ---
 
-Screenshots often contain exactly the things you redact — so Sealshot's
-sharing is built around **encrypted packages** that travel safely over
-email, chat, or a USB stick, alongside plain image and video export when
-that's all you need.
+Captured images and videos can be exported as packages instead of as
+individual items. An exported package can be protected or plain.
 
 ## Export to Package
 
@@ -16,18 +14,32 @@ Package…** (**⇧⌘E**, or File menu / right-click). The dialog offers:
 - **Format** — `.sealshare` (opens in Sealshot, keeps everything editable)
   or `.zip` (opens anywhere).
 - **Encrypt with a passcode** — on by default when Enhanced Security is on.
-  Sealshot generates a strong passcode (like `K7M2Q-9XBHE-4FRPT-8WJ3N`);
-  **Copy** it before exporting — share it with the recipient over a
-  *different* channel than the package. There's no way to recover a lost
-  passcode.
-- **Expiry date** (optional) — recipients are warned when a package is past
-  its date.
+  Sealshot generates a strong passcode (like `K7M2Q-9XBHE-4FRPT-8WJ3N`),
+  with a **Regenerate** button if you want a fresh one. You must **Copy**
+  it before you can export — the Export button stays disabled until you do,
+  so you can't lose the passcode by accident. Share it with the recipient
+  over a *different* channel than the package; there's no way to recover a
+  lost passcode.
+- **Expiry date** (optional, suggested a week out) — an expired package
+  **can no longer be opened**; the recipient sees when it expired.
 - A **hint** and **note** for the recipient, and an option to include the
   original un-redacted capture (off by default — leave it off unless you
   really need it).
 
 ![The Export to Package dialog](/manual/export-package.png)
 *Pick a format, copy the passcode, export.*
+
+## Export a collection — or everything
+
+The same packaging works at larger scales, from the Library sidebar:
+
+- **Right-click a collection → Export Collection…** bundles that
+  collection into one package.
+- **Right-click All Files → Export All Files…** bundles your whole
+  library — handy for AirDropping to another Mac and importing there.
+
+Both use the same dialog and options as above, and a progress readout
+counts the items as they're packaged.
 
 ## Opening a package
 
