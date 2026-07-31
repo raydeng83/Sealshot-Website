@@ -18,3 +18,7 @@
 /docs/workflows/knowledge-library/   /docs/workflows/                    301
 /docs/workflows/remember             /docs/workflows/                    301
 /docs/workflows/remember/            /docs/workflows/                    301
+
+# Getting started became the three-page Quickstart section (2026-07-30).
+/docs/guide/getting-started     /docs/quickstart/install/            301
+/docs/guide/getting-started/    /docs/quickstart/install/            301

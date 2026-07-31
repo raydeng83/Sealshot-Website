@@ -20,9 +20,16 @@ export default defineConfig({
       },
       sidebar: [
         {
+          label: 'Quickstart',
+          items: [
+            { slug: 'docs/quickstart/install', label: 'Install & permissions' },
+            { slug: 'docs/quickstart/parts', label: 'The parts of Sealshot' },
+            { slug: 'docs/quickstart/first-capture', label: 'Your first capture' },
+          ],
+        },
+        {
           label: 'Guide',
           items: [
-            { slug: 'docs/guide/getting-started' },
             { slug: 'docs/guide/capture' },
             { slug: 'docs/guide/recording' },
             { slug: 'docs/guide/editor' },

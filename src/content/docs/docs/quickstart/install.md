@@ -1,6 +1,6 @@
 ---
-title: Getting started
-description: Install Sealshot, grant permissions, and take your first capture.
+title: Install & permissions
+description: What Sealshot needs, how to install it, and the one permission macOS requires.
 ---
 
 Sealshot is a privacy-first screenshot and screen-recording app for macOS.
@@ -16,10 +16,11 @@ Intel Macs (universal binary).
 Everything core works the same on both: capture, recording, the editor,
 OCR and search, and Smart Redaction's built-in detectors. Two extras need
 newer hardware — the **enhanced redaction model** requires an Apple Silicon
-Mac, and the **Apple Intelligence** features (generated summaries, smarter
+Mac, and the **Apple Intelligence** features (generated summaries, smart
 search, Thorough scan) require macOS 26 on an Apple Intelligence-capable
 Mac. On Intel, Sealshot automatically uses its built-in on-device
-processing instead. See [On-device AI](/docs/guide/ai/#which-macs-run-what).
+processing instead. See [Which Macs run
+what](/docs/guide/ai/#which-macs-run-what).
 
 ## Install
 
@@ -32,6 +33,11 @@ processing instead. See [On-device AI](/docs/guide/ai/#which-macs-run-what).
 
 Direct downloads are signed and notarized by Apple, so they launch without
 Gatekeeper warnings, and they update themselves automatically via Sparkle.
+
+Sealshot starts with a **14-day free trial** — no account needed. After it,
+everything you've already captured stays fully viewable, editable, and
+exportable; a license is only needed for new captures. See
+[Settings → License](/docs/guide/settings/#license).
 
 ## Grant Screen Recording permission
 
@@ -53,34 +59,7 @@ needs **Accessibility** permission so Sealshot can scroll the page for you
 permission. You'll be prompted the first time you use each.
 :::
 
-## Live in the menu bar
+**Settings → Permissions** shows the live status of all three, each with a
+button straight to the right System Settings pane.
 
-Sealshot sits in your menu bar. Click its icon to start any capture or
-recording, open the editor or Library, or reach Settings — each command
-shows its keyboard shortcut right in the menu, so a capture is one keystroke
-away from any app. See [Keyboard shortcuts](/docs/guide/shortcuts/).
-
-![The Sealshot menu-bar icon and menu](/manual/menu-bar.png)
-*Start captures and open the editor from the menu bar.*
-
-## Your first capture
-
-Start an **area capture** and drag across the region you want. The capture opens in the editor,
-ready to annotate, redact, or export.
-
-From here, explore:
-
-- [Capture modes](/docs/guide/capture/) — area, window, fullscreen, delayed,
-  scrolling, and Live Capture, across all your displays.
-- [Screen recording](/docs/guide/recording/) — record the screen, a window,
-  or a region, with audio.
-- [The editor](/docs/guide/editor/) — annotations, blur, crop and resize,
-  enhance, and OCR text.
-- [Smart Redaction](/docs/guide/redaction/) — automatic on-device detection
-  of sensitive text.
-- [On-device AI](/docs/guide/ai/) — automatic titles and summaries, and
-  structured-data extraction.
-- [Library & search](/docs/guide/library/) — collections, favorites, and
-  search across your captures.
-- [Sharing & export](/docs/guide/sharing/) — encrypted share packages and
-  plain exports.
+Next: [the parts of Sealshot](/docs/quickstart/parts/).

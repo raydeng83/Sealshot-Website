@@ -7,7 +7,7 @@ Sealshot is a privacy-first screenshot and screen-recording app for macOS
 14+. Everything — capture, recording, OCR, AI metadata, search — is
 processed on your Mac. No account, no telemetry, no cloud.
 
-- **New here?** Start with [Getting started](/docs/guide/getting-started/).
+- **New here?** Start with the [Quickstart](/docs/quickstart/install/) — install, the parts of the app, and your first capture.
 - **Have a job to do?** Pick a [workflow](/docs/workflows/) by what you're
   trying to accomplish — [explain](/docs/workflows/explain/),
   [publish](/docs/workflows/publish/),
@@ -17,4 +17,4 @@ processed on your Mac. No account, no telemetry, no cloud.
   [examples](/docs/workflows/recipes/).
 - **Want to go faster?** Skim the [Tips & tricks](/docs/tips/).
 - **Stuck?** Check the [FAQ](/docs/faq/) or [send us feedback](/support/).
-- **What's new?** See the [changelog](/docs/changelog/v0-7-0/).
+- **What's new?** See the [changelog](/docs/changelog/v0-7-2/).
