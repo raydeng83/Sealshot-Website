@@ -167,37 +167,34 @@ placeholder, so there is no way to accidentally take money before it's ready.
 
 ### Known gaps to fix in code first
 
-- [ ] **The webhook stale-timestamp gate vs Polar's retries.**
-      `index.ts` rejects deliveries whose `webhook-timestamp` is more than
-      **300 seconds** old (`MAX_TIMESTAMP_SKEW_SECONDS`). Polar retries up to
-      **10 times with exponential backoff**, which extends well past 5
-      minutes. **If Polar reuses the original timestamp on retries, every
-      retry returns 400 — and Polar disables the endpoint after 10
-      consecutive failures**, silently un-fulfilling all later orders.
+- [x] **Delivery decoupled from the webhook.** The handler now records the
+      order in KV, answers **200**, and delivers in `ctx.waitUntil()`. A
+      **cron trigger** (`*/5 * * * *`) retries anything still `pending`, with
+      backoff doubling from 5 minutes to a 4-hour cap and giving up after 48
+      hours. Retries are ours, on a schedule we control.
 
-      **Test:** point the webhook at an endpoint that always returns 500,
-      trigger one order, and inspect whether retry #3 (past the 5-minute mark)
-      carries a fresh timestamp.
+      **This makes the timestamp question moot** — Polar's redelivery
+      behaviour no longer decides whether an order gets fulfilled. The stale
+      gate was also widened from 300 s to **24 h**, since idempotency is the
+      real replay defence and a tight window risked Polar disabling the
+      endpoint. A 500 is now returned *only* when the order couldn't be
+      recorded at all, which is the one case where redelivery is what we want.
+
+- [x] **`reply_to` added** — `REPLY_TO` var, default `support@seal-shot.com`,
+      so buyer replies reach a real inbox instead of bouncing off the
+      send-only subdomain. **Needs Phase 3 done to actually receive.**
+
+- [x] **Alerting added.** `console.error` always (reaches `wrangler tail` and
+      Workers Logs, and Cloudflare notifications can fire on Worker errors),
+      plus an email to `ALERT_EMAIL` when set — once when an order has been
+      undelivered 30 minutes, and again if we give up. Enable `ALERT_EMAIL`
+      in `wrangler.toml` once `support@` can receive.
+
+- [ ] **Still worth running the timestamp test once**, purely to know: point
+      the webhook at an endpoint returning 500, trigger an order, and see
+      whether retry #3 carries a fresh `webhook-timestamp`. No longer a
+      blocker — just useful to have recorded.
       **Finding:** _______________________________________________
-
-      If timestamps are reused → widen or remove the gate (idempotency
-      already prevents replay harm: an order in state `sent` returns 200
-      without re-emailing).
-
-- [ ] **Decouple delivery from the webhook** (recommended regardless of the
-      finding): store the license, return **200**, attempt the send in
-      `ctx.waitUntil()`, and add a **Cron Trigger** Worker that retries any
-      order still in state `pending`. This removes the dependency on Polar's
-      retry semantics entirely.
-
-- [ ] **Add `reply_to`.** `email.ts` sets no reply address, so replies go to
-      `license@mail.seal-shot.com`, which has no inbox — they bounce. Set
-      `reply_to: 'support@seal-shot.com'` (works once Phase 3 is done).
-
-- [ ] **Add alerting.** A `pending` or `rejected` KV record is currently the
-      only signal that fulfilment failed, and nothing reads KV. A cron Worker
-      that emails you when an order sits `pending` past ~30 minutes closes
-      this. Cloudflare's free send-to-verified-self is suited to this.
 
 - [ ] Consider **Resend Pro ($20/mo)** for launch — removes the 100/day cap
       so a spike day can't fail sends. Mitigation, not a substitute for the

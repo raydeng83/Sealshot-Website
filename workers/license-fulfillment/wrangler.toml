@@ -7,6 +7,17 @@ compatibility_date = "2026-07-01"
 # binding = "ORDERS"
 # id = "<filled by wrangler>"
 
+# Retries any order still awaiting delivery. The webhook acknowledges as soon
+# as the order is recorded, so this is what actually guarantees delivery —
+# see src/fulfill.ts for the backoff.
+[triggers]
+crons = ["*/5 * * * *"]
+
 [vars]
 EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
+# The From subdomain is send-only, so replies need somewhere real to land.
+REPLY_TO = "support@seal-shot.com"
+# Optional: where to email fulfilment alerts. Unset = log-only (wrangler tail /
+# Workers Logs). Set it once support@ can receive.
+# ALERT_EMAIL = "support@seal-shot.com"
 # Secrets (SIGNING_KEY_B64, POLAR_WEBHOOK_SECRET, RESEND_API_KEY) set via `wrangler secret put`
