@@ -26,12 +26,19 @@ No dependencies; settle these first because later phases assume them.
       Loops before launch)
 - [x] **Human mail** → **Google Workspace user alias domain** on the existing
       `bostonidentity.com` account (free, up to 20 alias domains)
-- [ ] **Analytics?** — Cloudflare Web Analytics (free, cookieless) or none.
-      If yes, the privacy policy edit in Phase 5 is mandatory, not optional.
-- [ ] **Postal address** for the marketing-email footer (CAN-SPAM requires a
-      valid physical address in commercial email). PO box or virtual mailbox.
-- [ ] **Skip** the Kit hosted landing page — launch is close enough that the
+- [x] **Analytics** → **Cloudflare Web Analytics** (free, cookieless, no
+      script to maintain). Enough to answer "did launch work, and where did
+      traffic come from". Revisit **Plausible** ($9/mo, 30-day free trial)
+      only if you later want goals/funnels — e.g. what fraction of `/buy`
+      visitors reach checkout. Don't start that trial while the site is
+      gated; it would only measure your testers.
+      **This makes the privacy-policy edit in Phase 5 mandatory.**
+- [x] **Skip** the Kit hosted landing page — launch is close enough that the
       embedded form on the site is enough.
+- [ ] ~~Postal address~~ → **deferred to Phase 5**. It gates only the first
+      *marketing* broadcast, not launch and not selling: CAN-SPAM's
+      physical-address requirement is for commercial email, and transactional
+      messages like license delivery are exempt.
 
 ---
 
@@ -249,7 +256,25 @@ placeholder, so there is no way to accidentally take money before it's ready.
 - [ ] **Do not auto-add buyers to the marketing list.** Polar collects email
       for the transaction; marketing consent is separate. Offer an explicit
       opt-in.
-- [ ] If adding analytics: enable **Cloudflare Web Analytics**
+- [ ] Enable **Cloudflare Web Analytics** (Pages project → Analytics). No
+      script tag, no cookies. Numbers are meaningless until Access is removed.
+
+### Before the first marketing broadcast — not before launch
+
+- [ ] **Settle the postal address.** CAN-SPAM requires a valid physical
+      postal address in commercial email, and Kit won't let you send a
+      broadcast without one on file. Cheapest first:
+  1. **An existing business address** — if Boston Identity is a registered
+     entity, its address may already serve. **Check this first; it's $0.**
+  2. **USPS PO Box** — ~$25–100 per six months by size and location.
+  3. **Virtual mailbox / CMRA** (Anytime Mailbox, iPostal1, PostScan) —
+     ~$10–30/mo, gives a street-format address and scans mail.
+  4. **Not your home address** — it becomes permanently public in every
+     email, and it's an odd look for a privacy-first product.
+
+  *Unverified:* the PO-box and CMRA allowance is long-standing FTC guidance,
+  but the FTC compliance page was unreachable when this was written — worth
+  confirming yourself before committing.
 
 ### Privacy policy — must land with the above, never after
 
@@ -258,8 +283,10 @@ It uses no cookies, no trackers, and no analytics."*
 
 - [ ] Add a **subscriber list** paragraph: provider, what's stored, how to
       unsubscribe, how to be deleted
-- [ ] If analytics were added, **rewrite the "no analytics" sentence** to
-      describe cookieless aggregate analytics honestly
+- [ ] **Rewrite the "no analytics" sentence** — Cloudflare Web Analytics is
+      going in, so describe it honestly: cookieless, aggregate, identifies
+      nobody. Shipping analytics while the policy still says "no analytics"
+      is the one version of this that damages credibility.
 - [ ] Keep the app section unchanged — "no telemetry, no account" is still
       true and is the product's core claim
 
