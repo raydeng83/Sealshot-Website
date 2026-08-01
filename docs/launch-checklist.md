@@ -202,19 +202,54 @@ placeholder, so there is no way to accidentally take money before it's ready.
 
 ### Deploy
 
-- [ ] `wrangler kv namespace create ORDERS`, then fill in the
-      `[[kv_namespaces]]` block in `wrangler.toml` (currently commented out)
-- [ ] `wrangler secret put` for `SIGNING_KEY_B64`, `POLAR_WEBHOOK_SECRET`,
-      `RESEND_API_KEY`
-- [ ] Confirm `EMAIL_FROM` matches the verified Resend domain
-- [ ] Deploy the Worker and give it a route
-- [ ] **Keep the Worker route off any Access-gated hostname**, or add a
-      bypass / Service Auth policy — Polar's webhooks can't answer a login
-      challenge. A `workers.dev` route or a dedicated subdomain avoids this
-      entirely.
+**None of this waits on the domain.** Deploy to the `workers.dev` route and
+the whole purchase path can be built and tested while DNS is still moving —
+see "Test before the domain exists" below.
+
+Run everything from `workers/license-fulfillment`, and use `npx wrangler`
+(wrangler isn't on the global PATH).
+
+- [x] **Prove the signing key first.** `npx vitest run production-key` asserts
+      the Keychain key is the private half of key 1 in `LicenseKeys.swift`, and
+      that an issued licence verifies against the app's embedded public key.
+      Without this, every licence sold could be rejected at activation and no
+      other test would notice. **Verified 2026-08-01: passes.**
+- [x] `npx wrangler kv namespace create ORDERS` → bound in `wrangler.toml`
+      (`7c0ac7b21f5e4223b4c585f73c3408a2`), confirmed by dry-run
+- [ ] **`SIGNING_KEY_B64`** — pipe it from the Keychain so it never appears on
+      screen or in shell history:
+
+      security find-generic-password -s com.seal-shot.licensegen -a primary -w \
+        | xxd -r -p | base64 | npx wrangler secret put SIGNING_KEY_B64
+
+- [ ] **`RESEND_API_KEY`** — `npx wrangler secret put RESEND_API_KEY`
+- [ ] Deploy to the **`workers.dev`** route. **Keep the Worker off any
+      Access-gated hostname** (or add a bypass / Service Auth policy) — Polar's
+      webhooks can't answer a login challenge, and `workers.dev` sits outside
+      the Access application entirely.
 - [ ] Create the Polar product and paste the **real checkout URL** into
-      `src/config/promos.ts` (`BASE_CHECKOUT_URL`, and any promo entries)
-- [ ] Register the webhook endpoint in Polar and store its signing secret
+      `src/config/promos.ts` (`BASE_CHECKOUT_URL`, and any promo entries) —
+      it's still the `<product-checkout-id>` placeholder, which is why nobody
+      can accidentally buy anything today
+- [ ] Register the webhook endpoint in Polar (the `workers.dev` URL +
+      `/webhooks/polar`) and **`npx wrangler secret put POLAR_WEBHOOK_SECRET`**
+      with the signing secret Polar generates. This secret doesn't exist until
+      the endpoint does, which is why Polar setup comes last here.
+- [ ] Once Phase 3 is done: set `EMAIL_FROM` to the verified
+      `mail.seal-shot.com` address, and uncomment `ALERT_EMAIL`
+
+### Test before the domain exists
+
+`mail.seal-shot.com` has no DNS yet, but delivery doesn't have to wait:
+
+- [ ] Temporarily set **`EMAIL_FROM` to Resend's test sender**
+      (`onboarding@resend.dev` — confirm the exact address in your Resend
+      dashboard). It can send to your own account address with no domain
+      verification, which is enough to exercise the entire chain: webhook →
+      licence generation → email with attachment → **activation in the app**.
+- [ ] Run the full test list below against that setup
+- [ ] Switch `EMAIL_FROM` to the real address after Phase 3 and re-run one
+      purchase to confirm nothing depended on the test sender
 
 ### Test the whole path
 
@@ -227,8 +262,14 @@ placeholder, so there is no way to accidentally take money before it's ready.
 - [ ] **Duplicate webhook** → same license ID reused, no second email
       (idempotency)
 - [ ] **Bad signature** → 401
-- [ ] **Email failure** (temporarily bad API key) → order stored `pending`,
-      and your retry path recovers it
+- [ ] **Email failure** (temporarily bad API key) → webhook still returns
+      **200**, order stored `pending` with `attempts: 1` and a `lastError`.
+      Fix the key, then confirm the cron delivers it within ~5 minutes and the
+      record flips to `sent` with the **same** `licenseId`. Watch it with
+      `npx wrangler tail`.
+- [ ] **Alerting** → leave an order failing for 30+ minutes and confirm the
+      `[fulfilment-alert]` line appears in `wrangler tail` (and an email, once
+      `ALERT_EMAIL` is set)
 - [ ] **Reply to the license email** → arrives at `support@seal-shot.com`
 - [ ] Confirm Polar's own receipt email also arrives (separate from yours)
 
