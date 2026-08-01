@@ -2,10 +2,12 @@ name = "license-fulfillment"
 main = "src/index.ts"
 compatibility_date = "2026-07-01"
 
-# kv_namespaces filled in during Task 12 (wrangler kv namespace create ORDERS)
-# [[kv_namespaces]]
-# binding = "ORDERS"
-# id = "<filled by wrangler>"
+# Durable order memory: idempotency (a redelivered webhook finds state 'sent'
+# and returns without re-issuing) and the retry queue the cron drains.
+# Created 2026-08-01 via `wrangler kv namespace create ORDERS`.
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "7c0ac7b21f5e4223b4c585f73c3408a2"
 
 # Retries any order still awaiting delivery. The webhook acknowledges as soon
 # as the order is recorded, so this is what actually guarantees delivery —
