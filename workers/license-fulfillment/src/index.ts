@@ -3,6 +3,10 @@ import { getOrder, putOrder, listPending, type OrderRecord } from './store';
 import { hasUnsafeChars } from './sanitize';
 import { deliverLicense, isDue, type FulfillEnv } from './fulfill';
 import { handleVerify, corsHeaders, type VerifyEnv } from './verify';
+import { resolveProduct, renewalThrough, isMappedProduct } from './product';
+import { resolveRenewalTarget } from './renewal';
+import { addMonthsUTC } from './license';
+import { alert } from './alert';
 
 export interface Env extends FulfillEnv, VerifyEnv {
   ORDERS: KVNamespace;
@@ -87,6 +91,9 @@ export default {
         email: order.email,
         name: order.name,
         issued: isoToUTCDay(order.paidAtISO),
+        updatesThrough: existing?.updatesThrough ?? '',
+        licenseType: existing?.licenseType ?? 'individual',
+        seats: existing?.seats ?? 1,
         state: 'rejected',
         attempts: existing?.attempts ?? 0,
         firstSeenAt: existing?.firstSeenAt ?? new Date().toISOString(),
@@ -94,11 +101,91 @@ export default {
       return new Response('rejected: unsafe input', { status: 200 });
     }
 
+    const purchaseDay = isoToUTCDay(order.paidAtISO);
+    const terms = resolveProduct(env, order.productId);
+
+    // An unmapped product still yields a working licence — the buyer paid — but
+    // it is almost always a misconfiguration, and the most likely one is
+    // sandbox product ids surviving into production, where every purchase then
+    // quietly resolves to 12 months. Alert on the first sale rather than
+    // discovering it at the first renewal.
+    if (!isMappedProduct(env, order.productId)) {
+      await runTask(ctx, alert(env, {
+        subject: `Sealshot: unmapped product on order ${order.orderId}`,
+        body:
+          `product_id ${order.productId || '(absent)'} is not in PRODUCT_MAP.\n` +
+          `Defaulted to a 12-month new purchase. If this was a founding or\n` +
+          `renewal purchase the customer has the wrong window — check\n` +
+          `PRODUCT_MAP in wrangler.toml against the live Polar product ids.`,
+      }));
+    }
+
+    let licenseId = existing?.licenseId ?? crypto.randomUUID().toUpperCase();
+    let updatesThrough = addMonthsUTC(purchaseDay, terms.months);
+    let name = order.name;
+    let licenseType: 'individual' | 'business-volume' = 'individual';
+    let seats = 1;
+
+    if (terms.kind === 'renewal') {
+      const target = await resolveRenewalTarget(env.ORDERS, {
+        referenceId: order.referenceId,
+        email: order.email,
+      });
+      if (target) {
+        licenseId = target.licenseId;
+        updatesThrough = renewalThrough(target.rec.updatesThrough, purchaseDay, terms.months);
+        name = target.rec.name;
+        licenseType = target.rec.licenseType;
+        seats = target.rec.seats;
+
+        if (target.disagreedWithEmail) {
+          await runTask(ctx, alert(env, {
+            subject: `Sealshot: renewal reference/email disagree on order ${order.orderId}`,
+            body:
+              `reference_id → ${target.licenseId}\n` +
+              `email index  → ${target.disagreedWithEmail}\n\n` +
+              `Honoured the reference id. Confirm the buyer renewed the right licence.`,
+          }));
+        }
+
+        // Volume licences are quoted and invoiced by hand; there is no volume
+        // product at checkout. Reaching here means someone renewed a multi-seat
+        // licence through the single-user renewal product, so an organisation
+        // just extended N seats for the price of one. The renewal is still
+        // honoured — they paid, and refusing strands them — but it needs a human.
+        if (licenseType === 'business-volume') {
+          await runTask(ctx, alert(env, {
+            subject: `Sealshot: business-volume licence renewed at the individual price`,
+            body:
+              `Order ${order.orderId} renewed licence ${licenseId} (${seats} seats)\n` +
+              `through the individual renewal product. Volume renewals are meant to\n` +
+              `be quoted and invoiced. Honoured the renewal; invoice the difference\n` +
+              `or agree a correction with the customer.`,
+          }));
+        }
+      } else {
+        await runTask(ctx, alert(env, {
+          subject: `Sealshot: unmatched renewal on order ${order.orderId}`,
+          body:
+            `${order.email} bought a renewal but no licence matched — neither the\n` +
+            `reference id (${order.referenceId ?? 'absent'}) nor the email index.\n\n` +
+            `Issued NEW licence ${licenseId} with a full window so they are not left\n` +
+            `empty-handed. Merge it with their real licence by hand.`,
+        }));
+      }
+    }
+
     const rec: OrderRecord = {
-      licenseId: existing?.licenseId ?? crypto.randomUUID().toUpperCase(),
+      licenseId,
       email: order.email,
-      name: order.name,
-      issued: isoToUTCDay(order.paidAtISO),
+      name,
+      issued: purchaseDay,
+      // Reuse the frozen window on a redelivery. Recomputing it would read a
+      // licence record an earlier attempt may already have advanced, extending
+      // one purchase twice.
+      updatesThrough: existing?.updatesThrough || updatesThrough,
+      licenseType: existing?.licenseType ?? licenseType,
+      seats: existing?.seats ?? seats,
       state: 'pending',
       attempts: existing?.attempts ?? 0,
       firstSeenAt: existing?.firstSeenAt ?? new Date().toISOString(),

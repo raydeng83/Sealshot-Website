@@ -6,6 +6,18 @@ export type OrderRecord = {
   /** Buyer name — kept so a retry can re-issue the identical license. */
   name: string;
   issued: string;
+  /**
+   * Frozen when the order is first recorded, never recomputed.
+   *
+   * A renewal's window is derived from the licence's CURRENT `updatesThrough`.
+   * Recomputing it on a retry would read a value a previous attempt already
+   * moved, extending the same purchase twice — so the fulfilment path reads
+   * this field and never the licence record.
+   */
+  updatesThrough: string;
+  licenseType: 'individual' | 'business-volume';
+  /** Seat count carried from the licence being renewed; 1 for a new purchase. */
+  seats: number;
   state: OrderState;
   /** Delivery attempts made so far (0 before the first send). */
   attempts: number;

@@ -34,6 +34,25 @@ export function resolveProduct(env: { PRODUCT_MAP?: string }, productId: string)
 }
 
 /**
+ * Whether this product id was actually configured, as opposed to landing on the
+ * default.
+ *
+ * The fallback is deliberately silent so a buyer always gets a licence, which
+ * means a wholly wrong PRODUCT_MAP — sandbox ids left in place at launch being
+ * the obvious one — produces correct-looking 12-month licences forever and
+ * never errors. Callers use this to alert, so the misconfiguration surfaces on
+ * the first sale rather than at the first renewal a year later.
+ */
+export function isMappedProduct(env: { PRODUCT_MAP?: string }, productId: string): boolean {
+  try {
+    const map = JSON.parse(env.PRODUCT_MAP ?? '{}') as Record<string, unknown>;
+    return Object.prototype.hasOwnProperty.call(map, productId);
+  } catch {
+    return false;
+  }
+}
+
+/**
  * The entire renewal date rule: extend from whichever is later, the existing
  * window or the purchase day.
  *

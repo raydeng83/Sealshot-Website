@@ -15,6 +15,7 @@ describe('store', () => {
     const { kv } = fakeKV();
     const rec: OrderRecord = {
       licenseId: 'lic1', email: 'a@b.com', name: 'A B', issued: '2026-07-20',
+      updatesThrough: '2027-07-20', licenseType: 'individual', seats: 1,
       state: 'sent', attempts: 1, firstSeenAt: '2026-07-20T10:00:00.000Z',
     };
     expect(await getOrder(kv, 'ord_1')).toBeNull();
@@ -26,6 +27,7 @@ describe('store', () => {
     const { kv, metas } = fakeKV();
     await putOrder(kv, 'ord_1', {
       licenseId: 'lic1', email: 'a@b.com', name: 'A B', issued: '2026-07-20',
+      updatesThrough: '2027-07-20', licenseType: 'individual', seats: 1,
       state: 'pending', attempts: 0, firstSeenAt: '2026-07-20T10:00:00.000Z',
     });
     expect(metas.get('order:ord_1')).toEqual({ state: 'pending' });
@@ -80,6 +82,7 @@ describe('licence records', () => {
     const { kv, values } = fakeKV();
     await putOrder(kv, 'SAME', {
       licenseId: 'SAME', email: 'a@b.com', name: 'A B', issued: '2026-07-20',
+      updatesThrough: '2027-07-20', licenseType: 'individual', seats: 1,
       state: 'sent', attempts: 1, firstSeenAt: '2026-07-20T10:00:00.000Z',
     });
     await putLicense(kv, 'SAME', rec);

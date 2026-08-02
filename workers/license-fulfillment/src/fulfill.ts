@@ -1,6 +1,6 @@
-import { issueLicense, addMonthsUTC } from './license';
+import { issueLicense } from './license';
 import { sendLicenseEmail } from './email';
-import { putOrder, type OrderRecord } from './store';
+import { putOrder, putLicense, type OrderRecord } from './store';
 import { base64ToBytes } from './base64';
 import { alert } from './alert';
 
@@ -63,20 +63,11 @@ export async function deliverLicense(
         name: rec.name,
         email: rec.email,
         issued: rec.issued,
-        updatesThrough: addMonthsUTC(rec.issued, 12),
-        seats: 1,
+        // The frozen window, NOT a fresh computation — see OrderRecord.
+        updatesThrough: rec.updatesThrough,
+        seats: rec.seats,
         id: rec.licenseId,
-        // Always individual: business volume is quoted, invoiced by hand and
-        // issued with `licensegen --type business-volume`, so it never reaches
-        // checkout and never reaches this Worker.
-        //
-        // Task 12 must carry BOTH the type and the seat count on the order
-        // record rather than hardcoding them here. A volume licence renewed
-        // through the individual product would otherwise reuse its licence id
-        // and its stored seat count while this line stamped it "Individual" —
-        // rendering "License type: Individual" above "Users: 25". That is a
-        // second, independent reason /renew must refuse volume licences.
-        licenseType: 'individual',
+        licenseType: rec.licenseType,
       },
       base64ToBytes(env.SIGNING_KEY_B64)
     );
@@ -93,6 +84,26 @@ export async function deliverLicense(
     });
 
     if (res.ok) {
+      // The licence record is what the NEXT renewal resolves against, so it is
+      // written only once the customer actually has the file. Writing it before
+      // delivery would let a failed send still advertise a window the customer
+      // was never sent.
+      //
+      // Written before the order is marked sent, so the two can only ever be
+      // inconsistent in the safe direction: if this succeeds and the putOrder
+      // below fails, the order stays `pending` and a retry re-sends the SAME
+      // licence — the window is frozen on the order record, so the retry cannot
+      // extend it a second time.
+      await putLicense(env.ORDERS, rec.licenseId, {
+        name: rec.name,
+        email: rec.email,
+        licenseType: rec.licenseType,
+        issued: rec.issued,
+        updatesThrough: rec.updatesThrough,
+        seats: rec.seats,
+        latestOrderId: orderId,
+      });
+
       await putOrder(env.ORDERS, orderId, {
         ...rec,
         state: 'sent',

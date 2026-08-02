@@ -30,7 +30,35 @@ export async function verifyPolarSignature(rawBody: string, headers: Headers, se
   });
 }
 
-export function parseOrderPaid(rawBody: string): { orderId: string; email: string; name: string; paidAtISO: string } | null {
+export type ParsedOrder = {
+  orderId: string;
+  email: string;
+  name: string;
+  paidAtISO: string;
+  /** Polar product id — maps to an update term via PRODUCT_MAP. */
+  productId: string;
+  /** The licence this order renews, when the renewal page supplied one. */
+  referenceId?: string;
+};
+
+/**
+ * `reference_id` set on a checkout link is documented as being "attached to the
+ * generated Checkout Session metadata", and checkout metadata is copied onto
+ * the resulting order — but the key's casing inside `metadata` is not
+ * documented, and Polar's own SDK docs describe it arriving as camelCase
+ * `referenceId` while the link parameter is snake_case.
+ *
+ * Reading all three shapes costs one expression and makes the question moot.
+ * Getting it wrong would silently drop every renewal to the email fallback,
+ * which still works — so it would not fail visibly, it would just quietly
+ * mis-handle the customer whose address changed.
+ */
+function extractReferenceId(d: any): string | undefined {
+  const raw = d?.metadata?.reference_id ?? d?.metadata?.referenceId ?? d?.reference_id;
+  return typeof raw === 'string' && raw.trim() ? raw.trim() : undefined;
+}
+
+export function parseOrderPaid(rawBody: string): ParsedOrder | null {
   let evt: any;
   try { evt = JSON.parse(rawBody); } catch { return null; }
   if (evt?.type !== 'order.paid' || !evt?.data) return null;
@@ -40,5 +68,8 @@ export function parseOrderPaid(rawBody: string): { orderId: string; email: strin
   const orderId = d.id;
   const paidAtISO = d.created_at ?? d.paid_at;
   if (!email || !orderId || !paidAtISO) return null;
-  return { orderId, email, name, paidAtISO };
+  // Absent product id resolves to the default terms rather than rejecting the
+  // order — a buyer who paid must still get a licence.
+  const productId = d.product_id ?? d.product?.id ?? '';
+  return { orderId, email, name, paidAtISO, productId, referenceId: extractReferenceId(d) };
 }
