@@ -7,7 +7,7 @@ The Library is home to every capture and recording. It indexes your save
 folder locally, so browsing, searching, and thumbnails are fast — and
 entirely on device.
 
-![The Library in grid view](/manual/library-grid.png)
+![The Library in grid view](/manual/library-grid.jpg)
 *The Library in grid view. Switch to list view from the toolbar.*
 
 ## Sections and filters
@@ -57,7 +57,7 @@ the footer.
   the recent strip.
 - **Click empty space** to clear the selection.
 
-![A marquee selection across several grid cards](/manual/library-marquee.png)
+![A marquee selection across several grid cards](/manual/library-marquee.jpg)
 *Drag from empty space to rubber-band-select multiple captures.*
 
 Once you've selected captures you can act on the whole set — delete,
@@ -85,7 +85,7 @@ and find the capture that contains it. On Apple Intelligence Macs, the
 query is quietly expanded with related terms, so "invoice" can also find
 "receipt".
 
-![Searching text inside captures](/manual/library-search.png)
+![Searching text inside captures](/manual/library-search.jpg)
 *Search matches text recognized inside the images themselves.*
 
 ## Delete, restore, and undo
@@ -98,7 +98,7 @@ the history survives switching captures and relaunching the app — so an
 accidental delete is easy to take back. "Delete Forever" is permanent and
 cannot be undone.
 
-![The Trash with Restore](/manual/library-deleted.png)
+![The Trash with Restore](/manual/library-deleted.jpg)
 *Trashed captures wait until you restore or purge them.*
 
 Trashed captures are purged automatically after a number of days you set in

@@ -387,9 +387,9 @@ existing screenshots keep their homes:
 | --- | --- |
 | `/manual/redaction-review.png` | Protect & share |
 | `/manual/export-package.png` | Protect & share |
-| `/manual/record-prompt.png` | Demonstrate |
-| `/manual/extract-data.png` | Extract |
-| `/manual/library-search.png` | Remember |
+| `/manual/record-prompt.jpg` | Demonstrate |
+| `/manual/extract-data.jpg` | Extract |
+| `/manual/library-search.jpg` | Remember |
 
 Explain has no image today and needs none; if one is wanted later, an
 annotated-repro shot is the gap.

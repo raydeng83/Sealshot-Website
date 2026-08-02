@@ -24,7 +24,7 @@ This workflow turns pixels back into text you can paste.
    copyable text. The result is cached in the `.seal`, so re-opening it is
    instant.
 
-   ![The Extracted Data window pulling an invoice apart](/manual/extract-data.png)
+   ![The Extracted Data window pulling an invoice apart](/manual/extract-data.jpg)
 
 3. **Deliver** — copy the extracted text into your spreadsheet, ledger, or
    expense tool. For a plain text grab rather than structured fields,

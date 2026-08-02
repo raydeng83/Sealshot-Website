@@ -5,7 +5,7 @@ description: Annotations, blur, focus area, crop and resize, and export.
 
 Editor is the place where you can view and modify captured images, view recorded videos and apply AI features.
 
-![A capture open in the Sealshot editor](/manual/editor-overview.png)
+![A capture open in the Sealshot editor](/manual/editor-overview.jpg)
 *The editor: toolbar, canvas, Info panel, and the recent-captures strip.*
 
 ## Annotation tools
@@ -97,7 +97,7 @@ on the image, not the focus brackets
 - The right-click menu can make it permanent with **Crop to Focus Area**,
   or clear it with **Reset Focus Area**.
 
-![Focus viewfinder brackets over an image](/manual/focus-crop.png)
+![Focus viewfinder brackets over an image](/manual/focus-crop.jpg)
 *Drag the brackets inward to set a focus area.*
 
 ## Crop and resize

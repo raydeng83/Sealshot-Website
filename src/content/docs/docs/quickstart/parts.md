@@ -62,7 +62,7 @@ Settings is right there rather than in a separate window.
 | Right sidebar | the [**Info panel**](/docs/guide/editor/#the-info-panel) — name, dimensions, summary, Smart Keywords, your tags, favorite star |
 | Bottom | the [**recent strip**](/docs/guide/editor/#the-recent-strip) — your latest captures, one click away |
 
-![A capture open in the Sealshot editor](/manual/editor-overview.png)
+![A capture open in the Sealshot editor](/manual/editor-overview.jpg)
 *The editor: toolbar, canvas, Info panel, and the recent-captures strip.*
 
 ### Inside the Library

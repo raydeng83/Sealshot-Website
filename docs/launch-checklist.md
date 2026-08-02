@@ -464,7 +464,7 @@ curl -sI https://seal-shot.com/docs/workflows/remember/        # → /docs/workf
 - [ ] Confirm `/download/` resolves the current DMG from the Sealshot-Release
       repo
 - [ ] Consider compressing `capture-area.png` (9.8 MB) and
-      `capture-window.png` (8.4 MB) — biggest page-weight items on the site
+      `capture-window.jpg` (8.4 MB) — biggest page-weight items on the site
 - [ ] Update the consolidated PDF (`output/README.md` has the steps) if you
       want the launch edition to match the shipped docs
 
