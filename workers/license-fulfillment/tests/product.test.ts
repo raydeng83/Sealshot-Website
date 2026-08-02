@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { resolveProduct, renewalThrough } from '../src/product';
 
 describe('renewalThrough', () => {
@@ -54,5 +56,39 @@ describe('resolveProduct', () => {
     for (const id of ['a', 'b', 'c', 'd']) {
       expect(resolveProduct(bad, id)).toEqual({ kind: 'new', months: 12 });
     }
+  });
+});
+
+describe('the deployed PRODUCT_MAP', () => {
+  // resolveProduct swallows a parse error and returns the safe default, so a
+  // typo in wrangler.toml's JSON string would degrade EVERY purchase to 12
+  // months without a single error anywhere. This is the only check that sees it.
+  const toml = readFileSync(join(__dirname, '..', 'wrangler.toml'), 'utf8');
+  const raw = /^PRODUCT_MAP\s*=\s*'(.*)'$/m.exec(toml)?.[1];
+  const env = { PRODUCT_MAP: raw };
+
+  it('is present in wrangler.toml', () => {
+    expect(raw).toBeTruthy();
+  });
+
+  it('parses, rather than silently falling back to the default', () => {
+    expect(() => JSON.parse(raw!)).not.toThrow();
+    expect(Object.keys(JSON.parse(raw!)).length).toBe(3);
+  });
+
+  it('maps every configured id to terms resolveProduct accepts', () => {
+    // An entry that parses but fails validation is indistinguishable at runtime
+    // from an unmapped product.
+    for (const id of Object.keys(JSON.parse(raw!))) {
+      const terms = resolveProduct(env, id);
+      expect(terms.months).toBeGreaterThan(0);
+      expect(['new', 'renewal']).toContain(terms.kind);
+    }
+  });
+
+  it('covers exactly one renewal product and two new-purchase terms', () => {
+    const values = Object.values(JSON.parse(raw!)) as { kind: string; months: number }[];
+    expect(values.filter((v) => v.kind === 'renewal')).toHaveLength(1);
+    expect(values.filter((v) => v.kind === 'new').map((v) => v.months).sort()).toEqual([12, 18]);
   });
 });

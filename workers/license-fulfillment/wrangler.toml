@@ -26,16 +26,22 @@ simple = { limit = 10, period = 60 }
 
 [vars]
 EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
-# Polar product id -> licence terms. Adding a product is a config change.
-# Unknown ids fall back to a 12-month NEW purchase, which mints a fresh
-# licence rather than touching an existing one.
-#   founding      -> {"kind":"new","months":18}
-#   regular       -> {"kind":"new","months":12}
-#   renewal       -> {"kind":"renewal","months":12}
-# TODO: populate once the Polar products exist; '{}' means every purchase is
-# treated as a 12-month new licence, so a renewal would mint a SECOND licence
-# instead of extending the first.
-PRODUCT_MAP = '{}'
+# Polar product id -> licence terms, read from `data.product_id` on order.paid.
+# Adding a product is a config change, not a deploy. An unmapped id falls back
+# to a 12-month NEW purchase: the buyer paid, so they get a working licence,
+# and `new` mints a fresh one rather than rewriting an existing window.
+#
+# ⚠️ These are SANDBOX product ids. At launch they must be replaced with the
+# production ones, in the same change as the checkout URLs and
+# CHECKOUT_IS_SANDBOX in src/config/promos.ts. Leaving sandbox ids here means
+# every real purchase falls back to 12 months — so a founding buyer silently
+# loses 6 months, and a renewal mints a SECOND licence instead of extending
+# the first. Nothing fails loudly; see the unmapped-product alert in Task 12.
+#
+#   e8d2217b… Sealshot            $49  new,     12 months
+#   d5a0e9c3… Sealshot Founding   $39  new,     18 months
+#   877dd2e8… Sealshot Renewal    $24  renewal, 12 months
+PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","months":12},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","months":18},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","months":12}}'
 # The From subdomain is send-only, so replies need somewhere real to land.
 REPLY_TO = "support@seal-shot.com"
 # Optional: where to email fulfilment alerts. Unset = log-only (wrangler tail /
