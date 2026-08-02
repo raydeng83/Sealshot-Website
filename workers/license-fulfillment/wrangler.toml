@@ -15,8 +15,27 @@ id = "7c0ac7b21f5e4223b4c585f73c3408a2"
 [triggers]
 crons = ["*/5 * * * *"]
 
+# 10 requests per IP per minute on /renew/verify. The endpoint degrades to
+# OPEN when this binding is absent, so a misconfiguration can never take
+# renewals down — see src/verify.ts.
+[[unsafe.bindings]]
+name = "VERIFY_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }
+
 [vars]
 EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
+# Polar product id -> licence terms. Adding a product is a config change.
+# Unknown ids fall back to a 12-month NEW purchase, which mints a fresh
+# licence rather than touching an existing one.
+#   founding      -> {"kind":"new","months":18}
+#   regular       -> {"kind":"new","months":12}
+#   renewal       -> {"kind":"renewal","months":12}
+# TODO: populate once the Polar products exist; '{}' means every purchase is
+# treated as a 12-month new licence, so a renewal would mint a SECOND licence
+# instead of extending the first.
+PRODUCT_MAP = '{}'
 # The From subdomain is send-only, so replies need somewhere real to land.
 REPLY_TO = "support@seal-shot.com"
 # Optional: where to email fulfilment alerts. Unset = log-only (wrangler tail /

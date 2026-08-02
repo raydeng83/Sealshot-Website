@@ -65,3 +65,56 @@ export async function listPending(
 
   return out;
 }
+
+/**
+ * A licence, keyed by its own id rather than by the order that created it.
+ *
+ * Order records answer "did we deliver this purchase?"; licence records answer
+ * "what does this customer currently own?" — which is what a renewal needs,
+ * since a renewal arrives as a *different* Polar order for the *same* licence.
+ * `latestOrderId` is the back-pointer, kept for support and for tracing which
+ * purchase last moved the window.
+ */
+export type LicenseRecord = {
+  name: string;
+  email: string;
+  licenseType: 'individual' | 'business-volume';
+  issued: string;
+  updatesThrough: string;
+  seats: number;
+  latestOrderId: string;
+};
+
+const LICENSE_PREFIX = 'license:';
+const EMAIL_PREFIX = 'email:';
+
+const licenseKey = (id: string) => `${LICENSE_PREFIX}${id}`;
+const emailKey = (email: string) => `${EMAIL_PREFIX}${email.trim().toLowerCase()}`;
+
+export async function getLicense(kv: KVNamespace, licenseId: string): Promise<LicenseRecord | null> {
+  const raw = await kv.get(licenseKey(licenseId));
+  return raw ? (JSON.parse(raw) as LicenseRecord) : null;
+}
+
+/**
+ * Writes the record and points this email at it. The index is last-write-wins
+ * and never deletes: if a buyer's address changes, both the old and the new
+ * address resolve to the licence, so a renewal bought from either one still
+ * matches. Losing the old pointer would strand exactly the customer the email
+ * fallback exists for.
+ */
+export async function putLicense(
+  kv: KVNamespace,
+  licenseId: string,
+  rec: LicenseRecord
+): Promise<void> {
+  await kv.put(licenseKey(licenseId), JSON.stringify(rec));
+  await kv.put(emailKey(rec.email), licenseId);
+}
+
+export async function findLicenseIdByEmail(
+  kv: KVNamespace,
+  email: string
+): Promise<string | null> {
+  return (await kv.get(emailKey(email))) ?? null;
+}

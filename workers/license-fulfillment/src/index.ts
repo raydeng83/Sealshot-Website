@@ -2,8 +2,9 @@ import { verifyPolarSignature, parseOrderPaid } from './polar';
 import { getOrder, putOrder, listPending, type OrderRecord } from './store';
 import { hasUnsafeChars } from './sanitize';
 import { deliverLicense, isDue, type FulfillEnv } from './fulfill';
+import { handleVerify, corsHeaders, type VerifyEnv } from './verify';
 
-export interface Env extends FulfillEnv {
+export interface Env extends FulfillEnv, VerifyEnv {
   ORDERS: KVNamespace;
   SIGNING_KEY_B64: string;
   POLAR_WEBHOOK_SECRET: string;
@@ -11,6 +12,7 @@ export interface Env extends FulfillEnv {
   EMAIL_FROM: string;
   REPLY_TO?: string;
   ALERT_EMAIL?: string;
+  PRODUCT_MAP?: string;
   FETCH?: typeof fetch; // test injection only
 }
 
@@ -39,6 +41,20 @@ async function runTask(ctx: ExecutionContext | undefined, task: Promise<unknown>
 export default {
   async fetch(request: Request, env: Env, ctx?: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    // The renewal page calls this cross-origin from seal-shot.com, so the
+    // browser sends a preflight first. Answer it directly — it carries no
+    // body worth parsing and must not reach KV or the rate limiter.
+    if (url.pathname === '/renew/verify') {
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: corsHeaders(request) });
+      }
+      if (request.method === 'POST') {
+        return handleVerify(request, env, new Date().toISOString().slice(0, 10));
+      }
+      return new Response('method not allowed', { status: 405 });
+    }
+
     if (request.method !== 'POST' || url.pathname !== '/webhooks/polar') {
       return new Response('not found', { status: 404 });
     }
