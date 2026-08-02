@@ -17,7 +17,7 @@ Tips for consistent shots:
 - `menu-bar.png` — the Sealshot menu-bar icon with its menu open (capture + recording commands with inline shortcuts). ⟳ retake for 0.7.0 (menu was rebuilt)
 
 ## Capture modes (`capture.md`)
-- `capture-area.png` — the unified overlay mid-drag with the dimmed surround and selection handles. ✓ have
+- `capture-area.jpg` — the unified overlay mid-drag with the dimmed surround and selection handles. ✓ have
 - `capture-window.png` — the unified overlay with an element/window highlighted by boundary detection. ⟳ retake if the old shot shows the pre-0.7.0 overlay
 - `capture-delayed.png` — the on-screen delayed-capture countdown. ✓ have
 - `capture-scrolling.png` — scrolling capture in progress, or the stitched result. ✓ have

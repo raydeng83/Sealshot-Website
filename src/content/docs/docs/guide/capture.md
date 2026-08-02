@@ -30,7 +30,7 @@ and hover states survive):
 
 Press **Esc** to cancel.
 
-![Area selection overlay mid-drag](/manual/capture-area.png)
+![Area selection overlay mid-drag](/manual/capture-area.jpg)
 *Drag to select. Hold ⌘ to keep the selection adjustable before you confirm.*
 
 ![Window capture with a window highlighted](/manual/capture-window.png)
