@@ -14,8 +14,8 @@ import { canonicalize } from '../src/canonical';
  * lands on the EXISTING licence and moves its window forward exactly once.
  */
 
-const SECRET_RAW = 'unit_test_secret_key_padding____';
-const SECRET_B64 = btoa(SECRET_RAW);
+// Key is the raw UTF-8 bytes of the whole secret, as Polar signs. See src/polar.ts.
+const SECRET = 'whsec_unit_test_secret_value';
 
 const PROD_NEW = 'prod_new';
 const PROD_FOUNDING = 'prod_founding';
@@ -38,7 +38,7 @@ function fakeCtx() {
 async function signedRequest(body: string, id = 'msg_1') {
   const ts = String(Math.floor(Date.now() / 1000));
   const key = await crypto.subtle.importKey(
-    'raw', utf8ToBytes(SECRET_RAW), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+    'raw', utf8ToBytes(SECRET), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   const mac = await crypto.subtle.sign('HMAC', key, utf8ToBytes(`${id}.${ts}.${body}`));
   return new Request('https://w/webhooks/polar', {
     method: 'POST', body,
@@ -78,7 +78,7 @@ function makeEnv(extra: Record<string, unknown> = {}) {
     env: {
       ORDERS: kv,
       SIGNING_KEY_B64: bytesToBase64(ed25519.utils.randomPrivateKey()),
-      POLAR_WEBHOOK_SECRET: `whsec_${SECRET_B64}`,
+      POLAR_WEBHOOK_SECRET: SECRET,
       RESEND_API_KEY: 'rk',
       EMAIL_FROM: 'Sealshot <license@mail.seal-shot.com>',
       PRODUCT_MAP,

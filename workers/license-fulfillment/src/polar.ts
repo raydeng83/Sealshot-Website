@@ -7,15 +7,34 @@ function timingSafeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
-/** Standard Webhooks HMAC-SHA256 verification (Polar). */
+/**
+ * Standard Webhooks HMAC-SHA256 verification, as POLAR actually implements it.
+ *
+ * The spec says a secret is `whsec_` + base64, and the standardwebhooks library
+ * strips that prefix and base64-DECODES the rest to get the key. Polar does not
+ * hand it a spec-shaped secret. From polarsource/polar-js `src/webhooks.ts`:
+ *
+ *     const base64Secret = Buffer.from(secret, "utf-8").toString("base64");
+ *     const webhook = new Webhook(base64Secret);
+ *
+ * It base64-ENCODES the whole dashboard secret first, which the library then
+ * decodes straight back. So the HMAC key is the raw UTF-8 bytes of the secret
+ * string exactly as the Polar dashboard shows it — `whsec_` prefix INCLUDED,
+ * and no base64 decoding anywhere.
+ *
+ * Getting this wrong fails closed and looks like a mystery: every delivery
+ * returns 401, and after 10 consecutive non-2xx Polar disables the endpoint and
+ * later orders go silently unfulfilled.
+ */
 export async function verifyPolarSignature(rawBody: string, headers: Headers, secret: string): Promise<boolean> {
   const id = headers.get('webhook-id');
   const ts = headers.get('webhook-timestamp');
   const sigHeader = headers.get('webhook-signature');
   if (!id || !ts || !sigHeader) return false;
 
-  const secretB64 = secret.startsWith('whsec_') ? secret.slice('whsec_'.length) : secret;
-  const keyBytes = Uint8Array.from(atob(secretB64), (c) => c.charCodeAt(0));
+  // Trim: a secret pasted into `wrangler secret put` can carry a trailing
+  // newline, which would change every HMAC.
+  const keyBytes = utf8ToBytes(secret.trim());
   const key = await crypto.subtle.importKey('raw', keyBytes, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   const mac = await crypto.subtle.sign('HMAC', key, utf8ToBytes(`${id}.${ts}.${rawBody}`));
   let expected = '';
