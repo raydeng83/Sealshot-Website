@@ -428,19 +428,28 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
   but the FTC compliance page was unreachable when this was written — worth
   confirming yourself before committing.
 
-### Privacy policy — must land with the above, never after
+### Privacy policy
 
-`src/pages/privacy.astro` currently states *"seal-shot.com is a static site.
-It uses no cookies, no trackers, and no analytics."*
-
+- [x] **Rewritten 2026-08-02** (`946ddb3`). The "no cookies, no trackers, and
+      no analytics" sentence now describes Cloudflare Web Analytics honestly,
+      and a new **Buying a license** section covers Polar as merchant of
+      record, exactly what the Worker stores in KV, Resend holding the sent
+      message *including the attached licence file*, retention for the life of
+      the licence, and deletion on request.
+- [x] App section left unchanged — "no telemetry, no account" is still true and
+      is the product's core claim.
 - [ ] Add a **subscriber list** paragraph: provider, what's stored, how to
-      unsubscribe, how to be deleted
-- [ ] **Rewrite the "no analytics" sentence** — Cloudflare Web Analytics is
-      going in, so describe it honestly: cookieless, aggregate, identifies
-      nobody. Shipping analytics while the policy still says "no analytics"
-      is the one version of this that damages credibility.
-- [ ] Keep the app section unchanged — "no telemetry, no account" is still
-      true and is the product's core claim
+      unsubscribe, how to be deleted. *(Still outstanding — the newsletter
+      paragraph predates Kit being confirmed.)*
+
+> ⚠️ **The policy now describes analytics that are not yet running.** That was
+> a deliberate call: the site is behind Access, so no member of the public can
+> read the policy at all, and over-disclosure is the safe direction. But it
+> means **Cloudflare Web Analytics must be enabled before Access comes off** —
+> otherwise the first public version of the policy claims a service that isn't
+> there. Not credibility-damaging like the reverse would be, but wrong.
+>
+> Enforced by the Phase 7 gate below.
 
 ---
 
@@ -471,6 +480,30 @@ curl -sI https://seal-shot.com/docs/workflows/remember/        # → /docs/workf
 ---
 
 ## Phase 7 — Go public
+
+### Blockers that are already written into the code, and fail silently
+
+Each of these is committed and marked in-file. None of them errors — that is
+exactly why they need a checklist.
+
+- [ ] **`src/config/promos.ts`** — replace the three **sandbox** checkout URLs
+      with production ones and set `CHECKOUT_IS_SANDBOX = false`. A test fails
+      if the flag and the URLs disagree, so a half-done swap can't ship.
+- [ ] **`PRODUCT_MAP` in `workers/license-fulfillment/wrangler.toml`** — swap
+      sandbox product ids for production ones. Nothing fails if you forget:
+      every purchase quietly resolves to a 12-month new licence, so a founding
+      buyer silently loses six months and a renewal mints a *second* licence.
+      The only signal is the unmapped-product alert.
+- [ ] **`POLAR_WEBHOOK_SECRET`** — set to the *production* endpoint's secret.
+      Leave the sandbox one and every real webhook returns 401; after ten
+      consecutive failures Polar disables the endpoint and orders go
+      unfulfilled with no error anywhere.
+- [ ] **`EMAIL_FROM` in `wrangler.toml`** — restore
+      `license@mail.seal-shot.com`. It is currently Resend's test sender, which
+      can only deliver to the account owner, so a real buyer receives nothing.
+      Requires `mail.seal-shot.com` verified in Resend first (Phase 3).
+- [ ] **Enable Cloudflare Web Analytics** — the privacy policy already
+      describes it. See the Phase 5 note.
 
 - [ ] Final pass: every Phase 4 test green
 - [ ] Delete (or empty) the Access application(s) — **the site itself never
