@@ -20,7 +20,8 @@ describe('issueLicense', () => {
   it('produces a file whose signature verifies and whose preamble hash matches', async () => {
     const file = await issueLicense(
       { name: 'Jane Doe', email: 'jane@example.com', issued: '2026-07-20',
-        updatesThrough: '2027-07-20', seats: 1, id: '550E8400-E29B-41D4-A716-446655440000' },
+        updatesThrough: '2027-07-20', seats: 1, id: '550E8400-E29B-41D4-A716-446655440000',
+        licenseType: 'individual' },
       priv,
     );
 
@@ -44,10 +45,16 @@ describe('issueLicense', () => {
     // Payload fields
     const payload = JSON.parse(new TextDecoder().decode(payloadBytes));
     expect(payload).toMatchObject({
-      edition: 'pro', email: 'jane@example.com', name: 'Jane Doe', seats: 1,
+      licenseType: 'individual', email: 'jane@example.com', name: 'Jane Doe', seats: 1,
       issued: '2026-07-20', updatesThrough: '2027-07-20',
       id: '550E8400-E29B-41D4-A716-446655440000',
     });
+    // `edition` was replaced by `licenseType` in v2. The app now decodes
+    // licenseType as non-optional, so a payload carrying the old field and not
+    // the new one fails to decode entirely — assert the removal, not just the
+    // addition, since toMatchObject would happily ignore a leftover `edition`.
+    expect(payload.edition).toBeUndefined();
+    expect(Object.keys(payload)).toEqual([...Object.keys(payload)].sort());
 
     // Preamble hash binds to payload.textHash
     const preamble = lines.slice(0, lines.indexOf(blobLine)).join('\n').replace(/\n+$/, '');

@@ -1,5 +1,10 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  // workers/ is a separate Cloudflare Workers project with its own tsconfig and
+  // its own @cloudflare/workers-types. Included here it produces dozens of
+  // "Cannot find name 'KVNamespace'" errors that have nothing to do with the
+  // site, which makes `npx tsc --noEmit` useless as a gate at this level.
+  // Typecheck the Worker with `npx tsc --noEmit` inside its own directory.
+  "exclude": ["dist", "workers"]
 }

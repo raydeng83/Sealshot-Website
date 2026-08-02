@@ -49,7 +49,7 @@ Cloudflare zone, so the custom domain can't be gated until DNS moves.
 
 ### Inventory before touching anything
 
-Current state, captured 2026-07-30:
+Original state, captured 2026-07-30:
 
 | Record | Value |
 |---|---|
@@ -61,28 +61,48 @@ Current state, captured 2026-07-30:
 | SPF | `v=spf1 include:mailgun.org ~all` |
 | `mail.seal-shot.com` | **no records at all** |
 
-- [ ] **Find where Mailgun currently forwards `support@seal-shot.com`.**
+- [x] **Find where Mailgun currently forwards `support@seal-shot.com`.**
       This is the single most important unknown — the MX change in Phase 3
       abandons that forwarding, and `support@` is printed on the support page.
-      **Finding:** _______________________________________________
+      **Finding:** MX is Mailgun, and the zone carries an RSA DKIM key at
+      `mailo._domainkey` — so the forwarding almost certainly terminates in a
+      **Mailo** mailbox. Confirm the destination address in the Mailgun
+      dashboard (Receiving → Routes) before Phase 3 replaces the MX.
 - [ ] Log into the Squarespace DNS panel and screenshot the full record list
       (external lookups can't see everything).
 - [ ] Note anything else using the Squarespace site that would break.
 
 ### Migrate
 
-- [ ] Cloudflare dashboard → **Add a site** → `seal-shot.com` → **Free** plan
-- [ ] Let Cloudflare scan, then **compare its imported records against the
+- [x] Cloudflare dashboard → **Add a site** → `seal-shot.com` → **Free** plan
+- [x] Let Cloudflare scan, then **compare its imported records against the
       table above.** Confirm specifically:
-  - [ ] MX → both `mxa`/`mxb.mailgun.org`
-  - [ ] TXT → the SPF record
-- [ ] Add anything missing **by hand now**, while the old nameservers are
+  - [x] MX → both `mxa`/`mxb.mailgun.org`
+  - [x] TXT → the SPF record
+- [x] Add anything missing **by hand now**, while the old nameservers are
       still authoritative
-- [ ] Change nameservers at Squarespace to Cloudflare's two
-- [ ] Wait for the zone to show **Active** (usually under an hour)
+- [x] Change nameservers at Squarespace to Cloudflare's two
+- [x] Wait for the zone to show **Active** (usually under an hour)
 
 **Verify:** `dig +short NS seal-shot.com` returns Cloudflare nameservers, and
 `dig +short MX seal-shot.com` still returns the Mailgun (or new) MX.
+
+**Verified 2026-08-01:** nameservers are `angela` / `lamar.ns.cloudflare.com`
+(SOA is Cloudflare, zone updated 20:40 UTC); MX, SPF and the `mailo` DKIM key
+all survived the import.
+
+### Registrar transfer — separate, and not required
+
+The registration is **still with Squarespace Domains** and still carries
+`clientTransferProhibited`. That is fine: nameserver delegation is what makes
+Cloudflare authoritative, and it is already done, so nothing below is blocked
+on this. Moving the registration to Cloudflare Registrar needs the lock lifted
+and an auth code from Squarespace, and can happen any time before the
+June 2027 renewal.
+
+**Do not cancel the Squarespace site subscription yet.** If the domain was
+bundled with an annual plan, cancelling can put the free domain at risk.
+Confirm the domain is billed separately first.
 
 ---
 
@@ -90,26 +110,73 @@ Current state, captured 2026-07-30:
 
 Depends on Phase 1 being Active.
 
-- [ ] Pages project → **Custom domains** → add `seal-shot.com`
-- [ ] Add `www.seal-shot.com`, plus a redirect rule (www → apex) so there's
-      one canonical host
-- [ ] Confirm TLS certificates issue (automatic, a few minutes)
-- [ ] **This replaces the Squarespace "Coming Soon" page** — the real site
-      takes over, still behind Access
+**Order matters.** Extend Access *before* attaching the domain. Attaching it
+creates a proxied record that starts serving the real site immediately, while
+the Access application still covers only `sealshot-website.pages.dev` — so
+doing it the other way round leaves the unfinished site publicly readable for
+as long as the gap lasts. Adding the destinations first costs nothing: they
+stay inert until a proxied record for the hostname exists.
+
 - [ ] Zero Trust → **Access controls → Applications** → your app →
       **Destinations**: add `seal-shot.com` (subdomain blank) and
       `*.seal-shot.com`
+- [ ] Pages project → **Custom domains** → add `seal-shot.com`
+- [ ] Add `www.seal-shot.com` too. It redirects rather than serves, but it
+      still needs its own certificate — without one, `https://www.…` fails at
+      TLS before any redirect can fire.
+- [ ] Cloudflare will flag the conflicting Squarespace records; let it replace
+      them, then **re-check DNS**: the four apex `A` records and the `ext-sq`
+      CNAME should be gone, and MX / SPF / `mailo._domainkey` still present.
+- [ ] Confirm TLS certificates issue (automatic, a few minutes)
+- [ ] **This replaces the Squarespace "Coming Soon" page** — the real site
+      takes over, still behind Access
+- [ ] Rules → **Redirect Rules**: hostname equals `www.seal-shot.com` →
+      `concat("https://seal-shot.com", http.request.uri.path)`, 301, preserve
+      query string.
 
-**Verify — all four must return `302` to `…cloudflareaccess.com`:**
+Apex is canonical because `astro.config.mjs` sets `site:
+'https://seal-shot.com'`, which drives the sitemap and canonical tags. But the
+app ships `buyURL = "https://www.seal-shot.com/buy"`
+(`LicenseKeys.swift:27`) — the **www** form. The redirect preserves the path,
+so the in-app Buy button still reaches `/buy` and the app needs no change.
+Skip the redirect rule and that button breaks.
+
+**Verify.** These three must return `302` to `…cloudflareaccess.com`:
 
 ```
 curl -sI https://seal-shot.com/docs/
-curl -sI https://www.seal-shot.com/
 curl -sI https://sealshot-website.pages.dev/docs/
 curl -sI https://<some-preview-hash>.sealshot-website.pages.dev/
 ```
 
 A `200` on any of them means that hostname is publicly readable.
+
+`www` is the interesting one. Whether the redirect or the Access gate fires
+first is not something to assume — just look:
+
+```
+curl -sI  https://www.seal-shot.com/buy      # 301 → apex, or 302 → Access?
+curl -sIL https://www.seal-shot.com/buy      # follow it all the way
+```
+
+Either order is acceptable. If Access wins, a logged-out visitor to `www`
+authenticates for `www.seal-shot.com`, gets redirected to the apex, and may be
+asked to authenticate again for `seal-shot.com` — mildly annoying during the
+private phase, and irrelevant once Access comes off at launch. What must hold
+in both orders is that **`/buy` survives the redirect**, because that is where
+the app's Buy button points.
+
+- [x] Also confirm mail still resolves after the record surgery:
+      `dig +short MX seal-shot.com` returns both Mailgun hosts.
+- [ ] Delete the leftover `_domainconnect` CNAME (→
+      `_domainconnect.domains.squarespace.com`). Harmless, but it is what lets
+      Squarespace's Domain Connect flow reconfigure records, and nothing needs
+      it now.
+
+**Verified 2026-08-01:** apex and `www` are both proxied CNAMEs to
+`sealshot-website.pages.dev`, certificates valid for both, and both return
+`302` to `…cloudflareaccess.com`. No redirect rule existed at the time of this
+check, so `www` was serving rather than redirecting.
 
 - [ ] Confirm the Access policy allows **specific emails**, not "all
       authenticated users" — with one-time PIN as the only identity provider,
@@ -122,6 +189,38 @@ A `200` on any of them means that hostname is publicly readable.
 
 Depends on Phase 1. Independent of Phase 4, so it can run in parallel.
 
+### Read this first — the zone already enforces strict DMARC
+
+The imported zone carries a DMARC record nobody on this project wrote:
+
+```
+v=DMARC1; p=reject; pct=100; fo=1; ri=3600; sp=reject;
+adkim=s; aspf=s;
+rua=mailto:…@dmarc.mailgun.org,mailto:…@inbox.ondmarc.com
+ruf=…
+```
+
+Three parts of that change how carefully the rest of this phase must be done:
+
+- **`p=reject` / `sp=reject`** — a message that fails DMARC is *rejected at the
+  receiving server*, not filed in spam. A misconfiguration here does not
+  degrade deliverability; it stops mail entirely, and the buyer never sees a
+  licence. `sp=reject` means the policy applies to `mail.seal-shot.com` too.
+- **`aspf=s`** (strict SPF alignment) — the SPF-authenticated domain must
+  *exactly* equal the From domain. Sending as `license@mail.seal-shot.com`
+  therefore needs an SPF record **on `mail.seal-shot.com` itself**; inheriting
+  the apex SPF does not satisfy strict alignment.
+- **`adkim=s`** (strict DKIM alignment) — the DKIM signature's `d=` must
+  exactly equal `mail.seal-shot.com`. Resend's subdomain setup does produce
+  this, provided its DKIM record goes under the subdomain.
+
+The `rua`/`ruf` reports go to Mailgun and OnDMARC addresses. If you can't read
+those mailboxes you will get no failure reports, which makes the verification
+steps below the only feedback loop you have.
+
+None of this affects Polar sandbox testing, which sends from `resend.dev`
+under its own DMARC policy.
+
 ### Human mail — Workspace alias domain
 
 - [ ] Admin console → **Account → Domains → Manage domains → Add a domain →
@@ -130,7 +229,10 @@ Depends on Phase 1. Independent of Phase 4, so it can run in parallel.
 - [ ] Change **MX** to Google (`smtp.google.com`) — **this is the destructive
       step that ends the Mailgun forwarding recorded in Phase 1**
 - [ ] Update **SPF** to `v=spf1 include:_spf.google.com ~all`
-- [ ] Enable **DKIM** for the alias domain and add its TXT record
+- [ ] Enable **DKIM** for the alias domain and add its TXT record. Not
+      optional — with `adkim=s` and `p=reject`, mail sent as
+      `support@seal-shot.com` without a `d=seal-shot.com` signature is
+      rejected, not spam-filed.
 - [ ] Create a free **Google Group** `support@bostonidentity.com` (alias
       domains mirror existing usernames, so this is what makes
       `support@seal-shot.com` exist)
@@ -145,17 +247,29 @@ Depends on Phase 1. Independent of Phase 4, so it can run in parallel.
 
 - [ ] Resend account → **Add domain** → `mail.seal-shot.com` (uses the one
       domain the free tier allows)
-- [ ] Add the records Resend generates, in Cloudflare DNS:
+- [ ] Add the records Resend generates, in Cloudflare DNS — all of them
+      **under `mail.seal-shot.com`**, not the apex, or strict alignment fails:
   - [ ] TXT (SPF) on the subdomain
   - [ ] TXT (DKIM) on Resend's selector
   - [ ] MX on the subdomain (routes bounces back to Resend)
-- [ ] Optionally add a DMARC TXT record on the apex
+- [ ] Leave the apex DMARC record alone. It is already stricter than anything
+      we would add, and `sp=reject` already covers the subdomain.
 - [ ] Wait for Resend to show the domain **Verified**
 - [ ] Create the API key → this becomes the `RESEND_API_KEY` secret in Phase 4
 
 **Verify:** send a test email from the Resend dashboard as
-`license@mail.seal-shot.com` to a real inbox; confirm it lands in **Inbox,
-not spam**, and that headers show SPF and DKIM passing.
+`license@mail.seal-shot.com` to a real inbox — ideally one outside Google, so
+you are not only testing the friendliest receiver. Then open the raw headers
+and confirm **three** things, not two:
+
+- `spf=pass` **and** the SPF domain is `mail.seal-shot.com` (not the apex)
+- `dkim=pass` **and** `d=mail.seal-shot.com`
+- `dmarc=pass`
+
+With `adkim=s`/`aspf=s`, a `pass` on the wrong domain still fails alignment,
+and `p=reject` turns that into a bounce. Checking only "did it arrive" will
+not catch it — a message can arrive from a lenient receiver and be rejected by
+a strict one.
 
 ---
 
@@ -350,7 +464,7 @@ curl -sI https://seal-shot.com/docs/workflows/remember/        # → /docs/workf
 - [ ] Confirm `/download/` resolves the current DMG from the Sealshot-Release
       repo
 - [ ] Consider compressing `capture-area.png` (9.8 MB) and
-      `capture-window.png` (8.4 MB) — biggest page-weight items on the site
+      `capture-window.jpg` (8.4 MB) — biggest page-weight items on the site
 - [ ] Update the consolidated PDF (`output/README.md` has the steps) if you
       want the launch edition to match the shipped docs
 

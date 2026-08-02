@@ -61,7 +61,7 @@ When the [enhanced on-device model](/docs/guide/redaction/#the-enhanced-on-devic
 is downloaded, extraction uses it too, recognizing entities by meaning
 rather than pattern.
 
-![The Extracted Data window](/manual/extract-data.png)
+![The Extracted Data window](/manual/extract-data.jpg)
 *A screenshot's tables and fields, extracted into clean, copyable text.*
 
 ## Enhance Clarity and Remove Background

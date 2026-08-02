@@ -32,12 +32,12 @@ function fakeCtx() {
   };
 }
 
-const SECRET_RAW = 'unit_test_secret_key_padding____';
-const SECRET_B64 = btoa(SECRET_RAW);
+// Key is the raw UTF-8 bytes of the whole secret, as Polar signs. See src/polar.ts.
+const SECRET = 'whsec_unit_test_secret_value';
 
-async function signedRequest(body: string, secretB64: string, ts = String(Math.floor(Date.now() / 1000))) {
+async function signedRequest(body: string, secret: string, ts = String(Math.floor(Date.now() / 1000))) {
   const id = 'msg_1';
-  const key = await crypto.subtle.importKey('raw', utf8ToBytes(atob(secretB64)), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const key = await crypto.subtle.importKey('raw', utf8ToBytes(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   const mac = await crypto.subtle.sign('HMAC', key, utf8ToBytes(`${id}.${ts}.${body}`));
   return new Request('https://w/webhooks/polar', {
     method: 'POST', body,
@@ -51,7 +51,7 @@ function makeEnv(fetchImpl: typeof fetch, extra: Record<string, unknown> = {}) {
     env: {
       ORDERS: fakeKV(),
       SIGNING_KEY_B64: bytesToBase64(priv),
-      POLAR_WEBHOOK_SECRET: `whsec_${SECRET_B64}`,
+      POLAR_WEBHOOK_SECRET: SECRET,
       RESEND_API_KEY: 'rk',
       EMAIL_FROM: 'Sealshot <license@mail.seal-shot.com>',
       REPLY_TO: 'support@seal-shot.com',
@@ -73,7 +73,7 @@ describe('worker handler', () => {
   it('issues + emails on a valid order.paid, returns 200', async () => {
     const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
-    const res = await worker.fetch(await signedRequest(ORDER, SECRET_B64), env);
+    const res = await worker.fetch(await signedRequest(ORDER, SECRET), env);
     expect(res.status).toBe(200);
     expect(fetchImpl).toHaveBeenCalledOnce();
     expect((await readRec(env)).state).toBe('sent');
@@ -84,7 +84,7 @@ describe('worker handler', () => {
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
     const { ctx, settle } = fakeCtx();
 
-    const res = await worker.fetch(await signedRequest(ORDER, SECRET_B64), env, ctx);
+    const res = await worker.fetch(await signedRequest(ORDER, SECRET), env, ctx);
     // 200 comes back with the send still outstanding — the order is recorded,
     // so finishing delivery is our job, not Polar's.
     expect(res.status).toBe(200);
@@ -103,17 +103,17 @@ describe('worker handler', () => {
       return new Response('{}', { status: 200 });
     });
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
-    await worker.fetch(await signedRequest(ORDER, SECRET_B64), env);
+    await worker.fetch(await signedRequest(ORDER, SECRET), env);
     expect(JSON.parse(sentBody).reply_to).toBe('support@seal-shot.com');
   });
 
   it('is idempotent: second delivery skips re-issue and re-email, still 200', async () => {
     const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
-    expect((await worker.fetch(await signedRequest(ORDER, SECRET_B64), env)).status).toBe(200);
+    expect((await worker.fetch(await signedRequest(ORDER, SECRET), env)).status).toBe(200);
     const firstLicenseId = (await readRec(env)).licenseId;
 
-    expect((await worker.fetch(await signedRequest(ORDER, SECRET_B64), env)).status).toBe(200);
+    expect((await worker.fetch(await signedRequest(ORDER, SECRET), env)).status).toBe(200);
     expect(fetchImpl).toHaveBeenCalledOnce();
     const rec2 = await readRec(env);
     expect(rec2.state).toBe('sent');
@@ -125,7 +125,7 @@ describe('worker handler', () => {
     // not Polar's. Returning 500 here would risk Polar disabling the endpoint.
     const fetchImpl = vi.fn(async () => new Response('nope', { status: 500 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
-    const res = await worker.fetch(await signedRequest(ORDER, SECRET_B64), env);
+    const res = await worker.fetch(await signedRequest(ORDER, SECRET), env);
     expect(res.status).toBe(200);
     const rec = await readRec(env);
     expect(rec.state).toBe('pending');
@@ -140,7 +140,7 @@ describe('worker handler', () => {
       throw new Error('kv down');
     }) as unknown as KVNamespace['put'];
 
-    const res = await worker.fetch(await signedRequest(ORDER, SECRET_B64), env);
+    const res = await worker.fetch(await signedRequest(ORDER, SECRET), env);
     expect(res.status).toBe(500); // nothing kept, so Polar should redeliver
     expect(fetchImpl).not.toHaveBeenCalled();
   });
@@ -151,7 +151,7 @@ describe('worker handler', () => {
     const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
     const staleTs = String(Math.floor(Date.now() / 1000) - 48 * 3600);
-    const res = await worker.fetch(await signedRequest(ORDER, SECRET_B64, staleTs), env);
+    const res = await worker.fetch(await signedRequest(ORDER, SECRET, staleTs), env);
     expect(res.status).toBe(400);
     expect(fetchImpl).not.toHaveBeenCalled();
   });
@@ -160,7 +160,7 @@ describe('worker handler', () => {
     const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
     const olderTs = String(Math.floor(Date.now() / 1000) - 4 * 3600);
-    const res = await worker.fetch(await signedRequest(ORDER, SECRET_B64, olderTs), env);
+    const res = await worker.fetch(await signedRequest(ORDER, SECRET, olderTs), env);
     expect(res.status).toBe(200);
     expect(fetchImpl).toHaveBeenCalledOnce();
   });
@@ -181,7 +181,7 @@ describe('worker handler', () => {
       type: 'checkout.created',
       data: { id: 'ord_2', created_at: '2026-07-20T10:00:00Z', customer: { email: 'buyer@example.com', name: 'Buy Er' } },
     });
-    expect((await worker.fetch(await signedRequest(body, SECRET_B64), env)).status).toBe(200);
+    expect((await worker.fetch(await signedRequest(body, SECRET), env)).status).toBe(200);
     expect(fetchImpl).not.toHaveBeenCalled();
     expect(await env.ORDERS.get('order:ord_2')).toBeNull();
   });
@@ -189,7 +189,7 @@ describe('worker handler', () => {
   it('rejects a bad signature with 401', async () => {
     const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
-    const res = await worker.fetch(await signedRequest(ORDER, btoa('the_wrong_secret_key_padding___')), env);
+    const res = await worker.fetch(await signedRequest(ORDER, 'whsec_the_wrong_secret'), env);
     expect(res.status).toBe(401);
     expect(fetchImpl).not.toHaveBeenCalled();
   });
@@ -201,7 +201,7 @@ describe('worker handler', () => {
       type: 'order.paid',
       data: { id: 'ord_3', created_at: '2026-07-20T10:00:00Z', customer: { email: 'buyer@example.com', name: 'Buy‮Er' } },
     });
-    expect((await worker.fetch(await signedRequest(body, SECRET_B64), env)).status).toBe(200);
+    expect((await worker.fetch(await signedRequest(body, SECRET), env)).status).toBe(200);
     expect(fetchImpl).not.toHaveBeenCalled();
     expect((await readRec(env, 'ord_3')).state).toBe('rejected');
   });
@@ -215,7 +215,7 @@ describe('scheduled retry', () => {
     );
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
 
-    await worker.fetch(await signedRequest(ORDER, SECRET_B64), env);
+    await worker.fetch(await signedRequest(ORDER, SECRET), env);
     const pendingRec = await readRec(env);
     expect(pendingRec.state).toBe('pending');
 
@@ -239,7 +239,7 @@ describe('scheduled retry', () => {
   it('leaves settled orders alone', async () => {
     const fetchImpl = vi.fn(async () => new Response('{}', { status: 200 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
-    await worker.fetch(await signedRequest(ORDER, SECRET_B64), env);
+    await worker.fetch(await signedRequest(ORDER, SECRET), env);
     expect((await readRec(env)).state).toBe('sent');
 
     await worker.scheduled({} as ScheduledEvent, env);
@@ -249,7 +249,7 @@ describe('scheduled retry', () => {
   it('respects backoff: a just-attempted order is not retried immediately', async () => {
     const fetchImpl = vi.fn(async () => new Response('nope', { status: 500 }));
     const { env } = makeEnv(fetchImpl as unknown as typeof fetch);
-    await worker.fetch(await signedRequest(ORDER, SECRET_B64), env);
+    await worker.fetch(await signedRequest(ORDER, SECRET), env);
     expect(fetchImpl).toHaveBeenCalledOnce();
 
     await worker.scheduled({} as ScheduledEvent, env);

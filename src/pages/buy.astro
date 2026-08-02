@@ -1,15 +1,21 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { activePromo, formatUSD, REGULAR_PRICE_CENTS, BASE_CHECKOUT_URL } from '../config/promos';
+import {
+  activeOffer, formatUSD, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS, BASE_CHECKOUT_URL,
+} from '../config/promos';
 
-const promo = activePromo(new Date());
-const checkoutUrl = promo?.polarCheckoutUrl ?? BASE_CHECKOUT_URL;
-const priceCents = promo?.priceCents ?? REGULAR_PRICE_CENTS;
+const offer = activeOffer(new Date());
+const checkoutUrl = offer?.checkoutUrl ?? BASE_CHECKOUT_URL;
+const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
+// The founding product grants a LONGER window, not just a lower price, so the
+// term has to come from the active offer. Hardcoding 12 would under-sell what
+// the Worker actually issues.
+const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
 ---
 
 <SiteLayout
   title="Buy Sealshot"
-  description="Buy Sealshot for Mac — a one-time purchase with 12 months of updates. Signed, notarized, on-device only."
+  description={`Buy Sealshot for Mac — a one-time purchase with ${updateMonths} months of updates. Signed, notarized, on-device only.`}
 >
   <section class="hero">
     <div class="wrap">
@@ -17,9 +23,9 @@ const priceCents = promo?.priceCents ?? REGULAR_PRICE_CENTS;
       <h1>One purchase. Yours to keep.</h1>
 
       <p class="price">
-        {promo && <span class="was">{formatUSD(REGULAR_PRICE_CENTS)}</span>}
+        {offer && <span class="was">{formatUSD(REGULAR_PRICE_CENTS)}</span>}
         <span class="now">{formatUSD(priceCents)}</span>
-        {promo && <span class="badge">{promo.label}</span>}
+        {offer && <span class="badge">{offer.label}</span>}
       </p>
 
       <div class="actions">
@@ -28,7 +34,7 @@ const priceCents = promo?.priceCents ?? REGULAR_PRICE_CENTS;
 
       <ul class="whatyouget">
         <li>Perpetual license — the app never stops working.</li>
-        <li>12 months of updates included.</li>
+        <li>{updateMonths} months of updates included.</li>
         <li>14-day free trial, no account required.</li>
         <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
         <li>macOS 14 or later · Apple Silicon &amp; Intel.</li>
@@ -44,12 +50,25 @@ const priceCents = promo?.priceCents ?? REGULAR_PRICE_CENTS;
 </SiteLayout>
 
 <style>
-  .price { font-size: 2rem; display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+  /* Flex children ignore the hero's text-align, so centre them explicitly —
+     without this the price row packs to the left of a centred page. */
+  .price {
+    font-size: 2rem; display: flex; align-items: baseline; gap: .6rem;
+    flex-wrap: wrap; justify-content: center;
+  }
   .price .was { text-decoration: line-through; opacity: .55; font-size: 1.3rem; }
   .price .now { font-weight: 700; }
   .price .badge {
     font-size: .8rem; font-weight: 600; padding: .15rem .5rem; border-radius: 999px;
     background: var(--sl-color-accent-low, #e7f0ff); color: var(--sl-color-accent-high, #14396b);
   }
-  .whatyouget { margin: 1.5rem 0; line-height: 1.9; }
+  /* A centred list reads badly: the markers stay at the list's left edge while
+     the text drifts to the middle, so nothing lines up. Centre the BLOCK and
+     left-align the text inside it. */
+  .whatyouget {
+    margin: 2rem auto; line-height: 1.9;
+    max-width: 34rem; text-align: left;
+    padding-left: 1.25rem;
+  }
+  .fine-print { max-width: 34rem; margin: 1.5rem auto 0; }
 </style>

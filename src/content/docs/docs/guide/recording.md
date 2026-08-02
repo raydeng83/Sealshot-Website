@@ -24,7 +24,7 @@ recording (turn the prompt off there too, with **Ask before each recording**).
 A **3-second countdown** (configurable: off, 3, 5, or 10 seconds) gives you a
 moment to set the stage.
 
-![The Record prompt](/manual/record-prompt.png)
+![The Record prompt](/manual/record-prompt.jpg)
 *Confirm audio and countdown options, then start.*
 
 ## While recording

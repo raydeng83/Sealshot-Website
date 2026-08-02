@@ -35,7 +35,7 @@ wander into the take.
    the editor — press **Space** in the Library for a
    [quick look](/docs/guide/library/#preview).
 
-   ![The Record prompt](/manual/record-prompt.png)
+   ![The Record prompt](/manual/record-prompt.jpg)
 
 2. **Deliver** — **File → Export to Video…** writes a standard
    `.mp4`/`.mov` anyone can play, at your chosen

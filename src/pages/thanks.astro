@@ -1,0 +1,63 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Thank you — Sealshot"
+  description="Your Sealshot license is on its way by email."
+>
+  <section class="section wrap" aria-labelledby="thanks-title">
+    <p class="kicker">Thank you</p>
+    <h1 id="thanks-title">Your license is on its way</h1>
+    <p class="sub">
+      It arrives by email within a minute or two, as a file attachment. The
+      email address is the one you used at checkout.
+    </p>
+
+    <div class="thanks-card">
+      <h2>To activate</h2>
+      <ol>
+        <li>Open the attached <code>.sealshotlicense</code> file — Sealshot picks it up automatically.</li>
+        <li>Or open Sealshot, go to <strong>Settings ▸ License</strong>, and drag the file onto the window.</li>
+      </ol>
+      <p class="muted">
+        Keep the file. It's your proof of purchase, and it's what you'll use if
+        you move to a new Mac or reinstall.
+      </p>
+    </div>
+
+    <div class="thanks-card quiet">
+      <h2>Not there yet?</h2>
+      <p>
+        Check your spam folder first — a message with an attachment from a new
+        sender often lands there.
+      </p>
+      <p>
+        If it still hasn't arrived after ten minutes, email
+        <a href="mailto:support@seal-shot.com">support@seal-shot.com</a> and
+        we'll send it again. Your purchase is recorded either way, so nothing is
+        lost.
+      </p>
+    </div>
+
+    <p>
+      <a class="button secondary" href="/docs/quickstart/install/">Read the quickstart</a>
+    </p>
+  </section>
+</SiteLayout>
+
+<style>
+  .thanks-card {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    background: var(--surface-band);
+  }
+  .thanks-card.quiet { background: var(--surface-page); }
+  .thanks-card h2 { margin: 0 0 0.5rem; font-size: 1.125rem; }
+  .thanks-card ol { margin: 0 0 0.75rem; padding-left: 1.25rem; }
+  .thanks-card li { margin-bottom: 0.4rem; }
+  .muted { color: var(--slate-600); margin-bottom: 0; }
+</style>

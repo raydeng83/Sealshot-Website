@@ -1,0 +1,14 @@
+Sealshot License
+================
+Licensed to:      Acme, Inc.
+Purchaser email:  software@acme.example
+License ID:       946C87B1-C2D7-46E9-B8CF-D88EB86532EE
+License type:     Business Volume
+License issued:   2027-08-01
+App access:       Perpetual
+Updates through:  2028-09-15
+User seats:       10
+Macs per user:    2
+
+This is an offline, organization-wide license for up to 10 users.
+Sealshot does not transmit installation or usage information.

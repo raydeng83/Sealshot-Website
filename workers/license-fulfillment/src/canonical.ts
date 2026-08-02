@@ -31,6 +31,38 @@ export async function textHash(preamble: string): Promise<string> {
   return bytesToBase64(new Uint8Array(digest));
 }
 
+/**
+ * Wire values, deliberately not the display strings — the preamble renders
+ * TYPE_LABEL. Mirrors `LicenseType` (LicenseFormat.swift:21). The app decodes
+ * this field as non-optional and *fails* on an unknown value, so emitting a
+ * slug the shipped app doesn't know is indistinguishable from a corrupt file.
+ */
+export type LicenseTypeSlug = 'individual' | 'business-volume';
+
+/** Label column width. Was 17 in preamble v1; v2 widened it for `Updates through:`. */
+const LABEL_COLUMN = 18;
+
+/** A template constant, NOT a payload field — the app doesn't sign it. */
+const MACS_PER_USER = 2;
+
+const TYPE_LABEL: Record<LicenseTypeSlug, string> = {
+  individual: 'Individual',
+  'business-volume': 'Business Volume',
+};
+
+/**
+ * Port of LicenseFileFormat.buildPreamble (LicenseFormat.swift:163) — preamble v2.
+ *
+ * Three implementations must produce byte-identical output: this one, the app's
+ * Swift original, and licensegen. The SHA-256 of the canonicalized preamble is
+ * embedded in the signed payload, so a single byte of drift here makes every
+ * licence this Worker mints fail the app's tamper check as `textTampered` — the
+ * customer pays and cannot activate. `tests/preamble.test.ts` pins the bytes
+ * against fixtures shared with the app test suite; do not edit this template
+ * without updating all three.
+ *
+ * Returns no trailing newline. The fixture files have one, so tests trim.
+ */
 export function buildPreamble(p: {
   name: string;
   email: string;
@@ -38,21 +70,41 @@ export function buildPreamble(p: {
   issued: string;
   updatesThrough: string;
   seats: number;
+  licenseType: LicenseTypeSlug;
 }): string {
   const field = (label: string, value: string) =>
-    label.padEnd(Math.max(label.length, 17), ' ') + value;
-  return [
+    label.padEnd(Math.max(label.length, LABEL_COLUMN), ' ') + value;
+  const isVolume = p.licenseType === 'business-volume';
+  const lines = [
     'Sealshot License',
     '='.repeat(16),
     field('Licensed to:', p.name),
-    field('Email:', p.email),
+    field(isVolume ? 'Purchaser email:' : 'Email:', p.email),
     field('License ID:', p.id),
-    field('Issued:', p.issued),
+    field('License type:', TYPE_LABEL[p.licenseType]),
+    field('License issued:', p.issued),
+    field('App access:', 'Perpetual'),
     field('Updates through:', p.updatesThrough),
-    field('Seats:', String(p.seats)),
+    field(isVolume ? 'User seats:' : 'Users:', String(p.seats)),
+    field('Macs per user:', String(MACS_PER_USER)),
     '',
-    'Keep this file exactly as received. It is personally identifying and',
-    'cryptographically bound to the information above - any change to this',
-    'file, including removing this text, invalidates the license.',
-  ].join('\n');
+  ];
+  if (isVolume) {
+    // Volume licences omit the "Keep this file exactly as received" paragraph.
+    // Asymmetric on purpose — it comes from the source document, not an
+    // oversight. An org admin distributes this file internally by design.
+    lines.push(
+      `This is an offline, organization-wide license for up to ${p.seats} users.`,
+      'Sealshot does not transmit installation or usage information.'
+    );
+  } else {
+    lines.push(
+      'This license does not expire. It permits use of every Sealshot',
+      `release whose entitlement date is on or before ${p.updatesThrough}.`,
+      '',
+      'Keep this file exactly as received. The information above is',
+      'cryptographically signed; modifying it invalidates the license.'
+    );
+  }
+  return lines.join('\n');
 }

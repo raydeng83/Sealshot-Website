@@ -22,3 +22,24 @@
 # Getting started became the three-page Quickstart section (2026-07-30).
 /docs/guide/getting-started     /docs/quickstart/install/            301
 /docs/guide/getting-started/    /docs/quickstart/install/            301
+
+# capture-area was a 9.6MB PNG of a photo; re-encoded as JPEG (2026-08-02).
+/manual/capture-area.png            /manual/capture-area.jpg            301
+
+# Manual screenshots re-encoded from oversized PNG to JPEG (2026-08-02).
+/manual/capture-delayed.png            /manual/capture-delayed.jpg            301
+/manual/capture-window.png             /manual/capture-window.jpg             301
+/manual/capture-scrolling.png          /manual/capture-scrolling.jpg          301
+/manual/focus-crop.png                 /manual/focus-crop.jpg                 301
+/manual/editor-overview.png            /manual/editor-overview.jpg            301
+/manual/record-prompt.png              /manual/record-prompt.jpg              301
+/manual/extract-data.png               /manual/extract-data.jpg               301
+/manual/library-grid.png               /manual/library-grid.jpg               301
+/manual/library-marquee.png            /manual/library-marquee.jpg            301
+/manual/library-search.png             /manual/library-search.jpg             301
+/manual/library-deleted.png            /manual/library-deleted.jpg            301
+/manual/security-setting.png           /manual/security-setting.jpg           301
+/manual/settings-general.png           /manual/settings-general.jpg           301
+/manual/settings-permissions.png       /manual/settings-permissions.jpg       301
+/manual/settings-shortcuts.png         /manual/settings-shortcuts.jpg         301
+

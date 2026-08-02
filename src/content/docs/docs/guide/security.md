@@ -26,7 +26,7 @@ Open **Settings → Privacy & Security** and turn on **Enhanced security**.
 Sealshot encrypts your existing captures (a progress bar shows the work) and
 then walks you through the recovery-key ceremony.
 
-![The Enhanced security setting](/manual/security-setting.png)
+![The Enhanced security setting](/manual/security-setting.jpg)
 *Enable Enhanced security in Settings → Privacy & Security.*
 
 ### Save your recovery code

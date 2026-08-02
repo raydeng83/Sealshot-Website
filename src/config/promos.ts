@@ -1,35 +1,86 @@
-export const REGULAR_PRICE_CENTS = 2999;
+/**
+ * What the Buy button points at, and what price to show next to it.
+ *
+ * The founding tier is a SEPARATE Polar product, not a discount code. That is
+ * forced by fulfilment: the Worker maps a Polar `product_id` to an update term
+ * (`PRODUCT_MAP` in workers/license-fulfillment/wrangler.toml), and a
+ * discounted purchase arrives with the same product_id as a full-price one —
+ * so a coupon could not express "18 months instead of 12". One product per
+ * term keeps the price the customer sees and the licence they receive in sync.
+ *
+ * Prices here are DISPLAY ONLY. Polar is authoritative on what is charged, and
+ * the Worker is authoritative on the update window.
+ */
 
-// Base Polar checkout link (no discount). Replace <...> with the real product link in Task 12.
-export const BASE_CHECKOUT_URL = 'https://buy.polar.sh/<product-checkout-id>';
+/**
+ * ⚠️ These are SANDBOX checkout links. Real money is not involved and the
+ * product ids they resolve to exist only in Polar's sandbox.
+ *
+ * At launch, all of the following must change together:
+ *   1. the three URLs below, to their production equivalents
+ *      (`api.polar.sh`, not `sandbox-api.polar.sh`)
+ *   2. this flag, to false
+ *   3. PRODUCT_MAP in the Worker, to the production product ids
+ *   4. POLAR_WEBHOOK_SECRET, to the production endpoint's secret
+ *
+ * `tests/promos.test.ts` fails if this flag and the URLs disagree, so a
+ * half-finished swap can't ship quietly. It cannot catch step 3 or 4.
+ */
+export const CHECKOUT_IS_SANDBOX = true;
 
-export type Promo = {
+export const REGULAR_PRICE_CENTS = 4900;
+export const RENEWAL_PRICE_CENTS = 2400;
+
+/** Months of updates included with the regular licence. */
+export const REGULAR_UPDATE_MONTHS = 12;
+
+/** Full-price checkout — the fallback when no time-limited offer is running. */
+export const BASE_CHECKOUT_URL =
+  'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_FGg6cR9hQvHj6Ojx9XAZKx4zYUg4iQWklT8V52uIGai/redirect';
+
+/**
+ * Renewal checkout. The /renew page appends `reference_id=<licenseId>` and
+ * `customer_email=<email>`; Polar copies both into the Checkout Session
+ * metadata and then onto the order, which is how the Worker attaches the
+ * renewal to an existing licence instead of minting a new one.
+ */
+export const RENEWAL_CHECKOUT_URL =
+  'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_6xX6nk2EJZhqLq2jmFoGlrOfSc5PVFYKHAUT80I1WzB/redirect';
+
+export type Offer = {
   id: string;
   label: string;
-  polarCheckoutUrl: string; // Polar checkout link with the discount pre-applied
-  priceCents: number;       // DISPLAY only — Polar is authoritative on the charge
-  startsAt: string;         // ISO 8601
-  endsAt: string;           // ISO 8601, exclusive
+  /** Polar checkout link for this offer's own product. */
+  checkoutUrl: string;
+  /** DISPLAY only — Polar is authoritative on the charge. */
+  priceCents: number;
+  /** Months of updates this product grants. Must match PRODUCT_MAP. */
+  updateMonths: number;
+  startsAt: string; // ISO 8601
+  endsAt: string;   // ISO 8601, exclusive
 };
 
-// Add future promos by appending entries + creating the matching Polar discount.
-export const PROMOS: Promo[] = [
+export const OFFERS: Offer[] = [
   {
-    id: 'launch-2026',
-    label: 'Launch price',
-    polarCheckoutUrl: 'https://buy.polar.sh/<product-checkout-id>?discount_code=LAUNCH',
-    priceCents: 1499,
-    startsAt: '2026-07-20T00:00:00Z',
-    endsAt: '2026-09-01T00:00:00Z',
+    id: 'founding',
+    label: 'Founding price',
+    checkoutUrl:
+      'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_TYsHg17rjvhPYrCXOVtDSYKXLC1c9hZvSaCIm4W9y7y/redirect',
+    priceCents: 3900,
+    updateMonths: 18,
+    startsAt: '2026-08-01T00:00:00Z',
+    // TODO: this is a PLACEHOLDER. The founding tier is for buyers before the
+    // 1.0 release, so this must be set to the actual v1.0 release day — not
+    // left to expire on a date picked for convenience. Selling "founding"
+    // after 1.0 ships means charging $39 for a tier that no longer exists.
+    endsAt: '2027-01-01T00:00:00Z',
   },
 ];
 
-/** The single active promo (first whose window contains `now`), or null. */
-export function activePromo(now: Date): Promo | null {
+/** The single active offer (first whose window contains `now`), or null. */
+export function activeOffer(now: Date): Offer | null {
   const t = now.getTime();
-  return (
-    PROMOS.find((p) => t >= Date.parse(p.startsAt) && t < Date.parse(p.endsAt)) ?? null
-  );
+  return OFFERS.find((o) => t >= Date.parse(o.startsAt) && t < Date.parse(o.endsAt)) ?? null;
 }
 
 export function formatUSD(cents: number): string {

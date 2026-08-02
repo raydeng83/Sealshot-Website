@@ -30,10 +30,10 @@ and hover states survive):
 
 Press **Esc** to cancel.
 
-![Area selection overlay mid-drag](/manual/capture-area.png)
+![Area selection overlay mid-drag](/manual/capture-area.jpg)
 *Drag to select. Hold ⌘ to keep the selection adjustable before you confirm.*
 
-![Window capture with a window highlighted](/manual/capture-window.png)
+![Window capture with a window highlighted](/manual/capture-window.jpg)
 *Hover to highlight an element or window; scroll to grow the selection.*
 
 ## Fullscreen
@@ -51,7 +51,7 @@ opens the unified overlay on the frozen screen. Choose the delay — **3
 (default), 5, 10, or 15 seconds** — from the delay selector. Press **Esc**
 during the countdown to cancel.
 
-![Delayed-capture countdown](/manual/capture-delayed.png)
+![Delayed-capture countdown](/manual/capture-delayed.jpg)
 *A countdown gives you time to open menus or hover states.*
 
 ## Scrolling capture
@@ -67,7 +67,7 @@ seamless image.
 
 Press **Esc** at any time to cancel.
 
-![Scrolling capture in progress](/manual/capture-scrolling.png)
+![Scrolling capture in progress](/manual/capture-scrolling.jpg)
 *Sealshot scrolls and stitches a tall page into one image.*
 
 ## Live Capture

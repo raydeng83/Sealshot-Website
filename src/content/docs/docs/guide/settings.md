@@ -9,7 +9,7 @@ the left side: **General**, **Capture**, **Recording**, **On-Device AI**,
 **Privacy & Security**, and **About**. Most tabs have a **Reset** for their
 own options, and General adds a **Reset All**.
 
-![Settings → General](/manual/settings-general.png)
+![Settings → General](/manual/settings-general.jpg)
 *The General tab of Settings.*
 
 ## General
@@ -90,7 +90,7 @@ Capture / Recording / App cards. Each has a default you can rebind or clear;
 combos already assigned to another action are rejected. See
 [Keyboard shortcuts](/docs/guide/shortcuts/).
 
-![Settings → Shortcuts](/manual/settings-shortcuts.png)
+![Settings → Shortcuts](/manual/settings-shortcuts.jpg)
 *Record a shortcut for each command.*
 
 ## Permissions
@@ -100,7 +100,7 @@ Recording** (required to capture), **Microphone** (only if you record your
 voice), and **Accessibility** (auto-scroll, direct edition only) — each with
 a button to the right System Settings pane.
 
-![Settings → Permissions](/manual/settings-permissions.png)
+![Settings → Permissions](/manual/settings-permissions.jpg)
 *Check and grant permissions from one place.*
 
 ## License
