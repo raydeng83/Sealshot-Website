@@ -80,6 +80,7 @@ describeIfKey('production signing key (local only)', () => {
         updatesThrough: '2027-08-01',
         seats: 1,
         id: '11111111-2222-3333-4444-555555555555',
+        licenseType: 'individual',
       },
       priv!
     );
