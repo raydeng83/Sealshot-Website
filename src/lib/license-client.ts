@@ -1,7 +1,7 @@
 import { ed25519 } from '@noble/curves/ed25519';
 
 /**
- * Reads and verifies a Sealshot licence file in the browser.
+ * Reads and verifies a Sealshot license file in the browser.
  *
  * This is a CONFIRMATION SURFACE, not a security control. Its only job is to
  * let the renewal page show the customer what they are about to extend, backed
@@ -59,7 +59,7 @@ function base64ToBytes(b64: string): Uint8Array {
  * Unicode White_Space, matching Swift's Character.isWhitespace — NOT JS's `\s`.
  * U+FEFF is excluded (JS `\s` wrongly trims it) and U+0085 included (JS `\s`
  * misses it). Port of LicenseFileFormat.canonicalize; a mismatch here shows up
- * as a bogus `textTampered` on a perfectly good licence.
+ * as a bogus `textTampered` on a perfectly good license.
  */
 const TRAILING_WHITESPACE = new RegExp(
   '[\\t\\n\\v\\f\\r\\u0020\\u0085\\u00A0\\u1680\\u2000-\\u200A\\u2028\\u2029\\u202F\\u205F\\u3000]+$',
@@ -90,7 +90,7 @@ export async function verifyLicenseFile(
   /**
    * Key id → base64 public key. Defaults to the shipped production keys;
    * overridden only by tests, which sign with a throwaway key so the happy path
-   * can be exercised without committing a real, usable licence to the repo.
+   * can be exercised without committing a real, usable license to the repo.
    */
   publicKeys: Record<number, string> = PUBLIC_KEYS
 ): Promise<VerifyResult> {

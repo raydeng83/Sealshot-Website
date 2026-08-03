@@ -6,7 +6,7 @@
  * (`PRODUCT_MAP` in workers/license-fulfillment/wrangler.toml), and a
  * discounted purchase arrives with the same product_id as a full-price one —
  * so a coupon could not express "18 months instead of 12". One product per
- * term keeps the price the customer sees and the licence they receive in sync.
+ * term keeps the price the customer sees and the license they receive in sync.
  *
  * Prices here are DISPLAY ONLY. Polar is authoritative on what is charged, and
  * the Worker is authoritative on the update window.
@@ -31,7 +31,7 @@ export const CHECKOUT_IS_SANDBOX = true;
 export const REGULAR_PRICE_CENTS = 4900;
 export const RENEWAL_PRICE_CENTS = 2400;
 
-/** Months of updates included with the regular licence. */
+/** Months of updates included with the regular license. */
 export const REGULAR_UPDATE_MONTHS = 12;
 
 /** Full-price checkout — the fallback when no time-limited offer is running. */
@@ -42,7 +42,7 @@ export const BASE_CHECKOUT_URL =
  * Renewal checkout. The /renew page appends `reference_id=<licenseId>` and
  * `customer_email=<email>`; Polar copies both into the Checkout Session
  * metadata and then onto the order, which is how the Worker attaches the
- * renewal to an existing licence instead of minting a new one.
+ * renewal to an existing license instead of minting a new one.
  */
 export const RENEWAL_CHECKOUT_URL =
   'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_6xX6nk2EJZhqLq2jmFoGlrOfSc5PVFYKHAUT80I1WzB/redirect';

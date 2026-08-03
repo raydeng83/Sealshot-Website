@@ -122,7 +122,7 @@ describe('parseOrderPaid', () => {
   });
 
   it('yields an empty product id rather than rejecting an order with none', () => {
-    // A buyer who paid must still get a licence; PRODUCT_MAP's default covers it.
+    // A buyer who paid must still get a license; PRODUCT_MAP's default covers it.
     expect(parseOrderPaid(evt({}))?.productId).toBe('');
   });
 
@@ -153,7 +153,7 @@ describe('parseOrderPaid', () => {
     });
     it('treats blank or non-string values as absent', () => {
       // An empty reference must fall through to the email path, not become a
-      // lookup for the licence id "".
+      // lookup for the license id "".
       for (const reference_id of ['', '   ', 42, null, {}]) {
         expect(parseOrderPaid(evt({ metadata: { reference_id } }))?.referenceId).toBeUndefined();
       }

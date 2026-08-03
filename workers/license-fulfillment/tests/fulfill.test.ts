@@ -97,7 +97,7 @@ describe('deliverLicense', () => {
     expect(stored?.lastError).toBeUndefined();
   });
 
-  it('regenerates the same licence file across attempts', async () => {
+  it('regenerates the same license file across attempts', async () => {
     const bodies: string[] = [];
     const fetchImpl = vi.fn(async (_url: string, init: RequestInit) => {
       bodies.push(JSON.parse(init.body as string).attachments[0].content);
@@ -111,7 +111,7 @@ describe('deliverLicense', () => {
     const afterFirst = (await getOrder(env.ORDERS, 'ord_1'))!;
     await deliverLicense(env, 'ord_1', afterFirst);
 
-    // Same licence id in, byte-identical licence out — a buyer who eventually
+    // Same license id in, byte-identical license out — a buyer who eventually
     // receives it gets the file we already recorded, not a different one.
     expect(bodies).toHaveLength(2);
     expect(bodies[0]).toBe(bodies[1]);

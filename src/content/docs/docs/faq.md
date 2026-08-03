@@ -110,11 +110,11 @@ update window — every version released during that window is yours to
 keep. Current pricing and update-window terms are on the
 [buy page](/buy/).
 
-### What is the Founding licence?
+### What is the Founding license?
 
 An offer for buyers **before the 1.0 release**: the same perpetual
 license, at a lower price and with a *longer* update window than the
-regular licence. It's a thank-you for early supporters, not a cut-down
+regular license. It's a thank-you for early supporters, not a cut-down
 edition — see the [buy page](/buy/) while it lasts.
 
 ### How do I activate my license? Do I need an account or internet?
@@ -144,15 +144,15 @@ New captures and recordings pause, and everything you've captured stays
 fully viewable, editable, and exportable. To keep capturing, either renew
 your updates or go back to the newest version your license covers.
 
-### Can I use an Individual licence for work?
+### Can I use an Individual license for work?
 
-Yes — commercial use is included. The Business licence exists for
+Yes — commercial use is included. The Business license exists for
 organisations that want contracted seat counts, one invoice, and volume
-pricing, not because individual licences forbid work use.
+pricing, not because individual licenses forbid work use.
 
 ### How does business or volume licensing work?
 
-Businesses get an **offline organisation licence**: a contracted seat
+Businesses get an **offline organisation license**: a contracted seat
 count on one invoice, with per-seat volume discounts as the count grows.
 No accounts to provision and no activation server to allow-list — it
 works on managed and air-gapped Macs alike. See the

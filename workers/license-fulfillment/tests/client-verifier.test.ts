@@ -7,7 +7,7 @@
  * that the Worker's own sources need. Running it from the site would drag those
  * files into the site's typecheck and fail there.
  *
- * This is the pairing that matters: the thing that mints licences and the thing
+ * This is the pairing that matters: the thing that mints licenses and the thing
  * the renewal page reads them with are separate implementations of the same
  * format, and only an end-to-end test proves they agree.
  */
@@ -19,13 +19,13 @@ import {
   verifyLicenseFile, canonicalize, projectedThrough, addMonthsUTC, formatDay,
 } from '../../../src/lib/license-client';
 // The Worker's issuer, imported directly. This is the point of the suite: the
-// thing that mints licences and the thing the renewal page reads them with are
+// thing that mints licenses and the thing the renewal page reads them with are
 // separate implementations, and only an end-to-end test proves they agree.
 import { issueLicense } from '../src/license';
 
 const priv = ed25519.utils.randomPrivateKey();
 const bytesToB64 = (b: Uint8Array) => Buffer.from(b).toString('base64');
-// Key id 1 signed with a throwaway key, so no real, usable licence has to be
+// Key id 1 signed with a throwaway key, so no real, usable license has to be
 // committed to the repo to exercise the happy path.
 const TEST_KEYS = { 1: bytesToB64(ed25519.getPublicKey(priv)) };
 
@@ -39,11 +39,11 @@ const INPUT = {
   licenseType: 'individual',
 } as const;
 
-const licenceFile = () => issueLicense({ ...INPUT }, priv);
+const licenseFile = () => issueLicense({ ...INPUT }, priv);
 
 describe('verifyLicenseFile', () => {
-  it('accepts a licence the Worker issued, and reads its payload', async () => {
-    const res = await verifyLicenseFile(await licenceFile(), TEST_KEYS);
+  it('accepts a license the Worker issued, and reads its payload', async () => {
+    const res = await verifyLicenseFile(await licenseFile(), TEST_KEYS);
     expect(res.ok).toBe(true);
     if (!res.ok) return;
     expect(res.payload).toMatchObject({
@@ -52,7 +52,7 @@ describe('verifyLicenseFile', () => {
     });
   });
 
-  it('accepts a volume licence and reports its type and seats', async () => {
+  it('accepts a volume license and reports its type and seats', async () => {
     // The page refuses these, so it has to be able to read them.
     const file = await issueLicense(
       { ...INPUT, name: 'Acme, Inc.', seats: 25, licenseType: 'business-volume' }, priv);
@@ -64,14 +64,14 @@ describe('verifyLicenseFile', () => {
   });
 
   it('survives CRLF line endings and a BOM', async () => {
-    // A licence that has been through Windows, or opened and re-saved by a
+    // A license that has been through Windows, or opened and re-saved by a
     // well-meaning editor, must still verify — that is what canonicalize is for.
-    const mangled = '﻿' + (await licenceFile()).replace(/\n/g, '\r\n');
+    const mangled = '﻿' + (await licenseFile()).replace(/\n/g, '\r\n');
     expect((await verifyLicenseFile(mangled, TEST_KEYS)).ok).toBe(true);
   });
 
   it('survives trailing whitespace on preamble lines', async () => {
-    const padded = (await licenceFile())
+    const padded = (await licenseFile())
       .split('\n')
       .map((l) => (l.startsWith('SEALSHOT1.') ? l : l + '   '))
       .join('\n');
@@ -92,27 +92,27 @@ describe('verifyLicenseFile', () => {
     });
 
     it('reports unknownKey when signed by a key this page does not have', async () => {
-      const res = await verifyLicenseFile(await licenceFile(), { 7: TEST_KEYS[1] });
+      const res = await verifyLicenseFile(await licenseFile(), { 7: TEST_KEYS[1] });
       expect(res).toEqual({ ok: false, reason: 'unknownKey' });
     });
 
     it('reports badSignature when signed by the wrong key', async () => {
       const other = bytesToB64(ed25519.getPublicKey(ed25519.utils.randomPrivateKey()));
-      const res = await verifyLicenseFile(await licenceFile(), { 1: other });
+      const res = await verifyLicenseFile(await licenseFile(), { 1: other });
       expect(res).toEqual({ ok: false, reason: 'badSignature' });
     });
 
     it('reports textTampered when the readable preamble is edited', async () => {
       // The whole point of textHash: the signature still verifies, because the
       // payload bytes are untouched — only the hash catches this.
-      const edited = (await licenceFile()).replace('Updates through:  2027-07-20',
+      const edited = (await licenseFile()).replace('Updates through:  2027-07-20',
                                                    'Updates through:  2099-07-20');
       const res = await verifyLicenseFile(edited, TEST_KEYS);
       expect(res).toEqual({ ok: false, reason: 'textTampered' });
     });
 
     it('reports textTampered when the licensee name is edited', async () => {
-      const edited = (await licenceFile()).replace('Jane Doe', 'Someone Else');
+      const edited = (await licenseFile()).replace('Jane Doe', 'Someone Else');
       expect((await verifyLicenseFile(edited, TEST_KEYS)).ok).toBe(false);
     });
   });
@@ -121,7 +121,7 @@ describe('verifyLicenseFile', () => {
 describe('canonicalize', () => {
   it('matches the shared golden preamble byte for byte', () => {
     // Same fixture the app's Swift suite and the Worker assert against. If this
-    // port drifts, every genuine licence would be reported as textTampered.
+    // port drifts, every genuine license would be reported as textTampered.
     const fixture = readFileSync(
       join(__dirname, 'fixtures', 'golden-preamble-v2.txt'), 'utf8').replace(/\n+$/, '');
     expect(canonicalize(fixture)).toBe(fixture);

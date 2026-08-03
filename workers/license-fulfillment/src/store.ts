@@ -9,14 +9,14 @@ export type OrderRecord = {
   /**
    * Frozen when the order is first recorded, never recomputed.
    *
-   * A renewal's window is derived from the licence's CURRENT `updatesThrough`.
+   * A renewal's window is derived from the license's CURRENT `updatesThrough`.
    * Recomputing it on a retry would read a value a previous attempt already
    * moved, extending the same purchase twice — so the fulfilment path reads
-   * this field and never the licence record.
+   * this field and never the license record.
    */
   updatesThrough: string;
   licenseType: 'individual' | 'business-volume';
-  /** Seat count carried from the licence being renewed; 1 for a new purchase. */
+  /** Seat count carried from the license being renewed; 1 for a new purchase. */
   seats: number;
   state: OrderState;
   /** Delivery attempts made so far (0 before the first send). */
@@ -79,11 +79,11 @@ export async function listPending(
 }
 
 /**
- * A licence, keyed by its own id rather than by the order that created it.
+ * A license, keyed by its own id rather than by the order that created it.
  *
- * Order records answer "did we deliver this purchase?"; licence records answer
+ * Order records answer "did we deliver this purchase?"; license records answer
  * "what does this customer currently own?" — which is what a renewal needs,
- * since a renewal arrives as a *different* Polar order for the *same* licence.
+ * since a renewal arrives as a *different* Polar order for the *same* license.
  * `latestOrderId` is the back-pointer, kept for support and for tracing which
  * purchase last moved the window.
  */
@@ -111,7 +111,7 @@ export async function getLicense(kv: KVNamespace, licenseId: string): Promise<Li
 /**
  * Writes the record and points this email at it. The index is last-write-wins
  * and never deletes: if a buyer's address changes, both the old and the new
- * address resolve to the licence, so a renewal bought from either one still
+ * address resolve to the license, so a renewal bought from either one still
  * matches. Losing the old pointer would strand exactly the customer the email
  * fallback exists for.
  */

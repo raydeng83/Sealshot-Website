@@ -6,12 +6,12 @@ export type ProductTerms = { kind: PurchaseKind; months: number };
 const DEFAULT_TERMS: ProductTerms = { kind: 'new', months: 12 };
 
 /**
- * Polar product id → licence terms, read from the PRODUCT_MAP var so adding a
+ * Polar product id → license terms, read from the PRODUCT_MAP var so adding a
  * product or changing a term is a config change rather than a deploy.
  *
  * An unknown product falls back to a 12-month NEW purchase. That direction is
- * deliberate: the buyer has paid, so they must get a working licence, and
- * treating an unrecognised purchase as `new` mints a fresh licence instead of
+ * deliberate: the buyer has paid, so they must get a working license, and
+ * treating an unrecognised purchase as `new` mints a fresh license instead of
  * touching an existing one. The opposite default would let a misconfigured
  * product id rewrite a customer's window.
  */
@@ -37,9 +37,9 @@ export function resolveProduct(env: { PRODUCT_MAP?: string }, productId: string)
  * Whether this product id was actually configured, as opposed to landing on the
  * default.
  *
- * The fallback is deliberately silent so a buyer always gets a licence, which
+ * The fallback is deliberately silent so a buyer always gets a license, which
  * means a wholly wrong PRODUCT_MAP — sandbox ids left in place at launch being
- * the obvious one — produces correct-looking 12-month licences forever and
+ * the obvious one — produces correct-looking 12-month licenses forever and
  * never errors. Callers use this to alert, so the misconfiguration surfaces on
  * the first sale rather than at the first renewal a year later.
  */

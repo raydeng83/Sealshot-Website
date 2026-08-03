@@ -104,7 +104,7 @@ export default {
     const purchaseDay = isoToUTCDay(order.paidAtISO);
     const terms = resolveProduct(env, order.productId);
 
-    // An unmapped product still yields a working licence — the buyer paid — but
+    // An unmapped product still yields a working license — the buyer paid — but
     // it is almost always a misconfiguration, and the most likely one is
     // sandbox product ids surviving into production, where every purchase then
     // quietly resolves to 12 months. Alert on the first sale rather than
@@ -144,20 +144,20 @@ export default {
             body:
               `reference_id → ${target.licenseId}\n` +
               `email index  → ${target.disagreedWithEmail}\n\n` +
-              `Honoured the reference id. Confirm the buyer renewed the right licence.`,
+              `Honoured the reference id. Confirm the buyer renewed the right license.`,
           }));
         }
 
-        // Volume licences are quoted and invoiced by hand; there is no volume
+        // Volume licenses are quoted and invoiced by hand; there is no volume
         // product at checkout. Reaching here means someone renewed a multi-seat
-        // licence through the single-user renewal product, so an organisation
+        // license through the single-user renewal product, so an organisation
         // just extended N seats for the price of one. The renewal is still
         // honoured — they paid, and refusing strands them — but it needs a human.
         if (licenseType === 'business-volume') {
           await runTask(ctx, alert(env, {
-            subject: `Sealshot: business-volume licence renewed at the individual price`,
+            subject: `Sealshot: business-volume license renewed at the individual price`,
             body:
-              `Order ${order.orderId} renewed licence ${licenseId} (${seats} seats)\n` +
+              `Order ${order.orderId} renewed license ${licenseId} (${seats} seats)\n` +
               `through the individual renewal product. Volume renewals are meant to\n` +
               `be quoted and invoiced. Honoured the renewal; invoice the difference\n` +
               `or agree a correction with the customer.`,
@@ -167,10 +167,10 @@ export default {
         await runTask(ctx, alert(env, {
           subject: `Sealshot: unmatched renewal on order ${order.orderId}`,
           body:
-            `${order.email} bought a renewal but no licence matched — neither the\n` +
+            `${order.email} bought a renewal but no license matched — neither the\n` +
             `reference id (${order.referenceId ?? 'absent'}) nor the email index.\n\n` +
-            `Issued NEW licence ${licenseId} with a full window so they are not left\n` +
-            `empty-handed. Merge it with their real licence by hand.`,
+            `Issued NEW license ${licenseId} with a full window so they are not left\n` +
+            `empty-handed. Merge it with their real license by hand.`,
         }));
       }
     }
@@ -181,7 +181,7 @@ export default {
       name,
       issued: purchaseDay,
       // Reuse the frozen window on a redelivery. Recomputing it would read a
-      // licence record an earlier attempt may already have advanced, extending
+      // license record an earlier attempt may already have advanced, extending
       // one purchase twice.
       updatesThrough: existing?.updatesThrough || updatesThrough,
       licenseType: existing?.licenseType ?? licenseType,

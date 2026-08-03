@@ -38,11 +38,11 @@ export function isDue(rec: OrderRecord, now: number): boolean {
 }
 
 /**
- * Issue (or re-issue) the licence for a recorded order and email it.
+ * Issue (or re-issue) the license for a recorded order and email it.
  *
- * The licence is regenerated from the stored record rather than passed in, so
+ * The license is regenerated from the stored record rather than passed in, so
  * the webhook path and the cron retry path produce byte-identical files for
- * the same order — the licence id is what makes that stable.
+ * the same order — the license id is what makes that stable.
  *
  * Updates the record to `sent` on success, or back to `pending` (with the
  * attempt counted) on failure. Never throws: callers run it in the
@@ -84,7 +84,7 @@ export async function deliverLicense(
     });
 
     if (res.ok) {
-      // The licence record is what the NEXT renewal resolves against, so it is
+      // The license record is what the NEXT renewal resolves against, so it is
       // written only once the customer actually has the file. Writing it before
       // delivery would let a failed send still advertise a window the customer
       // was never sent.
@@ -92,7 +92,7 @@ export async function deliverLicense(
       // Written before the order is marked sent, so the two can only ever be
       // inconsistent in the safe direction: if this succeeds and the putOrder
       // below fails, the order stays `pending` and a retry re-sends the SAME
-      // licence — the window is frozen on the order record, so the retry cannot
+      // license — the window is frozen on the order record, so the retry cannot
       // extend it a second time.
       await putLicense(env.ORDERS, rec.licenseId, {
         name: rec.name,
@@ -160,7 +160,7 @@ async function recordFailure(
         `Attempts:  ${attempts}\n` +
         `Last error: ${reason}\n\n` +
         (givingUp
-          ? 'No further retries. This licence must be delivered manually.'
+          ? 'No further retries. This license must be delivered manually.'
           : 'Retries continue automatically.'),
     });
   }

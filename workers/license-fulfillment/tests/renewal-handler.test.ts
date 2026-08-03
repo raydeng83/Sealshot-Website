@@ -11,7 +11,7 @@ import { canonicalize } from '../src/canonical';
  *
  * The unit suites cover resolveRenewalTarget and renewalThrough in isolation;
  * these check the thing that actually bills a customer — that a renewal order
- * lands on the EXISTING licence and moves its window forward exactly once.
+ * lands on the EXISTING license and moves its window forward exactly once.
  */
 
 // Key is the raw UTF-8 bytes of the whole secret, as Polar signs. See src/polar.ts.
@@ -89,7 +89,7 @@ function makeEnv(extra: Record<string, unknown> = {}) {
   };
 }
 
-/** `Updates through:` as it appears in the delivered licence file. */
+/** `Updates through:` as it appears in the delivered license file. */
 function windowInFile(fileText: string): string {
   return /^Updates through:\s+(\S+)$/m.exec(canonicalize(fileText))![1];
 }
@@ -102,7 +102,7 @@ async function post(env: any, body: string, msgId = 'msg_1') {
 }
 
 describe('new purchases', () => {
-  it('records a licence after delivery, so a later renewal can find it', async () => {
+  it('records a license after delivery, so a later renewal can find it', async () => {
     const { env } = makeEnv();
     await post(env, order({ productId: PROD_NEW }));
 
@@ -119,8 +119,8 @@ describe('new purchases', () => {
     expect(windowInFile(sent[0])).toBe('2028-01-20');
   });
 
-  it('does not record a licence when delivery fails', async () => {
-    // The licence record is what the next renewal trusts. Writing it for an
+  it('does not record a license when delivery fails', async () => {
+    // The license record is what the next renewal trusts. Writing it for an
     // undelivered order would advertise a window the customer never received.
     const { env } = makeEnv({
       FETCH: vi.fn(async () => new Response('nope', { status: 500 })) as unknown as typeof fetch,
@@ -133,7 +133,7 @@ describe('new purchases', () => {
 });
 
 describe('renewals', () => {
-  async function withLicence(updatesThrough = '2027-07-20', over: Record<string, unknown> = {}) {
+  async function withLicense(updatesThrough = '2027-07-20', over: Record<string, unknown> = {}) {
     const { env, sent } = makeEnv();
     await putLicense(env.ORDERS, 'LIC-1', {
       name: 'Jane Doe', email: 'jane@example.com', licenseType: 'individual',
@@ -142,8 +142,8 @@ describe('renewals', () => {
     return { env, sent };
   }
 
-  it('reuses the licence id and extends the window, matched by reference id', async () => {
-    const { env, sent } = await withLicence();
+  it('reuses the license id and extends the window, matched by reference id', async () => {
+    const { env, sent } = await withLicense();
     await post(env, order({
       id: 'ord_2', productId: PROD_RENEWAL, referenceId: 'LIC-1', paidAt: '2027-06-01T00:00:00Z',
     }));
@@ -157,23 +157,23 @@ describe('renewals', () => {
   });
 
   it('matches on buyer email when no reference id came through', async () => {
-    const { env } = await withLicence();
+    const { env } = await withLicense();
     await post(env, order({ id: 'ord_2', productId: PROD_RENEWAL, paidAt: '2027-06-01T00:00:00Z' }));
     expect(JSON.parse((await env.ORDERS.get('order:ord_2'))!).licenseId).toBe('LIC-1');
   });
 
   it('starts from the purchase day once the window has lapsed', async () => {
-    const { env } = await withLicence('2027-07-20');
+    const { env } = await withLicense('2027-07-20');
     await post(env, order({
       id: 'ord_2', productId: PROD_RENEWAL, referenceId: 'LIC-1', paidAt: '2028-03-01T00:00:00Z',
     }));
     expect(JSON.parse((await env.ORDERS.get('order:ord_2'))!).updatesThrough).toBe('2029-03-01');
   });
 
-  it('carries the licensee name from the licence, not the Polar customer name', async () => {
+  it('carries the licensee name from the license, not the Polar customer name', async () => {
     // A renewal bought under a different billing name must not silently rename
-    // the licence — the name is part of the signed payload.
-    const { env, sent } = await withLicence();
+    // the license — the name is part of the signed payload.
+    const { env, sent } = await withLicense();
     await post(env, order({
       id: 'ord_2', productId: PROD_RENEWAL, referenceId: 'LIC-1',
       name: 'J. Doe-Smith (new card)', paidAt: '2027-06-01T00:00:00Z',
@@ -182,7 +182,7 @@ describe('renewals', () => {
   });
 
   it('is idempotent on a plain redelivery of a pending order', async () => {
-    const { env } = await withLicence();
+    const { env } = await withLicense();
     (env as any).FETCH = vi.fn(async () =>
       new Response('nope', { status: 500 })) as unknown as typeof fetch;
 
@@ -195,24 +195,24 @@ describe('renewals', () => {
     expect(JSON.parse((await env.ORDERS.get('order:ord_2'))!).updatesThrough).toBe('2028-07-20');
   });
 
-  it('does NOT extend twice when the licence was written but the order was not marked sent', async () => {
+  it('does NOT extend twice when the license was written but the order was not marked sent', async () => {
     // The genuinely dangerous interleaving, and the reason OrderRecord freezes
-    // the window. deliverLicense writes the licence record BEFORE marking the
+    // the window. deliverLicense writes the license record BEFORE marking the
     // order sent. If that second write fails, the order stays `pending` while
-    // the licence already reads 2028-07-20 — so a redelivery that recomputed
-    // `renewalThrough(licence.updatesThrough, …)` would add another 12 months
+    // the license already reads 2028-07-20 — so a redelivery that recomputed
+    // `renewalThrough(license.updatesThrough, …)` would add another 12 months
     // to the same $24 purchase and land on 2029-07-20.
     //
-    // A plain failed-delivery redelivery cannot catch this: no licence is
+    // A plain failed-delivery redelivery cannot catch this: no license is
     // written, so there is nothing extended to re-read.
-    const { env } = await withLicence();
+    const { env } = await withLicense();
 
     let swallowedSentWrite = false;
     const realPut = env.ORDERS.put.bind(env.ORDERS);
     (env.ORDERS as any).put = async (k: string, v: string, o?: unknown) => {
       if (!swallowedSentWrite && k === 'order:ord_2' && v.includes('"state":"sent"')) {
         swallowedSentWrite = true;
-        throw new Error('KV write failed after the licence was recorded');
+        throw new Error('KV write failed after the license was recorded');
       }
       return realPut(k, v, o as any);
     };
@@ -222,7 +222,7 @@ describe('renewals', () => {
     });
     await post(env, body);
 
-    // The licence moved forward, but the order never settled.
+    // The license moved forward, but the order never settled.
     expect(swallowedSentWrite).toBe(true);
     expect((await getLicense(env.ORDERS, 'LIC-1'))!.updatesThrough).toBe('2028-07-20');
     expect(JSON.parse((await env.ORDERS.get('order:ord_2'))!).state).toBe('pending');
@@ -233,7 +233,7 @@ describe('renewals', () => {
     expect((await getLicense(env.ORDERS, 'LIC-1'))!.updatesThrough).toBe('2028-07-20');
   });
 
-  it('mints a new licence and alerts when nothing matches', async () => {
+  it('mints a new license and alerts when nothing matches', async () => {
     const err = vi.spyOn(console, 'error').mockImplementation(() => {});
     const { env } = makeEnv();
     await post(env, order({
@@ -247,9 +247,9 @@ describe('renewals', () => {
     err.mockRestore();
   });
 
-  it('alerts when a volume licence is renewed at the individual price', async () => {
+  it('alerts when a volume license is renewed at the individual price', async () => {
     const err = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const { env, sent } = await withLicence('2027-07-20', {
+    const { env, sent } = await withLicense('2027-07-20', {
       licenseType: 'business-volume', seats: 25, name: 'Acme, Inc.',
     });
     await post(env, order({
@@ -259,13 +259,13 @@ describe('renewals', () => {
     // Honoured — they paid — but it must not go unnoticed.
     expect(sent[0]).toContain('License type:     Business Volume');
     expect(sent[0]).toContain('User seats:       25');
-    expect(err.mock.calls.flat().join('\n')).toContain('business-volume licence renewed');
+    expect(err.mock.calls.flat().join('\n')).toContain('business-volume license renewed');
     err.mockRestore();
   });
 
-  it('alerts when reference id and email point at different licences', async () => {
+  it('alerts when reference id and email point at different licenses', async () => {
     const err = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const { env } = await withLicence();
+    const { env } = await withLicense();
     await putLicense(env.ORDERS, 'LIC-2', {
       name: 'Sam', email: 'sam@example.com', licenseType: 'individual',
       issued: '2026-01-01', updatesThrough: '2027-01-01', seats: 1, latestOrderId: 'o2',

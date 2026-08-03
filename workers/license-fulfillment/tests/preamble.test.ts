@@ -8,7 +8,7 @@ import { buildPreamble } from '../src/canonical';
  *
  * The SHA-256 of the canonicalized preamble is embedded in the signed payload,
  * so any drift between this Worker, the app, and licensegen makes issued
- * licences fail the app's tamper check as `textTampered` — the customer pays
+ * licenses fail the app's tamper check as `textTampered` — the customer pays
  * and cannot activate. Three implementations, one set of bytes.
  *
  * Two layers on purpose, mirroring the app's LicenseFormatTests:
@@ -45,7 +45,7 @@ const VOLUME = {
 } as const;
 
 describe('buildPreamble', () => {
-  it('matches the exact Swift template for an individual licence', () => {
+  it('matches the exact Swift template for an individual license', () => {
     expect(buildPreamble(INDIVIDUAL)).toBe(
       [
         'Sealshot License',
@@ -69,7 +69,7 @@ describe('buildPreamble', () => {
     );
   });
 
-  it('matches the exact Swift template for a business volume licence', () => {
+  it('matches the exact Swift template for a business volume license', () => {
     expect(buildPreamble(VOLUME)).toBe(
       [
         'Sealshot License',
@@ -90,7 +90,7 @@ describe('buildPreamble', () => {
     );
   });
 
-  it('reproduces the shared golden fixture for an individual licence', () => {
+  it('reproduces the shared golden fixture for an individual license', () => {
     // fixtures/golden-preamble-v2.txt is a verbatim copy of
     // app/Tests/SealshotTests/Fixtures/golden-preamble-v2.txt. If this fails,
     // the Worker template drifted from the app's, and both copies plus
@@ -98,7 +98,7 @@ describe('buildPreamble', () => {
     expect(buildPreamble(INDIVIDUAL)).toBe(fixture('golden-preamble-v2.txt'));
   });
 
-  it('reproduces the shared golden fixture for a business volume licence', () => {
+  it('reproduces the shared golden fixture for a business volume license', () => {
     // The app repo has no volume fixture yet — this file is the canonical
     // bytes and should be adopted there as golden-preamble-v2-volume.txt.
     // Until it is, the volume template is pinned on this side only, so an
@@ -121,7 +121,7 @@ describe('buildPreamble', () => {
     }
   });
 
-  it('omits the "keep this file" paragraph only for volume licences', () => {
+  it('omits the "keep this file" paragraph only for volume licenses', () => {
     // Asymmetry from the source document, not an oversight — pinned so a
     // later "consistency" tidy-up can't silently change signed bytes.
     expect(buildPreamble(INDIVIDUAL)).toContain('Keep this file exactly as received');

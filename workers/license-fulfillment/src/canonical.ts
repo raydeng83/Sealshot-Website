@@ -56,7 +56,7 @@ const TYPE_LABEL: Record<LicenseTypeSlug, string> = {
  * Three implementations must produce byte-identical output: this one, the app's
  * Swift original, and licensegen. The SHA-256 of the canonicalized preamble is
  * embedded in the signed payload, so a single byte of drift here makes every
- * licence this Worker mints fail the app's tamper check as `textTampered` — the
+ * license this Worker mints fail the app's tamper check as `textTampered` — the
  * customer pays and cannot activate. `tests/preamble.test.ts` pins the bytes
  * against fixtures shared with the app test suite; do not edit this template
  * without updating all three.
@@ -90,7 +90,7 @@ export function buildPreamble(p: {
     '',
   ];
   if (isVolume) {
-    // Volume licences omit the "Keep this file exactly as received" paragraph.
+    // Volume licenses omit the "Keep this file exactly as received" paragraph.
     // Asymmetric on purpose — it comes from the source document, not an
     // oversight. An org admin distributes this file internally by design.
     lines.push(

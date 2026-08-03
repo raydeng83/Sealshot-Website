@@ -63,7 +63,7 @@ describe('resolveRenewalTarget', () => {
     expect(t?.disagreedWithEmail).toBeUndefined();
   });
 
-  it('returns the licence record, not just its id', async () => {
+  it('returns the license record, not just its id', async () => {
     // The caller needs updatesThrough, seats and licenseType to build the
     // renewal; re-reading them separately would risk a different snapshot.
     const t = await resolveRenewalTarget(await seeded(), {
@@ -74,7 +74,7 @@ describe('resolveRenewalTarget', () => {
     });
   });
 
-  it('resolves a volume licence too, so the caller can alert on it', async () => {
+  it('resolves a volume license too, so the caller can alert on it', async () => {
     const { kv } = fakeKV();
     await putLicense(kv, 'LIC-V', {
       name: 'Acme, Inc.', email: 'software@acme.example', licenseType: 'business-volume',

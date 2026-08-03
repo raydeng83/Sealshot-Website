@@ -4,7 +4,7 @@ import { renewalThrough } from './product';
 /**
  * Both hosts are ours. The site canonicalises on the apex and `www` 301s to
  * it, so in practice the page origin is the apex — but allow-listing only one
- * makes a redirect-rule change break the typed email + licence-id path while
+ * makes a redirect-rule change break the typed email + license-id path while
  * the file-drop path keeps working, which is the hardest kind of failure to
  * notice. Allowing both costs nothing.
  */
@@ -45,12 +45,12 @@ function clientKey(request: Request): string {
 }
 
 /**
- * Confirms an email + licence-id PAIR before checkout, so the renewal page can
+ * Confirms an email + license-id PAIR before checkout, so the renewal page can
  * show the customer what they are about to buy instead of asking them to
  * eyeball a UUID.
  *
  * A pair is not a customer-enumeration oracle: the caller must already hold
- * the licence id, and holding it means holding the licence file. Email-only
+ * the license id, and holding it means holding the license file. Email-only
  * lookup is deliberately not offered — that WOULD be an oracle, answering
  * "does this person own Sealshot?" for any address.
  *
@@ -79,7 +79,7 @@ export async function handleVerify(
   if (!email || !licenseId) return json(request, { error: 'bad_request' }, 400);
 
   // Both lookups always, and in parallel: short-circuiting on a missing
-  // licence would make "unknown id" measurably faster than "wrong pair",
+  // license would make "unknown id" measurably faster than "wrong pair",
   // reintroducing through timing the distinction the identical 404 hides.
   const [rec, indexed] = await Promise.all([
     getLicense(env.ORDERS, licenseId),

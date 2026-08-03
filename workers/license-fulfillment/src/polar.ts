@@ -56,7 +56,7 @@ export type ParsedOrder = {
   paidAtISO: string;
   /** Polar product id — maps to an update term via PRODUCT_MAP. */
   productId: string;
-  /** The licence this order renews, when the renewal page supplied one. */
+  /** The license this order renews, when the renewal page supplied one. */
   referenceId?: string;
 };
 
@@ -88,7 +88,7 @@ export function parseOrderPaid(rawBody: string): ParsedOrder | null {
   const paidAtISO = d.created_at ?? d.paid_at;
   if (!email || !orderId || !paidAtISO) return null;
   // Absent product id resolves to the default terms rather than rejecting the
-  // order — a buyer who paid must still get a licence.
+  // order — a buyer who paid must still get a license.
   const productId = d.product_id ?? d.product?.id ?? '';
   return { orderId, email, name, paidAtISO, productId, referenceId: extractReferenceId(d) };
 }
