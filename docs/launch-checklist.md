@@ -55,7 +55,18 @@ the file, because it requires an `--id`.
 **Published 2026-08-03** (`Sealshot-Release` `405ca8b`) — empty list, signed with
 key 1, verified against the public key the app embeds.
 
-- [ ] **After every `licensegen revoke` + commit**, run:
+- [ ] **To revoke a license, use the wrapper** rather than the four steps by hand:
+
+      cd workers/license-fulfillment && npm run revoke -- <license-uuid>
+
+      It cross-checks KV that the license really was refunded (refusing without
+      `--force`), signs via `licensegen`, verifies before publishing, commits,
+      pushes, and confirms the published file through the GitHub **API** — which
+      is uncached, unlike `raw.githubusercontent.com`, whose ~5 minute TTL means a
+      revocation is not fetchable by apps immediately. `--dry-run` signs and
+      verifies without touching the repo.
+
+- [ ] To check the published list at any time:
 
       cd workers/license-fulfillment && npm run verify:blocklist
 
@@ -430,6 +441,13 @@ What sandbox has NOT exercised, and still needs doing before launch:
       so buyer replies reach a real inbox instead of bouncing off the
       send-only subdomain. **Needs Phase 3 done to actually receive.**
 
+- [x] **Alerting turned ON, 2026-08-03.** It was written earlier but disabled:
+      `ALERT_EMAIL` was commented out and `[observability]` was absent, so every
+      alert existed only for the duration of a live `wrangler tail`. The refund
+      alert on 3 August was lost exactly that way. Both are now set.
+      `ALERT_EMAIL` must move to `support@seal-shot.com` in the SAME edit that
+      restores `EMAIL_FROM` — Resend's test sender can only reach the account
+      owner, so pointing it at support@ early makes every alert fail silently.
 - [x] **Alerting added.** `console.error` always (reaches `wrangler tail` and
       Workers Logs, and Cloudflare notifications can fire on Worker errors),
       plus an email to `ALERT_EMAIL` when set — once when an order has been

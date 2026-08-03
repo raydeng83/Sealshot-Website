@@ -113,7 +113,10 @@ const expect = arg('expect');
 if (expect) {
   const present = list.revoked.some((id) => id.toUpperCase() === expect.toUpperCase());
   check(present, `revokes ${expect}`,
-        present ? '' : '— did the commit actually push?');
+        present ? '' : '— not in the copy THIS request was served. raw.githubusercontent.com '
+                     + 'is fronted by many edges, each caching independently for ~5 min, so '
+                     + 'two clients can legitimately disagree. Check github.com, or the '
+                     + 'Contents API, for the authoritative answer.');
 }
 
 console.log(`\n  updated ${list.updated} · revokes ${list.revoked.length} license(s)`);

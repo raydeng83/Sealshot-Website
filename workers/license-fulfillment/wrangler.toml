@@ -5,6 +5,13 @@ compatibility_date = "2026-07-01"
 # Durable order memory: idempotency (a redelivered webhook finds state 'sent'
 # and returns without re-issuing) and the retry queue the cron drains.
 # Created 2026-08-01 via `wrangler kv namespace create ORDERS`.
+# Retain logs. Without this, console.error is visible ONLY in a live
+# `wrangler tail`, so every alert this Worker raises — undelivered order,
+# unmapped product, unmatched renewal, refund — vanishes at the moment it
+# happens. The refund alert on 2026-08-03 was lost exactly this way.
+[observability]
+enabled = true
+
 [[kv_namespaces]]
 binding = "ORDERS"
 id = "7c0ac7b21f5e4223b4c585f73c3408a2"
@@ -55,7 +62,12 @@ EMAIL_FROM = "Sealshot <onboarding@resend.dev>"
 PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","months":12},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","months":18},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","months":12}}'
 # The From subdomain is send-only, so replies need somewhere real to land.
 REPLY_TO = "support@seal-shot.com"
-# Optional: where to email fulfilment alerts. Unset = log-only (wrangler tail /
-# Workers Logs). Set it once support@ can receive.
-# ALERT_EMAIL = "support@seal-shot.com"
+# Where fulfilment alerts are emailed. Must be an address the current EMAIL_FROM
+# can actually reach: while that is Resend's test sender, the ONLY permitted
+# recipient is the Resend account owner's address. Pointing this at
+# support@seal-shot.com before mail.seal-shot.com verifies would make every alert
+# fail silently — the same failure this setting exists to prevent.
+#
+# ⚠️ Change to support@seal-shot.com in the same edit that restores EMAIL_FROM.
+ALERT_EMAIL = "ray.deng83@gmail.com"
 # Secrets (SIGNING_KEY_B64, POLAR_WEBHOOK_SECRET, RESEND_API_KEY) set via `wrangler secret put`
