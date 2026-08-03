@@ -149,7 +149,7 @@ import { RENEWAL_PRICE_CENTS, formatUSD } from '../config/promos';
 
   function showConfirm(s: Summary) {
     clearError();
-    // Volume licences are quoted and invoiced. The app already withholds the
+    // Volume licenses are quoted and invoiced. The app already withholds the
     // self-serve link for them, but this page must refuse independently — the
     // checkout link can be reached directly.
     if (s.licenseType === 'business-volume') return showVolume(s);
@@ -163,7 +163,7 @@ import { RENEWAL_PRICE_CENTS, formatUSD } from '../config/promos';
 
     const url = new URL(RENEWAL_CHECKOUT_URL);
     // Polar copies these into the Checkout Session metadata and then onto the
-    // order, which is how the Worker attaches the renewal to this licence.
+    // order, which is how the Worker attaches the renewal to this license.
     url.searchParams.set('reference_id', s.licenseId);
     url.searchParams.set('customer_email', s.email);
     ($('checkout-link') as HTMLAnchorElement).href = url.toString();
@@ -246,7 +246,7 @@ import { RENEWAL_PRICE_CENTS, formatUSD } from '../config/promos';
     if (f) void handleFile(f);
   });
 
-  // ── Typed email + licence id ───────────────────────────────────────────────
+  // ── Typed email + license id ───────────────────────────────────────────────
   $<HTMLFormElement>('pair-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const email = $<HTMLInputElement>('email').value.trim();

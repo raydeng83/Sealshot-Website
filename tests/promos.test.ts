@@ -47,7 +47,7 @@ describe('prices', () => {
     for (const o of OFFERS) expect(o.priceCents).toBeLessThan(REGULAR_PRICE_CENTS);
   });
 
-  it('gives every offer at least as many update months as the regular licence', () => {
+  it('gives every offer at least as many update months as the regular license', () => {
     // Founding is cheaper AND longer. An offer that were shorter would have the
     // /buy page advertising a downgrade as a deal.
     for (const o of OFFERS) expect(o.updateMonths).toBeGreaterThanOrEqual(REGULAR_UPDATE_MONTHS);

@@ -61,7 +61,7 @@ the screen — long pages, chat threads, documents. Drag to select the scroll
 viewport; Sealshot scrolls the content and stitches the frames into a single
 seamless image.
 
-- **Auto-scroll** (direct build, with Accessibility permission): Sealshot
+- **Auto-scroll** (needs Accessibility permission): Sealshot
   scrolls for you and stops at the end automatically.
 - **Manual**: you scroll the content yourself and press **Return** to finish.
 

@@ -6,7 +6,7 @@
  * the alerting floor with no configuration at all.
  *
  * Additionally emails ALERT_EMAIL when it's set. That send goes through the
- * same provider as licence delivery, so a total Resend outage would silence
+ * same provider as license delivery, so a total Resend outage would silence
  * the email too — the log is what covers that case.
  */
 export type AlertEnv = {

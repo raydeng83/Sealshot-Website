@@ -22,7 +22,7 @@ async function seeded() {
 }
 
 describe('POST /renew/verify', () => {
-  it('returns the licence summary and the projected new date for a correct pair', async () => {
+  it('returns the license summary and the projected new date for a correct pair', async () => {
     const res = await handleVerify(
       post({ email: 'jane@example.com', licenseId: 'LIC-1' }),
       { ORDERS: await seeded() },
@@ -56,9 +56,9 @@ describe('POST /renew/verify', () => {
     expect(await unknown.json()).toEqual(await mismatch.json());
   });
 
-  it('never reveals a licence to a caller who only knows the email', async () => {
+  it('never reveals a license to a caller who only knows the email', async () => {
     // The whole reason the endpoint takes a pair. Knowing jane@example.com
-    // owns a licence must not be obtainable without the id.
+    // owns a license must not be obtainable without the id.
     const res = await handleVerify(
       post({ email: 'jane@example.com', licenseId: '' }), { ORDERS: await seeded() }, '2026-08-01');
     expect(res.status).toBe(400);
@@ -105,7 +105,7 @@ describe('POST /renew/verify', () => {
   });
 
   it('reports business-volume so the page can refuse it', async () => {
-    // /renew must refuse volume licences: there is no volume checkout product,
+    // /renew must refuse volume licenses: there is no volume checkout product,
     // so renewing one through the individual product would reissue it with the
     // stored seat count at the individual price.
     const { kv } = fakeKV();

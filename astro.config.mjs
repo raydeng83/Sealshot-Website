@@ -19,6 +19,7 @@ export default defineConfig({
         SiteTitle: './src/components/starlight/SiteTitle.astro',
       },
       sidebar: [
+        { slug: 'docs', label: 'Overview' },
         {
           label: 'Quickstart',
           items: [

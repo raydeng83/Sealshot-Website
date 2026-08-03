@@ -6,12 +6,12 @@ import { canonicalize, textHash } from '../src/canonical';
 import { base64ToBytes, bytesToBase64 } from '../src/base64';
 
 /**
- * Proves the Worker signs licences the SHIPPED APP will accept.
+ * Proves the Worker signs licenses the SHIPPED APP will accept.
  *
  * Every other test signs with a throwaway key, so they verify the file format
  * but not the thing that actually matters in production: that
  * `SIGNING_KEY_B64` is the private half of a key the app has embedded. Get
- * that wrong and every licence sold is rejected on activation.
+ * that wrong and every license sold is rejected on activation.
  *
  * The private key lives only in the developer's login Keychain, so this test
  * SKIPS anywhere it isn't available (CI, another machine). Run it on the
@@ -67,11 +67,11 @@ const describeIfKey = priv ? describe : describe.skip;
 describeIfKey('production signing key (local only)', () => {
   it('is the private half of the public key the app embeds', () => {
     const derived = bytesToBase64(ed25519.getPublicKey(priv!));
-    // If this fails, SIGNING_KEY_B64 would produce licences the app rejects.
+    // If this fails, SIGNING_KEY_B64 would produce licenses the app rejects.
     expect(derived).toBe(APP_PUBLIC_KEYS[ENVELOPE_KEY_ID]);
   });
 
-  it('issues a licence the app can verify end to end', async () => {
+  it('issues a license the app can verify end to end', async () => {
     const file = await issueLicense(
       {
         name: 'Launch Test',

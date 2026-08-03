@@ -9,14 +9,14 @@ export type RenewalTarget = {
 };
 
 /**
- * Which licence a renewal order is for.
+ * Which license a renewal order is for.
  *
  * A fallback chain, never a conjunction. Requiring the reference id AND the
  * email to agree would reject exactly the customer this exists to serve — the
  * one whose address changed since they bought. A disagreement is reported for
  * alerting, not used to reject.
  *
- * The reference id wins because it comes from a licence file the customer
+ * The reference id wins because it comes from a license file the customer
  * holds, whereas the email index is a guess based on who last bought from that
  * address.
  */

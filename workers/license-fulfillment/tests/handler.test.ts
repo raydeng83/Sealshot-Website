@@ -232,7 +232,7 @@ describe('scheduled retry', () => {
 
     const sentRec = await readRec(env);
     expect(sentRec.state).toBe('sent');
-    expect(sentRec.licenseId).toBe(pendingRec.licenseId); // same licence, not a new one
+    expect(sentRec.licenseId).toBe(pendingRec.licenseId); // same license, not a new one
     expect(fetchImpl).toHaveBeenCalledTimes(2);
   });
 

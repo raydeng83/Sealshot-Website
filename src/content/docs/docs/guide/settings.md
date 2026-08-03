@@ -5,7 +5,7 @@ description: Every Sealshot setting explained — general, capture, recording, o
 
 Open Settings from the menu-bar icon. Settings are grouped into tabs down
 the left side: **General**, **Capture**, **Recording**, **On-Device AI**,
-**Shortcuts**, **Permissions**, **License** *(direct edition only)*,
+**Shortcuts**, **Permissions**, **License**,
 **Privacy & Security**, and **About**. Most tabs have a **Reset** for their
 own options, and General adds a **Reset All**.
 
@@ -25,7 +25,7 @@ own options, and General adds a **Reset All**.
 - **Show welcome tour cards** — show the first-launch tour at startup; the
   **Show Now** button replays it immediately without changing the setting.
 - **Automatically check for updates** — once a day. Update checks are
-  Sealshot's only network activity. *(Direct edition only.)*
+  Sealshot's only network activity.
 
 ## Capture
 
@@ -42,7 +42,6 @@ own options, and General adds a **Reset All**.
   capture](/docs/guide/capture/#scrolling-capture), Sealshot scrolls the
   page for you and stops at the end; requires Accessibility permission.
   With it off, you scroll yourself and press **Return** to finish.
-  *(Direct edition only.)*
 
 ## Recording
 
@@ -97,7 +96,7 @@ combos already assigned to another action are rejected. See
 
 A live status list for the permissions Sealshot can use — **Screen
 Recording** (required to capture), **Microphone** (only if you record your
-voice), and **Accessibility** (auto-scroll, direct edition only) — each with
+voice), and **Accessibility** (auto-scroll) — each with
 a button to the right System Settings pane.
 
 ![Settings → Permissions](/manual/settings-permissions.jpg)
@@ -105,8 +104,7 @@ a button to the right System Settings pane.
 
 ## License
 
-*(Direct edition only — the App Store build is licensed through the App
-Store and has no License tab.)* Your license and its update window:
+Your license and its update window:
 
 - **Open License File…** activates a license you've bought; **Buy
   Sealshot…** takes you to the store if you don't have one yet.
@@ -139,8 +137,8 @@ Your version, and a **Send Feedback…** button that opens a pre-filled email
 to the developer. See [Support & feedback](/support/).
 
 :::note[About network activity]
-Sealshot's only network activity is the daily update check (direct
-edition) and the **optional** enhanced-redaction model download — which
+Sealshot's only network activity is the daily update check and the
+**optional** enhanced-redaction model download — which
 happens only after you approve it. Your captures and their data never
 leave your Mac.
 :::

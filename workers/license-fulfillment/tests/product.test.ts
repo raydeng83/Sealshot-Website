@@ -8,13 +8,13 @@ describe('renewalThrough', () => {
   it('early renewal keeps unused time', () => {
     expect(renewalThrough('2027-09-15', '2027-08-01', 12)).toBe('2028-09-15');
   });
-  it('a lapsed licence renews from the purchase day', () => {
+  it('a lapsed license renews from the purchase day', () => {
     expect(renewalThrough('2027-09-15', '2028-03-01', 12)).toBe('2029-03-01');
   });
   it('renewing on the last covered day still extends from that day', () => {
     expect(renewalThrough('2027-09-15', '2027-09-15', 12)).toBe('2028-09-15');
   });
-  it('handles a founding licence renewing at 18 months', () => {
+  it('handles a founding license renewing at 18 months', () => {
     expect(renewalThrough('2028-01-31', '2027-06-01', 18)).toBe('2029-07-31');
   });
   it('never shortens an existing window', () => {
@@ -47,7 +47,7 @@ describe('resolveProduct', () => {
   });
   it('rejects entries with a bad kind or a non-positive term', () => {
     // A typo in PRODUCT_MAP must degrade to the safe default rather than
-    // producing a licence with a zero- or negative-length update window.
+    // producing a license with a zero- or negative-length update window.
     const bad = {
       PRODUCT_MAP:
         '{"a":{"kind":"gift","months":12},"b":{"kind":"new","months":0},' +

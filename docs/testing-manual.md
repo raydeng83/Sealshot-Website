@@ -54,10 +54,10 @@ crowded menu bar, not a missing app.
 | Save as… — straight to a file | `⌘⇧S` |
 | Record screen / selection | `⌘⇧V` / `⌘⇧R` |
 
-**Two editions.** The **Direct** build (what you are testing) updates itself and
-is unlocked by a licence file. The **Mac App Store** build is entitled through
-the App Store and has no auto-scroll in scrolling capture. Anything you find
-about licensing applies to Direct only.
+**One build.** Sealshot ships only as a signed, notarised direct download,
+unlocked by a license file and updating itself from a public version feed. There
+is no Mac App Store edition, so no feature is missing from what you are testing
+and every licensing behaviour in §4.7 applies.
 
 ---
 
@@ -124,11 +124,11 @@ So finish every session with three lines, even when nothing broke:
 The third is the most valuable and the least often reported. Something you
 abandoned because it was confusing is a finding, not a failure on your part.
 
-### Some builds cannot show you licence expiry at all
+### Some builds cannot show you license expiry at all
 
 A release build is stamped with the date it shipped, and licensing compares
-that date against your licence's window. **Development builds carry no stamp,
-so every licence check passes.** On a dev build you will not see the trial end,
+that date against your license's window. **Development builds carry no stamp,
+so every license check passes.** On a dev build you will not see the trial end,
 the 30-day expiry banner, or a release being refused as outside your
 window — and the app will look perfectly healthy while you test none of it.
 
@@ -155,13 +155,13 @@ tccutil reset Microphone     com.seal-shot.sealshot.direct
 Then relaunch. A fresh macOS user account also works and is safer if you would
 rather not reset your own permissions.
 
-### Licence states cannot be reached by waiting
+### License states cannot be reached by waiting
 
 The trial is 14 days and an update window is 12 to 18 months. Nobody tests
-expiry by waiting for it. Ask for the **licence fixture set** — files minted
+expiry by waiting for it. Ask for the **license fixture set** — files minted
 with specific dates and properties, covering an already-expired window, one
-expiring in about 20 days, a 25-seat volume licence, an older file for the same
-licence, a tampered file, and a revoked one. Testing Tier 2 without these
+expiring in about 20 days, a 25-seat volume license, an older file for the same
+license, a tampered file, and a revoked one. Testing Tier 2 without these
 means testing only the happy path.
 
 ---
@@ -276,15 +276,15 @@ a file path that reveals something about the machine.
 
 ### 4.7 Licensing and purchase — notarised build only
 
-**Goal:** behave correctly at every licence state.
+**Goal:** behave correctly at every license state.
 
 Everything here lives in **Settings ▸ License**.
 
-With the fixture set: activate a valid licence and confirm the details shown
-match the file. Activate an **older** file for the same licence and confirm it
+With the fixture set: activate a valid license and confirm the details shown
+match the file. Activate an **older** file for the same license and confirm it
 is refused rather than shortening your window. Try the tampered file and the
 revoked one. Load the one expiring in 20 days and confirm the banner appears
-and the Renew button opens the right page with your licence ID in the URL.
+and the Renew button opens the right page with your license ID in the URL.
 Finally, run a sandbox purchase end to end and activate what arrives by email.
 
 **Most likely wrong:** the anti-downgrade rule. It is new, and the failure is
@@ -341,10 +341,10 @@ S1 and S2 stop your session — tell us straight away rather than continuing.
 Do not report these; they are known states of the pre-release setup.
 
 - Checkout showing sandbox prices, or a test card being required
-- Licence emails only arriving at one specific inbox
+- License emails only arriving at one specific inbox
 - A macOS warning that the app is from an unidentified developer, on a
   development build
-- Every licence check passing on a development build — see §3
+- Every license check passing on a development build — see §3
 - Pages on the website asking you to sign in
 
 ---

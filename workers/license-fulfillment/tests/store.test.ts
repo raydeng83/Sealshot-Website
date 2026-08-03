@@ -34,14 +34,14 @@ describe('store', () => {
   });
 });
 
-describe('licence records', () => {
+describe('license records', () => {
   const rec: LicenseRecord = {
     name: 'Jane Doe', email: 'Jane@Example.com', licenseType: 'individual',
     issued: '2026-07-20', updatesThrough: '2027-07-20', seats: 1,
     latestOrderId: 'ord_1',
   };
 
-  it('round-trips a licence record', async () => {
+  it('round-trips a license record', async () => {
     const { kv } = fakeKV();
     await putLicense(kv, 'LIC-1', rec);
     expect(await getLicense(kv, 'LIC-1')).toEqual(rec);
@@ -62,13 +62,13 @@ describe('licence records', () => {
     expect(await findLicenseIdByEmail(kv, '  jane@example.com ')).toBe('LIC-1');
   });
 
-  it('returns null for an unknown licence or email', async () => {
+  it('returns null for an unknown license or email', async () => {
     const { kv } = fakeKV();
     expect(await getLicense(kv, 'nope')).toBeNull();
     expect(await findLicenseIdByEmail(kv, 'nobody@example.com')).toBeNull();
   });
 
-  it('keeps the old email pointing at the licence when the address changes', async () => {
+  it('keeps the old email pointing at the license when the address changes', async () => {
     const { kv } = fakeKV();
     await putLicense(kv, 'LIC-1', rec);
     await putLicense(kv, 'LIC-1', { ...rec, email: 'new@example.com' });
@@ -76,9 +76,9 @@ describe('licence records', () => {
     expect(await findLicenseIdByEmail(kv, 'jane@example.com')).toBe('LIC-1');
   });
 
-  it('keeps order records and licence records in separate keyspaces', async () => {
+  it('keeps order records and license records in separate keyspaces', async () => {
     // Both are addressed by opaque ids. If the prefixes ever collided, an
-    // order id equal to a licence id would overwrite a customer's licence.
+    // order id equal to a license id would overwrite a customer's license.
     const { kv, values } = fakeKV();
     await putOrder(kv, 'SAME', {
       licenseId: 'SAME', email: 'a@b.com', name: 'A B', issued: '2026-07-20',

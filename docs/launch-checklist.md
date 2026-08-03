@@ -205,7 +205,7 @@ Three parts of that change how carefully the rest of this phase must be done:
 - **`p=reject` / `sp=reject`** — a message that fails DMARC is *rejected at the
   receiving server*, not filed in spam. A misconfiguration here does not
   degrade deliverability; it stops mail entirely, and the buyer never sees a
-  licence. `sp=reject` means the policy applies to `mail.seal-shot.com` too.
+  license. `sp=reject` means the policy applies to `mail.seal-shot.com` too.
 - **`aspf=s`** (strict SPF alignment) — the SPF-authenticated domain must
   *exactly* equal the From domain. Sending as `license@mail.seal-shot.com`
   therefore needs an SPF record **on `mail.seal-shot.com` itself**; inheriting
@@ -283,7 +283,7 @@ nothing.
 Two founding purchases went the whole way: Polar checkout → `order.paid`
 webhook (200) → `PRODUCT_MAP` resolving the **18-month** founding term
 (issued 2026-08-02, `updatesThrough` 2028-02-02, so it matched the real product
-id rather than falling through to the 12-month default) → licence minted with
+id rather than falling through to the 12-month default) → license minted with
 preamble v2 → Resend delivery → **activated in the app**. Both delivered on the
 first attempt. Worker logs across the window: 0 alerts, 0 exceptions.
 
@@ -294,7 +294,7 @@ file through signature, `textHash` and payload decode is identical — only
 
 What sandbox has NOT exercised, and still needs doing before launch:
 
-- [ ] A **renewal** purchase — `reference_id` propagation, reusing the licence
+- [ ] A **renewal** purchase — `reference_id` propagation, reusing the license
       id, and extending rather than resetting the window. Covered by tests, not
       by live traffic.
 - [ ] The **retry/backoff** path. Every cron run over the test window found an
@@ -350,8 +350,8 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
 
 - [x] **Prove the signing key first.** `npx vitest run production-key` asserts
       the Keychain key is the private half of key 1 in `LicenseKeys.swift`, and
-      that an issued licence verifies against the app's embedded public key.
-      Without this, every licence sold could be rejected at activation and no
+      that an issued license verifies against the app's embedded public key.
+      Without this, every license sold could be rejected at activation and no
       other test would notice. **Verified 2026-08-01: passes.**
 - [x] `npx wrangler kv namespace create ORDERS` → bound in `wrangler.toml`
       (`7c0ac7b21f5e4223b4c585f73c3408a2`), confirmed by dry-run
@@ -385,7 +385,7 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
       (`onboarding@resend.dev` — confirm the exact address in your Resend
       dashboard). It can send to your own account address with no domain
       verification, which is enough to exercise the entire chain: webhook →
-      licence generation → email with attachment → **activation in the app**.
+      license generation → email with attachment → **activation in the app**.
 - [ ] Run the full test list below against that setup
 - [ ] Switch `EMAIL_FROM` to the real address after Phase 3 and re-run one
       purchase to confirm nothing depended on the test sender
@@ -459,8 +459,8 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
       no analytics" sentence now describes Cloudflare Web Analytics honestly,
       and a new **Buying a license** section covers Polar as merchant of
       record, exactly what the Worker stores in KV, Resend holding the sent
-      message *including the attached licence file*, retention for the life of
-      the licence, and deletion on request.
+      message *including the attached license file*, retention for the life of
+      the license, and deletion on request.
 - [x] App section left unchanged — "no telemetry, no account" is still true and
       is the product's core claim.
 - [ ] Add a **subscriber list** paragraph: provider, what's stored, how to
@@ -516,8 +516,8 @@ exactly why they need a checklist.
       if the flag and the URLs disagree, so a half-done swap can't ship.
 - [ ] **`PRODUCT_MAP` in `workers/license-fulfillment/wrangler.toml`** — swap
       sandbox product ids for production ones. Nothing fails if you forget:
-      every purchase quietly resolves to a 12-month new licence, so a founding
-      buyer silently loses six months and a renewal mints a *second* licence.
+      every purchase quietly resolves to a 12-month new license, so a founding
+      buyer silently loses six months and a renewal mints a *second* license.
       The only signal is the unmapped-product alert.
 - [ ] **`POLAR_WEBHOOK_SECRET`** — set to the *production* endpoint's secret.
       Leave the sandbox one and every real webhook returns 401; after ten
