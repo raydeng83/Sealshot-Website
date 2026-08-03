@@ -113,9 +113,10 @@ const expect = arg('expect');
 if (expect) {
   const present = list.revoked.some((id) => id.toUpperCase() === expect.toUpperCase());
   check(present, `revokes ${expect}`,
-        present ? '' : '— not in the file being served. If you pushed within the last '
-                     + 'few minutes this is probably raw.githubusercontent.com serving a '
-                     + 'cached copy (~5 min TTL); check the repo on github.com to be sure.');
+        present ? '' : '— not in the copy THIS request was served. raw.githubusercontent.com '
+                     + 'is fronted by many edges, each caching independently for ~5 min, so '
+                     + 'two clients can legitimately disagree. Check github.com, or the '
+                     + 'Contents API, for the authoritative answer.');
 }
 
 console.log(`\n  updated ${list.updated} · revokes ${list.revoked.length} license(s)`);

@@ -176,9 +176,11 @@ for (let attempt = 1; attempt <= 6 && !liveSeen; attempt++) {
 }
 console.log(liveSeen
   ? '  ✓ live'
-  : '  … still serving a cached copy. Normal — the raw CDN holds files for about\n'
-    + '    five minutes. The revocation IS published (step 5 proved it); apps that\n'
-    + '    fetch after the cache expires will see it.');
+  : '  … this edge is still serving a stale copy. Normal, and not a problem:\n'
+    + '    raw.githubusercontent.com has many edges, each caching independently for\n'
+    + '    ~5 minutes, so different machines legitimately see different answers for a\n'
+    + '    few minutes. The revocation IS published — step 5 proved it against the\n'
+    + '    uncached API. Every app will see it within about five minutes.');
 
 console.log(`\n${id} is revoked. Installs pick it up on next launch, when update`
   + ` checks are enabled.\n`);

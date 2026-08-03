@@ -390,6 +390,12 @@ para('That second step is not optional politeness. The app fails open on '
      'hand without re-signing all degrade silently to "revokes nothing". That is '
      'indistinguishable from "nothing has been revoked yet", which is exactly '
      'how this URL returned 404 for months without anyone noticing.')
+para('Revocation is not instant, and not uniform. The blocklist is served from '
+     'a CDN with many independent edges, each caching for about five minutes, so '
+     'for a few minutes after publishing some installs will see the revocation '
+     'and others will not. Verify against the GitHub API rather than the raw URL: '
+     'the API is uncached, while two raw requests from the same machine can '
+     'legitimately disagree.')
 para('Two consequences worth being clear-eyed about. Revocation cannot be '
      'guaranteed: a customer who stays offline never receives it, and the cached '
      'list is a file they can delete. And an older, validly signed list still '
