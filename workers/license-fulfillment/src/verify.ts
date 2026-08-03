@@ -85,7 +85,14 @@ export async function handleVerify(
     getLicense(env.ORDERS, licenseId),
     findLicenseIdByEmail(env.ORDERS, email),
   ]);
-  if (!rec || indexed !== licenseId) return json(request, { error: 'not_found' }, 404);
+  // A refunded licence is treated as not found, matching resolveRenewalTarget.
+  // Without this the page would quote a projected date for a licence that
+  // fulfilment refuses to extend — it mints a fresh one instead — so /renew
+  // would promise one thing and the purchase deliver another. The identical 404
+  // also keeps the non-enumeration property: the caller learns nothing new.
+  if (!rec || rec.refunded || indexed !== licenseId) {
+    return json(request, { error: 'not_found' }, 404);
+  }
 
   return json(
     request,
