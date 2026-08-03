@@ -39,6 +39,34 @@ nothing to measure against.
 **Verify:** buy through sandbox Polar, then activate the emailed license on the
 release build downloaded from its public URL — not a local build.
 
+### G0.1a — Publish the revocation blocklist
+
+- [ ] Commit `license-blocklist.json` to the **Sealshot-Release** repo.
+
+`https://raw.githubusercontent.com/.../main/license-blocklist.json` currently
+returns **404**. The shipped app fetches it on launch, fails open silently, and
+carries on — so nothing is visibly broken, but **revocation does not work at
+all**, and `/refunds` now promises that it does.
+
+An initial signed file with an empty `revoked` list is enough; `licensegen
+revoke --id …` appends to it thereafter. Note `licensegen revoke` cannot create
+the file, because it requires an `--id`.
+
+### G0.1b — The privacy policy depends on this release
+
+The policy states that the revocation download follows the "Automatically check
+for updates" setting. That gating exists on the app repo's `development` branch
+but is **not in any released build** — 0.7.2 fetches unconditionally.
+
+The ordering happens to be safe: G0.1 requires a release before any sale, that
+release comes from the same branch, and the site is behind Access until launch,
+so no external reader sees the policy first. Worth checking rather than assuming
+when the release is cut.
+
+- [ ] Confirm the release containing licensing v2 also contains the blocklist
+      gating (`AppDelegate.swift`, guarded on
+      `UpdaterController.shared.automaticallyChecksForUpdates`).
+
 ### G0.2 — Redaction must be proven permanent
 
 - [ ] **Attack your own export.** Redact something identifiable, export, then
