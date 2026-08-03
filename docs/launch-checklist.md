@@ -26,7 +26,7 @@ rather than by us.
 
 - [ ] **Cut a Direct release containing licensing v2.**
 
-The Worker now emits licence **preamble v2**. The newest tagged release is
+The Worker now emits license **preamble v2**. The newest tagged release is
 **v0.7.2**, which verifies **v1**. So a purchase made today produces a file
 that the app the customer just downloaded rejects as `textTampered` — they pay
 and cannot activate.
@@ -36,7 +36,7 @@ There is a second reason the release must come first: a founding buyer's
 stamped at release time. Sell before the release exists and the arithmetic has
 nothing to measure against.
 
-**Verify:** buy through sandbox Polar, then activate the emailed licence on the
+**Verify:** buy through sandbox Polar, then activate the emailed license on the
 release build downloaded from its public URL — not a local build.
 
 ### G0.2 — Redaction must be proven permanent

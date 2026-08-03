@@ -10,22 +10,46 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     <p class="kicker">Privacy policy</p>
     <h1 id="privacy-title">Privacy</h1>
     <!-- Bump this whenever the substance changes, not on wording tweaks. -->
-    <p>Effective August 2, 2026.</p>
+    <p>Effective August 3, 2026.</p>
 
     <h2>The app</h2>
     <p>
       Sealshot processes everything on your Mac. Screenshots, OCR text,
       annotations, generated metadata, and search indexes never leave your
-      device. The app requires no account, collects no telemetry or analytics,
-      and makes no network requests with your content.
+      device. The app requires no account and collects no telemetry or
+      analytics — nothing about what you capture, or how you use Sealshot, is
+      ever sent anywhere. The three downloads it does make are listed below.
     </p>
     <p>
-      Sealshot's network activity is limited to two downloads, neither of
-      which sends personal data. Sealshot checks a public version feed once a
-      day and downloads updates from it. And if you choose to enable enhanced
-      on-device redaction, Sealshot downloads that detection model once, with your
-      explicit consent — the model then runs entirely on your Mac, and you
-      can remove it at any time. Your content is never uploaded.
+      Sealshot makes exactly three network requests, and <strong>all three are
+      downloads</strong>. None of them sends anything about you — no account, no
+      identifier, no license key, no usage data, and never your content.
+    </p>
+    <ul>
+      <li>
+        <strong>Update check.</strong> Once a day Sealshot reads a public version
+        feed and downloads a new release if there is one. You can turn this off
+        in <strong>Settings ▸ General</strong>.
+      </li>
+      <li>
+        <strong>Revocation list.</strong> On launch, Sealshot downloads a small
+        public file listing licenses that have been revoked — after a refund, for
+        example. It is a plain download of the whole list, which Sealshot then
+        checks <em>on your Mac</em>. It does not ask a server about your license,
+        and your license ID is never sent anywhere. This one currently runs
+        whether or not automatic update checks are enabled.
+      </li>
+      <li>
+        <strong>Enhanced redaction model.</strong> Only if you choose to enable
+        it, and only once, with your explicit consent. The model then runs
+        entirely on your Mac and you can remove it at any time.
+      </li>
+    </ul>
+    <p>
+      Each of these is an ordinary file download, so the server sees what any
+      download reveals — that some computer asked for a file — and nothing that
+      identifies you or your copy of Sealshot. There is no request in which
+      Sealshot reports anything back.
     </p>
 
     <h2>This website</h2>
