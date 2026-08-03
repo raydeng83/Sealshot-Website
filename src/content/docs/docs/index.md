@@ -45,9 +45,10 @@ encrypted, passcode-protected package for sending.
 
 ### Yours to keep
 
-Sealshot is a [one-time purchase](/buy/), activated by a license file
-that works entirely offline — no account, no activation server. The app
-never stops working, and update renewals are
+Every install starts with a **14-day free trial** — full-featured, no
+account, no card. After that, Sealshot is a [one-time purchase](/buy/),
+activated by a license file that works entirely offline — no account, no
+activation server. The app never stops working, and update renewals are
 [entirely optional](/docs/faq/#buying-licensing--renewal).
 
 ## What you can do with it
