@@ -10,9 +10,59 @@ record the answers in the "Findings" blanks — several later steps depend on
 them.
 
 **Current state:** site deploys from `main` to Cloudflare Pages, gated by
-Cloudflare Access, reachable at `sealshot-website.pages.dev`. Docs are
-complete and audited against the app (release 0.7.2). Nothing can be
-purchased yet — the checkout URL is still a placeholder.
+Cloudflare Access, and live on `seal-shot.com`. Docs are complete and audited
+against the app. The purchase path is proven end to end in Polar's sandbox
+(see Phase 4). Production Polar is not set up.
+
+---
+
+## Gate 0 — before a single sale, or a single public claim
+
+No amount of ticking below substitutes for these three. Each is currently
+**unverified**, and each would be discovered by a customer or by Hacker News
+rather than by us.
+
+### G0.1 — The app must accept what the Worker issues
+
+- [ ] **Cut a Direct release containing licensing v2.**
+
+The Worker now emits licence **preamble v2**. The newest tagged release is
+**v0.7.2**, which verifies **v1**. So a purchase made today produces a file
+that the app the customer just downloaded rejects as `textTampered` — they pay
+and cannot activate.
+
+There is a second reason the release must come first: a founding buyer's
+18-month window is compared against the **build's** entitlement date, which is
+stamped at release time. Sell before the release exists and the arithmetic has
+nothing to measure against.
+
+**Verify:** buy through sandbox Polar, then activate the emailed licence on the
+release build downloaded from its public URL — not a local build.
+
+### G0.2 — Redaction must be proven permanent
+
+- [ ] **Attack your own export.** Redact something identifiable, export, then
+      try to recover it: another editor, hard zoom, levels and contrast.
+- [ ] **Do it for a `.seal` package too.** The suspected failure is asymmetric —
+      the flat PNG is clean while the layered package still carries the
+      original underneath, so sharing the package leaks what sharing the PNG
+      does not.
+
+The whole go-to-market message is "share screenshots without sharing secrets".
+If someone recovers redacted content from an export after launch, that is not a
+bug report — it ends the positioning. See §4.4 of `docs/testing-manual.md`.
+
+### G0.3 — Network silence must be proven
+
+- [ ] **Watch the app with Little Snitch or a proxy** through a full session:
+      capture, edit, OCR, AI features, library search, export. The only traffic
+      permitted is the daily update check and — if you enable it — the one-time
+      redaction model download.
+- [ ] Consider **publishing the result**. Almost no competitor can, and Show HN
+      readers will run this test whether or not you do.
+
+"No telemetry" is the product's core claim and the privacy policy commits to
+it in writing. It has never been verified at the packet level.
 
 ---
 
@@ -243,6 +293,14 @@ under its own DMARC policy.
       seal-shot.com address, not your personal one
 - [ ] `dig +short MX seal-shot.com` shows Google
 
+### `licensing@` must land somewhere
+
+- [ ] Create `licensing@seal-shot.com` and put it in front of a person.
+
+Volume licenses are quoted and invoiced by hand, and the FAQ already promises
+business licensing. A launch that drives one business enquiry to an address
+nobody reads loses the largest order available — volume starts at ten seats.
+
 ### Transactional — Resend on `mail.seal-shot.com`
 
 - [ ] Resend account → **Add domain** → `mail.seal-shot.com` (uses the one
@@ -294,6 +352,11 @@ file through signature, `textHash` and payload decode is identical — only
 
 What sandbox has NOT exercised, and still needs doing before launch:
 
+- [ ] **Five real purchases of your own**, on clean machines, with five
+      different email addresses, at the real price. The founding cohort's design
+      partners are free, so without this the first exercise of the *paid* path
+      is a stranger's money. Cheapest possible de-risking — do it before any
+      external sale.
 - [ ] A **renewal** purchase — `reference_id` propagation, reusing the license
       id, and extending rather than resetting the window. Covered by tests, not
       by live traffic.
@@ -452,6 +515,19 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
   *Unverified:* the PO-box and CMRA allowance is long-standing FTC guidance,
   but the FTC compliance page was unreachable when this was written — worth
   confirming yourself before committing.
+
+### Refund terms — publish before taking money
+
+- [ ] Publish `/refunds`, and link it from `/buy` and the footer.
+
+CleanShot X — the closest comparator, at the same price — publishes a **30-day
+money-back guarantee**. Sealshot publishes nothing. Taking $39 from strangers
+without stated terms is a support burden and a competitive gap at once, and the
+"refunds under 5%" number tracked below is meaningless without a policy defining
+what a refund is.
+
+Polar is merchant of record so Polar processes it; the terms are still ours to
+state.
 
 ### Privacy policy
 

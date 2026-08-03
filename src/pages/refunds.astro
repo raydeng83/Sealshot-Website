@@ -1,0 +1,70 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { RENEWAL_PRICE_CENTS, formatUSD } from '../config/promos';
+---
+
+<SiteLayout
+  title="Refunds — Sealshot"
+  description="Sealshot's refund policy: 30 days, no questions required, and a 14-day free trial so you can decide before paying."
+>
+  <section class="section wrap prose" aria-labelledby="refunds-title">
+    <p class="kicker">Refunds</p>
+    <h1 id="refunds-title">30 days, no questions required</h1>
+    <p class="sub">
+      If Sealshot isn't right for you, email
+      <a href="mailto:support@seal-shot.com">support@seal-shot.com</a> within 30
+      days of buying and we'll refund it in full.
+    </p>
+
+    <h2>Try it before you pay</h2>
+    <p>
+      Sealshot has a <strong>14-day free trial</strong> with every feature
+      unlocked and no account required. Most reasons for a refund are things the
+      trial would have shown you first, so we'd rather you used it — and if you
+      bought without trying, that's still no obstacle to a refund.
+    </p>
+
+    <h2>How it works</h2>
+    <p>
+      Purchases are handled by <a href="https://polar.sh" rel="nofollow">Polar</a>,
+      our merchant of record, so the refund is processed by them and returns to
+      the card you paid with. Email us, or reply to your Polar receipt — either
+      reaches us. It usually completes within a few business days, depending on
+      your bank.
+    </p>
+    <p>
+      You don't have to give a reason. If something specific didn't work we'd
+      genuinely like to hear it, because that's how the app gets better — but
+      it's never a condition.
+    </p>
+
+    <h2>After a refund</h2>
+    <p>
+      The license is revoked, which means Sealshot stops treating that machine as
+      licensed and returns to its unlicensed state. <strong>Nothing you captured
+      is deleted or locked.</strong> Your library stays on your Mac and stays
+      readable and exportable — the same as when a trial ends.
+    </p>
+
+    <h2>Renewals</h2>
+    <p>
+      An <a href="/renew/">update renewal</a> ({formatUSD(RENEWAL_PRICE_CENTS)})
+      is covered by the same 30 days. Since renewing only extends how long you
+      receive new versions, and your existing version keeps working either way,
+      refunding a renewal simply returns your update window to where it was.
+    </p>
+
+    <h2>Volume licenses</h2>
+    <p>
+      Business and volume licenses are quoted and invoiced individually, so their
+      terms are agreed in that quote rather than here. Email
+      <a href="mailto:licensing@seal-shot.com">licensing@seal-shot.com</a>.
+    </p>
+
+    <h2>Questions</h2>
+    <p>
+      Anything unclear before you buy? <a href="/support/">Ask us</a> — we'd
+      rather answer a question than process a refund.
+    </p>
+  </section>
+</SiteLayout>
