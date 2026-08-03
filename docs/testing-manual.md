@@ -54,10 +54,10 @@ crowded menu bar, not a missing app.
 | Save as… — straight to a file | `⌘⇧S` |
 | Record screen / selection | `⌘⇧V` / `⌘⇧R` |
 
-**Two editions.** The **Direct** build (what you are testing) updates itself and
-is unlocked by a licence file. The **Mac App Store** build is entitled through
-the App Store and has no auto-scroll in scrolling capture. Anything you find
-about licensing applies to Direct only.
+**One build.** Sealshot ships only as a signed, notarised direct download,
+unlocked by a licence file and updating itself from a public version feed. There
+is no Mac App Store edition, so no feature is missing from what you are testing
+and every licensing behaviour in §4.7 applies.
 
 ---
 

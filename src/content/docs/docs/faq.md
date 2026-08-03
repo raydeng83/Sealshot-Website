@@ -73,10 +73,10 @@ See [Which Macs run what](/docs/guide/ai/#which-macs-run-what).
 
 ### Is Sealshot on the Mac App Store?
 
-Not yet — today Sealshot ships as a signed, notarized direct download with
-automatic updates, and a Mac App Store version is planned. A couple of
-features are direct-build-only (auto-scroll for scrolling capture, and the
-in-app update checker).
+No. Sealshot ships only as a signed, notarized direct download, and there is
+one build with every feature in it. Downloading outside the App Store also
+means Sealshot can update itself the moment a release is ready, and that
+sandbox limits never decide what it is allowed to capture.
 
 ### Why does Sealshot need Screen Recording permission?
 

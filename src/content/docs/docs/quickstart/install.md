@@ -53,8 +53,8 @@ If you missed the prompt, enable it manually in **System Settings → Privacy
 
 :::note[Two more permissions, only if you use them]
 [Scrolling capture's](/docs/guide/capture/#scrolling-capture) automatic mode
-needs **Accessibility** permission so Sealshot can scroll the page for you
-(direct-download build only), and
+needs **Accessibility** permission so Sealshot can scroll the page for you,
+and
 [recording your voice](/docs/guide/recording/#audio) needs **Microphone**
 permission. You'll be prompted the first time you use each.
 :::
