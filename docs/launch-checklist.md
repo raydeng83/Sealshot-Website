@@ -276,8 +276,33 @@ a strict one.
 ## Phase 4 — Purchase and fulfilment
 
 **The riskiest phase.** Failures here mean a customer pays and receives
-nothing. Nothing in this phase is live today — the checkout URL is a
-placeholder, so there is no way to accidentally take money before it's ready.
+nothing.
+
+### ✅ Proven end to end in SANDBOX, 2026-08-02
+
+Two founding purchases went the whole way: Polar checkout → `order.paid`
+webhook (200) → `PRODUCT_MAP` resolving the **18-month** founding term
+(issued 2026-08-02, `updatesThrough` 2028-02-02, so it matched the real product
+id rather than falling through to the 12-month default) → licence minted with
+preamble v2 → Resend delivery → **activated in the app**. Both delivered on the
+first attempt. Worker logs across the window: 0 alerts, 0 exceptions.
+
+Activation was tested via "Open License File…" rather than drag-and-drop. Those
+paths converge on the same `activateFile(at:)`, so everything from reading the
+file through signature, `textHash` and payload decode is identical — only
+`handleLicenseFileDrop`'s own `NSItemProvider` handling is still unexercised.
+
+What sandbox has NOT exercised, and still needs doing before launch:
+
+- [ ] A **renewal** purchase — `reference_id` propagation, reusing the licence
+      id, and extending rather than resetting the window. Covered by tests, not
+      by live traffic.
+- [ ] The **retry/backoff** path. Every cron run over the test window found an
+      empty queue, so the backoff machinery has never actually run.
+- [ ] Delivery to an address other than the Resend account owner — impossible
+      until `mail.seal-shot.com` verifies (Phase 3).
+- [ ] The **production** swap. See the Phase 7 blocker list; sandbox passing
+      says nothing about production config being right.
 
 ### Known gaps to fix in code first
 
