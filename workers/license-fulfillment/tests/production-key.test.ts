@@ -4,6 +4,7 @@ import { ed25519 } from '@noble/curves/ed25519';
 import { issueLicense } from '../src/license';
 import { canonicalize, textHash } from '../src/canonical';
 import { base64ToBytes, bytesToBase64 } from '../src/base64';
+import { APP_PUBLIC_KEYS } from '../../../src/lib/app-keys';
 
 /**
  * Proves the Worker signs licenses the SHIPPED APP will accept.
@@ -23,11 +24,7 @@ import { base64ToBytes, bytesToBase64 } from '../src/base64';
  * app/Sources/Sealshot/Licensing/LicenseKeys.swift
  */
 
-/** Public halves embedded in the app. Key 1 signs today; key 2 is the standby. */
-const APP_PUBLIC_KEYS: Record<number, string> = {
-  1: '/tjy0vqLLdg5pvQjxsQ0jd0d9i4ihlMXLPynR8qurgk=',
-  2: 'rgK5y1C5cPJOlmc1AyXXFok3FJvtIgK4k9nLKIetyqs=',
-};
+// Single copy of the app's public keys — see src/lib/app-keys.ts.
 
 /** The envelope's `key` field — must name a key the app knows. */
 const ENVELOPE_KEY_ID = 1;

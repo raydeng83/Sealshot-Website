@@ -1,4 +1,5 @@
 import { ed25519 } from '@noble/curves/ed25519';
+import { APP_PUBLIC_KEYS as PUBLIC_KEYS } from './app-keys';
 
 /**
  * Reads and verifies a Sealshot license file in the browser.
@@ -13,14 +14,6 @@ import { ed25519 } from '@noble/curves/ed25519';
  * — they are public halves, and every shipped app binary already contains them.
  */
 
-/**
- * Public halves embedded in the app (LicenseKeys.production). Key 1 signs
- * today; key 2 is the pre-embedded standby for rotating a leaked primary.
- */
-const PUBLIC_KEYS: Record<number, string> = {
-  1: '/tjy0vqLLdg5pvQjxsQ0jd0d9i4ihlMXLPynR8qurgk=',
-  2: 'rgK5y1C5cPJOlmc1AyXXFok3FJvtIgK4k9nLKIetyqs=',
-};
 
 const BLOB_PREFIX = 'SEALSHOT1.';
 

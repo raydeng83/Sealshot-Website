@@ -10,9 +10,103 @@ record the answers in the "Findings" blanks — several later steps depend on
 them.
 
 **Current state:** site deploys from `main` to Cloudflare Pages, gated by
-Cloudflare Access, reachable at `sealshot-website.pages.dev`. Docs are
-complete and audited against the app (release 0.7.2). Nothing can be
-purchased yet — the checkout URL is still a placeholder.
+Cloudflare Access, and live on `seal-shot.com`. Docs are complete and audited
+against the app. The purchase path is proven end to end in Polar's sandbox
+(see Phase 4). Production Polar is not set up.
+
+---
+
+## Gate 0 — before a single sale, or a single public claim
+
+No amount of ticking below substitutes for these three. Each is currently
+**unverified**, and each would be discovered by a customer or by Hacker News
+rather than by us.
+
+### G0.1 — The app must accept what the Worker issues
+
+- [ ] **Cut a Direct release containing licensing v2.**
+
+The Worker now emits license **preamble v2**. The newest tagged release is
+**v0.7.2**, which verifies **v1**. So a purchase made today produces a file
+that the app the customer just downloaded rejects as `textTampered` — they pay
+and cannot activate.
+
+There is a second reason the release must come first: a founding buyer's
+18-month window is compared against the **build's** entitlement date, which is
+stamped at release time. Sell before the release exists and the arithmetic has
+nothing to measure against.
+
+**Verify:** buy through sandbox Polar, then activate the emailed license on the
+release build downloaded from its public URL — not a local build.
+
+### G0.1a — Publish the revocation blocklist
+
+- [ ] Commit `license-blocklist.json` to the **Sealshot-Release** repo.
+
+`https://raw.githubusercontent.com/.../main/license-blocklist.json` currently
+returns **404**. The shipped app fetches it on launch, fails open silently, and
+carries on — so nothing is visibly broken, but **revocation does not work at
+all**, and `/refunds` now promises that it does.
+
+An initial signed file with an empty `revoked` list is enough; `licensegen
+revoke --id …` appends to it thereafter. Note `licensegen revoke` cannot create
+the file, because it requires an `--id`.
+
+**Published 2026-08-03** (`Sealshot-Release` `405ca8b`) — empty list, signed with
+key 1, verified against the public key the app embeds.
+
+- [ ] **After every `licensegen revoke` + commit**, run:
+
+      cd workers/license-fulfillment && npm run verify:blocklist
+
+      It fetches the live file and checks it the way the app does: known signing
+      key, signature over the comma-joined sorted ids, sorted list, all five
+      non-optional fields. Add `--expect <uuid>` to assert a specific id landed.
+
+This check is not optional politeness. `BlocklistFetcher` fails open by design,
+so a 404, a malformed file, or an id added by hand without re-signing all
+degrade silently to "revokes nothing" — indistinguishable from "nothing has been
+revoked yet", which is precisely how the URL stayed 404 unnoticed.
+
+### G0.1b — The privacy policy depends on this release
+
+The policy states that the revocation download follows the "Automatically check
+for updates" setting. That gating exists on the app repo's `development` branch
+but is **not in any released build** — 0.7.2 fetches unconditionally.
+
+The ordering happens to be safe: G0.1 requires a release before any sale, that
+release comes from the same branch, and the site is behind Access until launch,
+so no external reader sees the policy first. Worth checking rather than assuming
+when the release is cut.
+
+- [ ] Confirm the release containing licensing v2 also contains the blocklist
+      gating (`AppDelegate.swift`, guarded on
+      `UpdaterController.shared.automaticallyChecksForUpdates`).
+
+### G0.2 — Redaction must be proven permanent
+
+- [ ] **Attack your own export.** Redact something identifiable, export, then
+      try to recover it: another editor, hard zoom, levels and contrast.
+- [ ] **Do it for a `.seal` package too.** The suspected failure is asymmetric —
+      the flat PNG is clean while the layered package still carries the
+      original underneath, so sharing the package leaks what sharing the PNG
+      does not.
+
+The whole go-to-market message is "share screenshots without sharing secrets".
+If someone recovers redacted content from an export after launch, that is not a
+bug report — it ends the positioning. See §4.4 of `docs/testing-manual.md`.
+
+### G0.3 — Network silence must be proven
+
+- [ ] **Watch the app with Little Snitch or a proxy** through a full session:
+      capture, edit, OCR, AI features, library search, export. The only traffic
+      permitted is the daily update check and — if you enable it — the one-time
+      redaction model download.
+- [ ] Consider **publishing the result**. Almost no competitor can, and Show HN
+      readers will run this test whether or not you do.
+
+"No telemetry" is the product's core claim and the privacy policy commits to
+it in writing. It has never been verified at the packet level.
 
 ---
 
@@ -243,6 +337,14 @@ under its own DMARC policy.
       seal-shot.com address, not your personal one
 - [ ] `dig +short MX seal-shot.com` shows Google
 
+### `licensing@` must land somewhere
+
+- [ ] Create `licensing@seal-shot.com` and put it in front of a person.
+
+Volume licenses are quoted and invoiced by hand, and the FAQ already promises
+business licensing. A launch that drives one business enquiry to an address
+nobody reads loses the largest order available — volume starts at ten seats.
+
 ### Transactional — Resend on `mail.seal-shot.com`
 
 - [ ] Resend account → **Add domain** → `mail.seal-shot.com` (uses the one
@@ -294,6 +396,11 @@ file through signature, `textHash` and payload decode is identical — only
 
 What sandbox has NOT exercised, and still needs doing before launch:
 
+- [ ] **Five real purchases of your own**, on clean machines, with five
+      different email addresses, at the real price. The founding cohort's design
+      partners are free, so without this the first exercise of the *paid* path
+      is a stranger's money. Cheapest possible de-risking — do it before any
+      external sale.
 - [ ] A **renewal** purchase — `reference_id` propagation, reusing the license
       id, and extending rather than resetting the window. Covered by tests, not
       by live traffic.
@@ -372,6 +479,11 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
       can accidentally buy anything today
 - [ ] Register the webhook endpoint in Polar (the `workers.dev` URL +
       `/webhooks/polar`) and **`npx wrangler secret put POLAR_WEBHOOK_SECRET`**
+- [ ] **Subscribe to BOTH `order.paid` and `order.refunded`.** The refund
+      handler exists and is tested, but Polar sends refunds as a separate event
+      — subscribe to `order.paid` alone and a refund stays invisible: the order
+      keeps its `sent` state, the license record stays valid, and a later
+      renewal would silently reinstate a license you meant to revoke.
       with the signing secret Polar generates. This secret doesn't exist until
       the endpoint does, which is why Polar setup comes last here.
 - [ ] Once Phase 3 is done: set `EMAIL_FROM` to the verified
@@ -452,6 +564,19 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
   *Unverified:* the PO-box and CMRA allowance is long-standing FTC guidance,
   but the FTC compliance page was unreachable when this was written — worth
   confirming yourself before committing.
+
+### Refund terms — publish before taking money
+
+- [ ] Publish `/refunds`, and link it from `/buy` and the footer.
+
+CleanShot X — the closest comparator, at the same price — publishes a **30-day
+money-back guarantee**. Sealshot publishes nothing. Taking $39 from strangers
+without stated terms is a support burden and a competitive gap at once, and the
+"refunds under 5%" number tracked below is meaningless without a policy defining
+what a refund is.
+
+Polar is merchant of record so Polar processes it; the terms are still ours to
+state.
 
 ### Privacy policy
 

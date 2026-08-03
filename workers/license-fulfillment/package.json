@@ -5,7 +5,8 @@
   "scripts": {
     "test": "vitest run",
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "verify:blocklist": "tsx scripts/verify-blocklist.mts"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260702.1",

@@ -28,7 +28,11 @@ export async function resolveRenewalTarget(
 
   if (input.referenceId) {
     const rec = await getLicense(kv, input.referenceId);
-    if (rec) {
+    // A refunded licence is treated as absent, so the caller falls through to
+    // "no match" — mints a fresh licence for what they just paid and alerts a
+    // human. They are not left empty-handed, and a revoked licence is not
+    // silently reinstated.
+    if (rec && !rec.refunded) {
       return {
         licenseId: input.referenceId,
         rec,
@@ -39,7 +43,7 @@ export async function resolveRenewalTarget(
   }
   if (byEmail) {
     const rec = await getLicense(kv, byEmail);
-    if (rec) return { licenseId: byEmail, rec, source: 'email' };
+    if (rec && !rec.refunded) return { licenseId: byEmail, rec, source: 'email' };
   }
   return null;
 }
