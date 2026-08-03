@@ -46,3 +46,18 @@ Two traps, both of which cost a debugging cycle:
   prefixes every slug with `sec-`.
 
 Bump `EDITION` in `build-testing-manual.py` for each new edition.
+
+---
+
+# Pricing / licensing and release-cycle docx
+
+    python3 output/build-pricing-docx.py
+    python3 output/build-release-cycle-docx.py
+
+Both describe the **v1.0 published state**, not current implementation status —
+deliberately, so they read as documentation rather than a progress report. Bump
+the `Edition N · date` line whenever the substance changes.
+
+Note these two use `space_after=` in their `rich()` helper, where the newer
+generators (`build-gtm-docx.py`, `build-support-templates-docx.py`) use `after=`.
+Worth knowing before copying a block between them.
