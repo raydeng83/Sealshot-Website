@@ -11,7 +11,7 @@ const DEFAULT_TERMS: ProductTerms = { kind: 'new', months: 12 };
  *
  * An unknown product falls back to a 12-month NEW purchase. That direction is
  * deliberate: the buyer has paid, so they must get a working license, and
- * treating an unrecognised purchase as `new` mints a fresh license instead of
+ * treating an unrecognized purchase as `new` mints a fresh license instead of
  * touching an existing one. The opposite default would let a misconfigured
  * product id rewrite a customer's window.
  */

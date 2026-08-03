@@ -54,10 +54,10 @@ crowded menu bar, not a missing app.
 | Save as… — straight to a file | `⌘⇧S` |
 | Record screen / selection | `⌘⇧V` / `⌘⇧R` |
 
-**One build.** Sealshot ships only as a signed, notarised direct download,
+**One build.** Sealshot ships only as a signed, notarized direct download,
 unlocked by a license file and updating itself from a public version feed. There
 is no Mac App Store edition, so no feature is missing from what you are testing
-and every licensing behaviour in §4.7 applies.
+and every licensing behavior in §4.7 applies.
 
 ---
 
@@ -135,7 +135,7 @@ window — and the app will look perfectly healthy while you test none of it.
 ![Settings ▸ General. The build number sits under Updates, bottom right.](/manual/settings-general.jpg)
 
 The build is shown in **Settings ▸ General** under Updates, and again in
-**Settings ▸ About**. If you are doing anything in Tier 2, use the notarised
+**Settings ▸ About**. If you are doing anything in Tier 2, use the notarized
 build.
 
 ### Permission prompts happen once
@@ -274,7 +274,7 @@ Check what metadata travels with an export and what is stripped.
 **Most likely wrong:** metadata leaking into a shared file — OCR text, tags, or
 a file path that reveals something about the machine.
 
-### 4.7 Licensing and purchase — notarised build only
+### 4.7 Licensing and purchase — notarized build only
 
 **Goal:** behave correctly at every license state.
 
@@ -309,7 +309,7 @@ a capture lost with no indication it was lost.
 
 **Title** — one line, what is wrong, not what you were doing.
 **Build** — version and build number from Settings ▸ About, and whether it is
-the notarised or a development build.
+the notarized or a development build.
 **Machine** — Apple Silicon or Intel, macOS version, and display setup if the
 finding could involve screens.
 **Steps** — numbered, from launch, in a form someone else can follow.

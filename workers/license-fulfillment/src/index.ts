@@ -144,22 +144,22 @@ export default {
             body:
               `reference_id → ${target.licenseId}\n` +
               `email index  → ${target.disagreedWithEmail}\n\n` +
-              `Honoured the reference id. Confirm the buyer renewed the right license.`,
+              `Honored the reference id. Confirm the buyer renewed the right license.`,
           }));
         }
 
         // Volume licenses are quoted and invoiced by hand; there is no volume
         // product at checkout. Reaching here means someone renewed a multi-seat
-        // license through the single-user renewal product, so an organisation
+        // license through the single-user renewal product, so an organization
         // just extended N seats for the price of one. The renewal is still
-        // honoured — they paid, and refusing strands them — but it needs a human.
+        // honored — they paid, and refusing strands them — but it needs a human.
         if (licenseType === 'business-volume') {
           await runTask(ctx, alert(env, {
             subject: `Sealshot: business-volume license renewed at the individual price`,
             body:
               `Order ${order.orderId} renewed license ${licenseId} (${seats} seats)\n` +
               `through the individual renewal product. Volume renewals are meant to\n` +
-              `be quoted and invoiced. Honoured the renewal; invoice the difference\n` +
+              `be quoted and invoiced. Honored the renewal; invoice the difference\n` +
               `or agree a correction with the customer.`,
           }));
         }
@@ -211,7 +211,7 @@ export default {
   /**
    * Cron: retry any order still awaiting delivery. This is what makes the 200
    * above safe — retries are ours, on a schedule we control, rather than
-   * depending on Polar's redelivery behaviour.
+   * depending on Polar's redelivery behavior.
    */
   async scheduled(_event: ScheduledEvent, env: Env, ctx?: ExecutionContext): Promise<void> {
     const now = Date.now();

@@ -313,7 +313,7 @@ What sandbox has NOT exercised, and still needs doing before launch:
       hours. Retries are ours, on a schedule we control.
 
       **This makes the timestamp question moot** — Polar's redelivery
-      behaviour no longer decides whether an order gets fulfilled. The stale
+      behavior no longer decides whether an order gets fulfilled. The stale
       gate was also widened from 300 s to **24 h**, since idempotency is the
       real replay defence and a tight window risked Polar disabling the
       endpoint. A 500 is now returned *only* when the order couldn't be

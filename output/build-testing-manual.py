@@ -163,7 +163,7 @@ table {
   width: 100%; border-collapse: collapse; margin: 0 0 4mm;
   font-size: 8.5pt;
 }
-/* Repeat the header on a continued table. Paged.js only honours
+/* Repeat the header on a continued table. Paged.js only honors
    break-inside: avoid when the whole table fits somewhere, so a long one splits
    regardless — better that it splits with its header than without. */
 thead { display: table-header-group; }

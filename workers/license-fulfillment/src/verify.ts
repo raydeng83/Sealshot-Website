@@ -22,7 +22,7 @@ export type VerifyEnv = {
 export function corsHeaders(request: Request): Record<string, string> {
   const origin = request.headers.get('origin') ?? '';
   return {
-    // Echo only a known origin. An unrecognised one gets the apex, which the
+    // Echo only a known origin. An unrecognized one gets the apex, which the
     // browser then refuses — a wrong origin must not be granted access.
     'access-control-allow-origin': ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
     'access-control-allow-headers': 'content-type',
