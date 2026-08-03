@@ -55,7 +55,18 @@ the file, because it requires an `--id`.
 **Published 2026-08-03** (`Sealshot-Release` `405ca8b`) — empty list, signed with
 key 1, verified against the public key the app embeds.
 
-- [ ] **After every `licensegen revoke` + commit**, run:
+- [ ] **To revoke a license, use the wrapper** rather than the four steps by hand:
+
+      cd workers/license-fulfillment && npm run revoke -- <license-uuid>
+
+      It cross-checks KV that the license really was refunded (refusing without
+      `--force`), signs via `licensegen`, verifies before publishing, commits,
+      pushes, and confirms the published file through the GitHub **API** — which
+      is uncached, unlike `raw.githubusercontent.com`, whose ~5 minute TTL means a
+      revocation is not fetchable by apps immediately. `--dry-run` signs and
+      verifies without touching the repo.
+
+- [ ] To check the published list at any time:
 
       cd workers/license-fulfillment && npm run verify:blocklist
 
