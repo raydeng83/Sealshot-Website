@@ -174,3 +174,35 @@ describe('POST /renew/verify', () => {
     expect(res.status).toBe(200);
   });
 });
+
+describe('a refunded license is not renewable', () => {
+  it('returns the identical 404, not a projected date', async () => {
+    // resolveRenewalTarget already refuses to extend a refunded license, so a
+    // 200 here would have /renew quote a window the purchase will not deliver.
+    const { kv } = fakeKV();
+    await putLicense(kv, 'LIC-R', {
+      name: 'Jane Doe', email: 'jane@example.com', licenseType: 'individual',
+      issued: '2026-01-01', updatesThrough: '2027-01-01', seats: 1,
+      latestOrderId: 'o1', refunded: true,
+    });
+    const res = await handleVerify(
+      post({ email: 'jane@example.com', licenseId: 'LIC-R' }), { ORDERS: kv }, '2026-08-01');
+    expect(res.status).toBe(404);
+    expect(await res.json()).toEqual({ error: 'not_found' });
+  });
+
+  it('is indistinguishable from an unknown id', async () => {
+    const { kv } = fakeKV();
+    await putLicense(kv, 'LIC-R', {
+      name: 'Jane Doe', email: 'jane@example.com', licenseType: 'individual',
+      issued: '2026-01-01', updatesThrough: '2027-01-01', seats: 1,
+      latestOrderId: 'o1', refunded: true,
+    });
+    const refunded = await handleVerify(
+      post({ email: 'jane@example.com', licenseId: 'LIC-R' }), { ORDERS: kv }, '2026-08-01');
+    const unknown = await handleVerify(
+      post({ email: 'jane@example.com', licenseId: 'NOPE' }), { ORDERS: kv }, '2026-08-01');
+    expect(await refunded.json()).toEqual(await unknown.json());
+    expect(refunded.status).toBe(unknown.status);
+  });
+});
