@@ -1,5 +1,7 @@
-import { verifyPolarSignature, parseOrderPaid } from './polar';
-import { getOrder, putOrder, listPending, type OrderRecord } from './store';
+import { verifyPolarSignature, parseOrderPaid, parseOrderRefunded } from './polar';
+import {
+  getOrder, putOrder, listPending, getLicense, putLicense, type OrderRecord,
+} from './store';
 import { hasUnsafeChars } from './sanitize';
 import { deliverLicense, isDue, type FulfillEnv } from './fulfill';
 import { handleVerify, corsHeaders, type VerifyEnv } from './verify';
@@ -32,6 +34,62 @@ function isoToUTCDay(iso: string): string {
  * non-2xx responses gets the endpoint disabled at Polar.
  */
 const MAX_TIMESTAMP_SKEW_SECONDS = 24 * 60 * 60;
+
+/**
+ * Record a refund and tell a human to revoke the licence.
+ *
+ * Deliberately does NOT revoke anything itself. Revocation means publishing the
+ * licence id in the signed blocklist that the app downloads, which lives in the
+ * Sealshot-Release repo — a git commit this Worker cannot make. So the Worker's
+ * job is to make the refund impossible to miss, and to stop the licence being
+ * reinstated by a later renewal.
+ *
+ * Idempotent: a redelivered refund event finds the order already `refunded` and
+ * returns without alerting twice.
+ */
+async function handleRefund(env: Env, orderId: string): Promise<void> {
+  const order = await getOrder(env.ORDERS, orderId);
+
+  if (!order) {
+    // A refund for an order we never recorded — refunded before the endpoint
+    // existed, or a delivery that failed so completely nothing was stored.
+    // Worth knowing about precisely because we cannot act on it.
+    await alert(env, {
+      subject: `Sealshot: refund for an unknown order ${orderId}`,
+      body:
+        `Polar reports order ${orderId} refunded, but there is no order record.\n` +
+        `Nothing to revoke from this side — check the order in Polar to see\n` +
+        `whether a licence was ever issued for it.`,
+    });
+    return;
+  }
+
+  if (order.state === 'refunded') return; // already handled
+
+  await putOrder(env.ORDERS, orderId, { ...order, state: 'refunded' });
+
+  // Flag the licence so a later renewal cannot quietly reinstate it. Skipped
+  // when the order never got as far as having a licence id.
+  if (order.licenseId) {
+    const lic = await getLicense(env.ORDERS, order.licenseId);
+    if (lic) await putLicense(env.ORDERS, order.licenseId, { ...lic, refunded: true });
+  }
+
+  await alert(env, {
+    subject: `Sealshot: refund — revoke licence ${order.licenseId || '(none issued)'}`,
+    body:
+      `Order ${orderId} was refunded.\n` +
+      `  licence: ${order.licenseId || '(none issued)'}\n` +
+      `  buyer:   ${order.email}\n` +
+      `  issued:  ${order.issued}, updates through ${order.updatesThrough}\n\n` +
+      `Recorded as refunded, and the licence is flagged so a renewal cannot\n` +
+      `reinstate it. REVOCATION IS STILL MANUAL — the app checks a signed\n` +
+      `blocklist in the Sealshot-Release repo, which this Worker cannot commit to:\n\n` +
+      `  licensegen revoke --id ${order.licenseId} --blocklist path/license-blocklist.json\n\n` +
+      `then commit license-blocklist.json to Sealshot-Release. Until that lands,\n` +
+      `the refunded copy keeps working.`,
+  });
+}
 
 /** Run in the background where possible; await inline when there's no ctx. */
 async function runTask(ctx: ExecutionContext | undefined, task: Promise<unknown>): Promise<void> {
@@ -73,8 +131,17 @@ export default {
       return new Response('stale', { status: 400 });
     }
 
+    // Refunds first: a refund arrives as its own event, and until now nothing
+    // listened for it — so a refunded order kept its `sent` record, its licence
+    // record stayed valid, and the email index still resolved to it.
+    const refund = parseOrderRefunded(rawBody);
+    if (refund) {
+      await runTask(ctx, handleRefund(env, refund.orderId));
+      return new Response('ok', { status: 200 });
+    }
+
     const order = parseOrderPaid(rawBody);
-    if (!order) return new Response('ignored', { status: 200 }); // non-order.paid or unparsable-but-signed
+    if (!order) return new Response('ignored', { status: 200 }); // unhandled event, or unparsable-but-signed
 
     const existing = await getOrder(env.ORDERS, order.orderId);
 

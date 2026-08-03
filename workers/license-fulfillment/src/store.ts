@@ -1,4 +1,4 @@
-export type OrderState = 'sent' | 'pending' | 'rejected' | 'failed';
+export type OrderState = 'sent' | 'pending' | 'rejected' | 'failed' | 'refunded';
 
 export type OrderRecord = {
   licenseId: string;
@@ -95,6 +95,17 @@ export type LicenseRecord = {
   updatesThrough: string;
   seats: number;
   latestOrderId: string;
+  /**
+   * Set when the purchase behind this licence was refunded. The renewal path
+   * refuses to extend a refunded licence — without this, a refunded customer
+   * could buy a $24 renewal and have their revoked licence quietly reinstated
+   * with a fresh window.
+   *
+   * Note this does NOT revoke anything by itself. Revocation means publishing
+   * the id in the signed blocklist, which is a human step — see the alert in
+   * src/index.ts.
+   */
+  refunded?: boolean;
 };
 
 const LICENSE_PREFIX = 'license:';

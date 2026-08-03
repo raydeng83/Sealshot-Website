@@ -435,6 +435,11 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
       can accidentally buy anything today
 - [ ] Register the webhook endpoint in Polar (the `workers.dev` URL +
       `/webhooks/polar`) and **`npx wrangler secret put POLAR_WEBHOOK_SECRET`**
+- [ ] **Subscribe to BOTH `order.paid` and `order.refunded`.** The refund
+      handler exists and is tested, but Polar sends refunds as a separate event
+      — subscribe to `order.paid` alone and a refund stays invisible: the order
+      keeps its `sent` state, the license record stays valid, and a later
+      renewal would silently reinstate a license you meant to revoke.
       with the signing secret Polar generates. This secret doesn't exist until
       the endpoint does, which is why Polar setup comes last here.
 - [ ] Once Phase 3 is done: set `EMAIL_FROM` to the verified

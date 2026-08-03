@@ -92,3 +92,17 @@ export function parseOrderPaid(rawBody: string): ParsedOrder | null {
   const productId = d.product_id ?? d.product?.id ?? '';
   return { orderId, email, name, paidAtISO, productId, referenceId: extractReferenceId(d) };
 }
+
+/**
+ * A refund. Polar sends `order.refunded` separately from `order.paid`, so the
+ * endpoint must subscribe to both — nothing here fires otherwise.
+ *
+ * Only the order id is needed: everything else about the purchase is already on
+ * our own record, and the refund tells us nothing new about the buyer.
+ */
+export function parseOrderRefunded(rawBody: string): { orderId: string } | null {
+  let evt: any;
+  try { evt = JSON.parse(rawBody); } catch { return null; }
+  if (evt?.type !== 'order.refunded' || !evt?.data?.id) return null;
+  return { orderId: evt.data.id };
+}
