@@ -52,6 +52,22 @@ An initial signed file with an empty `revoked` list is enough; `licensegen
 revoke --id …` appends to it thereafter. Note `licensegen revoke` cannot create
 the file, because it requires an `--id`.
 
+**Published 2026-08-03** (`Sealshot-Release` `405ca8b`) — empty list, signed with
+key 1, verified against the public key the app embeds.
+
+- [ ] **After every `licensegen revoke` + commit**, run:
+
+      cd workers/license-fulfillment && npm run verify:blocklist
+
+      It fetches the live file and checks it the way the app does: known signing
+      key, signature over the comma-joined sorted ids, sorted list, all five
+      non-optional fields. Add `--expect <uuid>` to assert a specific id landed.
+
+This check is not optional politeness. `BlocklistFetcher` fails open by design,
+so a 404, a malformed file, or an id added by hand without re-signing all
+degrade silently to "revokes nothing" — indistinguishable from "nothing has been
+revoked yet", which is precisely how the URL stayed 404 unnoticed.
+
 ### G0.1b — The privacy policy depends on this release
 
 The policy states that the revocation download follows the "Automatically check
