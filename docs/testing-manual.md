@@ -30,11 +30,17 @@ crowded menu bar, not a missing app.
 
 **One window with three tabs.**
 
+![The Editor tab — canvas, tool rail, and the recent strip along the bottom.](/manual/editor-overview.jpg)
+
+![The Library tab — grid, sidebar, and search.](/manual/library-grid.jpg)
+
 | Tab | What it is for |
 |---|---|
 | **Editor** | The canvas. Annotate, crop, redact, and run the AI tools on one capture. Also holds the recent strip. |
 | **Library** | Everything you have captured. Search, tags, collections, trash, and the info pane. |
 | **Settings** | Nine sections: General, Capture, Recording, On-Device AI, Shortcuts, Permissions, **License**, Privacy & Security, About. |
+
+![The menu-bar launcher, where every capture starts.](/manual/menu-bar.png)
 
 **Seven ways to capture:**
 
@@ -126,6 +132,8 @@ so every licence check passes.** On a dev build you will not see the trial end,
 the 30-day expiry banner, or a release being refused as outside your
 window — and the app will look perfectly healthy while you test none of it.
 
+![Settings ▸ General. The build number sits under Updates, bottom right.](/manual/settings-general.jpg)
+
 The build is shown in **Settings ▸ General** under Updates, and again in
 **Settings ▸ About**. If you are doing anything in Tier 2, use the notarised
 build.
@@ -176,6 +184,8 @@ permission on purpose and see what the app does about it. Then grant it and
 confirm the app notices without needing a restart. Find the menu-bar icon.
 Trigger your first capture from the menu, not a shortcut.
 
+![Settings ▸ Permissions. Each row should turn Granted without a relaunch.](/manual/settings-permissions.jpg)
+
 **Most likely wrong:** a permission granted while the app is running is not
 picked up until relaunch, or a declined permission leaves a feature that looks
 available but silently does nothing.
@@ -190,6 +200,12 @@ something that is not a web page — a Terminal buffer, a long list. Then repeat
 your two favourite modes on a **second display with different scaling** to the
 first.
 
+![Smart Capture mid-drag: dimmed surround, selection handles, live size and the magnifier loupe.](/manual/capture-area.jpg)
+
+![Window mode in the same overlay — hover highlights a whole window.](/manual/capture-window.jpg)
+
+![Scrolling capture stitching a long page.](/manual/capture-scrolling.jpg)
+
 **Most likely wrong:** mixed Retina and non-Retina displays. Wrong scale factor,
 an off-by-one region, or the capture landing from the wrong screen. This is
 where screenshot apps break, and it will not show up on a single-display Mac.
@@ -201,6 +217,10 @@ where screenshot apps break, and it will not show up on a single-display Mac.
 Crop, set a focus area, annotate with several tools, undo and redo past a
 save, zoom, and use Find in Image. Do not follow a checklist — try to produce
 something you would genuinely send to someone.
+
+![The editor toolbar. Tool order here is the reference — report anything that differs.](/manual/editor-toolbar.png)
+
+![Focus brackets and the Crop tool are separate features; do not conflate them.](/manual/focus-crop.jpg)
 
 **Most likely wrong:** undo/redo across an operation that changes the canvas
 size, such as crop. Also focus brackets versus the crop tool: they are
@@ -214,6 +234,8 @@ Redact something identifiable. Export the result. Then **attack your own
 export**: open it in another editor and try to recover what was underneath.
 Zoom hard. Adjust levels and contrast. If the redaction was drawn as an overlay
 rather than destroying pixels, this is where it shows.
+
+![The redaction review pane — detected regions before they are applied.](/manual/redaction-review.png)
 
 Do the same for a `.seal` package, which keeps layers — confirm the redaction
 is not merely a removable layer in the exported copy.
@@ -230,6 +252,12 @@ Build up twenty or so captures. Search by text inside them, by tag, by date.
 Use collections. Delete something and get it back from trash. Then enable
 enhanced security, lock with `⌘⇧L`, unlock, and quit and relaunch while locked.
 
+![Privacy & Security. Every prompt on this pane is load-bearing.](/manual/security-setting.jpg)
+
+![The recovery key — the only way back into an encrypted library.](/manual/security-recovery-key.png)
+
+![The lock screen, after ⌘⇧L.](/manual/lock-screen.png)
+
 **Most likely wrong:** anything involving the recovery code or key replacement.
 Get this wrong and a user's library is unrecoverable, so treat every prompt in
 Privacy & Security as load-bearing and read it carefully before clicking.
@@ -240,6 +268,8 @@ Privacy & Security as load-bearing and read it carefully before clicking.
 
 Export to each format. Share a `.seal` package and open it somewhere else.
 Check what metadata travels with an export and what is stripped.
+
+![Exporting a .seal package — check what travels with it.](/manual/export-package.png)
 
 **Most likely wrong:** metadata leaking into a shared file — OCR text, tags, or
 a file path that reveals something about the machine.

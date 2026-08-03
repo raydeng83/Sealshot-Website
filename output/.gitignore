@@ -1,0 +1,6 @@
+# Generated artifacts. Regenerate with the scripts in this directory — see
+# README.md. Kept out of git because they are large (3-9MB each) and derived
+# entirely from tracked sources.
+pdf/
+print/
+*.docx
