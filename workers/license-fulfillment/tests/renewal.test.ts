@@ -45,7 +45,7 @@ describe('resolveRenewalTarget', () => {
     ).toBeNull();
   });
 
-  it('reports a disagreement so the caller can alert, honouring the reference', async () => {
+  it('reports a disagreement so the caller can alert, honoring the reference', async () => {
     const kv = await seeded();
     await putLicense(kv, 'LIC-2', {
       name: 'Sam', email: 'sam@example.com', licenseType: 'individual',

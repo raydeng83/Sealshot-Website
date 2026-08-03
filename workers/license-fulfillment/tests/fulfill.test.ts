@@ -212,7 +212,7 @@ describe('listPending', () => {
     expect(pending.map((p) => p.orderId).sort()).toEqual(['a', 'e']);
   });
 
-  it('honours the limit so one cron run is bounded', async () => {
+  it('honors the limit so one cron run is bounded', async () => {
     const kv = fakeKV();
     for (let i = 0; i < 10; i++) await putOrder(kv, `ord_${i}`, pendingRec());
     expect(await listPending(kv, 3)).toHaveLength(3);

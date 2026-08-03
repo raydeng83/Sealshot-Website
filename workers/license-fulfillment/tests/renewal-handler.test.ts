@@ -7,7 +7,7 @@ import { getLicense, putLicense } from '../src/store';
 import { canonicalize } from '../src/canonical';
 
 /**
- * End-to-end renewal behaviour through the real webhook handler.
+ * End-to-end renewal behavior through the real webhook handler.
  *
  * The unit suites cover resolveRenewalTarget and renewalThrough in isolation;
  * these check the thing that actually bills a customer — that a renewal order
@@ -256,7 +256,7 @@ describe('renewals', () => {
       id: 'ord_3', productId: PROD_RENEWAL, referenceId: 'LIC-1', paidAt: '2027-06-01T00:00:00Z',
     }));
 
-    // Honoured — they paid — but it must not go unnoticed.
+    // Honored — they paid — but it must not go unnoticed.
     expect(sent[0]).toContain('License type:     Business Volume');
     expect(sent[0]).toContain('User seats:       25');
     expect(err.mock.calls.flat().join('\n')).toContain('business-volume license renewed');

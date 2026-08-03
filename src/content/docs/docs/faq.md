@@ -147,12 +147,12 @@ your updates or go back to the newest version your license covers.
 ### Can I use an Individual license for work?
 
 Yes — commercial use is included. The Business license exists for
-organisations that want contracted seat counts, one invoice, and volume
+organizations that want contracted seat counts, one invoice, and volume
 pricing, not because individual licenses forbid work use.
 
 ### How does business or volume licensing work?
 
-Businesses get an **offline organisation license**: a contracted seat
+Businesses get an **offline organization license**: a contracted seat
 count on one invoice, with per-seat volume discounts as the count grows.
 No accounts to provision and no activation server to allow-list — it
 works on managed and air-gapped Macs alike. See the
