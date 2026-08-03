@@ -32,8 +32,8 @@ TITLE = 'Sealshot — Internal Testing Manual'
 SUBTITLE = 'Pre-1.0 release · for internal testers'
 EDITION = 'Edition 1 · 2 August 2026'
 
-# Print width: 6.3in content column at ~200dpi.
-PRINT_PX = 1260
+# Print width: the 174mm (6.85in) content column at ~215dpi.
+PRINT_PX = 1500
 
 
 def build_images(md: str) -> str:
@@ -82,7 +82,7 @@ CSS = """
 }
 
 body {
-  font: 10.5pt/1.55 -apple-system, system-ui, 'Helvetica Neue', sans-serif;
+  font: 9.5pt/1.5 -apple-system, system-ui, 'Helvetica Neue', sans-serif;
   color: var(--ink);
   margin: 0;
   hyphens: none;
@@ -98,21 +98,21 @@ body {
   background: var(--tint);
 }
 .cover h1 {
-  font-size: 30pt; line-height: 1.15; margin: 0 0 6mm; letter-spacing: -0.4pt;
+  font-size: 27pt; line-height: 1.15; margin: 0 0 6mm; letter-spacing: -0.4pt;
 }
-.cover .sub { font-size: 13pt; color: var(--accent); font-weight: 600; margin: 0 0 3mm; }
-.cover .edition { font-size: 10pt; color: var(--muted); margin: 0; }
+.cover .sub { font-size: 12pt; color: var(--accent); font-weight: 600; margin: 0 0 3mm; }
+.cover .edition { font-size: 9.5pt; color: var(--muted); margin: 0; }
 .cover .note {
   margin-top: 60mm; padding-top: 5mm; border-top: 2px solid var(--accent);
-  font-size: 9.5pt; color: var(--muted); max-width: 120mm;
+  font-size: 9pt; color: var(--muted); max-width: 120mm;
 }
 
 /* ── Contents ────────────────────────────────────────────────────────────── */
 .toc { break-after: page; }
-.toc h2 { font-size: 15pt; margin: 0 0 6mm; }
+.toc h2 { font-size: 14pt; margin: 0 0 6mm; }
 .toc ol { list-style: none; padding: 0; margin: 0; }
-.toc li { margin: 0 0 1.6mm; font-size: 10.5pt; }
-.toc li.sub { padding-left: 8mm; font-size: 9.5pt; color: var(--muted); }
+.toc li { margin: 0 0 1.4mm; font-size: 9.5pt; }
+.toc li.sub { padding-left: 8mm; font-size: 8.5pt; color: var(--muted); }
 .toc a { text-decoration: none; color: inherit; }
 /* Paged.js resolves the target's page number into this counter. */
 .toc a::after {
@@ -122,12 +122,12 @@ body {
 
 /* ── Body ────────────────────────────────────────────────────────────────── */
 h2 {
-  font-size: 16pt; margin: 0 0 4mm; padding-bottom: 2mm;
+  font-size: 14pt; margin: 0 0 4mm; padding-bottom: 2mm;
   border-bottom: 2px solid var(--accent); break-before: page; break-after: avoid;
 }
 h2:first-of-type { break-before: avoid; }
 h3 {
-  font-size: 11.5pt; margin: 7mm 0 2mm; color: var(--accent);
+  font-size: 10.5pt; margin: 7mm 0 2mm; color: var(--accent);
   break-after: avoid;
 }
 p { margin: 0 0 3mm; orphans: 3; widows: 3; }
@@ -143,26 +143,31 @@ hr { display: none; }        /* section rules come from the h2 border */
    table or figure it introduces. Keeping them together costs a little
    whitespace and saves the reader turning back a page to see what they are
    looking at. */
-p:has(+ table),
-p:has(+ p > img:only-child),
-p:has(+ pre),
-p:has(+ ul),
-p:has(+ ol) { break-after: avoid; }
+p:not(:has(> img)):has(+ table),
+p:not(:has(> img)):has(+ p > img:only-child),
+p:not(:has(> img)):has(+ pre),
+p:not(:has(> img)):has(+ ul),
+p:not(:has(> img)):has(+ ol) { break-after: avoid; }
 
 code {
-  font: 9pt/1.4 ui-monospace, Menlo, monospace;
+  font: 8pt/1.4 ui-monospace, Menlo, monospace;
   background: #f1f4f9; padding: 0.5mm 1.2mm; border-radius: 1mm;
 }
 pre {
   background: #f1f4f9; border-left: 2.5pt solid var(--rule);
   padding: 3mm 4mm; margin: 0 0 4mm; break-inside: avoid;
 }
-pre code { background: none; padding: 0; font-size: 8.5pt; }
+pre code { background: none; padding: 0; font-size: 7.5pt; }
 
 table {
   width: 100%; border-collapse: collapse; margin: 0 0 4mm;
-  font-size: 9.5pt; break-inside: avoid;
+  font-size: 8.5pt;
 }
+/* Repeat the header on a continued table. Paged.js only honours
+   break-inside: avoid when the whole table fits somewhere, so a long one splits
+   regardless — better that it splits with its header than without. */
+thead { display: table-header-group; }
+tr { break-inside: avoid; }
 th {
   text-align: left; background: #f1f4f9; font-weight: 700;
   border: 0.5pt solid var(--rule); padding: 1.6mm 2.2mm;
@@ -171,12 +176,12 @@ td { border: 0.5pt solid var(--rule); padding: 1.6mm 2.2mm; vertical-align: top;
 
 /* ── Figures ─────────────────────────────────────────────────────────────── */
 /* Markdown puts a lone image in its own <p>; that <p> IS the figure. */
-p > img:only-child { display: block; }
+p > img:only-child { display: block; margin-left: auto; margin-right: auto; }
 p:has(> img:only-child) {
   break-inside: avoid; margin: 3.5mm 0 4.5mm; text-align: center;
 }
 img {
-  max-width: 100%; max-height: 62mm; height: auto;
+  max-width: 100%; max-height: 105mm; height: auto;
   border: 0.5pt solid var(--rule); border-radius: 1.5mm;
 }
 /* The alt text becomes the visible caption, so a figure never needs a second
@@ -184,7 +189,7 @@ img {
 p:has(> img:only-child)::after {
   content: attr(data-caption);
   display: block; margin-top: 1.8mm;
-  font-size: 8.5pt; color: var(--muted); text-align: center;
+  font-size: 8pt; color: var(--muted); text-align: center;
   max-width: 130mm; margin-left: auto; margin-right: auto;
 }
 
