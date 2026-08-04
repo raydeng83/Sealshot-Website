@@ -20,8 +20,9 @@ work, no telemetry.
 Screenshots are the most casually sensitive files on a computer — they
 capture whatever happened to be on screen, credentials and all. So
 Sealshot processes everything locally: capture, recording, OCR, search,
-AI metadata, redaction. Its only network activity is checking for updates
-and an optional model download you approve first. See
+AI metadata, redaction. Its only network activity is three downloads — the
+update check, a public list of revoked licenses, and an optional model download
+you approve first. See
 [Security & privacy](/docs/guide/security/) and the
 [privacy policy](/privacy/).
 

@@ -12,10 +12,13 @@ tableOfContents:
 
 No. Capture, recording, OCR, redaction, AI metadata, and search all run on
 your Mac. Nothing you capture is ever uploaded, there is no account, and
-there is no telemetry. Sealshot's only network activity is checking for app
-updates and — only if you approve it — downloading the optional
+there is no telemetry. Sealshot makes exactly three network requests and **all
+three are downloads**: the daily update check; a small public list of revoked
+licenses on launch, which Sealshot checks *on your Mac* without ever sending
+your license ID; and — only if you approve it — the optional
 [enhanced redaction model](/docs/guide/redaction/#the-enhanced-on-device-model).
-Both are downloads; your content never goes the other way. See the
+Your content never goes the other way, and the first two both follow
+**Automatically check for updates**, so turning that off stops them. See the
 [privacy policy](/privacy/) for the full picture.
 
 ### Where are my captures stored?
@@ -130,6 +133,13 @@ Just activate the same license file on the new Mac (your license covers
 two). There's nothing to deactivate first — there's no activation server,
 so no seat to release. Keep the file (or the purchase email) somewhere
 safe, like any other important document.
+
+### My license file won't open after updating — why?
+
+Sealshot 0.7.3 changed the license-file format, and it is not compatible in
+either direction: a file issued before 0.7.3 won't open in 0.7.3 or later, and
+a newer file won't open in 0.7.2 or earlier. Write to support@seal-shot.com and
+we'll reissue yours — your purchase and your update window don't change.
 
 ### What happens when my update window ends?
 
