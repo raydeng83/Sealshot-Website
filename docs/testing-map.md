@@ -1,5 +1,69 @@
 # Sealshot — testing map
 
+A tester brief: what the app is, what we want from you, the scenarios to run, and
+how to report. Read 1 and 2, work through 3, report as in 4.
+
+---
+
+## 1. Sealshot intro
+
+### The app
+
+A screenshot and screen-recording tool for macOS 14 and later, universal for
+Apple Silicon and Intel. Everything runs on the Mac — capture, OCR, redaction,
+AI, search. No account, no telemetry.
+
+- **Capture** — area, window, fullscreen, delayed, and scrolling with stitching
+- **Record** — screen, window, or region, with system audio and mic
+- **Annotate** — shapes, arrows, pen, text, numbered badges, each on its own layer
+- **Redact** — Smart Redaction finds credentials and covers them permanently
+- **Data extract** — titles, summaries, keywords, tables, form fields
+- **Organize and search** — collections, favorites, tags, OCR full-text search
+- **Share** — `.sealshare` packages, optionally passcode-encrypted with an expiry
+- **Encryption** — Enhanced Security is opt-in: AES-256-GCM on disk behind Touch ID
+
+Build under test: **0.7.3 (17)**, notarized, direct download. 14-day trial, then
+$39. License files activate offline and cover two Macs.
+
+### seal-shot.com
+
+Not decoration — it states the claims you are testing, so treat it as part of the
+product and report errors in it.
+
+- `/docs/` — the user guide, per feature. If the app and the guide disagree, that
+  is a finding either way
+- `/docs/faq/` — the questions we expect to be asked
+- `/docs/changelog/v0-7-3/` — what changed in the build you have
+- `/download/` — the DMG
+- `/buy/` — price and what a license includes
+- `/privacy/` — the network and on-device claims scenario 16 tests
+
+**Access:** the site sits behind Cloudflare Access until launch. A login screen
+means you are not on the list yet — ask, rather than working around it.
+
+## 2. Objective
+
+### Function and UI
+
+- Does it do what it claims, on your hardware?
+- Is the state honest — does what is on screen match what is stored? A switch
+  that redraws wrong is a bug even when the setting is right
+- Do errors say what went wrong and how to fix it?
+- Does it hold at the seams — capture into redact into export into another Mac?
+
+### Usability
+
+- Could you have worked it out without being told?
+- How many steps to the thing you actually wanted?
+- Where did you hesitate, guess, or go to the docs? Note it — hesitation is a
+  finding, not a personal failing
+- What did you expect to exist and not find?
+
+Usability findings are usually S4, but log them anyway. They are the ones no
+amount of case coverage will surface.
+
+## 3. Testing map
+
 A scenario layer over the [testing manual](testing-manual.md). The manual walks
 the app part by part; this map crosses it the way real use does — capture into
 redaction, redaction into export, export into someone else's hands. Seam bugs
@@ -12,9 +76,9 @@ groups are independent.
 
 ---
 
-## A. Everyday capture
+### A. Everyday capture
 
-### 1. Capture, Annotate and Export
+#### 1. Capture, Annotate and Export
 
 1. Capture a screenshot (area, window, delayed, or full screen)
 2. Add shapes, arrows, text, numbered badges
@@ -24,7 +88,7 @@ groups are independent.
 export; the receiving app gets nothing, or the unannotated original.
 *~10 min · workbooks 02, 04, 10*
 
-### 2. Scroll Capture and Verify
+#### 2. Scroll Capture and Verify
 
 1. Capture a page, thread, or document longer than the screen
 2. Inspect at 100% zoom, not thumbnail size
@@ -34,7 +98,7 @@ export; the receiving app gets nothing, or the unannotated original.
 stopped early.
 *~10 min · workbook 03*
 
-### 3. Capture Straight to File
+#### 3. Capture Straight to File
 
 1. Capture with the fewest steps the app allows — no editor
 2. Find the file on disk
@@ -44,9 +108,9 @@ stopped early.
 can't open.
 *~5 min · workbooks 01, 02*
 
-## B. Recording
+### B. Recording
 
-### 4. Record with Narration, Pause and Resume
+#### 4. Record with Narration, Pause and Resume
 
 1. Record part of the screen with mic audio
 2. Pause halfway, switch apps, resume
@@ -56,7 +120,7 @@ can't open.
 QuickTime won't play.
 *~15 min · workbook 08*
 
-### 5. Extract from a Recording
+#### 5. Extract from a Recording
 
 1. Open a finished recording
 2. Pull out something other than the video — text, moments, a summary
@@ -66,9 +130,9 @@ QuickTime won't play.
 was said or shown.
 *~10 min · workbooks 08, 11*
 
-## C. Sensitive content
+### C. Sensitive content
 
-### 6. Redact, Export and Attack
+#### 6. Redact, Export and Attack
 
 1. Capture real-looking credentials, numbers, and names
 2. Redact them, then export or share
@@ -79,7 +143,7 @@ was said or shown.
 destroyed, not covered — the worst bug the app can have. File it immediately.
 *~15 min · workbooks 05, 09, 10*
 
-### 7. Work with Encryption On
+#### 7. Work with Encryption On
 
 1. Turn on Enhanced Security
 2. Capture, search, close, reopen, unlock — repeat across a day
@@ -90,7 +154,7 @@ disk, or prompts at odd moments. Encryption should cost one unlock, not
 features.
 *~20 min spread across a day · workbook 09*
 
-### 8. Lose the Code and Recover
+#### 8. Lose the Code and Recover
 
 1. Make yourself unable to unlock
 2. Follow only what the lock screen offers
@@ -100,7 +164,7 @@ features.
 differ from what was archived.
 *~20 min · workbook 09*
 
-### 9. Share with One Recipient
+#### 9. Share with One Recipient
 
 1. Share so that only the intended person can open it
 2. Open it as that recipient, on another Mac
@@ -110,9 +174,9 @@ differ from what was archived.
 it, or the recipient needs the sender's Mac.
 *~15 min, needs a second Mac · workbook 10*
 
-## D. Organize & find
+### D. Organize & find
 
-### 10. Build a Library and Search It
+#### 10. Build a Library and Search It
 
 1. Accumulate a few dozen captures across days, or import a pile
 2. Organize as much or as little as you would in real life
@@ -122,7 +186,7 @@ it, or the recipient needs the sender's Mac.
 visible in the image, or organization lost on relaunch.
 *~15 min on an existing library · workbooks 06, 07*
 
-### 11. Delete and Recover
+#### 11. Delete and Recover
 
 1. Delete something wrongly, then recover it
 2. Delete something deliberately, then confirm it is gone from search and disk
@@ -132,9 +196,9 @@ visible in the image, or organization lost on relaunch.
 purge taking more than it should.
 *~10 min · workbook 06*
 
-## E. Money & access
+### E. Money & access
 
-### 12. Run the Trial to Expiry
+#### 12. Run the Trial to Expiry
 
 1. Start at first launch — permissions, onboarding, all of it
 2. Note what the app tells you about time remaining
@@ -144,7 +208,7 @@ purge taking more than it should.
 Only new captures should pause.
 *Minutes a day across the window, or clock-shift · workbooks 00, 14*
 
-### 13. Buy, Activate and Roam
+#### 13. Buy, Activate and Roam
 
 1. Purchase and receive the license
 2. Activate with the network off — activation claims to be offline
@@ -155,9 +219,9 @@ Only new captures should pause.
 license, or an uncovered version blocks existing work.
 *~30 min, needs a second Mac · workbooks 14, 15*
 
-## F. Trust & longevity
+### F. Trust & longevity
 
-### 14. Reopen and Re-edit Old Work
+#### 14. Reopen and Re-edit Old Work
 
 1. Open a capture from weeks ago, ideally on an app version newer than the one
    that made it
@@ -168,7 +232,7 @@ license, or an uncovered version blocks existing work.
 newer version won't open.
 *~10 min, needs an aged library · workbooks 04, 12*
 
-### 15. Update in Place
+#### 15. Update in Place
 
 1. Start on a previous release with real data in place
 2. Let the built-in updater move you forward
@@ -178,7 +242,7 @@ newer version won't open.
 survive.
 *~15 min · workbook 12*
 
-### 16. Monitor the Network
+#### 16. Monitor the Network
 
 1. Start a monitor (Little Snitch, Proxyman, or `tcpdump`)
 2. Run a full mix of the scenarios above, AI features especially
@@ -199,9 +263,9 @@ Mac, so contents matter as much as destinations. Record destination and trigger;
 outranks every bug except scenario 6.
 *Passive, alongside other scenarios · workbooks 12, 13*
 
-## G. Environment
+### G. Environment
 
-### 17. Repeat in Harsher Environments
+#### 17. Repeat in Harsher Environments
 
 1. Re-run group A on more than one display, a scaled or notched screen, an Intel
    Mac
@@ -214,7 +278,7 @@ screen, or Intel hitting mystery failures instead of "not on this Mac".
 
 ---
 
-## Coverage matrix
+### Coverage matrix
 
 What each scenario exercises. Every column needs a check — skip one and either
 cover its columns elsewhere or note the gap.
@@ -239,5 +303,41 @@ cover its columns elsewhere or note the gap.
 | 16 Monitor network | | | | | | | ✓ | | | ✓ | ✓ | |
 | 17 Harsher environments | ✓ | ✓ | ✓ | | | | | | | | ✓ | |
 
-Report as in the manual (§5): what you did, what you expected, what happened, and
-the capture that shows it — made with Sealshot if it still can.
+## 4. Report an issue
+
+In the Excel workbooks, in the app repo under `testing/test cases v4/` — sixteen
+of them, `00`–`15`, one per area. The cards above name the workbooks they belong
+to. Every case sheet already has the columns, with **Actual Result**, **Status**
+and **Defect Link** left blank for you.
+
+- Fill **Status** for every case you ran: `Pass`, `Fail`, `Blocked`, or `N/A`
+- On a fail, put what actually happened in **Actual Result** and the severity in
+  **Comments**
+- One finding per row
+- A scenario finding that matches no existing case: add a row at the bottom of
+  the closest sheet, `TC#ID` prefixed **`MAP-`**, and name the scenario in
+  **Description**. That is most of what this map is for — the cases cover parts,
+  the scenarios cross them
+
+Severity, as in the manual §5:
+
+| | Meaning |
+|---|---|
+| **S1** | Data loss, or anything leaving the device. A stray network request is S1 even if nothing visibly breaks |
+| **S2** | A paying user cannot activate, capture, or recover their work |
+| **S3** | Broken, but there is a workaround |
+| **S4** | Polish, wording, layout |
+
+**Evidence.** This app's subject is your screen, so a natural repro often
+contains your real work. Reproduce with throwaway content before attaching
+anything; if you cannot, describe it instead. A vaguer report beats your private
+data. Crashes: `docs/product/tester-crash-logs.md`.
+
+## 5. Follow-up
+
+- Send the workbooks back when your pass is done. Partial is fine — say where you
+  stopped
+- Do not sit on an **S1**. Send it the moment you see it, rather than at the end
+  of your pass
+- I will follow up with each of you individually, on anything ambiguous and on
+  every S1 and S2
