@@ -384,6 +384,20 @@ h1, h2, h3 {
 
 .pillar .pillar-label { grid-area: l; }
 
+/* The one place the landing page and the download page state what this costs.
+   Deliberately quiet — it answers "is it free / how much / is it recurring"
+   without turning the hero into a price tag. */
+.buy-signal {
+  margin: 1rem 0 0;
+  color: var(--slate-600);
+  font-size: 0.95rem;
+}
+
+.buy-signal strong {
+  color: var(--navy-900);
+  font-weight: 600;
+}
+
 /* Pillar cards — Private / Secure / Intelligent */
 .pillar {
   border-top: 3px solid var(--orange-600);
