@@ -35,37 +35,22 @@ Test objective mainly covers two parts.
 ### Function and UI
 
 - It does what it claims, on your hardware.
-- The state is honest: the screen matches what is stored. A switch that redraws
-  wrong is a bug even when the setting is right.
-- Errors say what went wrong and how to fix it.
-- It holds at the seams — capture into redact into export into another Mac.
+- User interface looks correct.
 
 ### Usability
 
-- You work it out without being told.
-- The path to the thing you actually wanted is short.
-- Nothing makes you hesitate, guess, or reach for the docs. Where something does,
-  that is a finding — not a personal failing.
-- Everything you expect to exist is there.
+- App is convenient to use
+- User experience is good
 
 
 ## 3. Testing map
 
-A scenario layer over the [testing manual](testing-manual.md). The manual walks
-the app part by part; this map crosses it the way real use does — capture into
-redaction, redaction into export, export into someone else's hands. Seam bugs
-live there.
+Below is a testing map that you can follow to drive through the app.
 
-Steps give the route, not the buttons: pick your own capture mode, tools, and
-export format, because two testers taking different paths is coverage. Precise
-cases live in `testing/test cases v4/`. A full pass is about half a day, and the
-groups are independent.
 
----
+### Everyday capture
 
-### A. Everyday capture
-
-#### 1. Capture, Annotate and Export
+#### Capture, Annotate and Export
 
 1. Capture a screenshot (area, window, delayed, or full screen)
 2. Add shapes, arrows, text, numbered badges
@@ -75,7 +60,7 @@ groups are independent.
 export; the receiving app gets nothing, or the unannotated original.
 *~10 min · workbooks 02, 04, 10*
 
-#### 2. Scroll Capture and Verify
+#### Scroll Capture and Verify
 
 1. Capture a page, thread, or document longer than the screen
 2. Inspect at 100% zoom, not thumbnail size
@@ -85,7 +70,7 @@ export; the receiving app gets nothing, or the unannotated original.
 stopped early.
 *~10 min · workbook 03*
 
-#### 3. Capture Straight to File
+#### Capture Straight to File
 
 1. Capture with the fewest steps the app allows — no editor
 2. Find the file on disk
@@ -95,9 +80,9 @@ stopped early.
 can't open.
 *~5 min · workbooks 01, 02*
 
-### B. Recording
+### Recording
 
-#### 4. Record with Narration, Pause and Resume
+#### Record with Narration, Pause and Resume
 
 1. Record part of the screen with mic audio
 2. Pause halfway, switch apps, resume
@@ -107,7 +92,7 @@ can't open.
 QuickTime won't play.
 *~15 min · workbook 08*
 
-#### 5. Extract from a Recording
+#### Extract from a Recording
 
 1. Open a finished recording
 2. Pull out something other than the video — text, moments, a summary
@@ -117,9 +102,9 @@ QuickTime won't play.
 was said or shown.
 *~10 min · workbooks 08, 11*
 
-### C. Sensitive content
+### Sensitive content
 
-#### 6. Redact, Export and Attack
+#### Redact, Export and Attack
 
 1. Capture real-looking credentials, numbers, and names
 2. Redact them, then export or share
@@ -130,7 +115,7 @@ was said or shown.
 destroyed, not covered — the worst bug the app can have. File it immediately.
 *~15 min · workbooks 05, 09, 10*
 
-#### 7. Work with Encryption On
+#### Work with Encryption On
 
 1. Turn on Enhanced Security
 2. Capture, search, close, reopen, unlock — repeat across a day
@@ -141,7 +126,7 @@ disk, or prompts at odd moments. Encryption should cost one unlock, not
 features.
 *~20 min spread across a day · workbook 09*
 
-#### 8. Lose the Code and Recover
+#### Lose the Code and Recover
 
 1. Make yourself unable to unlock
 2. Follow only what the lock screen offers
@@ -151,7 +136,7 @@ features.
 differ from what was archived.
 *~20 min · workbook 09*
 
-#### 9. Share with One Recipient
+#### Share with One Recipient
 
 1. Share so that only the intended person can open it
 2. Open it as that recipient, on another Mac
@@ -161,9 +146,9 @@ differ from what was archived.
 it, or the recipient needs the sender's Mac.
 *~15 min, needs a second Mac · workbook 10*
 
-### D. Organize & find
+### Organize & find
 
-#### 10. Build a Library and Search It
+#### Build a Library and Search It
 
 1. Accumulate a few dozen captures across days, or import a pile
 2. Organize as much or as little as you would in real life
@@ -173,7 +158,7 @@ it, or the recipient needs the sender's Mac.
 visible in the image, or organization lost on relaunch.
 *~15 min on an existing library · workbooks 06, 07*
 
-#### 11. Delete and Recover
+#### Delete and Recover
 
 1. Delete something wrongly, then recover it
 2. Delete something deliberately, then confirm it is gone from search and disk
@@ -183,9 +168,9 @@ visible in the image, or organization lost on relaunch.
 purge taking more than it should.
 *~10 min · workbook 06*
 
-### E. Money & access
+### Money & access
 
-#### 12. Run the Trial to Expiry
+#### Run the Trial to Expiry
 
 1. Start at first launch — permissions, onboarding, all of it
 2. Note what the app tells you about time remaining
@@ -195,7 +180,7 @@ purge taking more than it should.
 Only new captures should pause.
 *Minutes a day across the window, or clock-shift · workbooks 00, 14*
 
-#### 13. Buy, Activate and Roam
+#### Buy, Activate and Roam
 
 1. Purchase and receive the license
 2. Activate with the network off — activation claims to be offline
@@ -206,9 +191,9 @@ Only new captures should pause.
 license, or an uncovered version blocks existing work.
 *~30 min, needs a second Mac · workbooks 14, 15*
 
-### F. Trust & longevity
+### Trust & longevity
 
-#### 14. Reopen and Re-edit Old Work
+#### Reopen and Re-edit Old Work
 
 1. Open a capture from weeks ago, ideally on an app version newer than the one
    that made it
@@ -219,7 +204,7 @@ license, or an uncovered version blocks existing work.
 newer version won't open.
 *~10 min, needs an aged library · workbooks 04, 12*
 
-#### 15. Update in Place
+#### Update in Place
 
 1. Start on a previous release with real data in place
 2. Let the built-in updater move you forward
@@ -229,7 +214,7 @@ newer version won't open.
 survive.
 *~15 min · workbook 12*
 
-#### 16. Monitor the Network
+#### Monitor the Network
 
 1. Start a monitor (Little Snitch, Proxyman, or `tcpdump`)
 2. Run a full mix of the scenarios above, AI features especially
@@ -247,15 +232,15 @@ must stop both.
 **Fails if:** one packet of anything else, or an allowed request carrying a
 license ID, identifier, or capture content — nothing identifying should leave the
 Mac, so contents matter as much as destinations. Record destination and trigger;
-outranks every bug except scenario 6.
+outranks every bug except Redact, Export and Attack.
 *Passive, alongside other scenarios · workbooks 12, 13*
 
-### G. Environment
+### Environment
 
-#### 17. Repeat in Harsher Environments
+#### Repeat in Harsher Environments
 
-1. Re-run group A on more than one display, a scaled or notched screen, an Intel
-   Mac
+1. Re-run the Everyday capture scenarios on more than one display, a scaled or
+   notched screen, and an Intel Mac
 2. Add a crowded menu bar, a non-default save location, a second display asleep
 3. Check that features needing newer hardware say so rather than fail silently
 
@@ -265,66 +250,10 @@ screen, or Intel hitting mystery failures instead of "not on this Mac".
 
 ---
 
-### Coverage matrix
-
-What each scenario exercises. Every column needs a check — skip one and either
-cover its columns elsewhere or note the gap.
-
-| Scenario | 00 Onboard | 01 Menu/Settings | 02–03 Capture | 04–05 Editor | 06–07 Library | 08 Recording | 09 Security | 10 Sharing | 11 Extraction | 12 App/Updates | 13 AI | 14–15 Licensing |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 Capture, annotate, export | | ✓ | ✓ | ✓ | | | | ✓ | | | | |
-| 2 Scroll capture | | | ✓ | | | | | | | | | |
-| 3 Straight to file | | ✓ | ✓ | | | | | | | | | |
-| 4 Record with narration | | | | | | ✓ | | ✓ | | | | |
-| 5 Extract from recording | | | | | | ✓ | | | ✓ | | ✓ | |
-| 6 Redact and attack | | | ✓ | ✓ | | | ✓ | ✓ | | | ✓ | |
-| 7 Work encrypted | | | ✓ | | ✓ | | ✓ | | | | | |
-| 8 Lose code, recover | | | | | ✓ | | ✓ | | | | | |
-| 9 One recipient | | | | | | | ✓ | ✓ | | | | |
-| 10 Build and search | | | ✓ | | ✓ | | | | | | ✓ | |
-| 11 Delete and recover | | | | | ✓ | | | | | | | |
-| 12 Trial to expiry | ✓ | | ✓ | | | | | | | | | ✓ |
-| 13 Buy, activate, roam | | | | | | | | | | ✓ | | ✓ |
-| 14 Reopen and re-edit | | | | ✓ | ✓ | | | | | ✓ | | |
-| 15 Update in place | | ✓ | | | ✓ | | | | | ✓ | | ✓ |
-| 16 Monitor network | | | | | | | ✓ | | | ✓ | ✓ | |
-| 17 Harsher environments | ✓ | ✓ | ✓ | | | | | | | | ✓ | |
-
 ## 4. Report an issue
 
-In the Excel workbooks, in the app repo under `testing/test cases v4/` — sixteen
-of them, `00`–`15`, one per area. The cards above name the workbooks they belong
-to. Every case sheet already has the columns, with **Actual Result**, **Status**
-and **Defect Link** left blank for you.
-
-- Fill **Status** for every case you ran: `Pass`, `Fail`, `Blocked`, or `N/A`
-- On a fail, put what actually happened in **Actual Result** and the severity in
-  **Comments**
-- One finding per row
-- A scenario finding that matches no existing case: add a row at the bottom of
-  the closest sheet, `TC#ID` prefixed **`MAP-`**, and name the scenario in
-  **Description**. That is most of what this map is for — the cases cover parts,
-  the scenarios cross them
-
-Severity, as in the manual §5:
-
-| | Meaning |
-|---|---|
-| **S1** | Data loss, or anything leaving the device. A stray network request is S1 even if nothing visibly breaks |
-| **S2** | A paying user cannot activate, capture, or recover their work |
-| **S3** | Broken, but there is a workaround |
-| **S4** | Polish, wording, layout |
-
-**Evidence.** This app's subject is your screen, so a natural repro often
-contains your real work. Reproduce with throwaway content before attaching
-anything; if you cannot, describe it instead. A vaguer report beats your private
-data. Crashes: `docs/product/tester-crash-logs.md`.
+[to be added]
 
 ## 5. Follow-up
 
-- Send the workbooks back when your pass is done. Partial is fine — say where you
-  stopped
-- Do not sit on an **S1**. Send it the moment you see it, rather than at the end
-  of your pass
-- I will follow up with each of you individually, on anything ambiguous and on
-  every S1 and S2
+- I will follow up with you separately to gather more information

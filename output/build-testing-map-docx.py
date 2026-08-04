@@ -37,17 +37,17 @@ MUTED = RGBColor(0x4F, 0x5A, 0x72)
 # scenario 16 is a packet capture in another app, and 17 is a room full of Macs.
 SHOTS = {
     'The app': ('editor-overview.jpg', 'The editor — capture open, annotation toolbar, Info panel.'),
-    '1. Capture, Annotate and Export': ('capture-area.jpg', 'Area capture, with the pixel loupe and live dimensions.'),
-    '2. Scroll Capture and Verify': ('capture-scrolling.jpg', 'Scrolling capture. Check the seams at 100%, not at thumbnail size.'),
-    '3. Capture Straight to File': ('capture-destination.png', 'Where captures land, set once in Settings.'),
-    '4. Record with Narration, Pause and Resume': ('record-prompt.jpg', 'The record prompt — audio sources, cursor, countdown.'),
-    '5. Extract from a Recording': ('extract-data.jpg', 'Structured extraction pulling a table out of pixels.'),
-    '6. Redact, Export and Attack': ('redaction-review.png', 'Smart Redaction review. Detected items arrive pre-checked.'),
-    '7. Work with Encryption On': ('lock-screen.png', 'Locked. Captures keep working; viewing waits for Touch ID.'),
-    '8. Lose the Code and Recover': ('security-recovery-key.png', 'The recovery code ceremony — the one screen worth photographing.'),
-    '9. Share with One Recipient': ('export-package.png', 'Export as a package, with passcode and expiry.'),
-    '10. Build a Library and Search It': ('library-search.jpg', 'Full-text search over the text inside the images.'),
-    '11. Delete and Recover': ('library-deleted.jpg', 'Recently Deleted, before the timed purge.'),
+    'Capture, Annotate and Export': ('capture-area.jpg', 'Area capture, with the pixel loupe and live dimensions.'),
+    'Scroll Capture and Verify': ('capture-scrolling.jpg', 'Scrolling capture. Check the seams at 100%, not at thumbnail size.'),
+    'Capture Straight to File': ('capture-destination.png', 'Where captures land, set once in Settings.'),
+    'Record with Narration, Pause and Resume': ('record-prompt.jpg', 'The record prompt — audio sources, cursor, countdown.'),
+    'Extract from a Recording': ('extract-data.jpg', 'Structured extraction pulling a table out of pixels.'),
+    'Redact, Export and Attack': ('redaction-review.png', 'Smart Redaction review. Detected items arrive pre-checked.'),
+    'Work with Encryption On': ('lock-screen.png', 'Locked. Captures keep working; viewing waits for Touch ID.'),
+    'Lose the Code and Recover': ('security-recovery-key.png', 'The recovery code ceremony — the one screen worth photographing.'),
+    'Share with One Recipient': ('export-package.png', 'Export as a package, with passcode and expiry.'),
+    'Build a Library and Search It': ('library-search.jpg', 'Full-text search over the text inside the images.'),
+    'Delete and Recover': ('library-deleted.jpg', 'Recently Deleted, before the timed purge.'),
 }
 
 doc = Document()
