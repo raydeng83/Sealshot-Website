@@ -110,14 +110,42 @@ bug report — it ends the positioning. See §4.4 of `docs/testing-manual.md`.
 ### G0.3 — Network silence must be proven
 
 - [ ] **Watch the app with Little Snitch or a proxy** through a full session:
-      capture, edit, OCR, AI features, library search, export. The only traffic
-      permitted is the daily update check and — if you enable it — the one-time
-      redaction model download.
+      capture, edit, OCR, AI features, library search, export. Exactly three
+      requests are permitted, and **all three are downloads** — the privacy
+      policy names them and commits to there being no others:
+      1. the daily **update check** (Sparkle appcast on the release repo);
+      2. the **revocation blocklist** on launch —
+         `license-blocklist.json`, a plain download of the whole list, checked
+         on-device. It follows the "Automatically check for updates" setting,
+         so turning that off must stop this too;
+      3. the **redaction model**, only if you enable it, once, on consent.
+- [ ] **Confirm what is *not* in those requests.** The claim is not merely "few
+      requests" — it is that nothing identifying leaves the Mac. No license ID,
+      no license file contents, no account, no device identifier, no usage data,
+      and never capture content. The blocklist fetch is the one to inspect
+      closely: it asks for a static file and must carry no query string, custom
+      header, or body naming the license it is about to check.
+- [ ] **Two things that will look like violations and are not.** Expect them,
+      and do not record them as failures:
+      - Clicking **Buy** or **Renew** opens `seal-shot.com` in your *browser*.
+        Sealshot issues no request; your browser does, because you asked it to.
+        Note that the renew link does carry your license ID and email as query
+        parameters, so a packet capture will show them leaving the machine at
+        that moment — user-initiated, to our own site, for the renewal itself.
+      - `https://sealshot.app/ns/1.0/` appears in the sources
+        (`AnnotatedPNGIO.swift`) and is **never fetched** — it is an XMP
+        namespace identifier, which is a name, not an address.
 - [ ] Consider **publishing the result**. Almost no competitor can, and Show HN
       readers will run this test whether or not you do.
 
 "No telemetry" is the product's core claim and the privacy policy commits to
 it in writing. It has never been verified at the packet level.
+
+The permitted list is three, not two: the revocation download (G0.1a) was added
+after this gate was first written, and `privacy.astro` was updated to say
+"exactly three network requests" while this item still said two. A tester
+working from the old wording would flag a disclosed, expected request as a
+violation of the very claim being tested.
 
 ---
 
