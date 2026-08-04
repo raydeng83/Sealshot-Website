@@ -86,3 +86,22 @@ export function activeOffer(now: Date): Offer | null {
 export function formatUSD(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
+
+/**
+ * Same price without a trailing `.00`. For running copy, where "$39.00 one-time"
+ * reads worse than "$39 one-time". The /buy page keeps the exact form, since a
+ * headline price is where a customer checks the cents.
+ */
+export function formatUSDCompact(cents: number): string {
+  return cents % 100 === 0 ? `$${cents / 100}` : formatUSD(cents);
+}
+
+/**
+ * Free-trial length, in days.
+ *
+ * Authoritative value is `LicenseKeys.trialDays` in the app repo — the binary
+ * decides when a trial ends, not this file. Kept here because the marketing
+ * pages cannot import across repos, so if that constant changes this one has to
+ * be changed with it.
+ */
+export const TRIAL_DAYS = 14;

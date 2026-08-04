@@ -159,13 +159,24 @@ h1, h2, h3 {
     gap: 0.75rem;
   }
 
-  /* Five items including two pills overflow a 375px viewport, so let the nav
-     wrap rather than push the page sideways. justify-content keeps the wrapped
-     row aligned with the row above it instead of drifting left. */
+  /* Four items including two pills need 329px at 390px wide, against 327px of
+     usable header — so a 2px overflow was dropping Download, the primary action,
+     onto a row of its own. A 12px column gap brings it to 317px and the nav sits
+     on one line. flex-wrap stays as the backstop for narrower screens, where it
+     wraps rather than pushing the page sideways. */
   .site-header nav {
-    gap: 0.75rem 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
     justify-content: flex-end;
+  }
+}
+
+/* At 375px the same four items are ~5px too wide, so Download dropped to its own
+   row again. Trimming the pill side padding from 16px to 12.8px buys 13px across
+   the two of them, which keeps one row down to 375 with headroom to spare. */
+@media (max-width: 25rem) {
+  .site-header nav a.cta {
+    padding: 0.45rem 0.8rem;
   }
 }
 
@@ -338,6 +349,74 @@ h1, h2, h3 {
   margin: 0;
 }
 
+/* Card glyphs — inline with the heading rather than stacked above it, which
+   costs no extra row so cards in a column keep matching heights.
+
+   The first grid column is `auto`, so its width includes the glyph's own
+   margin. That is what makes the two spacing controls independent: the negative
+   margin-left outdents the glyph past the card's 1.5rem padding, and column-gap
+   opens the space to its right. */
+.feature {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "i h"
+    ". b"
+    ". l";
+  column-gap: 16px;
+  align-items: start;
+}
+
+.feature .card-icon {
+  grid-area: i;
+  margin-top: 0.15rem;
+  margin-left: -10px;
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--orange-700);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.feature h3 { grid-area: h; }
+.feature p { grid-area: b; }
+.feature .workflow-link { grid-area: l; }
+
+/* Pillars lead with an uppercase label, so the glyph pairs with that row and
+   the title sits beneath it. Beats `.feature p` on specificity (0,2,0). */
+.pillar {
+  grid-template-areas:
+    "i l"
+    ". h"
+    ". b";
+}
+
+.pillar .pillar-label { grid-area: l; }
+
+/* The one place the landing page and the download page state what this costs.
+   Deliberately quiet — it answers "is it free / how much / is it recurring"
+   without turning the hero into a price tag. */
+.buy-signal {
+  margin: 1rem 0 0;
+  color: var(--slate-600);
+  font-size: 0.95rem;
+}
+
+.buy-signal strong {
+  color: var(--navy-900);
+  font-weight: 600;
+}
+
+/* On /download the signal comes BEFORE the button, and `.hero .actions` sets no
+   top margin — so the two sat flush. Scoped to the adjacency rather than given
+   to .buy-signal outright, because on the landing page the signal comes after
+   the buttons and needs no extra room beneath it. */
+.buy-signal + .actions {
+  margin-top: 1.5rem;
+}
+
 /* Pillar cards — Private / Secure / Intelligent */
 .pillar {
   border-top: 3px solid var(--orange-600);
@@ -366,7 +445,9 @@ h1, h2, h3 {
 
 /* Workflow teaser cards — feature cards that are links */
 .workflow-card {
-  display: block;
+  /* No display here: `.feature` above makes this a grid so the card glyph can
+     sit beside the heading. This rule is later in the file, so `display: block`
+     here would silently un-grid these three cards and stack the glyph. */
   color: inherit;
   text-decoration: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;

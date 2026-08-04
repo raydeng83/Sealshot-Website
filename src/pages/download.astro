@@ -1,5 +1,14 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import {
+  activeOffer, formatUSDCompact, REGULAR_PRICE_CENTS, TRIAL_DAYS,
+} from '../config/promos';
+
+const offer = activeOffer(new Date());
+const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
+// "founding price" while that offer runs, plain "once" when it has ended. Taken
+// from the offer's own label so a later offer renames itself in the copy.
+const priceQualifier = offer ? offer.label.toLowerCase() : 'once';
 ---
 
 <SiteLayout
@@ -14,6 +23,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         Signed, notarized, and updated automatically. Universal binary for Apple
         Silicon and Intel, macOS 14 or later.
       </p>
+      <p class="buy-signal">
+        Free for {TRIAL_DAYS} days, then <strong>{formatUSDCompact(priceCents)} {priceQualifier}</strong> —
+        <a href="/buy/">see what's included</a>
+      </p>
       <div class="actions">
         <a
           class="button"
@@ -25,10 +38,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         </a>
       </div>
       <p class="fine-print" id="dmg-meta">Direct download (.dmg)</p>
-      <p class="fine-print">
-        Sealshot updates itself, and every release stays available on the
-        <a href="https://github.com/raydeng83/Sealshot-Release/releases">GitHub releases page</a>.
-      </p>
     </div>
   </section>
 </SiteLayout>
