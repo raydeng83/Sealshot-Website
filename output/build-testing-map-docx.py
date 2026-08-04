@@ -20,6 +20,8 @@ from datetime import date
 
 from docx import Document
 from docx.enum.section import WD_ORIENT, WD_SECTION
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches, Pt, RGBColor
@@ -79,6 +81,56 @@ for sec in doc.sections:
     sec.left_margin = sec.right_margin = Inches(0.9)
 
 CONTENT_IN = 6.7  # letter width less both margins
+
+
+# ── numbering ────────────────────────────────────────────────────────────────
+# Word's List Number style numbers continuously through a document, so the
+# scenarios ran 1..48 straight through instead of 1..3 each. There is no
+# python-docx API for this: each list needs its own w:num instance pointing at the
+# same abstract definition, carrying a startOverride of 1.
+
+def _list_number_abstract_id():
+    """The abstract numbering definition behind the built-in List Number style."""
+    ids = doc.styles['List Number'].element.xpath('.//w:numPr/w:numId/@w:val')
+    style_num_id = ids[0] if ids else None
+    numbering = doc.part.numbering_part.element
+    if style_num_id is not None:
+        for num in numbering.findall(qn('w:num')):
+            if num.get(qn('w:numId')) == style_num_id:
+                ref = num.find(qn('w:abstractNumId'))
+                if ref is not None:
+                    return ref.get(qn('w:val'))
+    # fall back to the first abstract definition present
+    first = numbering.find(qn('w:abstractNum'))
+    return first.get(qn('w:abstractNumId')) if first is not None else '0'
+
+
+def new_number_sequence():
+    """A fresh numbering instance that starts again at 1."""
+    numbering = doc.part.numbering_part.element
+    used = [int(n.get(qn('w:numId'))) for n in numbering.findall(qn('w:num'))]
+    num_id = (max(used) + 1) if used else 1
+
+    num = OxmlElement('w:num')
+    num.set(qn('w:numId'), str(num_id))
+    ref = OxmlElement('w:abstractNumId')
+    ref.set(qn('w:val'), _list_number_abstract_id())
+    num.append(ref)
+    override = OxmlElement('w:lvlOverride')
+    override.set(qn('w:ilvl'), '0')
+    start = OxmlElement('w:startOverride')
+    start.set(qn('w:val'), '1')
+    override.append(start)
+    num.append(override)
+    numbering.append(num)          # w:num must follow every w:abstractNum
+    return num_id
+
+
+def apply_number(p, num_id):
+    pPr = p._p.get_or_add_pPr()
+    numPr = pPr.get_or_add_numPr()
+    numPr.get_or_add_ilvl().val = 0
+    numPr.get_or_add_numId().val = num_id
 
 
 # ── inline formatting ────────────────────────────────────────────────────────
@@ -191,7 +243,7 @@ r.italic = True
 r.font.size = Pt(9)
 r.font.color.rgb = MUTED
 
-i, shots_used, pending_shot = 1, 0, None
+i, shots_used, pending_shot, seq = 1, 0, None, None
 while i < len(lines):
     line = lines[i]
     stripped = line.strip()
@@ -215,6 +267,7 @@ while i < len(lines):
     m = re.match(r'^(#{2,4}) (.+)$', stripped)
     if m:
         level, text = len(m.group(1)), m.group(2)
+        seq = None          # a heading ends the current list, so the next restarts
         doc.add_paragraph(text, style=f'Heading {level}')
         if text in SHOTS:
             pending_shot = SHOTS[text]
@@ -222,6 +275,7 @@ while i < len(lines):
         continue
 
     if stripped.startswith('|'):
+        seq = None
         rows = []
         while i < len(lines) and lines[i].strip().startswith('|'):
             rows.append([c.strip() for c in lines[i].strip().strip('|').split('|')])
@@ -229,10 +283,10 @@ while i < len(lines):
         add_table(rows)
         continue
 
-    m = re.match(r'^(\d+)\. (.+)$', stripped)
-    if m or stripped.startswith('- '):
-        style = 'List Number' if m else 'List Bullet'
-        text = m.group(2) if m else stripped[2:]
+    m_item = re.match(r'^(\d+)\. (.+)$', stripped)
+    if m_item or stripped.startswith('- '):
+        style = 'List Number' if m_item else 'List Bullet'
+        text = m_item.group(2) if m_item else stripped[2:]
         # fold continuation lines (indented, no marker) into the same item
         i += 1
         while (i < len(lines) and lines[i].startswith('   ')
@@ -242,9 +296,16 @@ while i < len(lines):
         p = doc.add_paragraph(style=style)
         p.paragraph_format.space_after = Pt(3)
         add_inline(p, text)
+        if m_item:
+            if seq is None:
+                seq = new_number_sequence()
+            apply_number(p, seq)
         continue
 
-    # plain paragraph, folding its wrapped lines back together
+    # plain paragraph, folding its wrapped lines back together. This also ends any
+    # open numbered list: "Monitor the Network" has two of them either side of a
+    # sentence, and without this the second continued 4, 5, 6 instead of 1, 2, 3.
+    seq = None
     text = stripped
     i += 1
     while (i < len(lines) and lines[i].strip()
@@ -260,6 +321,14 @@ while i < len(lines):
         r.font.size = Pt(9)
         r.font.color.rgb = MUTED
         p.paragraph_format.space_after = Pt(4)
+    elif text.startswith('**Fails if:**'):
+        # quieter than the steps it follows: smaller and italic throughout, with
+        # the label still bold so it stays findable when skimming a page of cards
+        add_inline(p, text)
+        for r in p.runs:
+            r.italic = True
+            r.font.size = Pt(9.5)
+        p.paragraph_format.space_after = Pt(3)
     else:
         add_inline(p, text)
 
