@@ -36,8 +36,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         public file listing licenses that have been revoked — after a refund, for
         example. It is a plain download of the whole list, which Sealshot then
         checks <em>on your Mac</em>: it never asks a server about your license,
-        and your license ID is never sent anywhere. This follows the same
-        setting as the update check, so turning that off turns this off too.
+        and never sends your license ID. This follows the same setting as the
+        update check, so turning that off turns this off too.
       </li>
       <li>
         <strong>Enhanced redaction model.</strong> Only if you choose to enable
@@ -50,6 +50,15 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       download reveals — that some computer asked for a file — and nothing that
       identifies you or your copy of Sealshot. There is no request in which
       Sealshot reports anything back.
+    </p>
+    <p>
+      One thing worth naming, because it is the only time anything about your
+      license crosses the network: when you click <strong>Buy</strong> or
+      <strong>Renew</strong>, Sealshot opens this website in your browser. The
+      renewal link includes your license ID and email address, so we can find
+      the purchase you are renewing and send the new file to the right place.
+      That is your browser, at your request, as part of buying something — not
+      Sealshot reporting in. Nothing is sent if you never click it.
     </p>
 
     <h2>This website</h2>
