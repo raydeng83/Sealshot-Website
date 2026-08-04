@@ -22,45 +22,32 @@ AI, search. No account, no telemetry.
 - **Share** — `.sealshare` packages, optionally passcode-encrypted with an expiry
 - **Encryption** — Enhanced Security is opt-in: AES-256-GCM on disk behind Touch ID
 
-Build under test: **0.7.3 (17)**, notarized, direct download. 14-day trial, then
-$39. License files activate offline and cover two Macs.
-
 ### seal-shot.com
 
-Not decoration — it states the claims you are testing, so treat it as part of the
-product and report errors in it.
+Website for Sealshot. Documentation covers a lot of details of the app.
 
-- `/docs/` — the user guide, per feature. If the app and the guide disagree, that
-  is a finding either way
-- `/docs/faq/` — the questions we expect to be asked
-- `/docs/changelog/v0-7-3/` — what changed in the build you have
-- `/download/` — the DMG
-- `/buy/` — price and what a license includes
-- `/privacy/` — the network and on-device claims scenario 16 tests
-
-**Access:** the site sits behind Cloudflare Access until launch. A login screen
-means you are not on the list yet — ask, rather than working around it.
+**Access:** Access is restricted from public right now. You can get a login code if you have a @bostonidentity.com email
 
 ## 2. Objective
 
+Test objective mainly covers two parts.
+
 ### Function and UI
 
-- Does it do what it claims, on your hardware?
-- Is the state honest — does what is on screen match what is stored? A switch
-  that redraws wrong is a bug even when the setting is right
-- Do errors say what went wrong and how to fix it?
-- Does it hold at the seams — capture into redact into export into another Mac?
+- It does what it claims, on your hardware.
+- The state is honest: the screen matches what is stored. A switch that redraws
+  wrong is a bug even when the setting is right.
+- Errors say what went wrong and how to fix it.
+- It holds at the seams — capture into redact into export into another Mac.
 
 ### Usability
 
-- Could you have worked it out without being told?
-- How many steps to the thing you actually wanted?
-- Where did you hesitate, guess, or go to the docs? Note it — hesitation is a
-  finding, not a personal failing
-- What did you expect to exist and not find?
+- You work it out without being told.
+- The path to the thing you actually wanted is short.
+- Nothing makes you hesitate, guess, or reach for the docs. Where something does,
+  that is a finding — not a personal failing.
+- Everything you expect to exist is there.
 
-Usability findings are usually S4, but log them anyway. They are the ones no
-amount of case coverage will surface.
 
 ## 3. Testing map
 
