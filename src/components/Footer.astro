@@ -1,6 +1,10 @@
 ---
 import NewsletterForm from './NewsletterForm.astro';
+import { latestChangelogHref } from '../lib/changelog';
 const hasNewsletter = Boolean(import.meta.env.PUBLIC_KIT_FORM_ID);
+// Both changelog links below were hardcoded to v0-4-0 — six releases stale, so
+// "Changelog" and "Follow the changelog" sent readers to the oldest notes we have.
+const changelogHref = latestChangelogHref();
 ---
 
 <footer class="site-footer">
@@ -11,7 +15,7 @@ const hasNewsletter = Boolean(import.meta.env.PUBLIC_KIT_FORM_ID);
         <ul>
           <li><a href="/#features">Features</a></li>
           <li><a href="/download/">Download</a></li>
-          <li><a href="/docs/changelog/v0-4-0/">Changelog</a></li>
+          <li><a href={changelogHref}>Changelog</a></li>
         </ul>
       </div>
       <div>
@@ -27,7 +31,7 @@ const hasNewsletter = Boolean(import.meta.env.PUBLIC_KIT_FORM_ID);
       <div>
         <h3>Stay in the loop</h3>
         <p class="fine-print">New features, releases, and tips.</p>
-        {hasNewsletter ? <NewsletterForm /> : <p class="fine-print"><a href="/docs/changelog/v0-4-0/">Follow the changelog</a> for what's new.</p>}
+        {hasNewsletter ? <NewsletterForm /> : <p class="fine-print"><a href={changelogHref}>Follow the changelog</a> for what's new.</p>}
       </div>
     </div>
     <p class="legal">

@@ -87,4 +87,4 @@ on-device AI extras need newer hardware — see
   [examples](/docs/workflows/recipes/).
 - **Want to go faster?** Skim the [Tips & tricks](/docs/tips/).
 - **Stuck?** Check the [FAQ](/docs/faq/) or [send us feedback](/support/).
-- **What's new?** See the [changelog](/docs/changelog/v0-7-2/).
+- **What's new?** See the [changelog](/docs/changelog/v0-7-3/).

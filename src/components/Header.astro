@@ -9,12 +9,20 @@ import icon from '../assets/icon.png';
     <span>Sealshot</span>
   </a>
   <nav aria-label="Main">
-    <a href="/#features">Features</a>
+    <!-- No Features link. It was the only item that was not a page: from /buy/,
+         /support/ or /download/ it navigated home AND jumped past the hero, so a
+         visitor skipped the headline and the price line to reach a grid they were
+         already scrolling toward. The #features id stays, for the footer link and
+         any external one. (Removing it did NOT by itself unwrap the nav on a
+         phone: "Pricing" is wider than "Buy" was, so it gave the width back. The
+         wrap is fixed in global.css by tightening the mobile column gap.) -->
     <a href="/docs/">Docs</a>
     <a href="/support/">Support</a>
-    <!-- Buy is outlined, Download filled: the free trial stays the primary
-         entry point, and two filled pills would compete rather than rank. -->
-    <a class="cta outline" href="/buy/">Buy</a>
+    <!-- Pricing rather than Buy: it is the word people scan a nav for, and it
+         describes the page, which answers "how much" before asking for a sale.
+         Outlined while Download is filled, so the free trial stays the primary
+         entry point — two filled pills would compete rather than rank. -->
+    <a class="cta outline" href="/buy/">Pricing</a>
     <a class="cta" href="/download/">Download</a>
   </nav>
 </header>

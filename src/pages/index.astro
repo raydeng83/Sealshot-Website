@@ -2,6 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import '@splidejs/splide/css';
+import { latestChangelogHref } from '../lib/changelog';
 import {
   activeOffer, formatUSDCompact, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS, TRIAL_DAYS,
 } from '../config/promos';
@@ -15,19 +16,6 @@ const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
 // "founding price" while that offer runs, plain "once" when it has ended.
 const priceQualifier = offer ? offer.label.toLowerCase() : 'once';
 
-// Newest changelog entry, resolved at build time — this link was pinned to
-// v0-7-2 and pointed at the wrong release the day 0.7.3 shipped. There is no
-// /docs/changelog/ index route to link to instead.
-const changelogVersions = Object.keys(
-  import.meta.glob('../content/docs/docs/changelog/*.md'),
-)
-  .map((path) => path.split('/').pop().replace(/^v|\.md$/g, ''))
-  .sort((a, b) => {
-    const pa = a.split('.').map(Number);
-    const pb = b.split('.').map(Number);
-    return pb[0] - pa[0] || pb[1] - pa[1] || (pb[2] || 0) - (pa[2] || 0);
-  });
-const latestChangelogHref = `/docs/changelog/v${changelogVersions[0].replace(/\./g, '-')}/`;
 
 const heroSlides = [
   {
@@ -325,7 +313,7 @@ const features = [
       <h2 id="updates-heading">Get Sealshot updates</h2>
       <p class="sub">
         New features, releases, and tips — or watch the
-        <a href={latestChangelogHref}>changelog</a>.
+        <a href={latestChangelogHref()}>changelog</a>.
       </p>
       <NewsletterForm />
     </div>
