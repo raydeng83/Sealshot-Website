@@ -87,53 +87,58 @@ const pillars = [
   {
     label: 'Private',
     icon: 'ic-shield',
-    title: 'Nothing leaves your Mac',
+    title: 'On-device Only',
     body: 'Capture, OCR, redaction, AI, and search all run locally. No account, no telemetry, no cloud — the only traffic is three downloads, never an upload.',
   },
   {
     label: 'Secure',
     icon: 'ic-lock',
-    title: 'Encrypted, locked to you',
+    title: 'Encryption Available',
     body: 'Enhanced Security encrypts everything on disk (AES-256-GCM) behind Touch ID, auto-locks when you step away, and keeps capturing even while locked.',
   },
   {
     label: 'Intelligent',
     icon: 'ic-spark',
-    title: 'AI that stays home',
+    title: 'Built-in AI',
     body: 'Titles, summaries, and structured-data extraction run on your Mac — Apple Intelligence where available, a built-in fallback everywhere else.',
   },
 ];
 
 const features = [
   {
-    title: 'Capture anything',
+    title: 'Capture',
     icon: 'ic-frame',
     body: 'Area, window, fullscreen, delayed, and scrolling capture with automatic stitching — across all your displays.',
   },
   {
-    title: 'Record your screen',
+    title: 'Record',
     icon: 'ic-record',
     body: 'Record the screen, a window, or a region with system audio and mic, pause from a floating HUD, export .mov or .mp4.',
   },
   {
-    title: 'Annotate non-destructively',
+    title: 'Annotate',
     icon: 'ic-pen',
     body: 'Shapes, arrows, pen, text, numbered badges, shadows — original pixels stay untouched, and undo history survives relaunch.',
   },
   {
-    title: 'Redact with confidence',
+    title: 'Redact',
     icon: 'ic-redact',
     body: 'Smart Redaction finds emails, card numbers, IDs, and API keys and covers them with unrecoverable solid fill.',
   },
   {
-    title: 'Summaries and data extraction',
+    title: 'Data Extract',
     icon: 'ic-table',
     body: 'Automatic titles, summaries, and keywords, plus tables and form fields pulled out as clean, copyable text.',
   },
   {
-    title: 'Organize and search',
+    title: 'Organize',
+    icon: 'ic-collection',
+    body: 'Collections, favorites, and tags keep a growing library navigable. Share any capture as an encrypted .sealshare package.',
+  },
+  {
+    title: 'Search',
     icon: 'ic-search',
-    body: 'Collections, favorites, and OCR full-text search across your library. Share as encrypted .sealshare packages.',
+    body: 'OCR full-text search finds a capture by the words inside it — not just by its filename.',
   },
 ];
 ---
@@ -157,6 +162,7 @@ const features = [
       <symbol id="ic-pen" viewBox="0 0 24 24"><path d="M4.5 19.5l4.2-1.1 9.1-9.1-3.1-3.1-9.1 9.1-1.1 4.2z"/><path d="M14.7 6.2l3.1 3.1"/><path d="M8.7 18.4l-3.1-3.1"/></symbol>
       <symbol id="ic-redact" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 17h7"/><rect x="4" y="11" width="16" height="3.4" rx="1" fill="currentColor" stroke="none"/></symbol>
       <symbol id="ic-table" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M3.5 10h17"/><path d="M9.5 10v9.5"/></symbol>
+      <symbol id="ic-collection" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></symbol>
       <symbol id="ic-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.8"/><path d="M14.8 14.8L20 20"/></symbol>
       <symbol id="ic-bug" viewBox="0 0 24 24"><rect x="7.5" y="8.5" width="9" height="11" rx="4.5"/><path d="M9.5 8.5l-1-2M14.5 8.5l1-2"/><path d="M4.5 12.5h3M16.5 12.5h3M5 18l2.5-1.6M19 18l-2.5-1.6"/></symbol>
       <symbol id="ic-doclock" viewBox="0 0 24 24"><path d="M13.5 3.5H7a1.5 1.5 0 0 0-1.5 1.5v14A1.5 1.5 0 0 0 7 20.5h3"/><path d="M13.5 3.5L18 8v3"/><rect x="13" y="14.5" width="6.5" height="5.5" rx="1.2"/><path d="M14.8 14.5v-1.4a1.5 1.5 0 0 1 3 0v1.4"/></symbol>
