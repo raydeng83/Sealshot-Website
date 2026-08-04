@@ -3,45 +3,73 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import '@splidejs/splide/css';
 
+// Newest changelog entry, resolved at build time — this link was pinned to
+// v0-7-2 and pointed at the wrong release the day 0.7.3 shipped. There is no
+// /docs/changelog/ index route to link to instead.
+const changelogVersions = Object.keys(
+  import.meta.glob('../content/docs/docs/changelog/*.md'),
+)
+  .map((path) => path.split('/').pop().replace(/^v|\.md$/g, ''))
+  .sort((a, b) => {
+    const pa = a.split('.').map(Number);
+    const pb = b.split('.').map(Number);
+    return pb[0] - pa[0] || pb[1] - pa[1] || (pb[2] || 0) - (pa[2] || 0);
+  });
+const latestChangelogHref = `/docs/changelog/v${changelogVersions[0].replace(/\./g, '-')}/`;
+
 const heroSlides = [
   {
-    src: '/manual/capture-area.jpg',
+    base: 'capture-area',
+    w: 850,
+    h: 566,
     alt: 'Area capture in progress: selection rectangle, pixel loupe, and live dimensions readout',
     subtitle: 'Capture with precision',
     description: 'A pixel loupe and live dimensions — select exactly what you mean, down to the pixel.',
   },
   {
-    src: '/manual/record-prompt.jpg',
+    base: 'record-prompt',
+    w: 850,
+    h: 560,
     alt: 'The Record prompt with system audio, microphone, cursor, and countdown options',
     subtitle: 'Record on your terms',
     description: 'Screen, window, or region — with system audio and mic, and a countdown to set the stage.',
   },
   {
-    src: '/manual/editor-overview.jpg',
+    base: 'editor-overview',
+    w: 850,
+    h: 548,
     alt: 'The Sealshot editor with a capture open: annotation toolbar, canvas, and Info panel',
     subtitle: 'Annotate without damage',
     description: 'Arrows, labels, and blurs stay editable forever; your original pixels are never touched.',
   },
   {
-    src: '/manual/redaction-review.png',
+    base: 'redaction-review',
+    w: 850,
+    h: 700,
     alt: 'Smart Redaction review panel with detected sensitive items pre-checked',
     subtitle: 'Redact with confidence',
     description: 'Smart Redaction finds emails, cards, and keys on device — and covers them for good.',
   },
   {
-    src: '/manual/lock-screen.png',
+    base: 'lock-screen',
+    w: 850,
+    h: 606,
     alt: 'Sealshot locked: captures encrypted on this Mac, unlocking with Touch ID',
     subtitle: "Locked until it's you",
     description: 'Encrypt everything Sealshot stores and unlock with Touch ID. Capturing still works while locked.',
   },
   {
-    src: '/manual/extract-data.jpg',
+    base: 'extract-data',
+    w: 850,
+    h: 464,
     alt: 'Extract Structured Data pulling an invoice table out of a screenshot',
     subtitle: 'Data out of pixels',
     description: 'Pull tables and form fields from any screenshot as clean, copyable text — on your Mac.',
   },
   {
-    src: '/manual/library-grid.jpg',
+    base: 'library-grid',
+    w: 850,
+    h: 608,
     alt: 'The Library in grid view with OCR full-text search',
     subtitle: 'Find any capture',
     description: 'Search the text inside your screenshots, organized with collections and favorites.',
@@ -59,7 +87,7 @@ const pillars = [
   {
     label: 'Private',
     title: 'Nothing leaves your Mac',
-    body: 'Capture, OCR, redaction, AI, and search all run locally. No account, no telemetry, no cloud — the only network traffic is checking for updates.',
+    body: 'Capture, OCR, redaction, AI, and search all run locally. No account, no telemetry, no cloud — the only traffic is three downloads, never an upload.',
   },
   {
     label: 'Secure',
@@ -128,7 +156,17 @@ const features = [
                 <li class="splide__slide">
                   <figure class="hero-slide">
                     <div class="hero-slide-media">
-                      <img src={slide.src} alt={slide.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+                      <img
+                        src={`/manual/hero/${slide.base}-850.jpg`}
+                        srcset={`/manual/hero/${slide.base}-400.jpg 400w, /manual/hero/${slide.base}-850.jpg 850w, /manual/hero/${slide.base}-1400.jpg 1400w`}
+                        sizes="(max-width: 640px) 80vw, 850px"
+                        width={slide.w}
+                        height={slide.h}
+                        alt={slide.alt}
+                        loading={i === 0 ? 'eager' : 'lazy'}
+                        decoding={i === 0 ? 'sync' : 'async'}
+                        fetchpriority={i === 0 ? 'high' : undefined}
+                      />
                     </div>
                     <figcaption>
                       <strong>{slide.subtitle}</strong>
@@ -160,8 +198,9 @@ const features = [
         }
       </div>
       <p class="pillars-note">
-        Two downloads, ever: app updates and an optional redaction model you
-        approve first. Your captures are never one of them.
+        Three downloads, ever: app updates, a public list of revoked licenses,
+        and an optional redaction model you approve first. Your captures are
+        never one of them, and nothing is ever uploaded.
       </p>
     </div>
   </section>
@@ -222,7 +261,7 @@ const features = [
       <h2 id="updates-heading">Get Sealshot updates</h2>
       <p class="sub">
         New features, releases, and tips — or watch the
-        <a href="/docs/changelog/v0-7-2/">changelog</a>.
+        <a href={latestChangelogHref}>changelog</a>.
       </p>
       <NewsletterForm />
     </div>
@@ -233,7 +272,11 @@ const features = [
   import Splide from '@splidejs/splide';
 
   new Splide('.hero-carousel', {
-    type: 'loop',
+    // Not 'loop': it clones every slide, and the clones sit close enough to the
+    // viewport that loading="lazy" never defers anything — all seven images
+    // downloaded on first paint. 'slide' + rewind cycles the same way.
+    type: 'slide',
+    rewind: true,
     autoplay: true,
     interval: 6000,
     pauseOnHover: true,
