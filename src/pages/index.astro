@@ -12,6 +12,8 @@ import {
 const offer = activeOffer(new Date());
 const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
 const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
+// "founding price" while that offer runs, plain "once" when it has ended.
+const priceQualifier = offer ? offer.label.toLowerCase() : 'once';
 
 // Newest changelog entry, resolved at build time — this link was pinned to
 // v0-7-2 and pointed at the wrong release the day 0.7.3 shipped. There is no
@@ -198,7 +200,7 @@ const features = [
         <a class="button secondary" href="/docs/">Read the docs</a>
       </div>
       <p class="buy-signal">
-        Free for {TRIAL_DAYS} days · <strong>{formatUSDCompact(priceCents)} once</strong>,
+        Free for {TRIAL_DAYS} days · <strong>{formatUSDCompact(priceCents)} {priceQualifier}</strong>,
         no subscription · {updateMonths} months of updates ·
         <a href="/buy/">What you get</a>
       </p>
