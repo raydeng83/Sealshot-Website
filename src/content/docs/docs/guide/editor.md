@@ -40,6 +40,11 @@ it with the position pad or the eight direction presets). Annotations live
 on their own layer above the image, reorderable (send forward / send
 backward) from the properties panel.
 
+Annotations don't have to stay inside the screenshot. Draw an arrow, line,
+shape, pen stroke, text box, or blur past the edge and the canvas grows to make
+room when you finish, so marks that point at the image from outside stay where
+you put them. A single undo reverts both the annotation and the growth.
+
 ![The annotation toolbar](/manual/editor-toolbar.png)
 *Each tool carries its own colour, width, and style options.*
 

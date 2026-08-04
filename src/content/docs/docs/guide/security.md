@@ -68,6 +68,14 @@ in-progress capture or recording is never interrupted. Sealshot also locks
 when the Mac sleeps, the screen sleeps, or you switch users, and you can
 lock on demand from anywhere with **⌘⇧L** (Lock now).
 
+Sealshot also locks every time it starts, so opening the app asks for Touch ID.
+Turn that off with **Lock when Sealshot starts** in **Settings → Privacy &
+Security** and Sealshot opens ready to use instead. Your captures stay
+encrypted on disk either way — but with it off, anyone who can use this Mac can
+open Sealshot and read them, so you're asked to confirm the change. Everything
+else above still applies: Sealshot re-locks on sleep, screen lock, user switch,
+the idle timeout, and ⌘⇧L.
+
 While locked, everything that could reveal your library goes quiet: the
 editor, Library, import/export menus, and the open-editor / open-library /
 clipboard shortcuts are all disabled. **Capture and recording shortcuts

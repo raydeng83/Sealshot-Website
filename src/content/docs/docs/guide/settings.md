@@ -24,8 +24,10 @@ own options, and General adds a **Reset All**.
 - **Launch at login** — open Sealshot automatically when you log in.
 - **Show welcome tour cards** — show the first-launch tour at startup; the
   **Show Now** button replays it immediately without changing the setting.
-- **Automatically check for updates** — once a day. Update checks are
-  Sealshot's only network activity.
+- **Automatically check for updates** — once a day. This also controls the
+  revocation check: on launch Sealshot downloads a small public list of
+  licenses that have been revoked (after a refund, for example) and checks it
+  on your Mac. Turning this off stops both.
 
 ## Capture
 
@@ -108,15 +110,24 @@ Your license and its update window:
 
 - **Open License File…** activates a license you've bought; **Buy
   Sealshot…** takes you to the store if you don't have one yet.
+- Your **license ID** and license type are shown here, with a button to copy
+  the ID — quote it if you ever write to support.
 - **Remove License…** deactivates this Mac.
-- When you're running a version released outside your license's update
-  window, a **Renew** card appears — renewing issues a new license file,
-  which you open here to unlock.
+- A **Renew** card appears in the month before your update window closes, and
+  whenever you're running a version released outside it. Renewing issues a new
+  license file, which you open here to unlock. Volume licenses renew by
+  invoice, so that card explains how instead of linking to the store.
 
 ## Privacy & Security
 
 - **Enhanced security** — encrypts everything Sealshot stores on this Mac
   and locks viewing behind Touch ID.
+- **Lock when Sealshot starts** — appears once Enhanced Security is on, and
+  starts out on. Leave it on and Sealshot asks for Touch ID every time it
+  opens. Turn it off and Sealshot opens ready to use — your captures are still
+  encrypted on disk, but anyone using this Mac can open Sealshot and view
+  them, so you're asked to confirm before it takes effect. Turning Enhanced
+  Security off and on again puts it back on.
 - **Recovery code** — **View…** your recovery code, or **Generate New…**
   (the old one stops working).
 - **Replace encryption key** — rotate to a brand-new key if you think the
@@ -137,8 +148,9 @@ Your version, and a **Send Feedback…** button that opens a pre-filled email
 to the developer. See [Support & feedback](/support/).
 
 :::note[About network activity]
-Sealshot's only network activity is the daily update check and the
-**optional** enhanced-redaction model download — which
-happens only after you approve it. Your captures and their data never
-leave your Mac.
+Sealshot makes exactly three network requests, and all three are downloads: the
+daily update check, the revoked-license list fetched on launch, and the
+**optional** enhanced-redaction model — which happens only after you approve
+it. The first two both follow **Automatically check for updates**. Your
+captures and their data never leave your Mac.
 :::
