@@ -42,11 +42,9 @@ Test objective mainly covers two parts.
 - App is convenient to use
 - User experience is good
 
-
 ## 3. Testing map
 
 Below is a testing map that you can follow to drive through the app.
-
 
 ### Everyday capture
 
@@ -58,7 +56,6 @@ Below is a testing map that you can follow to drive through the app.
 
 **Fails if:** wrong region, scale, or display; annotations shift or blur on
 export; the receiving app gets nothing, or the unannotated original.
-*~10 min · workbooks 02, 04, 10*
 
 #### Scroll Capture and Verify
 
@@ -68,7 +65,6 @@ export; the receiving app gets nothing, or the unannotated original.
 
 **Fails if:** stitch lines, duplicated or skipped content, or a capture that
 stopped early.
-*~10 min · workbook 03*
 
 #### Capture Straight to File
 
@@ -78,7 +74,6 @@ stopped early.
 
 **Fails if:** UI you didn't ask for, a file in the wrong place, or one other apps
 can't open.
-*~5 min · workbooks 01, 02*
 
 ### Recording
 
@@ -90,7 +85,6 @@ can't open.
 
 **Fails if:** missing or desynced audio, the pause eating content, or a file
 QuickTime won't play.
-*~15 min · workbook 08*
 
 #### Extract from a Recording
 
@@ -100,7 +94,6 @@ QuickTime won't play.
 
 **Fails if:** it hangs, returns nothing on obvious content, or misattributes what
 was said or shown.
-*~10 min · workbooks 08, 11*
 
 ### Sensitive content
 
@@ -113,7 +106,6 @@ was said or shown.
 
 **Fails if:** anything is recoverable by any means. Removed content must be
 destroyed, not covered — the worst bug the app can have. File it immediately.
-*~15 min · workbooks 05, 09, 10*
 
 #### Work with Encryption On
 
@@ -124,7 +116,6 @@ destroyed, not covered — the worst bug the app can have. File it immediately.
 **Fails if:** search or thumbnails degrade, content readable while locked or on
 disk, or prompts at odd moments. Encryption should cost one unlock, not
 features.
-*~20 min spread across a day · workbook 09*
 
 #### Lose the Code and Recover
 
@@ -134,7 +125,6 @@ features.
 
 **Fails if:** a dead end, a data-losing "reset", or restored captures that
 differ from what was archived.
-*~20 min · workbook 09*
 
 #### Share with One Recipient
 
@@ -144,7 +134,6 @@ differ from what was archived.
 
 **Fails if:** it opens without its secret, a wrong passcode crashes or half-opens
 it, or the recipient needs the sender's Mac.
-*~15 min, needs a second Mac · workbook 10*
 
 ### Organize & find
 
@@ -156,7 +145,6 @@ it, or the recipient needs the sender's Mac.
 
 **Fails if:** a capture you can see but not find, search missing text plainly
 visible in the image, or organization lost on relaunch.
-*~15 min on an existing library · workbooks 06, 07*
 
 #### Delete and Recover
 
@@ -166,7 +154,6 @@ visible in the image, or organization lost on relaunch.
 
 **Fails if:** unrecoverable accidents, "deleted" content still surfacing, or the
 purge taking more than it should.
-*~10 min · workbook 06*
 
 ### Money & access
 
@@ -178,7 +165,6 @@ purge taking more than it should.
 
 **Fails if:** it never ends, ends early, or locks you out of your own library.
 Only new captures should pause.
-*Minutes a day across the window, or clock-shift · workbooks 00, 14*
 
 #### Buy, Activate and Roam
 
@@ -189,7 +175,6 @@ Only new captures should pause.
 
 **Fails if:** activation needs the internet, the second Mac refuses a valid
 license, or an uncovered version blocks existing work.
-*~30 min, needs a second Mac · workbooks 14, 15*
 
 ### Trust & longevity
 
@@ -202,7 +187,6 @@ license, or an uncovered version blocks existing work.
 
 **Fails if:** flattened annotations, edits that no longer undo, or a file the
 newer version won't open.
-*~10 min, needs an aged library · workbooks 04, 12*
 
 #### Update in Place
 
@@ -212,7 +196,6 @@ newer version won't open.
 
 **Fails if:** anything you must set up again — above all, a capture that doesn't
 survive.
-*~15 min · workbook 12*
 
 #### Monitor the Network
 
@@ -233,7 +216,6 @@ must stop both.
 license ID, identifier, or capture content — nothing identifying should leave the
 Mac, so contents matter as much as destinations. Record destination and trigger;
 outranks every bug except Redact, Export and Attack.
-*Passive, alongside other scenarios · workbooks 12, 13*
 
 ### Environment
 
@@ -246,7 +228,6 @@ outranks every bug except Redact, Export and Attack.
 
 **Fails if:** captures from the wrong display or scale, overlays on the wrong
 screen, or Intel hitting mystery failures instead of "not on this Mac".
-*~20 min per environment · workbooks 00, 02, 03, 13*
 
 ---
 
