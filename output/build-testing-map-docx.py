@@ -20,6 +20,7 @@ from datetime import date
 
 from docx import Document
 from docx.enum.section import WD_ORIENT, WD_SECTION
+from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.enum.table import WD_TABLE_ALIGNMENT
@@ -137,25 +138,62 @@ def apply_number(p, num_id):
 TOKEN = re.compile(r'(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\)|\*[^*]+\*)')
 
 
-def add_inline(p, text):
+def add_hyperlink(p, url, label, size=None):
+    """A clickable external link. python-docx has no API for this, so the
+    w:hyperlink element and its relationship are built by hand — worth doing,
+    because the whole point of a Docs line is that a tester follows it."""
+    r_id = p.part.relate_to(url, RT.HYPERLINK, is_external=True)
+    link = OxmlElement('w:hyperlink')
+    link.set(qn('r:id'), r_id)
+    run = OxmlElement('w:r')
+    rPr = OxmlElement('w:rPr')
+    color = OxmlElement('w:color')
+    color.set(qn('w:val'), 'C2410C')
+    rPr.append(color)
+    u = OxmlElement('w:u')
+    u.set(qn('w:val'), 'single')
+    rPr.append(u)
+    if size is not None:
+        sz = OxmlElement('w:sz')
+        sz.set(qn('w:val'), str(int(size * 2)))      # half-points
+        rPr.append(sz)
+    run.append(rPr)
+    t = OxmlElement('w:t')
+    t.text = label
+    t.set(qn('xml:space'), 'preserve')
+    run.append(t)
+    link.append(run)
+    p._p.append(link)
+
+
+def add_inline(p, text, size=None):
     """Render **bold**, `code`, [links](url) and *italic* into a paragraph."""
+    def run(txt):
+        r = p.add_run(txt)
+        if size is not None:
+            r.font.size = Pt(size)
+        return r
+
     for part in TOKEN.split(text):
         if not part:
             continue
         if part.startswith('**') and part.endswith('**'):
-            p.add_run(part[2:-2]).bold = True
+            run(part[2:-2]).bold = True
         elif part.startswith('`') and part.endswith('`'):
-            r = p.add_run(part[1:-1])
+            r = run(part[1:-1])
             r.font.name = 'Menlo'
-            r.font.size = Pt(9.5)
+            r.font.size = Pt(size or 9.5)
         elif part.startswith('[') and '](' in part:
             label = part[1:part.index('](')]
-            r = p.add_run(label)
-            r.font.color.rgb = ACCENT
+            url = part[part.index('](') + 2:-1]
+            if url.startswith(('http://', 'https://')):
+                add_hyperlink(p, url, label, size)
+            else:
+                run(label).font.color.rgb = ACCENT   # relative paths are dead in Word
         elif part.startswith('*') and part.endswith('*'):
-            p.add_run(part[1:-1]).italic = True
+            run(part[1:-1]).italic = True
         else:
-            p.add_run(part)
+            run(part)
 
 
 def add_image(name, caption):
@@ -309,7 +347,7 @@ while i < len(lines):
     text = stripped
     i += 1
     while (i < len(lines) and lines[i].strip()
-           and not lines[i].strip().startswith(('#', '-', '|', '---'))
+           and not lines[i].strip().startswith(('#', '-', '|', '---', '**'))
            and not re.match(r'^\d+\. ', lines[i].strip())):
         text += ' ' + lines[i].strip()
         i += 1
@@ -321,6 +359,9 @@ while i < len(lines):
         r.font.size = Pt(9)
         r.font.color.rgb = MUTED
         p.paragraph_format.space_after = Pt(4)
+    elif text.startswith('**Docs:**'):
+        add_inline(p, text, size=9.5)
+        p.paragraph_format.space_after = Pt(10)
     elif text.startswith('**Fails if:**'):
         # quieter than the steps it follows: smaller and italic throughout, with
         # the label still bold so it stays findable when skimming a page of cards

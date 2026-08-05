@@ -57,6 +57,8 @@ Below is a testing map that you can follow to drive through the app.
 **Fails if:** wrong region, scale, or display; annotations shift or blur on
 export; the receiving app gets nothing, or the unannotated original.
 
+**Docs:** [Capture modes](https://seal-shot.com/docs/guide/capture/#smart-capture-area--window) · [Annotation tools](https://seal-shot.com/docs/guide/editor/#annotation-tools)
+
 #### Scroll Capture and Verify
 
 1. Capture a page, thread, or document longer than the screen
@@ -66,6 +68,8 @@ export; the receiving app gets nothing, or the unannotated original.
 **Fails if:** stitch lines, duplicated or skipped content, or a capture that
 stopped early.
 
+**Docs:** [Scrolling capture](https://seal-shot.com/docs/guide/capture/#scrolling-capture)
+
 #### Capture Straight to File
 
 1. Capture with the fewest steps the app allows — no editor
@@ -74,6 +78,8 @@ stopped early.
 
 **Fails if:** UI you didn't ask for, a file in the wrong place, or one other apps
 can't open.
+
+**Docs:** [Where captures go](https://seal-shot.com/docs/guide/capture/#where-captures-go) · [General settings](https://seal-shot.com/docs/guide/settings/#general)
 
 ### Recording
 
@@ -86,6 +92,8 @@ can't open.
 **Fails if:** missing or desynced audio, the pause eating content, or a file
 QuickTime won't play.
 
+**Docs:** [Starting a recording](https://seal-shot.com/docs/guide/recording/#starting-a-recording) · [While recording](https://seal-shot.com/docs/guide/recording/#while-recording)
+
 #### Extract from a Recording
 
 1. Open a finished recording
@@ -94,6 +102,8 @@ QuickTime won't play.
 
 **Fails if:** it hangs, returns nothing on obvious content, or misattributes what
 was said or shown.
+
+**Docs:** [Extract structured data](https://seal-shot.com/docs/guide/ai/#extract-structured-data) · [OCR and Live Text](https://seal-shot.com/docs/guide/ai/#ocr-live-text)
 
 ### Sensitive content
 
@@ -107,6 +117,8 @@ was said or shown.
 **Fails if:** anything is recoverable by any means. Removed content must be
 destroyed, not covered — the worst bug the app can have. File it immediately.
 
+**Docs:** [Running a scan](https://seal-shot.com/docs/guide/redaction/#running-a-scan) · [Reviewing and applying](https://seal-shot.com/docs/guide/redaction/#reviewing-and-applying) · [Plain exports](https://seal-shot.com/docs/guide/sharing/#plain-exports)
+
 #### Work with Encryption On
 
 1. Turn on Enhanced Security
@@ -117,6 +129,8 @@ destroyed, not covered — the worst bug the app can have. File it immediately.
 disk, or prompts at odd moments. Encryption should cost one unlock, not
 features.
 
+**Docs:** [What it protects](https://seal-shot.com/docs/guide/security/#what-it-protects) · [Locking](https://seal-shot.com/docs/guide/security/#locking)
+
 #### Lose the Code and Recover
 
 1. Make yourself unable to unlock
@@ -126,6 +140,8 @@ features.
 **Fails if:** a dead end, a data-losing "reset", or restored captures that
 differ from what was archived.
 
+**Docs:** [Save your recovery code](https://seal-shot.com/docs/guide/security/#save-your-recovery-code) · [If you lose it](https://seal-shot.com/docs/faq/#what-if-i-lose-my-recovery-key)
+
 #### Share with One Recipient
 
 1. Share so that only the intended person can open it
@@ -134,6 +150,8 @@ differ from what was archived.
 
 **Fails if:** it opens without its secret, a wrong passcode crashes or half-opens
 it, or the recipient needs the sender's Mac.
+
+**Docs:** [Export to package](https://seal-shot.com/docs/guide/sharing/#export-to-package) · [Opening a package](https://seal-shot.com/docs/guide/sharing/#opening-a-package) · [The .seal format](https://seal-shot.com/docs/guide/seal-format/)
 
 ### Organize & find
 
@@ -146,6 +164,8 @@ it, or the recipient needs the sender's Mac.
 **Fails if:** a capture you can see but not find, search missing text plainly
 visible in the image, or organization lost on relaunch.
 
+**Docs:** [Search](https://seal-shot.com/docs/guide/library/#search) · [Collections and favorites](https://seal-shot.com/docs/guide/library/#collections-and-favorites)
+
 #### Delete and Recover
 
 1. Delete something wrongly, then recover it
@@ -154,6 +174,8 @@ visible in the image, or organization lost on relaunch.
 
 **Fails if:** unrecoverable accidents, "deleted" content still surfacing, or the
 purge taking more than it should.
+
+**Docs:** [Delete, restore and undo](https://seal-shot.com/docs/guide/library/#delete-restore-and-undo)
 
 ### Money & access
 
@@ -166,6 +188,8 @@ purge taking more than it should.
 **Fails if:** it never ends, ends early, or locks you out of your own library.
 Only new captures should pause.
 
+**Docs:** [How the trial works](https://seal-shot.com/docs/faq/#how-does-the-free-trial-work)
+
 #### Buy, Activate and Roam
 
 1. Purchase and receive the license
@@ -175,6 +199,8 @@ Only new captures should pause.
 
 **Fails if:** activation needs the internet, the second Mac refuses a valid
 license, or an uncovered version blocks existing work.
+
+**Docs:** [Activating a license](https://seal-shot.com/docs/faq/#how-do-i-activate-my-license-do-i-need-an-account-or-internet) · [Moving to a new Mac](https://seal-shot.com/docs/faq/#i-got-a-new-mac--how-do-i-move-my-license) · [License settings](https://seal-shot.com/docs/guide/settings/#license)
 
 ### Trust & longevity
 
@@ -188,6 +214,8 @@ license, or an uncovered version blocks existing work.
 **Fails if:** flattened annotations, edits that no longer undo, or a file the
 newer version won't open.
 
+**Docs:** [Annotation tools](https://seal-shot.com/docs/guide/editor/#annotation-tools) · [Move, resize, rotate, flip](https://seal-shot.com/docs/guide/editor/#move-resize-rotate-flip)
+
 #### Update in Place
 
 1. Start on a previous release with real data in place
@@ -196,6 +224,8 @@ newer version won't open.
 
 **Fails if:** anything you must set up again — above all, a capture that doesn't
 survive.
+
+**Docs:** [How updates work](https://seal-shot.com/docs/faq/#how-do-i-update-sealshot)
 
 #### Monitor the Network
 
@@ -217,6 +247,8 @@ license ID, identifier, or capture content — nothing identifying should leave 
 Mac, so contents matter as much as destinations. Record destination and trigger;
 outranks every bug except Redact, Export and Attack.
 
+**Docs:** [Privacy policy](https://seal-shot.com/privacy/) · [What leaves your Mac](https://seal-shot.com/docs/faq/#does-sealshot-send-my-screenshots-anywhere)
+
 ### Environment
 
 #### Repeat in Harsher Environments
@@ -228,6 +260,8 @@ outranks every bug except Redact, Export and Attack.
 
 **Fails if:** captures from the wrong display or scale, overlays on the wrong
 screen, or Intel hitting mystery failures instead of "not on this Mac".
+
+**Docs:** [Intel Macs](https://seal-shot.com/docs/faq/#does-sealshot-work-on-intel-macs) · [Which Macs run what](https://seal-shot.com/docs/guide/ai/#which-macs-run-what)
 
 ---
 
