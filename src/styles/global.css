@@ -232,8 +232,12 @@ h1, h2, h3 {
   margin: 0;
 }
 
+/* The newsletter form is wrapped in .newsletter-block (it needs a scope for its
+   status line and honeypot), so it is no longer a direct sibling of .sub and the
+   `+ form` selector stopped matching — the gap silently became 0. */
 .section .sub + form,
-.section .sub + p {
+.section .sub + p,
+.section .sub + .newsletter-block {
   margin-top: 1.5rem;
 }
 
