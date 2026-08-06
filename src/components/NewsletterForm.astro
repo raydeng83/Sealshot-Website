@@ -1,32 +1,110 @@
 ---
 const formId = import.meta.env.PUBLIC_KIT_FORM_ID;
+const RELEASES = 'https://github.com/raydeng83/Sealshot-Release/releases';
 ---
 
 {
-  formId && (
-    <form
-      class="newsletter"
-      action={`https://app.kit.com/forms/${formId}/subscriptions`}
-      method="post"
-    >
-      <label class="visually-hidden" for="newsletter-email">
-        Email address
-      </label>
-      <input
-        id="newsletter-email"
-        type="email"
-        name="email_address"
-        placeholder="you@example.com"
-        required
-      />
-      <button type="submit">Get updates</button>
-    </form>
-  )
+  /*
+    This component renders TWICE on the landing page — once in "Get Sealshot
+    updates" and once in the footer — so nothing here may use an id, and the
+    script must not be `is:inline`. An earlier version did both: four duplicated
+    ids, two copies of the script that each bound the FIRST form (so one submit
+    fired two requests), and a footer form with no handler at all. Labels are
+    implicit and every lookup is scoped to .newsletter-block.
+  */
 }
 {
-  formId && (
+  formId ? (
+    <div class="newsletter-block">
+      {/*
+        action and method stay on the form deliberately. With no JavaScript this
+        is still a working native POST to Kit — the visitor lands on Kit's hosted
+        confirmation page, uglier but not broken. The script upgrades it to an
+        inline result and falls back to that same native submit on failure.
+      */}
+      <form
+        class="newsletter"
+        action={`https://app.kit.com/forms/${formId}/subscriptions`}
+        method="post"
+      >
+        <label class="visually-hidden">
+          Email address
+          <input
+            type="email"
+            name="email_address"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+        </label>
+        {/*
+          Honeypot: off-canvas and aria-hidden, so no person sees it and no
+          screen reader announces it, but a bot filling every field will. Only
+          enforceable with JavaScript — double opt-in is the backstop without it.
+        */}
+        <div class="newsletter-hp" aria-hidden="true">
+          <label>
+            Website
+            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+          </label>
+        </div>
+        <button type="submit">Get updates</button>
+      </form>
+      <p class="fine-print">
+        Product updates only. Double opt-in, unsubscribe anytime, never shared.
+      </p>
+      <p class="newsletter-status" role="status" aria-live="polite" />
+    </div>
+  ) : (
     <p class="fine-print">
-      Product updates only. Double opt-in, unsubscribe anytime, never shared.
+      Email signup isn't wired up in this build —{' '}
+      <a href={RELEASES}>watch releases on GitHub</a> in the meantime.
     </p>
   )
 }
+
+<script>
+  // Bundled, not inline: Astro emits this once per page however many times the
+  // component renders, and it binds every block it finds.
+  document.querySelectorAll('.newsletter-block').forEach((block) => {
+    const form = block.querySelector('form.newsletter');
+    const status = block.querySelector('.newsletter-status');
+    const button = form?.querySelector('button');
+    const honeypot = block.querySelector('input[name="website"]');
+    if (!form || !status || !button) return;
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      // A filled honeypot means a bot. Reveal nothing, do nothing.
+      if (honeypot instanceof HTMLInputElement && honeypot.value) return;
+
+      const label = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      status.textContent = '';
+      status.classList.remove('is-ok', 'is-error');
+
+      fetch(form.action, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error(`http ${response.status}`);
+          form.hidden = true;
+          status.textContent =
+            'Almost there — check your email and click the confirmation link.';
+          status.classList.add('is-ok');
+        })
+        .catch(() => {
+          // Kit may refuse the cross-origin request. Rather than dead-end the
+          // visitor, hand them to Kit's hosted page the old way. form.submit()
+          // does not re-fire this handler.
+          button.textContent = label;
+          button.disabled = false;
+          form.submit();
+        });
+    });
+  });
+</script>
