@@ -1,0 +1,60 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { latestChangelogHref } from '../lib/changelog';
+
+// Where Kit sends a subscriber after they click the confirmation link, set in
+// the form's Settings -> Confirmation Email -> "After confirming redirect to".
+// Without it they land on app.kit.com, which is Kit-branded and carries a "Want
+// to grow your own audience? Built with Kit" promo — an ad shown to someone who
+// just subscribed to us.
+const changelog = latestChangelogHref();
+---
+
+<SiteLayout
+  title="You're subscribed — Sealshot"
+  description="You're on the Sealshot updates list. Here's what to expect, and what to read while you wait."
+  noindex
+>
+  <section class="section wrap" aria-labelledby="subscribed-title">
+    <p class="kicker">Confirmed</p>
+    <h1 id="subscribed-title">You're on the list</h1>
+    <p class="sub">
+      That's it — nothing else to do. You'll hear from us when there's a release
+      worth knowing about, and not otherwise.
+    </p>
+
+    <div class="sub-card">
+      <h2>What to expect</h2>
+      <ul>
+        <li>New releases, and what changed in them.</li>
+        <li>Occasional tips that are not obvious from the interface.</li>
+        <li>No drip sequence, no "just checking in", no third parties.</li>
+      </ul>
+      <p class="muted">
+        Every email has an unsubscribe link, and leaving takes one click. We
+        don't ask why.
+      </p>
+    </div>
+
+    <p>
+      <a class="button" href="/download/">Download Sealshot</a>
+      <a class="button secondary" href={changelog}>Read the changelog</a>
+    </p>
+  </section>
+</SiteLayout>
+
+<style>
+  .sub-card {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 1.5rem;
+    margin: 1.5rem 0 2rem;
+    background: var(--surface-band);
+  }
+  .sub-card h2 { margin: 0 0 0.5rem; font-size: 1.125rem; }
+  .sub-card ul { margin: 0 0 0.75rem; padding-left: 1.25rem; }
+  .sub-card li { margin-bottom: 0.4rem; }
+  .muted { color: var(--slate-600); margin-bottom: 0; }
+  .section > p:last-child { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+</style>

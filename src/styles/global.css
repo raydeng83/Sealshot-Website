@@ -516,6 +516,14 @@ h1, h2, h3 {
   flex-wrap: wrap;
 }
 
+/* The label is now the flex child, so it has to carry the growth the input used
+   to; without this the field collapses to its intrinsic width. */
+.newsletter-field {
+  flex: 1;
+  min-width: 14rem;
+  display: flex;
+}
+
 .newsletter input {
   flex: 1;
   min-width: 14rem;
@@ -539,6 +547,41 @@ h1, h2, h3 {
 
 .newsletter button:hover {
   background: var(--orange-800);
+}
+
+.newsletter button:disabled {
+  background: var(--slate-400);
+  cursor: default;
+}
+
+/* Honeypot: off the canvas rather than display:none, which some bots skip.
+   aria-hidden on the wrapper keeps it out of the accessibility tree. */
+.newsletter-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Signup result, announced via role="status". Empty until something happens, so
+   it takes no space on a page nobody has interacted with. */
+.newsletter-status {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+}
+
+.newsletter-status:empty {
+  display: none;
+}
+
+.newsletter-status.is-ok {
+  color: var(--orange-700);
+  font-weight: 600;
+}
+
+.newsletter-status.is-error {
+  color: var(--orange-800);
 }
 
 .fine-print {

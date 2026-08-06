@@ -581,9 +581,14 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
       (`news.seal-shot.com`) with Kit — keeps marketing complaints away from
       the reputation of `mail.` license delivery
 - [ ] Pages → **Settings → Variables and secrets**:
-  - [ ] `PUBLIC_KIT_FORM_ID` — **without it the newsletter form renders
-        nothing at all** (it's guarded by `formId &&`), so the site would go
-        public with no signup anywhere
+  - [ ] `PUBLIC_KIT_FORM_ID` — without it the form is replaced by a link to the
+        GitHub releases page, so the section degrades instead of showing a
+        heading with no input under it. There is still no signup anywhere, which
+        is the point of this step
+  - [ ] Authenticate the sending domain with Kit **before** setting this. Our
+        DMARC is `p=reject; sp=reject` with strict alignment, so a confirmation
+        email from an unaligned `news.seal-shot.com` is **rejected, not
+        spam-foldered** — the one message that must arrive is the one that fails
   - [ ] `PUBLIC_WEB3FORMS_KEY` — without it `/support` shows "the feedback
         form isn't wired up in this build"
 - [ ] Redeploy, then **verify both forms render and submit while the site is
