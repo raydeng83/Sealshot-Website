@@ -27,8 +27,14 @@ const RELEASES = 'https://github.com/raydeng83/Sealshot-Release/releases';
         action={`https://app.kit.com/forms/${formId}/subscriptions`}
         method="post"
       >
-        <label class="visually-hidden">
-          Email address
+        {/*
+          The label wraps the input so they associate without an id — this
+          component renders twice per page, so ids are not available. Only the
+          label TEXT is hidden: putting .visually-hidden on the <label> itself
+          clips its contents too, which hid the input and left a lone button.
+        */}
+        <label class="newsletter-field">
+          <span class="visually-hidden">Email address</span>
           <input
             type="email"
             name="email_address"

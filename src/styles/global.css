@@ -516,6 +516,14 @@ h1, h2, h3 {
   flex-wrap: wrap;
 }
 
+/* The label is now the flex child, so it has to carry the growth the input used
+   to; without this the field collapses to its intrinsic width. */
+.newsletter-field {
+  flex: 1;
+  min-width: 14rem;
+  display: flex;
+}
+
 .newsletter input {
   flex: 1;
   min-width: 14rem;
