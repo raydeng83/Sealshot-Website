@@ -322,34 +322,49 @@ check, so `www` was serving rather than redirecting.
 
 Depends on Phase 1. Independent of Phase 4, so it can run in parallel.
 
-### Read this first — the zone already enforces strict DMARC
+### Read this first — DMARC is NOT enforcing
 
-The imported zone carries a DMARC record nobody on this project wrote:
+The apex publishes a permissive record. Checked live 2026-08-10:
 
 ```
-v=DMARC1; p=reject; pct=100; fo=1; ri=3600; sp=reject;
-adkim=s; aspf=s;
-rua=mailto:…@dmarc.mailgun.org,mailto:…@inbox.ondmarc.com
-ruf=…
+v=DMARC1; p=none;
 ```
 
-Three parts of that change how carefully the rest of this phase must be done:
+Earlier revisions of this checklist described the zone as carrying
+`p=reject; pct=100; fo=1; ri=3600; sp=reject; adkim=s; aspf=s` plus `rua`/`ruf`
+reporting to Mailgun and OnDMARC addresses, and the rest of this phase was
+written against that stricter policy. **That is not what is published.** The
+record was relaxed at some point — most likely during the Google Workspace
+migration, where dropping to `p=none` is the normal precaution. Treat any
+remaining "it will be rejected" warning below as describing a policy that is
+not currently in force.
 
-- **`p=reject` / `sp=reject`** — a message that fails DMARC is *rejected at the
-  receiving server*, not filed in spam. A misconfiguration here does not
-  degrade deliverability; it stops mail entirely, and the buyer never sees a
-  license. `sp=reject` means the policy applies to `mail.seal-shot.com` too.
-- **`aspf=s`** (strict SPF alignment) — the SPF-authenticated domain must
-  *exactly* equal the From domain. Sending as `license@mail.seal-shot.com`
-  therefore needs an SPF record **on `mail.seal-shot.com` itself**; inheriting
-  the apex SPF does not satisfy strict alignment.
-- **`adkim=s`** (strict DKIM alignment) — the DKIM signature's `d=` must
-  exactly equal `mail.seal-shot.com`. Resend's subdomain setup does produce
-  this, provided its DKIM record goes under the subdomain.
+What the live record actually means:
 
-The `rua`/`ruf` reports go to Mailgun and OnDMARC addresses. If you can't read
-those mailboxes you will get no failure reports, which makes the verification
-steps below the only feedback loop you have.
+- **`p=none`** — nothing is rejected on DMARC grounds. A misaligned message
+  degrades to the spam folder instead of being refused at the receiving server.
+  That makes this phase more forgiving than it reads, but it cuts both ways: a
+  misconfiguration will not announce itself.
+- **No `sp=`** — subdomains inherit `p=none`, so `mail.seal-shot.com` is
+  unenforced too.
+- **No `adkim=`/`aspf=`** — alignment is relaxed by default, so a DKIM or SPF
+  pass on `seal-shot.com` aligns for its subdomains as well. Strict alignment
+  is not the reason to put records under the subdomain (see below for the
+  reason that still holds).
+- **No `rua`/`ruf`** — no aggregate or forensic reports are collected anywhere,
+  so there is no passive feedback loop. The verification steps below are the
+  only signal you get.
+
+**Decide before launch whether that is what you want.** As published, nothing
+discourages a third party from spoofing `seal-shot.com`. The conventional path
+is `p=none` *with* `rua` for a week or two to confirm every legitimate sender
+aligns, then `p=quarantine`, then `p=reject` — the state this document
+previously assumed was already reached.
+
+Keep every Resend record **under `mail.seal-shot.com`** regardless. Relaxed
+alignment no longer forces it, but Resend requires it to verify the domain, and
+it keeps license-mail reputation separate from the apex that carries your
+Workspace mail.
 
 None of this affects Polar sandbox testing, which sends from `resend.dev`
 under its own DMARC policy.
@@ -362,10 +377,10 @@ under its own DMARC policy.
 - [ ] Change **MX** to Google (`smtp.google.com`) — **this is the destructive
       step that ends the Mailgun forwarding recorded in Phase 1**
 - [ ] Update **SPF** to `v=spf1 include:_spf.google.com ~all`
-- [ ] Enable **DKIM** for the alias domain and add its TXT record. Not
-      optional — with `adkim=s` and `p=reject`, mail sent as
-      `support@seal-shot.com` without a `d=seal-shot.com` signature is
-      rejected, not spam-filed.
+- [ ] Enable **DKIM** for the alias domain and add its TXT record. Still worth
+      doing even under `p=none`: DKIM survives forwarding where SPF does not,
+      and it is the prerequisite for ever moving to `p=quarantine`/`p=reject`
+      without breaking `support@seal-shot.com`.
 - [ ] Create a free **Google Group** `support@bostonidentity.com` (alias
       domains mirror existing usernames, so this is what makes
       `support@seal-shot.com` exist)
@@ -386,17 +401,23 @@ nobody reads loses the largest order available — volume starts at ten seats.
 
 ### Transactional — Resend on `mail.seal-shot.com`
 
-- [ ] Resend account → **Add domain** → `mail.seal-shot.com` (uses the one
-      domain the free tier allows)
-- [ ] Add the records Resend generates, in Cloudflare DNS — all of them
-      **under `mail.seal-shot.com`**, not the apex, or strict alignment fails:
-  - [ ] TXT (SPF) on the subdomain
-  - [ ] TXT (DKIM) on Resend's selector
-  - [ ] MX on the subdomain (routes bounces back to Resend)
-- [ ] Leave the apex DMARC record alone. It is already stricter than anything
-      we would add, and `sp=reject` already covers the subdomain.
-- [ ] Wait for Resend to show the domain **Verified**
-- [ ] Create the API key → this becomes the `RESEND_API_KEY` secret in Phase 4
+- [x] Resend account → **Add domain** → `mail.seal-shot.com` (uses the one
+      domain the free tier allows). **Done 2026-08-10.** The account is
+      registered under `ray.deng83@gmail.com`, not the bostonidentity address.
+- [x] Add the records Resend generates, in Cloudflare DNS — all of them
+      **under `mail.seal-shot.com`**, never the apex. The apex belongs to
+      Google Workspace, and merging Resend's SPF into it would break human
+      mail. **Verified live 2026-08-10:**
+  - [x] TXT (SPF) → `send.mail.seal-shot.com`, `v=spf1 include:amazonses.com ~all`
+  - [x] TXT (DKIM) → `resend._domainkey.mail.seal-shot.com`
+  - [x] MX → `send.mail.seal-shot.com`, `feedback-smtp.us-east-1.amazonses.com`
+        (routes bounces back to Resend)
+- [ ] Leave the apex DMARC record alone unless you are deliberately tightening
+      it — see the DMARC note at the top of this phase. It is `p=none`, so it
+      constrains nothing here.
+- [x] Wait for Resend to show the domain **Verified** — confirmed by delivery,
+      2026-08-10
+- [x] Create the API key → this becomes the `RESEND_API_KEY` secret in Phase 4
 
 **Verify:** send a test email from the Resend dashboard as
 `license@mail.seal-shot.com` to a real inbox — ideally one outside Google, so
@@ -407,10 +428,11 @@ and confirm **three** things, not two:
 - `dkim=pass` **and** `d=mail.seal-shot.com`
 - `dmarc=pass`
 
-With `adkim=s`/`aspf=s`, a `pass` on the wrong domain still fails alignment,
-and `p=reject` turns that into a bounce. Checking only "did it arrive" will
-not catch it — a message can arrive from a lenient receiver and be rejected by
-a strict one.
+Under today's relaxed alignment a `pass` on the apex would still align, so
+none of this is load-bearing yet — but check it anyway. These three are exactly
+what has to be true *before* the policy is ever tightened, and confirming them
+now is far cheaper than discovering at `p=reject` that license mail was only
+ever aligning by the apex's grace.
 
 ---
 
@@ -443,10 +465,15 @@ What sandbox has NOT exercised, and still needs doing before launch:
 - [ ] A **renewal** purchase — `reference_id` propagation, reusing the license
       id, and extending rather than resetting the window. Covered by tests, not
       by live traffic.
-- [ ] The **retry/backoff** path. Every cron run over the test window found an
-      empty queue, so the backoff machinery has never actually run.
-- [ ] Delivery to an address other than the Resend account owner — impossible
-      until `mail.seal-shot.com` verifies (Phase 3).
+- [x] The **retry/backoff** path. **Exercised for real 2026-08-10**: three
+      sandbox orders failed their first sends, were retried by the cron with
+      the delay doubling 5 → 10 → 20 → 40 min, and two delivered on the tick
+      after the sender was fixed — reusing their original license ids rather
+      than minting new ones, which is the frozen-window guarantee holding under
+      live conditions. The 48-hour give-up branch is still untested.
+- [x] Delivery to an address other than the Resend account owner. **Proven
+      2026-08-10** to two `@bostonidentity.com` addresses, once
+      `mail.seal-shot.com` was verified and `EMAIL_FROM` restored.
 - [ ] The **production** swap. See the Phase 7 blocker list; sandbox passing
       says nothing about production config being right.
 
@@ -467,15 +494,19 @@ What sandbox has NOT exercised, and still needs doing before launch:
 
 - [x] **`reply_to` added** — `REPLY_TO` var, default `support@seal-shot.com`,
       so buyer replies reach a real inbox instead of bouncing off the
-      send-only subdomain. **Needs Phase 3 done to actually receive.**
+      send-only subdomain. **Receiving confirmed 2026-08-10**: the apex MX
+      points at Google Workspace and `support@seal-shot.com` delivers to
+      `le.deng@bostonidentity.com`.
 
 - [x] **Alerting turned ON, 2026-08-03.** It was written earlier but disabled:
       `ALERT_EMAIL` was commented out and `[observability]` was absent, so every
       alert existed only for the duration of a live `wrangler tail`. The refund
       alert on 3 August was lost exactly that way. Both are now set.
-      `ALERT_EMAIL` must move to `support@seal-shot.com` in the SAME edit that
-      restores `EMAIL_FROM` — Resend's test sender can only reach the account
-      owner, so pointing it at support@ early makes every alert fail silently.
+      `ALERT_EMAIL` moved to `support@seal-shot.com` on **2026-08-10**, in the
+      same edit that restored `EMAIL_FROM`, as it had to be: under the test
+      sender only the account owner was reachable, so pointing it at support@
+      any earlier would have silenced every alert. The 30-minute undelivered
+      alert fired correctly during that day's incident.
 - [x] **Alerting added.** `console.error` always (reaches `wrangler tail` and
       Workers Logs, and Cloudflare notifications can fire on Worker errors),
       plus an email to `ALERT_EMAIL` when set — once when an order has been
@@ -532,21 +563,33 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
       renewal would silently reinstate a license you meant to revoke.
       with the signing secret Polar generates. This secret doesn't exist until
       the endpoint does, which is why Polar setup comes last here.
-- [ ] Once Phase 3 is done: set `EMAIL_FROM` to the verified
-      `mail.seal-shot.com` address, and uncomment `ALERT_EMAIL`
+- [x] Once Phase 3 is done: set `EMAIL_FROM` to the verified
+      `mail.seal-shot.com` address, and point `ALERT_EMAIL` at
+      `support@seal-shot.com`. **Done 2026-08-10**, both in one edit as the
+      config requires.
 
-### Test before the domain exists
+### Test before the domain exists — closed 2026-08-10
 
-`mail.seal-shot.com` has no DNS yet, but delivery doesn't have to wait:
+Kept as a record of how the sandbox path was exercised before
+`mail.seal-shot.com` existed, and of what that arrangement cost.
 
-- [ ] Temporarily set **`EMAIL_FROM` to Resend's test sender**
-      (`onboarding@resend.dev` — confirm the exact address in your Resend
-      dashboard). It can send to your own account address with no domain
-      verification, which is enough to exercise the entire chain: webhook →
+- [x] Temporarily set **`EMAIL_FROM` to Resend's test sender**
+      (`onboarding@resend.dev`). It reaches the Resend account owner's address
+      and no other, which was enough to exercise the whole chain: webhook →
       license generation → email with attachment → **activation in the app**.
-- [ ] Run the full test list below against that setup
-- [ ] Switch `EMAIL_FROM` to the real address after Phase 3 and re-run one
+- [x] Run the full test list below against that setup
+- [x] Switch `EMAIL_FROM` to the real address after Phase 3 and re-run one
       purchase to confirm nothing depended on the test sender
+
+⚠️ **What this cost, so it is not repeated.** The test sender's
+owner-address-only restriction is silent: Resend answers `403` and the Worker
+records the order `pending`, so a buyer at any other address simply receives
+nothing. On 2026-08-10 three sandbox purchases made with `@bostonidentity.com`
+addresses stalled exactly this way, and the diagnosis needed the KV order
+records because the Worker logged only `email HTTP 403` — it discarded the
+response body that said, in plain words, what was wrong. The Worker now keeps
+that body. **Never point `EMAIL_FROM` back at a test sender while anyone but
+the account owner might buy.**
 
 ### Test the whole path
 
@@ -585,10 +628,13 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
         GitHub releases page, so the section degrades instead of showing a
         heading with no input under it. There is still no signup anywhere, which
         is the point of this step
-  - [ ] Authenticate the sending domain with Kit **before** setting this. Our
-        DMARC is `p=reject; sp=reject` with strict alignment, so a confirmation
-        email from an unaligned `news.seal-shot.com` is **rejected, not
-        spam-foldered** — the one message that must arrive is the one that fails
+  - [ ] Authenticate the sending domain with Kit **before** setting this. DMARC
+        is `p=none` today, so an unaligned confirmation from
+        `news.seal-shot.com` is spam-foldered rather than rejected outright —
+        but a double opt-in confirmation landing in spam is still a subscriber
+        lost, and it is the one message that has to arrive. If the policy is
+        later tightened as the Phase 3 note suggests, unaligned becomes
+        **rejected** and this stops being a soft failure
   - [ ] `PUBLIC_WEB3FORMS_KEY` — without it `/support` shows "the feedback
         form isn't wired up in this build"
 - [ ] Redeploy, then **verify both forms render and submit while the site is
@@ -699,10 +745,11 @@ exactly why they need a checklist.
       Leave the sandbox one and every real webhook returns 401; after ten
       consecutive failures Polar disables the endpoint and orders go
       unfulfilled with no error anywhere.
-- [ ] **`EMAIL_FROM` in `wrangler.toml`** — restore
-      `license@mail.seal-shot.com`. It is currently Resend's test sender, which
-      can only deliver to the account owner, so a real buyer receives nothing.
-      Requires `mail.seal-shot.com` verified in Resend first (Phase 3).
+- [x] **`EMAIL_FROM` in `wrangler.toml`** — `license@mail.seal-shot.com`,
+      restored and deployed **2026-08-10** once `mail.seal-shot.com` verified,
+      together with `ALERT_EMAIL` → `support@seal-shot.com`. No longer a
+      blocker; listed here because reverting it to a test sender would silently
+      strand every buyer who is not the Resend account owner.
 - [ ] **Enable Cloudflare Web Analytics** — the privacy policy already
       describes it. See the Phase 5 note.
 

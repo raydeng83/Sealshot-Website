@@ -32,18 +32,18 @@ namespace_id = "1001"
 simple = { limit = 10, period = 60 }
 
 [vars]
-# ⚠️ TEMPORARY — Resend's test sender, for sandbox testing only.
+# Verified sending identity on mail.seal-shot.com (Resend; DNS added and
+# verified 2026-08-10). The subdomain is send-only — its MX exists purely to
+# route bounces back to Resend and no mailbox lives there, so buyer replies go
+# to REPLY_TO below.
 #
-# mail.seal-shot.com is not verified in Resend yet (it has no DNS records at
-# all), so sending from license@mail.seal-shot.com returns 403 and no licence
-# reaches the buyer. resend.dev works without verification but can ONLY deliver
-# to the Resend account owner's address — so a sandbox test purchase must use
-# that email, and any other buyer would silently get nothing.
-#
-# Restore this line the moment mail.seal-shot.com verifies, and before any real
-# sale. It is a launch blocker, tracked in docs/launch-checklist.md Phase 3.
-#   EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
-EMAIL_FROM = "Sealshot <onboarding@resend.dev>"
+# Until 2026-08-10 this was Resend's test sender, onboarding@resend.dev, which
+# delivers to the Resend account owner's address and NOTHING else. Every other
+# buyer got a silent 403 and no license: three sandbox orders sat `pending`
+# with `lastError: email HTTP 403` that day for exactly this reason, having
+# been bought with addresses other than the owner's. Putting the test sender
+# back reintroduces that failure, and it fails silently.
+EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
 # Polar product id -> licence terms, read from `data.product_id` on order.paid.
 # Adding a product is a config change, not a deploy. An unmapped id falls back
 # to a 12-month NEW purchase: the buyer paid, so they get a working licence,
@@ -62,12 +62,10 @@ EMAIL_FROM = "Sealshot <onboarding@resend.dev>"
 PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","months":12},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","months":18},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","months":12}}'
 # The From subdomain is send-only, so replies need somewhere real to land.
 REPLY_TO = "support@seal-shot.com"
-# Where fulfilment alerts are emailed. Must be an address the current EMAIL_FROM
-# can actually reach: while that is Resend's test sender, the ONLY permitted
-# recipient is the Resend account owner's address. Pointing this at
-# support@seal-shot.com before mail.seal-shot.com verifies would make every alert
-# fail silently — the same failure this setting exists to prevent.
-#
-# ⚠️ Change to support@seal-shot.com in the same edit that restores EMAIL_FROM.
-ALERT_EMAIL = "ray.deng83@gmail.com"
+# Where fulfilment alerts are emailed. Must be an address the current
+# EMAIL_FROM can actually reach — now any address, since EMAIL_FROM is a
+# verified domain. Under the test sender this had to be the Resend account
+# owner's address, or every alert would itself have failed to send, silencing
+# precisely the signal this setting exists to raise.
+ALERT_EMAIL = "support@seal-shot.com"
 # Secrets (SIGNING_KEY_B64, POLAR_WEBHOOK_SECRET, RESEND_API_KEY) set via `wrangler secret put`

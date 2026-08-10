@@ -131,6 +131,24 @@ describe('deliverLicense', () => {
     expect(stored.lastAttemptAt).toBeTruthy();
   });
 
+  it("records the provider's explanation alongside the status", async () => {
+    const fetchImpl = vi.fn(async () => new Response(
+      JSON.stringify({ message: 'You can only send testing emails to your own email address' }),
+      { status: 403 }
+    ));
+    const env = makeEnv(fetchImpl as unknown as typeof fetch);
+    const rec = pendingRec({ firstSeenAt: new Date().toISOString() });
+    await putOrder(env.ORDERS, 'ord_1', rec);
+
+    await deliverLicense(env, 'ord_1', rec);
+
+    // `email HTTP 403` alone sends whoever reads this record hunting through
+    // dashboards; the reason belongs on the record itself.
+    const stored = (await getOrder(env.ORDERS, 'ord_1'))!;
+    expect(stored.lastError).toContain('403');
+    expect(stored.lastError).toContain('You can only send testing emails');
+  });
+
   it('survives a thrown error rather than rejecting', async () => {
     const fetchImpl = vi.fn(async () => {
       throw new Error('network down');

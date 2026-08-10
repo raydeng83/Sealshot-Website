@@ -114,7 +114,13 @@ export async function deliverLicense(
       return true;
     }
 
-    await recordFailure(env, orderId, rec, attempts, attemptedAt, `email HTTP ${res.status}`, now);
+    // Carry the provider's own words onto the record. `email HTTP 403` sends
+    // whoever reads it hunting through dashboards; the body usually says
+    // outright what is wrong and what to change.
+    const reason = res.error
+      ? `email HTTP ${res.status}: ${res.error}`
+      : `email HTTP ${res.status}`;
+    await recordFailure(env, orderId, rec, attempts, attemptedAt, reason, now);
     return false;
   } catch (err) {
     const reason = err instanceof Error ? err.message : String(err);
