@@ -1,16 +1,63 @@
 #!/usr/bin/env python3
 """Assemble the consolidated Sealshot documentation book from dist/ into one
 print-ready HTML (Paged.js), for Chrome headless -> PDF."""
-import re, html, pathlib, datetime
+import re, html, pathlib, datetime, subprocess, urllib.request
 
 ROOT = pathlib.Path('/Users/ledeng/projects/Sealshot-Website')
 DIST = ROOT / 'dist'
 OUT = DIST / 'print'
 OUT.mkdir(exist_ok=True)
 
+PAGED_URL = 'https://unpkg.com/pagedjs/dist/paged.polyfill.js'
+
+
+def stage_assets():
+    """Downscale the screenshots and vendor Paged.js into dist/print.
+
+    Done here rather than as a documented shell step because `npm run build`
+    wipes dist/, so both go missing on every rebuild — and the failure is quiet:
+    a missing polyfill means the sentinel never fires and the printer just times
+    out, while missing derivatives mean the book silently loads the full-size
+    originals and the PDF balloons.
+    """
+    img = OUT / 'img'
+    img.mkdir(exist_ok=True)
+    sources = sorted(
+        list((DIST / 'manual').glob('*.png')) + list((DIST / 'manual').glob('*.jpg'))
+    )
+    made = 0
+    for src in sources:
+        dst = img / (src.stem + '.jpg')
+        if dst.exists() and dst.stat().st_mtime >= src.stat().st_mtime:
+            continue
+        subprocess.run(
+            ['sips', '-s', 'format', 'jpeg', '-s', 'formatOptions', '82',
+             '-Z', '1600', str(src), '--out', str(dst)],
+            check=True, stdout=subprocess.DEVNULL,
+        )
+        made += 1
+    kb = sum(f.stat().st_size for f in img.glob('*.jpg')) / 1024
+    print(f'  screenshots: {len(sources)} sources, {made} re-encoded, '
+          f'{kb / 1024:.1f} MB staged')
+
+    poly = OUT / 'paged.polyfill.js'
+    if not poly.exists():
+        with urllib.request.urlopen(PAGED_URL) as r:
+            poly.write_bytes(r.read())
+        print(f'  vendored paged.polyfill.js ({poly.stat().st_size / 1024:.0f} KB)')
+    else:
+        print(f'  paged.polyfill.js already present ({poly.stat().st_size / 1024:.0f} KB)')
+
+
+stage_assets()
+
 SECTIONS = [
+    ('Quickstart', [
+        'docs/quickstart/install', 'docs/quickstart/parts',
+        'docs/quickstart/first-capture',
+    ]),
     ('Core guide', [
-        'docs/guide/getting-started', 'docs/guide/capture', 'docs/guide/recording',
+        'docs/guide/capture', 'docs/guide/recording',
         'docs/guide/editor', 'docs/guide/redaction', 'docs/guide/ai',
         'docs/guide/library', 'docs/guide/sharing', 'docs/guide/security',
         'docs/guide/settings', 'docs/guide/shortcuts', 'docs/guide/seal-format',
@@ -26,6 +73,7 @@ SECTIONS = [
     ]),
     ('Reference', ['docs/faq']),
     ('Release history', [
+        'docs/changelog/v0-7-3', 'docs/changelog/v0-7-2', 'docs/changelog/v0-7-1',
         'docs/changelog/v0-7-0', 'docs/changelog/v0-6-0', 'docs/changelog/v0-5-1',
         'docs/changelog/v0-5-0', 'docs/changelog/v0-4-0',
     ]),
@@ -39,6 +87,9 @@ REVISIONS = [
     ('Jul 25, 2026', 'Workflows reorganized around intent — Explain, Publish, Demonstrate, Protect & share, Extract — under the five-stage spine (Capture → Encrypt → Refine → Organize → Deliver), with an examples page.'),
     ('Jul 28, 2026', 'Tips & tricks split into five stage pages and grown from 19 to 65 tips; capture docs gain ⌘-adjustable selection; boundary-detection behavior corrected to app scale.'),
     ('Jul 29, 2026', 'Guide audited against the app: editor page catches up (Find in Image, blank canvas, focus area vs. the Crop tool), the On-device AI page takes over text recognition and image enhancement, sharing documents enforced expiry and bulk exports, Settings documented per control including the License tab. Second consolidated PDF edition.'),
+    ('Jul 31, 2026', 'Getting started replaced by a three-page Quickstart — install and permissions, the parts of Sealshot, your first capture. FAQ grouped into sections with licensing and purchase answers expanded.'),
+    ('Aug 3, 2026', 'Documentation reconciled with release 0.7.3: Lock when Sealshot starts, the license ID and Renew card in Settings, annotations that extend past the edge of an image, and an FAQ entry for the new license-file format, which is not compatible in either direction. Mac App Store references removed — there is one build. US English throughout.'),
+    ('Aug 14, 2026', 'Network activity corrected everywhere to three downloads, not two, after the revocation blocklist shipped: the update check, the revoked-license list, and the optional redaction model. The first two follow the "Automatically check for updates" setting. Privacy policy scoped its license-ID claim and disclosed the renewal link. Third consolidated PDF edition (snapshot of release 0.7.3).'),
 ]
 
 def extract(slug):
@@ -68,8 +119,11 @@ def extract(slug):
             return 'href="https://seal-shot.com' + url + '"'
         return m.group(0)
     body = re.sub(r'href="([^"]+)"', fix_href, body)
-    # print edition uses the downscaled JPEGs in /print/img
-    body = re.sub(r'src="/manual/([a-z0-9._-]+)\.png"', r'src="/print/img/\1.jpg"', body)
+    # Print edition uses the downscaled JPEGs in /print/img. Matches .jpg as well
+    # as .png: several screenshots were re-encoded to JPEG on the site, and while
+    # this only matched .png they quietly bypassed the derivatives entirely.
+    body = re.sub(r'src="/manual/([a-z0-9._-]+)\.(?:png|jpg)"',
+                  r'src="/print/img/\1.jpg"', body)
     return title, desc, body
 
 today = 'July 29, 2026'
@@ -164,7 +218,7 @@ page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
   <div class="sub">Capture, edit, redact, organize, and share — privately on your Mac.</div>
   <div class="rule"></div>
   <div class="meta">Guide + workflows + tips + FAQ + release history<br>
-  Documentation snapshot: {today} | Current release: 0.7.2</div>
+  Documentation snapshot: {today} | Current release: 0.7.3</div>
   <div class="blurb">Sealshot is a privacy-first screenshot and screen-recording app for macOS.
   Capture, OCR, redaction, AI metadata, and search all run on the device.</div>
 </div>

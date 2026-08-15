@@ -3,9 +3,13 @@
 Regenerate `pdf/sealshot-documentation.pdf` from the built site:
 
 1. `npm run build`
-2. `python3 output/build-book.py`   — assembles dist/print/book.html from dist/
-   (downscaled screenshots: `for f in dist/manual/*.png; do sips -s format jpeg -s formatOptions 82 -Z 1600 "$f" --out "dist/print/img/$(basename ${f%.png}).jpg"; done`;
-   Paged.js vendored at dist/print/paged.polyfill.js — re-download from unpkg if dist was wiped)
+2. `python3 output/build-book.py`   — assembles dist/print/book.html from dist/.
+   Stages its own assets now: downscales every `dist/manual/*.{png,jpg}` to
+   1600px JPEG q82 into `dist/print/img/`, and downloads Paged.js if it is
+   missing. Both live under `dist/`, which `npm run build` wipes, and both fail
+   quietly — no polyfill means the sentinel never fires and the printer times
+   out; no derivatives means the book loads full-size originals and the PDF
+   balloons.
 3. `python3 output/serve-dist.py &`  — serves dist on :8783
 4. `node output/print-book.mjs`      — Google Chrome via playwright-core; waits for
    Paged.js's after-render sentinel so TOC page numbers are final, then prints.
