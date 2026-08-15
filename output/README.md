@@ -12,7 +12,16 @@ Regenerate `pdf/sealshot-documentation.pdf` from the built site:
    balloons.
 3. `python3 output/serve-dist.py &`  — serves dist on :8783
 4. `node output/print-book.mjs`      — Google Chrome via playwright-core; waits for
-   Paged.js's after-render sentinel so TOC page numbers are final, then prints.
+   Paged.js's after-render sentinel so TOC page numbers are final, prints, then
+   runs `add-outline.py` to attach the bookmarks pane (needs `pypdf`).
+
+The bookmarks are derived from the **rendered** table of contents — each entry's
+page comes from `data-page-number` on the Paged.js page container holding its
+target — so the pane and the printed contents are the same list by construction.
+Do not scope that query to `#contents`: Paged.js splits the contents list across
+two pages and the id stays with the first fragment, which silently drops every
+entry that overflowed (it cost four release-history chapters once). Select every
+`ol.toc > li` instead.
 
 Update the REVISIONS table in build-book.py (and the snapshot date / release
 on the cover) before each new edition.
