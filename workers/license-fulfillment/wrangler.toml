@@ -35,7 +35,7 @@ simple = { limit = 10, period = 60 }
 # ⚠️ TEMPORARY — Resend's test sender, for sandbox testing only.
 #
 # mail.seal-shot.com is not verified in Resend yet (it has no DNS records at
-# all), so sending from license@mail.seal-shot.com returns 403 and no licence
+# all), so sending from license@mail.seal-shot.com returns 403 and no license
 # reaches the buyer. resend.dev works without verification but can ONLY deliver
 # to the Resend account owner's address — so a sandbox test purchase must use
 # that email, and any other buyer would silently get nothing.
@@ -44,16 +44,16 @@ simple = { limit = 10, period = 60 }
 # sale. It is a launch blocker, tracked in docs/launch-checklist.md Phase 3.
 #   EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
 EMAIL_FROM = "Sealshot <onboarding@resend.dev>"
-# Polar product id -> licence terms, read from `data.product_id` on order.paid.
+# Polar product id -> license terms, read from `data.product_id` on order.paid.
 # Adding a product is a config change, not a deploy. An unmapped id falls back
-# to a 12-month NEW purchase: the buyer paid, so they get a working licence,
+# to a 12-month NEW purchase: the buyer paid, so they get a working license,
 # and `new` mints a fresh one rather than rewriting an existing window.
 #
 # ⚠️ These are SANDBOX product ids. At launch they must be replaced with the
 # production ones, in the same change as the checkout URLs and
 # CHECKOUT_IS_SANDBOX in src/config/promos.ts. Leaving sandbox ids here means
 # every real purchase falls back to 12 months — so a founding buyer silently
-# loses 6 months, and a renewal mints a SECOND licence instead of extending
+# loses 6 months, and a renewal mints a SECOND license instead of extending
 # the first. Nothing fails loudly; see the unmapped-product alert in Task 12.
 #
 #   e8d2217b… Sealshot            new,     12 months — site price $29.99

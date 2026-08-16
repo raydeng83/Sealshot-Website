@@ -29,9 +29,10 @@ describe('activeOffer', () => {
 
 describe('formatUSD', () => {
   it('formats cents', () => {
-    expect(formatUSD(4900)).toBe('$49.00');
-    expect(formatUSD(3900)).toBe('$39.00');
-    expect(formatUSD(2400)).toBe('$24.00');
+    expect(formatUSD(2999)).toBe('$29.99');
+    expect(formatUSD(1499)).toBe('$14.99');
+    expect(formatUSD(1799)).toBe('$17.99');
+    expect(formatUSD(2400)).toBe('$24.00');   // a whole-dollar amount still formats
   });
 });
 
