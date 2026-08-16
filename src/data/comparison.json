@@ -312,5 +312,9 @@
     "Per TechSmith's 2025 move to annual subscription pricing, for the individual plan. Business and volume licensing may differ.",
     "Shottr's own documentation warns that its hosted links are public and are not secure storage.",
     "Xnapper's homepage says cloud sharing is “coming soon” while its changelog says image and video sharing have shipped. Needs checking against the current build."
-  ]
+  ],
+  "highlight": {
+    "label": "Price",
+    "app": "sealshot"
+  }
 }

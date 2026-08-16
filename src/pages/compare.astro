@@ -7,30 +7,30 @@ import comparison from '../data/comparison.json';
   Excel export and run output/import-comparison-xlsx.py. The rules for what may go
   in a cell are in that file's _comment.
 
-  This page holds only presentation, plus the two prose sections below, which are
-  argument rather than data and so are not in the spreadsheet.
+  This page holds only presentation. The footnotes, sources list, "when one of the
+  others is the better buy" and "how to check this yourself" sections are parked —
+  removed from the page, still in git and (for the footnotes) still in the JSON, so
+  they can come back without being rewritten.
 */
 
-const { checkedOn: CHECKED_ON, legend: LEGEND, apps: APPS, groups: GROUPS, notes: NOTES } =
+const { checkedOn: CHECKED_ON, apps: APPS, groups: GROUPS, highlight: HIGHLIGHT } =
   comparison;
+
+// Only show legend entries the table actually uses. Two of the three described
+// nothing after the spreadsheet import, and a legend defining absent terms is
+// worse than none. Self-maintaining: a term reappearing brings its row back.
+const USED = new Set(
+  GROUPS.flatMap((g) => g.rows).flatMap((r) =>
+    APPS.map((a) => (typeof r[a.key] === 'string' ? r[a.key].trim() : ''))),
+);
+const LEGEND = comparison.legend.filter(([term]) => USED.has(term));
+
+const isHighlight = (label: string, key: string) =>
+  HIGHLIGHT && label === HIGHLIGHT.label && key === HIGHLIGHT.app;
 
 const CARD_ORDER = [APPS[4], APPS[0], APPS[1], APPS[2], APPS[3]];
 
-const ELSEWHERE = [
-  ['You need Windows', 'Snagit is the only one here that runs on it.'],
-  ['You want it free', 'Shottr and Xnapper both have real free tiers. Sealshot has a 14-day trial and then costs money.'],
-  ['You want a share link', 'CleanShot Cloud, Shottr Cloud, or a team tool like Zight, Droplr, or Monosnap. Sealshot hosts nothing, so there is no URL to send.'],
-  ['You want the widest automatic detection', 'Snagit finds more categories than we do — faces, dates, phone numbers and street addresses among them.'],
-  ['Presentation screenshots are the job', 'Xnapper exists for exactly that, and records video too now.'],
-  ['You manage seats for a team', 'Snagit’s business plans, or the team tools above. Sealshot has no per-seat administration.'],
-];
 
-const CHECKS = [
-  ['Watch the network', 'Point Little Snitch, Proxyman, or tcpdump at any of these for an hour of real work — capture, edit, search, export, and every AI feature. What it contacts, and when, is a fact rather than a claim.'],
-  ['Attack your own redaction', 'Redact something, export it, then try to get it back: zoom, push levels and contrast, run OCR over it, open it in another editor. Do it separately for the flattened export and for the editable project file — in every tool here, including this one, those are not the same thing.'],
-  ['Pull the plug', 'Install on a machine with no network and try to work. Then try activating a paid license offline.'],
-  ['Read the privacy policy for specifics', 'Look for one that names each network request rather than describing a posture. Vague is not the same as harmless.'],
-];
 ---
 
 <SiteLayout
@@ -79,12 +79,9 @@ const CHECKS = [
               <tr>
                 <th scope="row">{r.label}</th>
                 {APPS.map((a) => (
-                  <td class={a.ours ? 'is-ours' : undefined}>
-                    {r[a.key]}
-                    {r[a.key + 'Note'] && (
-                      <sup><a href={`#note-${r[a.key + 'Note']}`}>{r[a.key + 'Note']}</a></sup>
-                    )}
-                  </td>
+                  <td class={[a.ours ? 'is-ours' : '',
+                              isHighlight(r.label, a.key) ? 'is-highlight' : '']
+                    .filter(Boolean).join(' ') || undefined}>{r[a.key]}</td>
                 ))}
               </tr>
             ))}
@@ -104,11 +101,8 @@ const CHECKS = [
                 {g.rows.map((r) => (
                   <>
                     <dt>{r.label}</dt>
-                    <dd>
+                    <dd class={isHighlight(r.label, a.key) ? 'is-highlight' : undefined}>
                       {r[a.key]}
-                      {r[a.key + 'Note'] && (
-                        <sup><a href={`#note-${r[a.key + 'Note']}`}>{r[a.key + 'Note']}</a></sup>
-                      )}
                     </dd>
                   </>
                 ))}
@@ -119,62 +113,6 @@ const CHECKS = [
       ))}
     </div>
 
-    <ol class="cmp-notes">
-      {NOTES.map((n, i) => <li id={`note-${i + 1}`}>{n}</li>)}
-    </ol>
-
-    <h2 id="sources">Sources</h2>
-    <ul class="cmp-sources">
-      {APPS.filter((a) => !a.ours).map((a) => (
-        <li>
-          <strong>{a.name}</strong> —
-          {a.sources.map(([label, url], i) => (
-            <>{i > 0 ? ' · ' : ' '}<a href={url} rel="nofollow noopener">{label}</a></>
-          ))}
-        </li>
-      ))}
-    </ul>
-    <p class="cmp-note-foot">
-      Prices are the publicly listed individual ones and exclude tax. Something
-      out of date or wrong? <a href="/support/">Tell us</a> — we would rather fix
-      it than defend it.
-    </p>
-
-    <h2 id="elsewhere">When one of the others is the better buy</h2>
-    <p>
-      A comparison with nothing but wins in our own column would not be worth
-      reading. These are the cases where we would point you elsewhere:
-    </p>
-    <dl class="cmp-else">
-      {ELSEWHERE.map(([when, what]) => (
-        <>
-          <dt>{when}</dt>
-          <dd>{what}</dd>
-        </>
-      ))}
-    </dl>
-
-    <h2 id="checks">How to check any of this yourself</h2>
-    <p>
-      Every tool in this category says it respects your privacy. These are the
-      tests that turn that into something you can see — and they work on us as
-      well as on them.
-    </p>
-    <dl class="cmp-else">
-      {CHECKS.map(([title, how]) => (
-        <>
-          <dt>{title}</dt>
-          <dd>{how}</dd>
-        </>
-      ))}
-    </dl>
-
-    <p class="cmp-note-foot">
-      Not compared here: the screenshot tool built into macOS, which is free and
-      on every Mac — if ⌘⇧5 already does what you need, use it. Nor the
-      link-first team tools (Zight, Droplr, Monosnap), which solve sharing rather
-      than capture.
-    </p>
   </section>
 </SiteLayout>
 
@@ -225,8 +163,16 @@ const CHECKS = [
   .cmp .is-ours { background: var(--surface-band); color: var(--navy-900); }
   .cmp thead .is-ours { color: var(--orange-700); }
 
-  .cmp sup { font-size: 0.7rem; }
-  .cmp sup a { padding-left: 0.15rem; }
+  /* The one cell allowed to shout. Everywhere else the tint does the work — but
+     price is the argument this table is making, so it gets weight, the accent, and
+     a rule down its left edge to catch the eye scanning the bottom row. */
+  .cmp td.is-highlight {
+    background: var(--mint-50);
+    color: var(--navy-900);
+    font-weight: 700;
+    font-size: 0.95rem;
+    border-left: 3px solid var(--orange-600);
+  }
 
   .cmp-cards { display: none; }
 
@@ -287,5 +233,15 @@ const CHECKS = [
     .cmp-card dl { margin: 0; }
     .cmp-card dt { font-size: 0.8rem; color: var(--slate-400); margin-top: 0.55rem; }
     .cmp-card dd { margin: 0; font-size: 0.95rem; }
+
+    .cmp-card dd.is-highlight {
+      font-weight: 700;
+      color: var(--orange-700);
+      background: var(--mint-50);
+      border-left: 3px solid var(--orange-600);
+      padding: 0.35rem 0.5rem;
+      margin: 0.15rem 0 0;
+      border-radius: 0 4px 4px 0;
+    }
   }
 </style>
