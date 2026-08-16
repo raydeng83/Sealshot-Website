@@ -9,7 +9,9 @@ time on, and what route should you take through it. Where you want the fine
 detail, each section points at the workbook that has it.
 
 Read §1 and §2, then work through §4 in order. Budget two to three hours for a
-first pass.
+first pass. After that first pass, switch to the [testing map](testing-map.md)
+— generic end-to-end scenarios that cross the app the way real use does, which
+is where the seam bugs live.
 
 ---
 

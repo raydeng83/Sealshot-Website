@@ -12,7 +12,7 @@ import { resolveRenewalTarget } from '../src/renewal';
  *
  * Until this existed a refund was invisible: the order kept its `sent` state,
  * the licence record stayed valid, and the email index still resolved to it — so
- * a refunded customer could buy a $24 renewal and have a revoked licence
+ * a refunded customer could buy a renewal and have a revoked licence
  * quietly reinstated with a fresh window.
  */
 
@@ -192,7 +192,7 @@ describe('a refunded licence cannot be reinstated by renewing', () => {
   });
 
   it('a renewal of a refunded licence mints a NEW licence and alerts', async () => {
-    // They paid $24, so they get something — but the revoked licence is not
+    // They paid for a renewal, so they get something — but the revoked licence is not
     // quietly given a fresh window, and a human is told.
     const err = vi.spyOn(console, 'error').mockImplementation(() => {});
     const { env } = makeEnv();

@@ -1,0 +1,320 @@
+{
+  "_comment": "Source of truth for /compare. Edit here, or edit the Excel export and run output/import-comparison-xlsx.py. Cell rules: competitor values must come from that vendor's own documentation; use the legend vocabulary rather than inventing one; keep wording symmetrical across a row; bump checkedOn on any change.",
+  "checkedOn": "August 16, 2026",
+  "legend": [
+    [
+      "No",
+      "Explicitly unsupported, or tested absent."
+    ],
+    [
+      "Not documented",
+      "Not found in the vendor’s official documentation."
+    ],
+    [
+      "Unverified",
+      "Official sources conflict; needs hands-on confirmation."
+    ]
+  ],
+  "apps": [
+    {
+      "key": "cleanshot",
+      "name": "CleanShot X",
+      "sources": [
+        [
+          "pricing",
+          "https://cleanshot.com/pricing"
+        ],
+        [
+          "device tiers",
+          "https://cleanshot.com/buy"
+        ],
+        [
+          "features",
+          "https://cleanshot.com/features"
+        ]
+      ]
+    },
+    {
+      "key": "snagit",
+      "name": "Snagit",
+      "sources": [
+        [
+          "features",
+          "https://www.techsmith.com/snagit/features/"
+        ],
+        [
+          "Smart Redact",
+          "https://www.techsmith.com/snagit/features/smart-redact/"
+        ],
+        [
+          "store",
+          "https://www.techsmith.com/store/snagit/"
+        ],
+        [
+          "subscription policy",
+          "https://support.techsmith.com/hc/en-us/articles/27009223314701-TechSmith-Transition-to-Annual-Subscription-Pricing-Model-in-2025"
+        ]
+      ]
+    },
+    {
+      "key": "shottr",
+      "name": "Shottr",
+      "sources": [
+        [
+          "purchase",
+          "https://shottr.cc/purchase.html"
+        ],
+        [
+          "scrolling capture",
+          "https://shottr.cc/kb/scrollingcapture"
+        ],
+        [
+          "upload",
+          "https://shottr.cc/kb/upload/"
+        ],
+        [
+          "start guide",
+          "https://shottr.cc/kb/startguide"
+        ]
+      ]
+    },
+    {
+      "key": "xnapper",
+      "name": "Xnapper",
+      "sources": [
+        [
+          "pricing",
+          "https://xnapper.com/pricing"
+        ],
+        [
+          "changelog",
+          "https://xnapper.com/changelog"
+        ]
+      ]
+    },
+    {
+      "key": "sealshot",
+      "name": "Sealshot",
+      "ours": true,
+      "sources": [
+        [
+          "docs",
+          "/docs/"
+        ]
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "title": "Capture",
+      "rows": [
+        {
+          "label": "Screenshot modes",
+          "cleanshot": "Area, window, fullscreen, delayed, scrolling",
+          "snagit": "Area, window, fullscreen, delayed, scrolling",
+          "shottr": "Area, window, fullscreen, delayed, scrolling",
+          "xnapper": "Area, window, fullscreen, scrolling",
+          "sealshot": "Area, window, fullscreen, delayed, scrolling, live capture"
+        },
+        {
+          "label": "Screen recording",
+          "cleanshot": "Yes",
+          "snagit": "Yes",
+          "shottr": "No",
+          "xnapper": "Yes",
+          "sealshot": "Yes"
+        }
+      ]
+    },
+    {
+      "title": "Edit",
+      "rows": [
+        {
+          "label": "Image annotation",
+          "cleanshot": "Comprehensive",
+          "snagit": "Comprehensive",
+          "shottr": "Comprehensive",
+          "xnapper": "Basic",
+          "sealshot": "Comprehensive"
+        },
+        {
+          "label": "Video editing",
+          "cleanshot": "Basic: trim, quality, resolution and audio adjustments",
+          "snagit": "Basic to moderate: trim, cut, combine clips, GIF creation and noise removal",
+          "shottr": "No",
+          "xnapper": "Basic",
+          "sealshot": "Basic"
+        }
+      ]
+    },
+    {
+      "title": "Extract",
+      "rows": [
+        {
+          "label": "OCR and text extraction",
+          "cleanshot": "Yes",
+          "snagit": "Yes",
+          "shottr": "Yes",
+          "xnapper": "Yes",
+          "sealshot": "Yes"
+        },
+        {
+          "label": "Structured table and form extraction",
+          "cleanshot": "No",
+          "snagit": "No",
+          "shottr": "No",
+          "xnapper": "No",
+          "sealshot": "Yes"
+        }
+      ]
+    },
+    {
+      "title": "Protect",
+      "rows": [
+        {
+          "label": "Manual redaction",
+          "cleanshot": "Yes",
+          "snagit": "Yes",
+          "shottr": "Yes",
+          "xnapper": "Yes",
+          "sealshot": "Yes"
+        },
+        {
+          "label": "Sensitive-data detection",
+          "cleanshot": "No",
+          "snagit": "Yes",
+          "shottr": "No",
+          "xnapper": "Yes",
+          "sealshot": "Yes",
+          "sealshotNote": 1
+        },
+        {
+          "label": "Enhanced Security",
+          "cleanshot": "No",
+          "snagit": "No",
+          "shottr": "No",
+          "xnapper": "No",
+          "sealshot": "Yes"
+        }
+      ]
+    },
+    {
+      "title": "Organize",
+      "rows": [
+        {
+          "label": "Persistent capture library",
+          "cleanshot": "Screenshot history",
+          "snagit": "Searchable and taggable library",
+          "shottr": "No",
+          "xnapper": "Screenshot history",
+          "sealshot": "Search, collections, tags and metadata"
+        },
+        {
+          "label": "Automatic organization",
+          "cleanshot": "Limited",
+          "snagit": "Search and metadata features",
+          "shottr": "No",
+          "xnapper": "Limited",
+          "sealshot": "Auto-title and smart-tag assistance"
+        }
+      ]
+    },
+    {
+      "title": "Share",
+      "rows": [
+        {
+          "label": "Cloud sharing",
+          "cleanshot": "Optional CleanShot Cloud",
+          "snagit": "Multiple cloud and service integrations",
+          "shottr": "Shottr Cloud or personal S3",
+          "shottrNote": 3,
+          "xnapper": "No integrated cloud sharing",
+          "xnapperNote": 4,
+          "sealshot": "No integrated cloud sharing"
+        },
+        {
+          "label": "Protected sharing or export",
+          "cleanshot": "Password and expiration controls with supported cloud plan",
+          "snagit": "Depends on destination service",
+          "shottr": "S3 access controls",
+          "xnapper": "No",
+          "sealshot": "Encrypted package export"
+        }
+      ]
+    },
+    {
+      "title": "Privacy",
+      "rows": [
+        {
+          "label": "Fully usable offline",
+          "cleanshot": "Yes, excluding cloud features",
+          "snagit": "Core editing works locally; activation and account considerations",
+          "shottr": "Yes, excluding cloud and S3",
+          "xnapper": "Yes",
+          "sealshot": "Yes"
+        }
+      ]
+    },
+    {
+      "title": "Platform",
+      "rows": [
+        {
+          "label": "Supported platforms",
+          "cleanshot": "macOS",
+          "snagit": "macOS and Windows",
+          "shottr": "macOS",
+          "xnapper": "macOS",
+          "sealshot": "macOS"
+        }
+      ]
+    },
+    {
+      "title": "Purchase",
+      "rows": [
+        {
+          "label": "Devices per individual license",
+          "cleanshot": "1, 2, or 5 by tier",
+          "snagit": "Unlimited installs; one active device at a time",
+          "snagitNote": 2,
+          "shottr": "1 user; up to 5 computers",
+          "xnapper": "1, 2, or 3 by tier",
+          "sealshot": "3"
+        },
+        {
+          "label": "Account required",
+          "cleanshot": "No for local use",
+          "snagit": "Yes",
+          "shottr": "No",
+          "xnapper": "No",
+          "sealshot": "No"
+        },
+        {
+          "label": "License model",
+          "cleanshot": "One-time purchase; 1 year of updates",
+          "snagit": "Annual subscription",
+          "shottr": "One-time purchase",
+          "xnapper": "One-time purchase; perpetual use; 1 year of updates",
+          "sealshot": "One-time purchase; perpetual use; 18 months of founding updates, 1 year for regular"
+        },
+        {
+          "label": "Price",
+          "cleanshot": "$29 / 1 Mac; $49 / 2; $119 / 5",
+          "snagit": "$39 per user, per year",
+          "shottr": "Free and paid versions; $12 / $30",
+          "xnapper": "Free with watermark; $29.99 / 1 device; $54.99 / 2; $79.99 / 3",
+          "sealshot": "14 days free trial, then $14.99 founding; $29.99 regular"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Sealshot's solid fill is an annotation drawn over the image, and a .seal package keeps the original capture alongside it so that edits stay reversible. Redaction is therefore destroyed in a flattened export — PNG, JPEG, or a flattened package — but not inside an editable project. Send exports, not editable packages, when the content matters.",
+    "Per TechSmith's 2025 move to annual subscription pricing, for the individual plan. Business and volume licensing may differ.",
+    "Shottr's own documentation warns that its hosted links are public and are not secure storage.",
+    "Xnapper's homepage says cloud sharing is “coming soon” while its changelog says image and video sharing have shipped. Needs checking against the current build."
+  ],
+  "highlight": {
+    "label": "Price",
+    "app": "sealshot"
+  }
+}

@@ -3,12 +3,25 @@
 Regenerate `pdf/sealshot-documentation.pdf` from the built site:
 
 1. `npm run build`
-2. `python3 output/build-book.py`   — assembles dist/print/book.html from dist/
-   (downscaled screenshots: `for f in dist/manual/*.png; do sips -s format jpeg -s formatOptions 82 -Z 1600 "$f" --out "dist/print/img/$(basename ${f%.png}).jpg"; done`;
-   Paged.js vendored at dist/print/paged.polyfill.js — re-download from unpkg if dist was wiped)
+2. `python3 output/build-book.py`   — assembles dist/print/book.html from dist/.
+   Stages its own assets now: downscales every `dist/manual/*.{png,jpg}` to
+   1600px JPEG q82 into `dist/print/img/`, and downloads Paged.js if it is
+   missing. Both live under `dist/`, which `npm run build` wipes, and both fail
+   quietly — no polyfill means the sentinel never fires and the printer times
+   out; no derivatives means the book loads full-size originals and the PDF
+   balloons.
 3. `python3 output/serve-dist.py &`  — serves dist on :8783
 4. `node output/print-book.mjs`      — Google Chrome via playwright-core; waits for
-   Paged.js's after-render sentinel so TOC page numbers are final, then prints.
+   Paged.js's after-render sentinel so TOC page numbers are final, prints, then
+   runs `add-outline.py` to attach the bookmarks pane (needs `pypdf`).
+
+The bookmarks are derived from the **rendered** table of contents — each entry's
+page comes from `data-page-number` on the Paged.js page container holding its
+target — so the pane and the printed contents are the same list by construction.
+Do not scope that query to `#contents`: Paged.js splits the contents list across
+two pages and the id stays with the first fragment, which silently drops every
+entry that overflowed (it cost four release-history chapters once). Select every
+`ol.toc > li` instead.
 
 Update the REVISIONS table in build-book.py (and the snapshot date / release
 on the cover) before each new edition.
@@ -61,3 +74,28 @@ the `Edition N · date` line whenever the substance changes.
 Note these two use `space_after=` in their `rich()` helper, where the newer
 generators (`build-gtm-docx.py`, `build-support-templates-docx.py`) use `after=`.
 Worth knowing before copying a block between them.
+
+---
+
+# Comparison table (/compare)
+
+The table's data lives in `src/data/comparison.json` and the page renders from it.
+To edit in Excel:
+
+1. `python3 output/export-comparison-xlsx.py` — writes `Sealshot-Comparison.xlsx`
+2. Edit it. Sheets: **Comparison** (the table), **Notes** (footnotes),
+   **Meta** (`checkedOn`, the legend, and each vendor's sources)
+3. `python3 output/import-comparison-xlsx.py --dry-run` to see the diff, then
+   without the flag to write it back
+4. `npm run build`
+
+Round-tripping is byte-stable: export, import with no edits, and the JSON is
+unchanged. Section rows are the ones with a title in column A and nothing else;
+footnotes are a trailing `[n]` inside a cell. Adding an app needs a JSON edit
+first, because a column also carries a key and its source links — the importer
+refuses an unknown column rather than guessing.
+
+The importer also refuses an empty table, a footnote reference with no matching
+Notes row, and a feature row before any section heading. It warns when cells
+changed but `checkedOn` did not, so the page cannot claim a stale verification
+date.

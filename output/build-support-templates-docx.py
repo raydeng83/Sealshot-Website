@@ -297,7 +297,7 @@ template(
      "Sealshot hasn't stopped working and won't — your license is perpetual. "
      "What's ended is the window for new versions, so {version} is the newest "
      "release your license covers, and it keeps running indefinitely.",
-     "If you'd like the newer releases, renewing is $24 for another 12 months: "
+     "If you'd like the newer releases, renewing is $17.99 for another 12 months: "
      "seal-shot.com/renew. Renewing early doesn't lose you anything — unused "
      "time is added on top of what you have.",
      "And if you'd rather not, that's genuinely fine. Nothing you've captured "
@@ -315,7 +315,7 @@ template(
      "Use the same license file — it isn't tied to a particular Mac. Download "
      "Sealshot from seal-shot.com/download, then open the license file or drag "
      "it onto Settings ▸ License.",
-     "One license covers one person on up to two Macs, so you don't need to "
+     "One license covers one person on up to three Macs, so you don't need to "
      "deactivate the old one first.",
      "If you no longer have the file, tell me the email you bought with and "
      "I'll resend it.",
@@ -408,8 +408,8 @@ template(
     'Sealshot volume licensing',
     ["Hi {name},",
      "Yes — volume licenses are handled directly, not through the website.",
-     "Pricing is per user: $44 each for 10–24, $39 each for 25–99, and "
-     "custom above 100. Each license covers one person on up to two Macs and "
+     "Pricing is per user: $26.99 each for 10–24, $23.99 each for 25–99, and "
+     "custom above 100. Each license covers one person on up to three Macs and "
      "includes 12 months of updates, the same as an individual license.",
      "It's issued as a single organization-wide license file, so there's nothing "
      "to activate per machine and no license server to run. Tell me the seat "

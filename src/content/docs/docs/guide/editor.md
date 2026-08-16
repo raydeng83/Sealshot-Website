@@ -68,14 +68,19 @@ Select the **Blur** tool to hide sensitive content. Choose between:
 
 - **Gaussian blur** — softens the region while hinting at what's there.
 - **Solid fill** — paints over the region so the content underneath is
-  unrecoverable. Use this for anything truly sensitive.
+  unrecoverable **in an exported image**. Use this for anything truly sensitive.
+
+  Solid fill is an annotation, not a change to the pixels: a `.seal` package
+  keeps the original capture so your edits stay reversible. Export a flattened
+  image — PNG or JPEG — when you send something out, rather than the editable
+  package.
 
 Blur regions can be a **rectangle**, **ellipse**, or a freehand **brush**. A
 **strength** slider controls the intensity (it's labelled *Opacity* for Solid
 fill), and for the brush a width control sizes the stroke.
 
 ![Gaussian blur and Solid fill compared](/manual/blur-panel.png)
-*Gaussian blur hints at what's there; Solid fill makes it unrecoverable.*
+*Gaussian blur hints at what's there; Solid fill leaves nothing to recover once the image is exported.*
 
 :::tip[Let Sealshot find sensitive text for you]
 Instead of redacting by hand, run [Smart Redaction](/docs/guide/redaction/)

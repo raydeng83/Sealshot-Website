@@ -1,7 +1,9 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import OfferBadge from '../components/OfferBadge.astro';
 import {
-  activeOffer, formatUSD, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS, BASE_CHECKOUT_URL,
+  activeOffer, formatUSD, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
+  BASE_CHECKOUT_URL,
 } from '../config/promos';
 
 const offer = activeOffer(new Date());
@@ -11,6 +13,7 @@ const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
 // term has to come from the active offer. Hardcoding 12 would under-sell what
 // the Worker actually issues.
 const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
+const percent = offer ? savingsPercent(offer.priceCents) : 0;
 ---
 
 <SiteLayout
@@ -25,16 +28,44 @@ const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
       <p class="price">
         {offer && <span class="was">{formatUSD(REGULAR_PRICE_CENTS)}</span>}
         <span class="now">{formatUSD(priceCents)}</span>
-        {offer && <span class="badge">{offer.label}</span>}
+        {offer && <OfferBadge label={`${offer.label} — ${percent}% off`} />}
       </p>
 
       <div class="actions">
         <a class="button" href={checkoutUrl}>Buy Sealshot — {formatUSD(priceCents)}</a>
       </div>
 
+      {offer && (
+        <>
+          {/* What the price alone cannot say: that this is a phase, and what the
+              other side of it looks like. The page used to state "18 months of
+              updates included" without ever mentioning that regular gets 12,
+              which is half of what founding actually buys. */}
+          <div class="phase" aria-label="Founding price compared with the regular price">
+            <div class="phase-col is-now">
+              <p class="phase-when">Before 1.0</p>
+              <p class="phase-price">{formatUSD(offer.priceCents)}</p>
+              <p class="phase-term">{offer.updateMonths} months of updates</p>
+            </div>
+            <div class="phase-col">
+              <p class="phase-when">From 1.0</p>
+              <p class="phase-price">{formatUSD(REGULAR_PRICE_CENTS)}</p>
+              <p class="phase-term">{REGULAR_UPDATE_MONTHS} months of updates</p>
+            </div>
+          </div>
+          <p class="phase-note">
+            The founding price is for buyers before the 1.0 release. When it ends the
+            price goes up and the update window shortens — but nothing about a license
+            already bought changes: it stays perpetual, and its
+            {' '}{offer.updateMonths} months stay {offer.updateMonths} months.
+            <a href="/docs/faq/#what-is-the-founding-license">More about the founding license</a>
+          </p>
+        </>
+      )}
+
       <ul class="whatyouget">
         <li>Perpetual license — the app never stops working.</li>
-        <li>One user, up to two Macs. Commercial use included.</li>
+        <li>One user, up to three Macs. Commercial use included.</li>
         <li>{updateMonths} months of updates included.</li>
         <li>14-day free trial, no account required.</li>
         <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
@@ -60,9 +91,66 @@ const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
   }
   .price .was { text-decoration: line-through; opacity: .55; font-size: 1.3rem; }
   .price .now { font-weight: 700; }
-  .price .badge {
-    font-size: .8rem; font-weight: 600; padding: .15rem .5rem; border-radius: 999px;
-    background: var(--sl-color-accent-low, #e7f0ff); color: var(--sl-color-accent-high, #14396b);
+  /* Two columns, not a table: it is one comparison of two things, and a table
+     here would announce a data structure that isn't there. Even widths so the
+     founding column does not look bigger than what it is being compared to. */
+  .phase {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 11rem));
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem auto 0;
+    text-align: left;
+  }
+
+  .phase-col {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: 0.9rem 1rem;
+  }
+
+  .phase-col.is-now {
+    border-color: var(--orange-600);
+    background: var(--mint-50);
+  }
+
+  .phase-when {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--slate-400);
+  }
+
+  .phase-col.is-now .phase-when { color: var(--orange-700); }
+
+  .phase-price {
+    margin: 0.2rem 0 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .phase-term {
+    margin: 0.1rem 0 0;
+    font-size: 0.85rem;
+    color: var(--slate-600);
+  }
+
+  .phase-note {
+    max-width: 34rem;
+    margin: 1rem auto 0;
+    font-size: 0.9rem;
+    color: var(--slate-600);
+    text-align: left;
+  }
+
+  /* Its own line: as an inline tail it wrapped mid-phrase, which reads like the
+     sentence continues into the link. */
+  .phase-note a {
+    display: inline-block;
+    margin-top: 0.4rem;
   }
   /* A centred list reads badly: the markers stay at the list's left edge while
      the text drifts to the middle, so nothing lines up. Centre the BLOCK and

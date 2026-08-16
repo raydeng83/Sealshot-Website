@@ -1,0 +1,27 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+
+/*
+  The same table that appears on the landing page, on a page of its own so it can
+  be linked to directly — from the footer, and from anywhere the full comparison is
+  the answer to a question. Markup, styling and data all live in
+  ComparisonTable.astro and src/data/comparison.json, so the two places cannot
+  disagree.
+*/
+---
+
+<SiteLayout
+  title="Sealshot compared — Mac screenshot apps, feature by feature"
+  description="How Sealshot compares with CleanShot X, Snagit, Shottr, and Xnapper on capture, redaction, encryption, sharing, and price — from each vendor's own documentation."
+>
+  <section class="section wrap" aria-labelledby="cmp-title">
+    {/*
+      The h1 is visually hidden: you asked for the heading block gone, but a page
+      with no h1 has no accessible name and nothing for search to title it, and the
+      section's aria-labelledby points here.
+    */}
+    <h1 id="cmp-title" class="visually-hidden">Sealshot compared</h1>
+    <ComparisonTable />
+  </section>
+</SiteLayout>

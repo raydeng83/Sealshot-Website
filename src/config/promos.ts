@@ -28,8 +28,25 @@
  */
 export const CHECKOUT_IS_SANDBOX = true;
 
-export const REGULAR_PRICE_CENTS = 4900;
-export const RENEWAL_PRICE_CENTS = 2400;
+/**
+ * DISPLAY ONLY, as the header says — Polar decides what a customer is charged.
+ * Changing these without changing the Polar products means the site advertises one
+ * price and the checkout takes another.
+ *
+ * The sandbox products now match: verified 2026-08-16 that Polar charges $29.99,
+ * $14.99 and $17.99 on the three links below. Verify it rather than trust this
+ * comment — `npm run check:prices` reads each checkout back from Polar — and run
+ * it again after creating the production products.
+ */
+export const REGULAR_PRICE_CENTS = 2999;
+
+/**
+ * Renewal: 40% off a regular license — $17.99 today. Derived rather than typed
+ * in, so the discount survives the next price change instead of drifting into
+ * the near-full-price figure it was before ($24 against a $29.99 license).
+ * Floored to the cent: 60% of $29.99 is $17.994.
+ */
+export const RENEWAL_PRICE_CENTS = Math.floor(REGULAR_PRICE_CENTS * 0.6);
 
 /** Months of updates included with the regular license. */
 export const REGULAR_UPDATE_MONTHS = 12;
@@ -66,13 +83,14 @@ export const OFFERS: Offer[] = [
     label: 'Founding price',
     checkoutUrl:
       'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_TYsHg17rjvhPYrCXOVtDSYKXLC1c9hZvSaCIm4W9y7y/redirect',
-    priceCents: 3900,
+    priceCents: 1499,
     updateMonths: 18,
     startsAt: '2026-08-01T00:00:00Z',
     // TODO: this is a PLACEHOLDER. The founding tier is for buyers before the
     // 1.0 release, so this must be set to the actual v1.0 release day — not
     // left to expire on a date picked for convenience. Selling "founding"
-    // after 1.0 ships means charging $39 for a tier that no longer exists.
+    // after 1.0 ships means charging the founding price for a tier that no
+    // longer exists.
     endsAt: '2027-01-01T00:00:00Z',
   },
 ];
@@ -88,12 +106,22 @@ export function formatUSD(cents: number): string {
 }
 
 /**
- * Same price without a trailing `.00`. For running copy, where "$39.00 one-time"
- * reads worse than "$39 one-time". The /buy page keeps the exact form, since a
- * headline price is where a customer checks the cents.
+ * Same price without a trailing `.00`. For running copy, where "$24.00 renewal"
+ * reads worse than "$24 renewal". No current price is a whole dollar, so this is
+ * a no-op today; it exists so one can be. The /buy page keeps the exact form,
+ * since a headline price is where a customer checks the cents.
  */
 export function formatUSDCompact(cents: number): string {
   return cents % 100 === 0 ? `$${cents / 100}` : formatUSD(cents);
+}
+
+/**
+ * Whole-percent discount an offer represents against the regular price. Computed
+ * rather than written into copy, because "50% off" beside a pair of prices that
+ * no longer divide that way is the kind of error nobody notices for months.
+ */
+export function savingsPercent(priceCents: number, regularCents = REGULAR_PRICE_CENTS): number {
+  return Math.round((1 - priceCents / regularCents) * 100);
 }
 
 /**

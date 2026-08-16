@@ -1,0 +1,32 @@
+---
+interface Props {
+  /** What the badge says. Comes from the offer's own label, so a later offer
+      renames itself everywhere rather than in copy. */
+  label: string;
+}
+
+const { label } = Astro.props;
+
+/*
+  The pill that marks a price as belonging to an offer. It was inline in buy.astro
+  styled with `--sl-color-accent-low` — a Starlight variable that is not defined
+  outside the docs, so it fell back to #e7f0ff and rendered pale blue on an
+  orange-and-navy page, reading like a system chip rather than an offer.
+*/
+---
+
+<span class="offer-badge">{label}</span>
+
+<style>
+  .offer-badge {
+    display: inline-block;
+    background: var(--orange-700, #c2410c);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill, 999px);
+    white-space: nowrap;
+  }
+</style>

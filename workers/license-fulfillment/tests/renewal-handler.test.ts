@@ -201,7 +201,7 @@ describe('renewals', () => {
     // order sent. If that second write fails, the order stays `pending` while
     // the license already reads 2028-07-20 — so a redelivery that recomputed
     // `renewalThrough(license.updatesThrough, …)` would add another 12 months
-    // to the same $24 purchase and land on 2029-07-20.
+    // to the same single purchase and land on 2029-07-20.
     //
     // A plain failed-delivery redelivery cannot catch this: no license is
     // written, so there is nothing extended to re-read.

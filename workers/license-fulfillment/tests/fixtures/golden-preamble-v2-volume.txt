@@ -8,7 +8,7 @@ License issued:   2027-08-01
 App access:       Perpetual
 Updates through:  2028-09-15
 User seats:       10
-Macs per user:    2
+Macs per user:    3
 
 This is an offline, organization-wide license for up to 10 users.
 Sealshot does not transmit installation or usage information.
