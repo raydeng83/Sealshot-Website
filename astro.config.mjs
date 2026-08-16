@@ -17,6 +17,10 @@ export default defineConfig({
         ThemeSelect: './src/components/starlight/ThemeSelect.astro',
         // Header brand: icon + "Sealshot" → main site, "Documentation" → /docs/.
         SiteTitle: './src/components/starlight/SiteTitle.astro',
+        // Starlight draws <Banner /> on every page and its default renders
+        // nothing without `banner:` frontmatter — so this is where the docs pick
+        // up the sitewide founding-price bar.
+        Banner: './src/components/starlight/Banner.astro',
       },
       sidebar: [
         { slug: 'docs', label: 'Overview' },

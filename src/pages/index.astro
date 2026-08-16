@@ -4,7 +4,8 @@ import NewsletterForm from '../components/NewsletterForm.astro';
 import ComparisonTable from '../components/ComparisonTable.astro';
 import '@splidejs/splide/css';
 import {
-  activeOffer, formatUSDCompact, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS, TRIAL_DAYS,
+  activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
+  TRIAL_DAYS,
 } from '../config/promos';
 
 // Never hardcode the price here. It has to agree with what Polar actually
@@ -15,6 +16,9 @@ const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
 const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
 // "founding price" while that offer runs, plain "once" when it has ended.
 const priceQualifier = offer ? offer.label.toLowerCase() : 'once';
+// The saving is the part of the offer nobody was told: half price went unsaid on
+// every page. Computed, so it cannot contradict the two prices beside it.
+const percent = offer ? savingsPercent(offer.priceCents) : 0;
 
 
 const heroSlides = [
@@ -188,8 +192,9 @@ const features = [
         <a class="button secondary" href="/docs/">Read the docs</a>
       </div>
       <p class="buy-signal">
-        Free for {TRIAL_DAYS} days · <strong>{formatUSDCompact(priceCents)} {priceQualifier}</strong>,
-        no subscription · {updateMonths} months of updates ·
+        Free for {TRIAL_DAYS} days · <strong>{formatUSDCompact(priceCents)} {priceQualifier}</strong>{
+          offer && <> ({percent}% off)</>
+        }, no subscription · {updateMonths} months of updates ·
         <a href="/buy/">What you get</a>
       </p>
       <ul class="trust-strip" aria-label="Privacy guarantees">

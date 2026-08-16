@@ -4,6 +4,7 @@ import {
   formatUSD,
   OFFERS,
   REGULAR_PRICE_CENTS,
+  savingsPercent,
   RENEWAL_PRICE_CENTS,
   REGULAR_UPDATE_MONTHS,
   BASE_CHECKOUT_URL,
@@ -31,6 +32,21 @@ describe('formatUSD', () => {
     expect(formatUSD(4900)).toBe('$49.00');
     expect(formatUSD(3900)).toBe('$39.00');
     expect(formatUSD(2400)).toBe('$24.00');
+  });
+});
+
+describe('savingsPercent', () => {
+  it('states the discount the pages advertise', () => {
+    expect(savingsPercent(1499, 2999)).toBe(50);
+    expect(savingsPercent(2999, 2999)).toBe(0);
+  });
+
+  it('matches the live founding offer, so the bar cannot claim a stale figure', () => {
+    for (const o of OFFERS) {
+      const pct = savingsPercent(o.priceCents);
+      expect(pct).toBeGreaterThan(0);
+      expect(pct).toBeLessThan(100);
+    }
   });
 });
 

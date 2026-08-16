@@ -118,7 +118,23 @@ keep. Current pricing and update-window terms are on the
 An offer for buyers **before the 1.0 release**: the same perpetual
 license, at a lower price and with a *longer* update window than the
 regular license. It's a thank-you for early supporters, not a cut-down
-edition — see the [buy page](/buy/) while it lasts.
+edition — see the [buy page](/buy/) for the current figures while it
+lasts.
+
+### What happens to my Founding license when 1.0 ships?
+
+Nothing. The price goes up for new buyers and the update window goes
+back to the regular length, but a license already bought is untouched:
+still perpetual, still covering the longer window you paid for, and
+never re-priced. There is no upgrade to buy at 1.0 and no action for you
+to take.
+
+### Can I still get the founding price after 1.0?
+
+No — that's what makes it a founding price. Once 1.0 is out, new
+purchases are at the regular price with the regular update window. If
+you're on the trial and expect to buy, buying before 1.0 is the cheaper
+path.
 
 ### How do I activate my license? Do I need an account or internet?
 

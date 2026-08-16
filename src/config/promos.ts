@@ -112,6 +112,15 @@ export function formatUSDCompact(cents: number): string {
 }
 
 /**
+ * Whole-percent discount an offer represents against the regular price. Computed
+ * rather than written into copy, because "50% off" beside a pair of prices that
+ * no longer divide that way is the kind of error nobody notices for months.
+ */
+export function savingsPercent(priceCents: number, regularCents = REGULAR_PRICE_CENTS): number {
+  return Math.round((1 - priceCents / regularCents) * 100);
+}
+
+/**
  * Free-trial length, in days.
  *
  * Authoritative value is `LicenseKeys.trialDays` in the app repo — the binary
