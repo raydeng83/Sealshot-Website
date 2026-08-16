@@ -317,11 +317,14 @@ const features = [
     <div class="wrap">
       <p class="kicker">Comparison</p>
       <h2 id="compare-heading">How Sealshot compares</h2>
-      <p class="sub">
-        Against four other Mac screenshot tools, from each vendor's own
-        documentation.
-      </p>
-      <ComparisonTable />
+      {/*
+        Wrapper only for the gap under the heading. The subtitle used to supply
+        it via `.section .sub + …`; without one the table sat 16px below, against
+        the 32px every other section uses for the same step. It lives here rather
+        than in the component so /compare, where the table follows a hidden h1,
+        is unaffected.
+      */}
+      <div class="cmp-block"><ComparisonTable /></div>
     </div>
   </section>
 
