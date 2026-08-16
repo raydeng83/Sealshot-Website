@@ -74,3 +74,28 @@ the `Edition N · date` line whenever the substance changes.
 Note these two use `space_after=` in their `rich()` helper, where the newer
 generators (`build-gtm-docx.py`, `build-support-templates-docx.py`) use `after=`.
 Worth knowing before copying a block between them.
+
+---
+
+# Comparison table (/compare)
+
+The table's data lives in `src/data/comparison.json` and the page renders from it.
+To edit in Excel:
+
+1. `python3 output/export-comparison-xlsx.py` — writes `Sealshot-Comparison.xlsx`
+2. Edit it. Sheets: **Comparison** (the table), **Notes** (footnotes),
+   **Meta** (`checkedOn`, the legend, and each vendor's sources)
+3. `python3 output/import-comparison-xlsx.py --dry-run` to see the diff, then
+   without the flag to write it back
+4. `npm run build`
+
+Round-tripping is byte-stable: export, import with no edits, and the JSON is
+unchanged. Section rows are the ones with a title in column A and nothing else;
+footnotes are a trailing `[n]` inside a cell. Adding an app needs a JSON edit
+first, because a column also carries a key and its source links — the importer
+refuses an unknown column rather than guessing.
+
+The importer also refuses an empty table, a footnote reference with no matching
+Notes row, and a feature row before any section heading. It warns when cells
+changed but `checkedOn` did not, so the page cannot claim a stale verification
+date.

@@ -1,0 +1,265 @@
+{
+  "_comment": "Source of truth for /compare. Edit here, or edit the Excel export and run output/import-comparison-xlsx.py. Cell rules: competitor values must come from that vendor's own documentation; use the legend vocabulary rather than inventing one; keep wording symmetrical across a row; bump checkedOn on any change.",
+  "checkedOn": "August 15, 2026",
+  "legend": [
+    [
+      "No",
+      "Explicitly unsupported, or tested absent."
+    ],
+    [
+      "Not documented",
+      "Not found in the vendor’s official documentation."
+    ],
+    [
+      "Unverified",
+      "Official sources conflict; needs hands-on confirmation."
+    ]
+  ],
+  "apps": [
+    {
+      "key": "cleanshot",
+      "name": "CleanShot X",
+      "sources": [
+        [
+          "pricing",
+          "https://cleanshot.com/pricing"
+        ],
+        [
+          "device tiers",
+          "https://cleanshot.com/buy"
+        ],
+        [
+          "features",
+          "https://cleanshot.com/features"
+        ]
+      ]
+    },
+    {
+      "key": "snagit",
+      "name": "Snagit",
+      "sources": [
+        [
+          "features",
+          "https://www.techsmith.com/snagit/features/"
+        ],
+        [
+          "Smart Redact",
+          "https://www.techsmith.com/snagit/features/smart-redact/"
+        ],
+        [
+          "store",
+          "https://www.techsmith.com/store/snagit/"
+        ],
+        [
+          "subscription policy",
+          "https://support.techsmith.com/hc/en-us/articles/27009223314701-TechSmith-Transition-to-Annual-Subscription-Pricing-Model-in-2025"
+        ]
+      ]
+    },
+    {
+      "key": "shottr",
+      "name": "Shottr",
+      "sources": [
+        [
+          "purchase",
+          "https://shottr.cc/purchase.html"
+        ],
+        [
+          "scrolling capture",
+          "https://shottr.cc/kb/scrollingcapture"
+        ],
+        [
+          "upload",
+          "https://shottr.cc/kb/upload/"
+        ],
+        [
+          "start guide",
+          "https://shottr.cc/kb/startguide"
+        ]
+      ]
+    },
+    {
+      "key": "xnapper",
+      "name": "Xnapper",
+      "sources": [
+        [
+          "pricing",
+          "https://xnapper.com/pricing"
+        ],
+        [
+          "changelog",
+          "https://xnapper.com/changelog"
+        ]
+      ]
+    },
+    {
+      "key": "sealshot",
+      "name": "Sealshot",
+      "ours": true,
+      "sources": [
+        [
+          "docs",
+          "/docs/"
+        ]
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "title": "Pricing",
+      "rows": [
+        {
+          "label": "Price",
+          "cleanshot": "$29 / 1 Mac · $49 / 2 · $119 / 5",
+          "snagit": "$39 per user, per year",
+          "shottr": "Free · $12 · $30",
+          "xnapper": "Free with watermark · $29.99 / 1 device · $54.99 / 2 · $79.99 / 3",
+          "sealshot": "$39 founding · $49 regular"
+        },
+        {
+          "label": "License model",
+          "cleanshot": "One-time; 1 year of updates; 1 GB CleanShot Cloud included",
+          "snagit": "Annual subscription only",
+          "shottr": "One-time",
+          "xnapper": "One-time, perpetual use; 1 year of updates; renewal at 40% off",
+          "sealshot": "One-time, perpetual use; 18 months of updates at the founding price; $24 renewal"
+        },
+        {
+          "label": "Devices per individual license tier",
+          "cleanshot": "1, 2, or 5 by tier",
+          "snagit": "Unlimited installs; one active device at a time",
+          "snagitNote": 2,
+          "shottr": "1 user, up to 5 computers",
+          "xnapper": "1, 2, or 3 by tier",
+          "sealshot": "2"
+        }
+      ]
+    },
+    {
+      "title": "Capture",
+      "rows": [
+        {
+          "label": "Capture modes",
+          "cleanshot": "Area, window, fullscreen, self-timer",
+          "snagit": "Region, window, fullscreen",
+          "shottr": "Area, window, fullscreen, 3-second delay",
+          "xnapper": "Window, region, fullscreen",
+          "sealshot": "Area, window, fullscreen, delayed"
+        },
+        {
+          "label": "Scrolling capture",
+          "cleanshot": "Yes — auto-scroll and stitch",
+          "snagit": "Yes — auto-scroll and stitch",
+          "shottr": "Yes — auto-scroll and stitch",
+          "xnapper": "Yes — full-page",
+          "sealshot": "Yes — auto-scroll and stitch"
+        },
+        {
+          "label": "Screen recording",
+          "cleanshot": "Yes — microphone, system audio, webcam",
+          "snagit": "Yes — microphone, system audio, webcam, GIF",
+          "shottr": "Not documented",
+          "xnapper": "Yes — fullscreen, region, or window; built-in video editor",
+          "sealshot": "Yes — microphone, system audio"
+        },
+        {
+          "label": "Text recognition (OCR)",
+          "cleanshot": "Yes, on device",
+          "snagit": "Yes",
+          "shottr": "Yes, plus QR codes",
+          "xnapper": "Yes, on device",
+          "sealshot": "Yes, on device"
+        },
+        {
+          "label": "Extracts tables and form fields",
+          "cleanshot": "Not documented",
+          "snagit": "Not documented",
+          "shottr": "Not documented",
+          "xnapper": "Not documented",
+          "sealshot": "Yes"
+        }
+      ]
+    },
+    {
+      "title": "Privacy",
+      "rows": [
+        {
+          "label": "Automatic sensitive-data detection",
+          "cleanshot": "No — manual tools only",
+          "snagit": "Yes — addresses, cards, dates, emails, faces, IPs, phones, SSNs, URLs",
+          "shottr": "No — manual tools only",
+          "xnapper": "Yes — emails, cards, IPs, API keys",
+          "sealshot": "Yes — emails, cards, IDs, API keys"
+        },
+        {
+          "label": "Automatic redaction method in flattened exports",
+          "cleanshot": "No automatic mode — manual pixelate, secure or smooth blur, filled rectangle",
+          "snagit": "Blur, pixelation, or solid bars",
+          "shottr": "No automatic mode — manual blur, pixelation, object removal",
+          "xnapper": "Not documented",
+          "sealshot": "Opaque solid fill; flattened into exported images",
+          "sealshotNote": 1
+        },
+        {
+          "label": "App-managed local-library encryption",
+          "cleanshot": "Not documented",
+          "snagit": "Not documented",
+          "shottr": "Not documented",
+          "xnapper": "Not documented",
+          "sealshot": "Optional app-managed AES-256-GCM; unlock with Touch ID, Apple Watch, or system password"
+        },
+        {
+          "label": "Account required",
+          "cleanshot": "No — cloud account “not required to use the app”",
+          "snagit": "Yes — TechSmith sign-in required to unlock",
+          "snagitNote": 2,
+          "shottr": "Not documented",
+          "xnapper": "Not documented",
+          "sealshot": "No — activation works offline"
+        }
+      ]
+    },
+    {
+      "title": "Organization and sharing",
+      "rows": [
+        {
+          "label": "Capture library",
+          "cleanshot": "Yes — 1 month of history",
+          "snagit": "Yes — searchable, taggable",
+          "shottr": "Not documented",
+          "xnapper": "Yes — screenshot history",
+          "sealshot": "Yes — collections, tags, OCR full-text search"
+        },
+        {
+          "label": "Hosted sharing",
+          "cleanshot": "Optional — CleanShot Cloud",
+          "snagit": "YouTube, Google Drive, Dropbox",
+          "shottr": "Shottr Cloud or your own S3 bucket",
+          "shottrNote": 3,
+          "xnapper": "Unverified",
+          "xnapperNote": 4,
+          "sealshot": "None — packages you send yourself"
+        }
+      ]
+    },
+    {
+      "title": "Compatibility",
+      "rows": [
+        {
+          "label": "Platforms",
+          "cleanshot": "macOS 10.15+",
+          "snagit": "Windows and Mac",
+          "shottr": "macOS 10.15+",
+          "xnapper": "Mac",
+          "sealshot": "macOS 14+"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Sealshot's solid fill is an annotation drawn over the image, and a .seal package keeps the original capture alongside it so that edits stay reversible. Redaction is therefore destroyed in a flattened export — PNG, JPEG, or a flattened package — but not inside an editable project. Send exports, not editable packages, when the content matters.",
+    "Per TechSmith's 2025 move to annual subscription pricing, for the individual plan. Business and volume licensing may differ.",
+    "Shottr's own documentation warns that its hosted links are public and are not secure storage.",
+    "Xnapper's homepage says cloud sharing is “coming soon” while its changelog says image and video sharing have shipped. Needs checking against the current build."
+  ]
+}
