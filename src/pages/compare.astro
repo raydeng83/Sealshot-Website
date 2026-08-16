@@ -1,0 +1,245 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+/*
+  The criteria half of the comparison page. Deliberately names no competitor: a
+  named table needs every cell checked against that vendor's own documentation
+  and re-checked as they ship, and a stale claim on this page would cost more
+  than the page earns — this is a product sold on being able to trust what it
+  says.
+
+  Each criterion carries a "check it yourself" because a comparison someone can
+  verify is worth more than one they have to believe, and because these are the
+  same tests we run on ourselves before a release.
+*/
+
+const CRITERIA = [
+  {
+    q: 'Where does the image go after you press the shortcut?',
+    why: `A screenshot is whatever happened to be on screen — credentials, a
+      customer record, an unreleased design. Plenty of capture tools upload it
+      before you have decided to share it, because upload is how their sharing
+      links work.`,
+    check: `Point a network monitor at the app — Little Snitch, Proxyman, or
+      tcpdump — and use it for an hour. Capture, edit, search, export. Watch what
+      it contacts and when.`,
+    ours: `Sealshot makes three network requests, and all three are downloads:
+      the update check, a public list of revoked licenses, and the optional
+      redaction model. Nothing is uploaded, ever.`,
+    href: '/privacy/',
+    hrefLabel: 'What each request is',
+  },
+  {
+    q: 'Does it require an account?',
+    why: `An account is a row in someone's database about you, a password to
+      lose, and a service that can be turned off. For a tool that reads your
+      screen, it is also a way to tie captures to an identity.`,
+    check: `Install it on a machine with no network and try to get to work. Then
+      try activating a paid license offline.`,
+    ours: `There is no account and no sign-in. A license is a file you open;
+      activation works on a Mac that has never been online.`,
+    href: '/docs/faq/#how-do-i-activate-my-license-do-i-need-an-account-or-internet',
+    hrefLabel: 'How activation works',
+  },
+  {
+    q: 'When you redact something, is it destroyed or just covered?',
+    why: `Blur and mosaic are reversible often enough to matter. A black
+      rectangle drawn on an annotation layer is worse — whoever receives the file
+      may be able to move it or delete it and read what was underneath.`,
+    check: `Redact something, export it, then attack your own export: zoom in,
+      push levels and contrast, run OCR over it, open it in another editor. Do it
+      for the layered package as well as the flat image, because they can behave
+      differently.`,
+    ours: `Smart Redaction finds emails, card numbers, IDs, and API keys on
+      device and covers them with unrecoverable fill rather than a blur.`,
+    href: '/docs/guide/redaction/',
+    hrefLabel: 'How redaction works',
+  },
+  {
+    q: 'What happens to your library if you stop paying?',
+    why: `On a subscription, lapsing can mean losing access to your own past
+      work, or losing the app that opens it. That is a question worth asking
+      before the library is three years deep.`,
+    check: `Read what the vendor says happens at the end of a subscription or an
+      update window — specifically whether existing files stay openable.`,
+    ours: `One payment. The app and every version released inside your update
+      window keep working forever. Renewing only buys newer versions, and is
+      optional.`,
+    href: '/buy/',
+    hrefLabel: 'What a license includes',
+  },
+  {
+    q: 'Can what it stores be encrypted at rest?',
+    why: `Captures sit on disk for years. Full-disk encryption protects a
+      powered-off Mac; it does nothing about anyone using an unlocked one.`,
+    check: `Turn the feature on, then go looking for the files yourself and try
+      to open them outside the app while it is locked.`,
+    ours: `Enhanced Security encrypts everything Sealshot stores with AES-256-GCM
+      behind Touch ID, and re-locks on sleep, screen lock, and an idle timeout you
+      set. It is opt-in, and off until you turn it on.`,
+    href: '/docs/guide/security/',
+    hrefLabel: 'Enhanced Security',
+  },
+  {
+    q: 'Does sharing go through the vendor?',
+    why: `A share link means a copy on someone else's servers, reachable by
+      anyone holding the URL, for as long as that vendor chooses to keep it —
+      often after you have forgotten it exists.`,
+    check: `Share something and look at where the recipient's copy actually
+      lives. Then work out how to make it stop existing.`,
+    ours: `Sealshot exports a package you send however you like — email, a drive,
+      a USB stick — optionally passcode-encrypted with an expiry date. Nothing is
+      hosted, so there is nothing to revoke.`,
+    href: '/docs/guide/sharing/',
+    hrefLabel: 'Sharing and export',
+  },
+  {
+    q: 'Where do the AI features run?',
+    why: `"AI-powered" usually means the image is sent to a server. For OCR,
+      titles, or summaries of a screenshot, that is precisely the content you were
+      most careful about.`,
+    check: `Run the network monitor again, and this time exercise every AI
+      feature — text recognition, summaries, data extraction.`,
+    ours: `On your Mac. Apple Intelligence where the hardware has it, a built-in
+      model everywhere else. The docs say which features need which hardware
+      rather than leaving you to find out.`,
+    href: '/docs/guide/ai/#which-macs-run-what',
+    hrefLabel: 'Which Macs run what',
+  },
+  {
+    q: 'Can you check any of this without taking their word for it?',
+    why: `Every tool in this category claims to respect your privacy. The
+      question is whether the claim is specific enough to be tested, and whether
+      the answer stays true after the next release.`,
+    check: `Look for a privacy policy that names each network request rather than
+      describing a posture. Vague is not the same as harmless.`,
+    ours: `Ours lists all three requests, says which setting turns two of them
+      off, and states that no request carries a license ID, an identifier, or your
+      content.`,
+    href: '/privacy/',
+    hrefLabel: 'Read the privacy policy',
+  },
+];
+
+const LIMITS = [
+  'macOS 14 or later. There is no Windows or Linux version, and none planned.',
+  'No team library, shared workspace, or per-seat administration.',
+  'No hosted share links or short URLs — by design, but it does mean no "send someone a URL" flow.',
+  'Screen recording captures and exports; it is not a video editor.',
+  'Some AI features need Apple silicon, and a few need macOS 26. Everything core works on Intel.',
+];
+---
+
+<SiteLayout
+  title="What to require of a screenshot tool — Sealshot"
+  description="Eight questions worth asking of any Mac screenshot app when your screenshots contain things you would not paste into a public channel — and how to check the answers yourself."
+>
+  <section class="section wrap" aria-labelledby="compare-title">
+    <p class="kicker">Choosing a tool</p>
+    <h1 id="compare-title">What to require of a screenshot tool</h1>
+    <p class="sub">
+      Screenshots are the most casually sensitive files on a computer. They
+      capture whatever was on screen — a token, a customer's address, a contract
+      — and most of us take them without thinking. These are the questions worth
+      asking of any capture app, including this one, and how to check the answers
+      rather than believe them.
+    </p>
+
+    <ol class="crit-list">
+      {
+        CRITERIA.map((c) => (
+          <li class="crit">
+            <h2>{c.q}</h2>
+            <p class="crit-why">{c.why}</p>
+            <p class="crit-check"><strong>Check it yourself.</strong> {c.check}</p>
+            <p class="crit-ours">
+              <strong>Sealshot.</strong> {c.ours} <a href={c.href}>{c.hrefLabel}</a>
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="crit-limits">
+      <h2>Where Sealshot is not the answer</h2>
+      <p>
+        A comparison with nothing but ticks in our own column would not be worth
+        reading. If any of these matter to you, something else will suit you
+        better:
+      </p>
+      <ul>
+        {LIMITS.map((l) => <li>{l}</li>)}
+      </ul>
+    </div>
+
+    <p class="crit-foot">
+      Something here wrong, or a question we have not covered?
+      <a href="/support/">Tell us</a> — corrections to this page are welcome, and
+      we would rather fix it than defend it.
+    </p>
+  </section>
+</SiteLayout>
+
+<style>
+  .crit-list {
+    list-style: none;
+    counter-reset: crit;
+    margin: 2.5rem 0 0;
+    padding: 0;
+  }
+
+  .crit {
+    counter-increment: crit;
+    border-top: 1px solid var(--border-subtle);
+    padding: 1.75rem 0 0;
+    margin: 0 0 1.75rem;
+    max-width: 46rem;
+  }
+
+  /* The number is the only ornament on the page; it earns its place because
+     these really are a sequence to work through, not a decorated list. */
+  .crit h2 {
+    font-size: 1.2rem;
+    margin: 0 0 0.6rem;
+    display: flex;
+    gap: 0.7rem;
+    align-items: baseline;
+  }
+
+  .crit h2::before {
+    content: counter(crit);
+    color: var(--orange-700);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9rem;
+    flex: none;
+  }
+
+  .crit p { margin: 0 0 0.7rem; }
+  .crit-why { color: var(--slate-600); }
+  .crit-check,
+  .crit-ours { font-size: 0.95rem; }
+  .crit-check { color: var(--slate-600); }
+
+  .crit-ours {
+    background: var(--surface-band);
+    border-left: 2px solid var(--orange-600);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0;
+  }
+
+  .crit-limits {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    padding: 1.5rem;
+    margin: 1rem 0 2rem;
+    max-width: 46rem;
+  }
+
+  .crit-limits h2 { font-size: 1.125rem; margin: 0 0 0.5rem; }
+  .crit-limits p { color: var(--slate-600); margin: 0 0 0.75rem; }
+  .crit-limits ul { margin: 0; padding-left: 1.25rem; color: var(--slate-600); }
+  .crit-limits li { margin-bottom: 0.4rem; }
+  .crit-foot { color: var(--slate-600); max-width: 46rem; }
+</style>
