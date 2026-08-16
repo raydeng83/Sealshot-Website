@@ -13,17 +13,7 @@ import comparison from '../data/comparison.json';
   they can come back without being rewritten.
 */
 
-const { checkedOn: CHECKED_ON, apps: APPS, groups: GROUPS, highlight: HIGHLIGHT } =
-  comparison;
-
-// Only show legend entries the table actually uses. Two of the three described
-// nothing after the spreadsheet import, and a legend defining absent terms is
-// worse than none. Self-maintaining: a term reappearing brings its row back.
-const USED = new Set(
-  GROUPS.flatMap((g) => g.rows).flatMap((r) =>
-    APPS.map((a) => (typeof r[a.key] === 'string' ? r[a.key].trim() : ''))),
-);
-const LEGEND = comparison.legend.filter(([term]) => USED.has(term));
+const { apps: APPS, groups: GROUPS, highlight: HIGHLIGHT } = comparison;
 
 const isHighlight = (label: string, key: string) =>
   HIGHLIGHT && label === HIGHLIGHT.label && key === HIGHLIGHT.app;
@@ -38,24 +28,13 @@ const CARD_ORDER = [APPS[4], APPS[0], APPS[1], APPS[2], APPS[3]];
   description="How Sealshot compares with CleanShot X, Snagit, Shottr, and Xnapper on capture, redaction, encryption, sharing, and price — from each vendor's own documentation, with sources and a checked-on date."
 >
   <section class="section wrap" aria-labelledby="cmp-title">
-    <p class="kicker">Comparison</p>
-    <h1 id="cmp-title">Sealshot compared</h1>
-    <p class="sub">
-      Five Mac screenshot tools, feature by feature, from each vendor's own
-      documentation rather than from a round-up. Where a vendor's pages are
-      silent or disagree, this table says so instead of guessing.
-    </p>
-
-    <p class="cmp-checked">Information checked {CHECKED_ON}.</p>
-
-    <dl class="cmp-legend">
-      {LEGEND.map(([term, meaning]) => (
-        <>
-          <dt>{term}</dt>
-          <dd>{meaning}</dd>
-        </>
-      ))}
-    </dl>
+    {/*
+      Heading, intro, checked-on line and legend removed at your request. The h1
+      is kept but visually hidden: a page with no h1 has no accessible name and
+      nothing for search to title it, and the section's aria-labelledby points
+      here. Delete it outright if you would rather.
+    */}
+    <h1 id="cmp-title" class="visually-hidden">Sealshot compared</h1>
 
     <div class="cmp-scroll">
       <table class="cmp">
@@ -149,9 +128,6 @@ const CARD_ORDER = [APPS[4], APPS[0], APPS[1], APPS[2], APPS[3]];
   .cmp tbody th { font-weight: 600; color: var(--navy-900); width: 14rem; }
   .cmp td { color: var(--slate-600); }
 
-  /* Air above each category so the sections read as groups rather than one long
-     list. Tables cannot take margin between rows, so it is padding on the cell —
-     asymmetric, since the space belongs above the label, not below it. */
   .cmp-group th {
     background: var(--surface-tint);
     font-size: 0.75rem;
@@ -159,12 +135,16 @@ const CARD_ORDER = [APPS[4], APPS[0], APPS[1], APPS[2], APPS[3]];
     text-transform: uppercase;
     color: var(--navy-900);
     width: auto;
-    padding-top: 1.4rem;
-    padding-bottom: 0.45rem;
   }
 
-  /* The first category sits directly under the header rule and needs less. */
-  .cmp tbody:first-of-type .cmp-group th { padding-top: 0.6rem; }
+  /* White gap after each section instead. A thick border in the page colour is
+     what makes it genuinely white: padding would work, but the tinted Sealshot
+     column and the section band would colour it in. Skipped on the final section
+     so the table does not end in a gap. */
+  .cmp tbody:not(:last-of-type) tr:last-child th,
+  .cmp tbody:not(:last-of-type) tr:last-child td {
+    border-bottom: 14px solid var(--surface-page);
+  }
 
   /* Our column is tinted and nothing else. Emphasis applied only to our own
      favourable cells makes the whole table read as advocacy. */
