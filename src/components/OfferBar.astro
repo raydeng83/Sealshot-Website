@@ -39,10 +39,11 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
         , with {offer.updateMonths} months of updates instead of {REGULAR_UPDATE_MONTHS}
       </span>
       <span class="until">
-        {/* "Until 1.0" and not a date: the offer is defined as pre-1.0, and the
-            endsAt in promos.ts is still a placeholder. A countdown to a made-up
-            day is worse than no countdown. */}
-        · Until Sealshot 1.0
+        {/* No date, and no countdown: endsAt in promos.ts is still a placeholder,
+            so a timer would count down to a made-up day. "Ending soon" only stays
+            true while 1.0 actually is near — if the release slips, this is the
+            line to change. */}
+        · Ending soon
       </span>
       <a href="/buy/">Get it</a>
     </p>
