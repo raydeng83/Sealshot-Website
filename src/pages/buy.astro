@@ -3,7 +3,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import OfferBadge from '../components/OfferBadge.astro';
 import {
   activeOffer, formatUSD, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
-  BASE_CHECKOUT_URL,
+  RENEWAL_PRICE_CENTS, RENEWAL_UPDATE_MONTHS, BASE_CHECKOUT_URL,
 } from '../config/promos';
 
 const offer = activeOffer(new Date());
@@ -71,6 +71,19 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
         <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
         <li>macOS 14 or later · Apple Silicon &amp; Intel.</li>
       </ul>
+
+      {/* The renewal price belongs on the pricing page: this page said nothing
+          about renewing at all, while the FAQ sent people here for exactly that
+          ("current pricing and update-window terms are on the buy page"), so the
+          question had nowhere to land. It is also the second number a buyer of a
+          time-windowed license wants — what happens after the window is what
+          makes the first price meaningful. */}
+      <p class="after">
+        <strong>After your update window:</strong> renewing is optional —
+        {' '}{formatUSD(RENEWAL_PRICE_CENTS)} for another {RENEWAL_UPDATE_MONTHS} months
+        of new versions, or keep the version you have, indefinitely.
+        <a href="/renew/">How renewal works</a>
+      </p>
 
       <p class="fine-print">
         Delivered instantly by email as a license file. Prices in USD; tax handled at checkout.
@@ -160,5 +173,17 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
     max-width: 34rem; text-align: left;
     padding-left: 1.25rem;
   }
+  /* Reads as a footnote to the price, not a second offer: same measure as the
+     list above it, quieter than the headline, and no button of its own. */
+  .after {
+    max-width: 34rem;
+    margin: 1.5rem auto 0;
+    text-align: left;
+    color: var(--slate-600);
+  }
+
+  .after strong { color: var(--navy-900); }
+  .after a { margin-inline-start: 0.35rem; }
+
   .fine-print { max-width: 34rem; margin: 1.5rem auto 0; }
 </style>
