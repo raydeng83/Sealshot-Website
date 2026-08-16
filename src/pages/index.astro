@@ -1,6 +1,7 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
 import '@splidejs/splide/css';
 import {
   activeOffer, formatUSDCompact, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS, TRIAL_DAYS,
@@ -303,6 +304,24 @@ const features = [
           <span class="workflow-link">See the workflow →</span>
         </a>
       </div>
+    </div>
+  </section>
+
+  {/*
+    Placed after the workflows, not before them: by here a reader knows what it
+    does and what it is for, so the table answers "why this one". Opening with a
+    list of rivals reads defensively. Same component as /compare, so the facts
+    cannot drift between the two pages.
+  */}
+  <section class="section" aria-labelledby="compare-heading">
+    <div class="wrap">
+      <p class="kicker">Comparison</p>
+      <h2 id="compare-heading">How Sealshot compares</h2>
+      <p class="sub">
+        Against four other Mac screenshot tools, from each vendor's own
+        documentation.
+      </p>
+      <ComparisonTable />
     </div>
   </section>
 

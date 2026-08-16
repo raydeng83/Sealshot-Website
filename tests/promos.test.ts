@@ -15,7 +15,7 @@ describe('activeOffer', () => {
   it('returns the founding offer inside its window', () => {
     const o = activeOffer(new Date('2026-09-01T00:00:00Z'));
     expect(o?.id).toBe('founding');
-    expect(o?.priceCents).toBe(3900);
+    expect(o?.priceCents).toBe(1199);
     expect(o?.updateMonths).toBe(18);
   });
   it('returns null before the window', () => {
@@ -36,9 +36,15 @@ describe('formatUSD', () => {
 
 describe('prices', () => {
   it('match the v1.0 pricing document', () => {
-    expect(REGULAR_PRICE_CENTS).toBe(4900);
-    expect(RENEWAL_PRICE_CENTS).toBe(2400);
+    expect(REGULAR_PRICE_CENTS).toBe(2499);
+    expect(RENEWAL_PRICE_CENTS).toBe(2400);   // see the note in promos.ts
     expect(REGULAR_UPDATE_MONTHS).toBe(12);
+  });
+
+  it('keeps renewal below a whole new license', () => {
+    // At the moment it only just is — $24 renewal against $24.99 regular. The
+    // invariant is here so a future edit cannot make renewing the dearer option.
+    expect(RENEWAL_PRICE_CENTS).toBeLessThan(REGULAR_PRICE_CENTS);
   });
 
   it('never shows an offer that costs more than the regular price', () => {

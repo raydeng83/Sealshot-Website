@@ -28,7 +28,20 @@
  */
 export const CHECKOUT_IS_SANDBOX = true;
 
-export const REGULAR_PRICE_CENTS = 4900;
+/**
+ * DISPLAY ONLY, as the header says — Polar decides what a customer is charged.
+ * Changing these without changing the Polar products means the site advertises one
+ * price and the checkout takes another. The sandbox products behind the links below
+ * are still at the old $39/$49, so a sandbox test purchase will not match the page
+ * until the production products are created at these amounts.
+ */
+export const REGULAR_PRICE_CENTS = 2499;
+
+/**
+ * NOT UPDATED with the price cut, and it no longer makes sense: renewal at $24 is
+ * within a penny of a whole new regular license at $24.99. Needs a decision before
+ * /renew reads coherently — roughly half of regular would be $12.49.
+ */
 export const RENEWAL_PRICE_CENTS = 2400;
 
 /** Months of updates included with the regular license. */
@@ -66,13 +79,14 @@ export const OFFERS: Offer[] = [
     label: 'Founding price',
     checkoutUrl:
       'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_TYsHg17rjvhPYrCXOVtDSYKXLC1c9hZvSaCIm4W9y7y/redirect',
-    priceCents: 3900,
+    priceCents: 1199,
     updateMonths: 18,
     startsAt: '2026-08-01T00:00:00Z',
     // TODO: this is a PLACEHOLDER. The founding tier is for buyers before the
     // 1.0 release, so this must be set to the actual v1.0 release day — not
     // left to expire on a date picked for convenience. Selling "founding"
-    // after 1.0 ships means charging $39 for a tier that no longer exists.
+    // after 1.0 ships means charging the founding price for a tier that no
+    // longer exists.
     endsAt: '2027-01-01T00:00:00Z',
   },
 ];

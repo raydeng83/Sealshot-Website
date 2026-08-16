@@ -621,7 +621,7 @@ Run everything from `workers/license-fulfillment`, and use `npx wrangler`
 - [ ] Publish `/refunds`, and link it from `/buy` and the footer.
 
 CleanShot X — the closest comparator, at the same price — publishes a **30-day
-money-back guarantee**. Sealshot publishes nothing. Taking $39 from strangers
+money-back guarantee**. Sealshot publishes nothing. Taking money from strangers
 without stated terms is a support burden and a competitive gap at once, and the
 "refunds under 5%" number tracked below is meaningless without a policy defining
 what a refund is.
