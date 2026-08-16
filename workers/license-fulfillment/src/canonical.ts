@@ -42,8 +42,16 @@ export type LicenseTypeSlug = 'individual' | 'business-volume';
 /** Label column width. Was 17 in preamble v1; v2 widened it for `Updates through:`. */
 const LABEL_COLUMN = 18;
 
-/** A template constant, NOT a payload field — the app doesn't sign it. */
-const MACS_PER_USER = 2;
+/**
+ * A template constant, NOT a payload field — the app doesn't sign it.
+ *
+ * Raised 2 -> 3 on 2026-08-16. It is rendered into the preamble, so it only
+ * affects licences issued from here on; already-issued files keep the text
+ * they were signed with, and must keep verifying. Must stay in lockstep with
+ * LicenseFileFormat.macsPerUser (app) and licensegen's copy, or the three
+ * builders produce different bytes and textHash stops matching.
+ */
+const MACS_PER_USER = 3;
 
 const TYPE_LABEL: Record<LicenseTypeSlug, string> = {
   individual: 'Individual',

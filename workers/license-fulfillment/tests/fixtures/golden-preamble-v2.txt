@@ -8,7 +8,7 @@ License issued:   2026-07-20
 App access:       Perpetual
 Updates through:  2027-07-20
 Users:            1
-Macs per user:    2
+Macs per user:    3
 
 This license does not expire. It permits use of every Sealshot
 release whose entitlement date is on or before 2027-07-20.

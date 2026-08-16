@@ -108,7 +108,7 @@ receiving updates, or simply keep using what you have.
 ### What exactly do I get when I buy?
 
 A **license file**, delivered instantly to your purchase email. It covers
-**one user on two Macs**, includes **commercial use**, and comes with an
+**one user on three Macs**, includes **commercial use**, and comes with an
 update window — every version released during that window is yours to
 keep. Current pricing and update-window terms are on the
 [buy page](/buy/).
@@ -146,7 +146,7 @@ works on Macs that never touch the internet.
 ### I got a new Mac — how do I move my license?
 
 Just activate the same license file on the new Mac (your license covers
-two). There's nothing to deactivate first — there's no activation server,
+three). There's nothing to deactivate first — there's no activation server,
 so no seat to release. Keep the file (or the purchase email) somewhere
 safe, like any other important document.
 
