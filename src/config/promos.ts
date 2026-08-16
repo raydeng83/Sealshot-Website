@@ -31,9 +31,12 @@ export const CHECKOUT_IS_SANDBOX = true;
 /**
  * DISPLAY ONLY, as the header says — Polar decides what a customer is charged.
  * Changing these without changing the Polar products means the site advertises one
- * price and the checkout takes another. The sandbox products behind the links below
- * are still at the old $39/$49, so a sandbox test purchase will not match the page
- * until the production products are created at these amounts.
+ * price and the checkout takes another.
+ *
+ * The sandbox products now match: verified 2026-08-16 that Polar charges $29.99,
+ * $14.99 and $17.99 on the three links below. Verify it rather than trust this
+ * comment — `npm run check:prices` reads each checkout back from Polar — and run
+ * it again after creating the production products.
  */
 export const REGULAR_PRICE_CENTS = 2999;
 
