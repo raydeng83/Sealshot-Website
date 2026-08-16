@@ -83,4 +83,4 @@ can select, move, or delete any of them afterward like other annotations.
 
 For anything Smart Redaction doesn't catch — faces, logos, handwriting,
 images — paint over it with the [blur tool](/docs/guide/editor/#blur-and-redaction)
-using **Solid fill** for unrecoverable coverage.
+using **Solid fill**, which leaves nothing recoverable in the exported image.
