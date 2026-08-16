@@ -6,12 +6,18 @@ The page renders from the JSON, so this is what makes editing in Excel actually
 mean something. Rebuild the site afterwards to see it.
 
     python3 output/import-comparison-xlsx.py
-    python3 output/import-comparison-xlsx.py --dry-run    # show the diff only
+    python3 output/import-comparison-xlsx.py --dry-run          # show the diff only
+    python3 output/import-comparison-xlsx.py --file other.xlsx  # any workbook
 
-How rows are classified, matching what the exporter writes: a row with a value in
-column A and every app column empty is a section heading; a row with a label and
-at least one value is a feature. Blank rows are skipped, so deleting a row's
-contents in Excel removes it.
+Two layouts are accepted, because both are reasonable to edit by hand:
+
+  Capability | Category | <apps…>   grouping comes from the Category column
+  Feature    | <apps…>              grouping comes from section rows — a title in
+                                    column A with every app column empty
+
+The header row is found by scanning for a first cell of "Capability" or "Feature",
+so leading title and subtitle rows are fine. Blank rows are skipped, so clearing a
+row in Excel removes it.
 
 Refuses rather than guesses:
   - unknown app columns, or a missing one
@@ -42,19 +48,32 @@ def fail(msg: str) -> None:
 
 def main() -> int:
     dry = '--dry-run' in sys.argv
-    if not XLSX.exists():
-        fail(f'{XLSX} not found — run export-comparison-xlsx.py first')
+    src = XLSX
+    if '--file' in sys.argv:
+        src = pathlib.Path(sys.argv[sys.argv.index('--file') + 1]).expanduser()
+    if not src.exists():
+        fail(f'{src} not found — run export-comparison-xlsx.py first')
 
     existing = json.loads(DATA.read_text())
     by_name = {a['name']: a for a in existing['apps']}
 
-    wb = load_workbook(XLSX)
-    ws = wb['Comparison']
+    wb = load_workbook(src, data_only=True)
+    ws = wb['Comparison'] if 'Comparison' in wb.sheetnames else wb[wb.sheetnames[0]]
 
-    header = [c.value for c in ws[1]]
-    if not header or (header[0] or '').strip() != 'Feature':
-        fail('cell A1 must read "Feature"')
-    names = [(h or '').strip() for h in header[1:] if (h or '').strip()]
+    # Find the header row rather than assuming row 1: a working spreadsheet
+    # usually has a title and a note above the table.
+    header, header_row = None, None
+    for i, row in enumerate(ws.iter_rows(values_only=True), 1):
+        first = str(row[0]).strip() if row and row[0] is not None else ''
+        if first in ('Capability', 'Feature'):
+            header, header_row = list(row), i
+            break
+    if header is None:
+        fail('no header row found — column A of it must read "Capability" or "Feature"')
+
+    has_category = len(header) > 1 and str(header[1] or '').strip() == 'Category'
+    first_app_col = 2 if has_category else 1
+    names = [(h or '').strip() for h in header[first_app_col:] if (h or '').strip()]
     unknown = [n for n in names if n not in by_name]
     if unknown:
         fail(f'unknown app column(s): {unknown}. Add the app to comparison.json '
@@ -71,18 +90,28 @@ def main() -> int:
             if row and row[0] is not None and str(row[1] or '').strip():
                 notes.append(str(row[1]).strip())
 
-    groups, current = [], None
-    for r in ws.iter_rows(min_row=2, values_only=True):
-        label = str(r[0]).strip() if r[0] is not None else ''
-        values = [str(v).strip() if v is not None else '' for v in r[1:len(names) + 1]]
+    groups, current, by_title = [], None, {}
+    for r in ws.iter_rows(min_row=header_row + 1, values_only=True):
+        label = str(r[0]).strip() if r and r[0] is not None else ''
+        values = [str(v).strip() if v is not None else ''
+                  for v in r[first_app_col:first_app_col + len(names)]]
         if not label and not any(values):
             continue
-        if label and not any(values):                       # section heading
-            current = {'title': label, 'rows': []}
-            groups.append(current)
-            continue
-        if current is None:
-            fail(f'feature row "{label}" appears before any section heading')
+        if has_category:
+            title = str(r[1]).strip() if len(r) > 1 and r[1] is not None else ''
+            if not title:
+                fail(f'row "{label}" has no Category')
+            if title not in by_title:
+                by_title[title] = {'title': title, 'rows': []}
+                groups.append(by_title[title])       # categories keep first-seen order
+            current = by_title[title]
+        else:
+            if label and not any(values):                   # section heading
+                current = {'title': label, 'rows': []}
+                groups.append(current)
+                continue
+            if current is None:
+                fail(f'feature row "{label}" appears before any section heading')
         entry: dict[str, object] = {'label': label}
         for name, value in zip(names, values):
             key = by_name[name]['key']
@@ -136,6 +165,13 @@ def main() -> int:
                   f'{new_cells[(g, label, key)]!r}')
     if len(changed) > 12:
         print(f'    … and {len(changed) - 12} more')
+    referenced = {v for g in groups for r in g['rows']
+                  for k, v in r.items() if k.endswith('Note')}
+    orphans = [i for i in range(1, len(out['notes']) + 1) if i not in referenced]
+    if orphans:
+        print(f'  warning: footnote(s) {orphans} are no longer cited by any cell. '
+              f'They will still render. Re-add a reference or delete them.')
+
     if out['checkedOn'] != existing['checkedOn']:
         print(f'  checkedOn: {existing["checkedOn"]!r} -> {out["checkedOn"]!r}')
     elif changed or added or removed:

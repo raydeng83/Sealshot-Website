@@ -1,6 +1,6 @@
 {
   "_comment": "Source of truth for /compare. Edit here, or edit the Excel export and run output/import-comparison-xlsx.py. Cell rules: competitor values must come from that vendor's own documentation; use the legend vocabulary rather than inventing one; keep wording symmetrical across a row; bump checkedOn on any change.",
-  "checkedOn": "August 15, 2026",
+  "checkedOn": "August 16, 2026",
   "legend": [
     [
       "No",
@@ -106,77 +106,139 @@
   ],
   "groups": [
     {
-      "title": "Pricing",
+      "title": "Capture",
       "rows": [
         {
-          "label": "Price",
-          "cleanshot": "$29 / 1 Mac · $49 / 2 · $119 / 5",
-          "snagit": "$39 per user, per year",
-          "shottr": "Free · $12 · $30",
-          "xnapper": "Free with watermark · $29.99 / 1 device · $54.99 / 2 · $79.99 / 3",
-          "sealshot": "$39 founding · $49 regular"
+          "label": "Screenshot modes",
+          "cleanshot": "Area, window, fullscreen, delayed, scrolling",
+          "snagit": "Area, window, fullscreen, delayed, scrolling",
+          "shottr": "Area, window, fullscreen, delayed, scrolling",
+          "xnapper": "Area, window, fullscreen, scrolling",
+          "sealshot": "Area, window, fullscreen, delayed, scrolling, live capture"
         },
         {
-          "label": "License model",
-          "cleanshot": "One-time; 1 year of updates; 1 GB CleanShot Cloud included",
-          "snagit": "Annual subscription only",
-          "shottr": "One-time",
-          "xnapper": "One-time, perpetual use; 1 year of updates; renewal at 40% off",
-          "sealshot": "One-time, perpetual use; 18 months of updates at the founding price; $24 renewal"
-        },
-        {
-          "label": "Devices per individual license tier",
-          "cleanshot": "1, 2, or 5 by tier",
-          "snagit": "Unlimited installs; one active device at a time",
-          "snagitNote": 2,
-          "shottr": "1 user, up to 5 computers",
-          "xnapper": "1, 2, or 3 by tier",
-          "sealshot": "2"
+          "label": "Screen recording",
+          "cleanshot": "Yes",
+          "snagit": "Yes",
+          "shottr": "No",
+          "xnapper": "Yes",
+          "sealshot": "Yes"
         }
       ]
     },
     {
-      "title": "Capture",
+      "title": "Edit",
       "rows": [
         {
-          "label": "Capture modes",
-          "cleanshot": "Area, window, fullscreen, self-timer",
-          "snagit": "Region, window, fullscreen",
-          "shottr": "Area, window, fullscreen, 3-second delay",
-          "xnapper": "Window, region, fullscreen",
-          "sealshot": "Area, window, fullscreen, delayed"
+          "label": "Image annotation",
+          "cleanshot": "Comprehensive",
+          "snagit": "Comprehensive",
+          "shottr": "Comprehensive",
+          "xnapper": "Basic",
+          "sealshot": "Comprehensive"
         },
         {
-          "label": "Scrolling capture",
-          "cleanshot": "Yes — auto-scroll and stitch",
-          "snagit": "Yes — auto-scroll and stitch",
-          "shottr": "Yes — auto-scroll and stitch",
-          "xnapper": "Yes — full-page",
-          "sealshot": "Yes — auto-scroll and stitch"
-        },
+          "label": "Video editing",
+          "cleanshot": "Basic: trim, quality, resolution and audio adjustments",
+          "snagit": "Basic to moderate: trim, cut, combine clips, GIF creation and noise removal",
+          "shottr": "No",
+          "xnapper": "Basic",
+          "sealshot": "Basic"
+        }
+      ]
+    },
+    {
+      "title": "Extract",
+      "rows": [
         {
-          "label": "Screen recording",
-          "cleanshot": "Yes — microphone, system audio, webcam",
-          "snagit": "Yes — microphone, system audio, webcam, GIF",
-          "shottr": "Not documented",
-          "xnapper": "Yes — fullscreen, region, or window; built-in video editor",
-          "sealshot": "Yes — microphone, system audio"
-        },
-        {
-          "label": "Text recognition (OCR)",
-          "cleanshot": "Yes, on device",
+          "label": "OCR and text extraction",
+          "cleanshot": "Yes",
           "snagit": "Yes",
-          "shottr": "Yes, plus QR codes",
-          "xnapper": "Yes, on device",
-          "sealshot": "Yes, on device"
+          "shottr": "Yes",
+          "xnapper": "Yes",
+          "sealshot": "Yes"
         },
         {
-          "label": "Extracts tables and form fields",
-          "cleanshot": "Not documented",
-          "snagit": "Not documented",
-          "shottr": "Not documented",
-          "xnapper": "Not documented",
+          "label": "Structured table and form extraction",
+          "cleanshot": "No",
+          "snagit": "No",
+          "shottr": "No",
+          "xnapper": "No",
           "sealshot": "Yes"
+        }
+      ]
+    },
+    {
+      "title": "Protect",
+      "rows": [
+        {
+          "label": "Manual redaction",
+          "cleanshot": "Yes",
+          "snagit": "Yes",
+          "shottr": "Yes",
+          "xnapper": "Yes",
+          "sealshot": "Yes"
+        },
+        {
+          "label": "Sensitive-data detection",
+          "cleanshot": "No",
+          "snagit": "Yes",
+          "shottr": "No",
+          "xnapper": "Yes",
+          "sealshot": "Yes",
+          "sealshotNote": 1
+        },
+        {
+          "label": "Enhanced Security",
+          "cleanshot": "No",
+          "snagit": "No",
+          "shottr": "No",
+          "xnapper": "No",
+          "sealshot": "Yes"
+        }
+      ]
+    },
+    {
+      "title": "Organize",
+      "rows": [
+        {
+          "label": "Persistent capture library",
+          "cleanshot": "Screenshot history",
+          "snagit": "Searchable and taggable library",
+          "shottr": "No",
+          "xnapper": "Screenshot history",
+          "sealshot": "Search, collections, tags and metadata"
+        },
+        {
+          "label": "Automatic organization",
+          "cleanshot": "Limited",
+          "snagit": "Search and metadata features",
+          "shottr": "No",
+          "xnapper": "Limited",
+          "sealshot": "Auto-title and smart-tag assistance"
+        }
+      ]
+    },
+    {
+      "title": "Share",
+      "rows": [
+        {
+          "label": "Cloud sharing",
+          "cleanshot": "Optional CleanShot Cloud",
+          "snagit": "Multiple cloud and service integrations",
+          "shottr": "Shottr Cloud or personal S3",
+          "shottrNote": 3,
+          "xnapper": "No integrated cloud sharing",
+          "xnapperNote": 4,
+          "sealshot": "No integrated cloud sharing"
+        },
+        {
+          "label": "Protected sharing or export",
+          "cleanshot": "Password and expiration controls with supported cloud plan",
+          "snagit": "Depends on destination service",
+          "shottr": "S3 access controls",
+          "xnapper": "No",
+          "sealshot": "Encrypted package export"
         }
       ]
     },
@@ -184,74 +246,63 @@
       "title": "Privacy",
       "rows": [
         {
-          "label": "Automatic sensitive-data detection",
-          "cleanshot": "No — manual tools only",
-          "snagit": "Yes — addresses, cards, dates, emails, faces, IPs, phones, SSNs, URLs",
-          "shottr": "No — manual tools only",
-          "xnapper": "Yes — emails, cards, IPs, API keys",
-          "sealshot": "Yes — emails, cards, IDs, API keys"
-        },
+          "label": "Fully usable offline",
+          "cleanshot": "Yes, excluding cloud features",
+          "snagit": "Core editing works locally; activation and account considerations",
+          "shottr": "Yes, excluding cloud and S3",
+          "xnapper": "Yes",
+          "sealshot": "Yes"
+        }
+      ]
+    },
+    {
+      "title": "Platform",
+      "rows": [
         {
-          "label": "Automatic redaction method in flattened exports",
-          "cleanshot": "No automatic mode — manual pixelate, secure or smooth blur, filled rectangle",
-          "snagit": "Blur, pixelation, or solid bars",
-          "shottr": "No automatic mode — manual blur, pixelation, object removal",
-          "xnapper": "Not documented",
-          "sealshot": "Opaque solid fill; flattened into exported images",
-          "sealshotNote": 1
-        },
+          "label": "Supported platforms",
+          "cleanshot": "macOS",
+          "snagit": "macOS and Windows",
+          "shottr": "macOS",
+          "xnapper": "macOS",
+          "sealshot": "macOS"
+        }
+      ]
+    },
+    {
+      "title": "Purchase",
+      "rows": [
         {
-          "label": "App-managed local-library encryption",
-          "cleanshot": "Not documented",
-          "snagit": "Not documented",
-          "shottr": "Not documented",
-          "xnapper": "Not documented",
-          "sealshot": "Optional app-managed AES-256-GCM; unlock with Touch ID, Apple Watch, or system password"
+          "label": "Devices per individual license",
+          "cleanshot": "1, 2, or 5 by tier",
+          "snagit": "Unlimited installs; one active device at a time",
+          "snagitNote": 2,
+          "shottr": "1 user; up to 5 computers",
+          "xnapper": "1, 2, or 3 by tier",
+          "sealshot": "3"
         },
         {
           "label": "Account required",
-          "cleanshot": "No — cloud account “not required to use the app”",
-          "snagit": "Yes — TechSmith sign-in required to unlock",
-          "snagitNote": 2,
-          "shottr": "Not documented",
-          "xnapper": "Not documented",
-          "sealshot": "No — activation works offline"
-        }
-      ]
-    },
-    {
-      "title": "Organization and sharing",
-      "rows": [
-        {
-          "label": "Capture library",
-          "cleanshot": "Yes — 1 month of history",
-          "snagit": "Yes — searchable, taggable",
-          "shottr": "Not documented",
-          "xnapper": "Yes — screenshot history",
-          "sealshot": "Yes — collections, tags, OCR full-text search"
+          "cleanshot": "No for local use",
+          "snagit": "Yes",
+          "shottr": "No",
+          "xnapper": "No",
+          "sealshot": "No"
         },
         {
-          "label": "Hosted sharing",
-          "cleanshot": "Optional — CleanShot Cloud",
-          "snagit": "YouTube, Google Drive, Dropbox",
-          "shottr": "Shottr Cloud or your own S3 bucket",
-          "shottrNote": 3,
-          "xnapper": "Unverified",
-          "xnapperNote": 4,
-          "sealshot": "None — packages you send yourself"
-        }
-      ]
-    },
-    {
-      "title": "Compatibility",
-      "rows": [
+          "label": "License model",
+          "cleanshot": "One-time purchase; 1 year of updates",
+          "snagit": "Annual subscription",
+          "shottr": "One-time purchase",
+          "xnapper": "One-time purchase; perpetual use; 1 year of updates",
+          "sealshot": "One-time purchase; perpetual use; 18 months of founding updates, 1 year for regular"
+        },
         {
-          "label": "Platforms",
-          "cleanshot": "macOS 10.15+",
-          "snagit": "Windows and Mac",
-          "shottr": "macOS 10.15+",
-          "xnapper": "Mac",
-          "sealshot": "macOS 14+"
+          "label": "Price",
+          "cleanshot": "$29 / 1 Mac; $49 / 2; $119 / 5",
+          "snagit": "$39 per user, per year",
+          "shottr": "Free and paid versions; $12 / $30",
+          "xnapper": "Free with watermark; $29.99 / 1 device; $54.99 / 2; $79.99 / 3",
+          "sealshot": "14 days free trial, then $11.99 founding; $24.99 regular"
         }
       ]
     }

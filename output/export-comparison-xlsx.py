@@ -10,13 +10,14 @@ A one-way export would be a dead end — the point is to edit in Excel.
 
 Layout of the Comparison sheet, which the importer relies on:
 
-  row 1            header — Feature, then one column per app
-  section rows     the group title in column A, the rest of the row empty
-  feature rows     label in column A, one value per app
+  row 1            header — Capability, Category, then one column per app
+  feature rows     label in column A, its section in column B, one value per app
   footnote markers a trailing " [n]" inside a cell, e.g. "Opaque solid fill [1]"
 
-Add or reorder feature rows and sections freely. To add an app you need to touch
-the JSON, because a column also carries a key and its source links.
+Sections come from the Category column and keep first-seen order, so reordering
+rows reorders the page. Add or rename rows and categories freely. To add an app
+you need to touch the JSON, because a column also carries a key and its source
+links — the importer refuses an unknown column rather than guessing.
 """
 import json
 import pathlib
@@ -49,8 +50,8 @@ thin = Side(style='thin', color=FAINT)
 edge = Border(bottom=thin)
 wrap = Alignment(vertical='top', wrap_text=True)
 
-ws.append(['Feature'] + [a['name'] for a in apps])
-for i in range(1, len(apps) + 2):
+ws.append(['Capability', 'Category'] + [a['name'] for a in apps])
+for i in range(1, len(apps) + 3):
     c = ws.cell(row=1, column=i)
     c.font = Font(bold=True, size=11, color=ACCENT if i == len(apps) + 1 else INK)
     c.border = Border(bottom=Side(style='medium', color=INK))
@@ -58,29 +59,25 @@ for i in range(1, len(apps) + 2):
 
 row = 2
 for group in d['groups']:
-    ws.cell(row=row, column=1, value=group['title'])
-    for i in range(1, len(apps) + 2):
-        c = ws.cell(row=row, column=i)
-        c.fill = PatternFill('solid', fgColor=TINT)
-        c.font = Font(bold=True, size=9, color=INK)
-    row += 1
     for r in group['rows']:
         ws.cell(row=row, column=1, value=r['label']).font = Font(bold=True, size=10)
-        for i, a in enumerate(apps, start=2):
+        ws.cell(row=row, column=2, value=group['title'])
+        for i, a in enumerate(apps, start=3):
             note = r.get(a['key'] + 'Note')
             text = r.get(a['key'], '')
             ws.cell(row=row, column=i, value=f'{text} [{note}]' if note else text)
-        for i in range(1, len(apps) + 2):
+        for i in range(1, len(apps) + 3):
             c = ws.cell(row=row, column=i)
             c.alignment = wrap
             c.border = edge
-            if i == len(apps) + 1:                    # our column, tinted as on the page
+            if i == len(apps) + 2:                    # our column, tinted as on the page
                 c.fill = PatternFill('solid', fgColor=BAND)
         row += 1
 
-ws.freeze_panes = 'B2'
+ws.freeze_panes = 'C2'
 ws.column_dimensions['A'].width = 38
-for i in range(2, len(apps) + 2):
+ws.column_dimensions['B'].width = 14
+for i in range(3, len(apps) + 3):
     ws.column_dimensions[get_column_letter(i)].width = 34
 
 # ── Notes ────────────────────────────────────────────────────────────────────
