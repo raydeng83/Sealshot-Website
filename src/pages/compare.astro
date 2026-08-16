@@ -149,6 +149,9 @@ const CARD_ORDER = [APPS[4], APPS[0], APPS[1], APPS[2], APPS[3]];
   .cmp tbody th { font-weight: 600; color: var(--navy-900); width: 14rem; }
   .cmp td { color: var(--slate-600); }
 
+  /* Air above each category so the sections read as groups rather than one long
+     list. Tables cannot take margin between rows, so it is padding on the cell —
+     asymmetric, since the space belongs above the label, not below it. */
   .cmp-group th {
     background: var(--surface-tint);
     font-size: 0.75rem;
@@ -156,7 +159,12 @@ const CARD_ORDER = [APPS[4], APPS[0], APPS[1], APPS[2], APPS[3]];
     text-transform: uppercase;
     color: var(--navy-900);
     width: auto;
+    padding-top: 1.4rem;
+    padding-bottom: 0.45rem;
   }
+
+  /* The first category sits directly under the header rule and needs less. */
+  .cmp tbody:first-of-type .cmp-group th { padding-top: 0.6rem; }
 
   /* Our column is tinted and nothing else. Emphasis applied only to our own
      favourable cells makes the whole table read as advocacy. */
