@@ -37,14 +37,16 @@ describe('formatUSD', () => {
 describe('prices', () => {
   it('match the v1.0 pricing document', () => {
     expect(REGULAR_PRICE_CENTS).toBe(2999);
-    expect(RENEWAL_PRICE_CENTS).toBe(2400);   // see the note in promos.ts
+    expect(RENEWAL_PRICE_CENTS).toBe(1799);   // 40% off, see the note in promos.ts
     expect(REGULAR_UPDATE_MONTHS).toBe(12);
   });
 
-  it('keeps renewal below a whole new license', () => {
-    // At the moment it only just is — $24 renewal against $24.99 regular. The
-    // invariant is here so a future edit cannot make renewing the dearer option.
+  it('keeps renewal a real discount on a whole new license', () => {
+    // Not merely cheaper: renewing has to be visibly worth it, or the page is
+    // asking near full price for updates alone. It sat a penny under regular
+    // once, which is how that happens.
     expect(RENEWAL_PRICE_CENTS).toBeLessThan(REGULAR_PRICE_CENTS);
+    expect(RENEWAL_PRICE_CENTS / REGULAR_PRICE_CENTS).toBeCloseTo(0.6, 2);
   });
 
   it('never shows an offer that costs more than the regular price', () => {

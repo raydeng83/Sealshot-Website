@@ -38,12 +38,12 @@ export const CHECKOUT_IS_SANDBOX = true;
 export const REGULAR_PRICE_CENTS = 2999;
 
 /**
- * Renewal is 80% of a regular license, which is the part still worth a look: it
- * buys 12 more months of updates where the same $24 as a new license buys the
- * license too. It was incoherent at the old $24.99 regular (a penny apart) and is
- * merely close now, so this is the number to revisit if renewals do not convert.
+ * Renewal: 40% off a regular license — $17.99 today. Derived rather than typed
+ * in, so the discount survives the next price change instead of drifting into
+ * the near-full-price figure it was before ($24 against a $29.99 license).
+ * Floored to the cent: 60% of $29.99 is $17.994.
  */
-export const RENEWAL_PRICE_CENTS = 2400;
+export const RENEWAL_PRICE_CENTS = Math.floor(REGULAR_PRICE_CENTS * 0.6);
 
 /** Months of updates included with the regular license. */
 export const REGULAR_UPDATE_MONTHS = 12;
