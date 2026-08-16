@@ -2,244 +2,349 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 
 /*
-  The criteria half of the comparison page. Deliberately names no competitor: a
-  named table needs every cell checked against that vendor's own documentation
-  and re-checked as they ship, and a stale claim on this page would cost more
-  than the page earns — this is a product sold on being able to trust what it
-  says.
+  Feature comparison. Every competitor cell is what that vendor's own page said
+  on the date below — not a judgment, and not taken from third-party "best
+  screenshot app" round-ups, most of which are published by other screenshot
+  apps.
 
-  Each criterion carries a "check it yourself" because a comparison someone can
-  verify is worth more than one they have to believe, and because these are the
-  same tests we run on ourselves before a release.
+  Two rules for editing this file:
+
+  1. A silent page is "not stated", never a cross. Absence from marketing copy is
+     not evidence a feature is missing, and a wrong cross here would cost more
+     than this page earns.
+  2. If you change a cell, change COMPARED_ON too.
 */
 
-const CRITERIA = [
+const COMPARED_ON = '15 August 2026';
+
+// Sealshot last: the reader crosses the field before arriving at us, and a table
+// that opens with our own column reads as a brochure.
+const APPS = [
+  { key: 'cleanshot', name: 'CleanShot X', source: 'https://cleanshot.com/' },
+  { key: 'snagit', name: 'Snagit', source: 'https://www.techsmith.com/screen-capture.html' },
+  { key: 'shottr', name: 'Shottr', source: 'https://shottr.cc/' },
+  { key: 'xnapper', name: 'Xnapper', source: 'https://xnapper.com/' },
+  { key: 'sealshot', name: 'Sealshot', source: '/docs/', ours: true },
+];
+
+const ROWS = [
   {
-    q: 'Where does the image go after you press the shortcut?',
-    why: `A screenshot is whatever happened to be on screen — credentials, a
-      customer record, an unreleased design. Plenty of capture tools upload it
-      before you have decided to share it, because upload is how their sharing
-      links work.`,
-    check: `Point a network monitor at the app — Little Snitch, Proxyman, or
-      tcpdump — and use it for an hour. Capture, edit, search, export. Watch what
-      it contacts and when.`,
-    ours: `Sealshot makes three network requests, and all three are downloads:
-      the update check, a public list of revoked licenses, and the optional
-      redaction model. Nothing is uploaded, ever.`,
-    href: '/privacy/',
-    hrefLabel: 'What each request is',
+    label: 'Price',
+    cleanshot: '$29 once',
+    snagit: '$39 per user, per year',
+    shottr: 'Free · $12 · $30',
+    xnapper: 'Free with watermark; one-time to remove',
+    sealshot: '$39 once',
   },
   {
-    q: 'Does it require an account?',
-    why: `An account is a row in someone's database about you, a password to
-      lose, and a service that can be turned off. For a tool that reads your
-      screen, it is also a way to tie captures to an identity.`,
-    check: `Install it on a machine with no network and try to get to work. Then
-      try activating a paid license offline.`,
-    ours: `There is no account and no sign-in. A license is a file you open;
-      activation works on a Mac that has never been online.`,
-    href: '/docs/faq/#how-do-i-activate-my-license-do-i-need-an-account-or-internet',
-    hrefLabel: 'How activation works',
+    label: 'License model',
+    cleanshot: 'One-time, 1 year of updates, $19/yr optional',
+    snagit: 'Subscription only',
+    shottr: 'One-time',
+    xnapper: 'One-time',
+    sealshot: 'One-time, 18 months of updates, $24 optional',
   },
   {
-    q: 'When you redact something, is it destroyed or just covered?',
-    why: `Blur and mosaic are reversible often enough to matter. A black
-      rectangle drawn on an annotation layer is worse — whoever receives the file
-      may be able to move it or delete it and read what was underneath.`,
-    check: `Redact something, export it, then attack your own export: zoom in,
-      push levels and contrast, run OCR over it, open it in another editor. Do it
-      for the layered package as well as the flat image, because they can behave
-      differently.`,
-    ours: `Smart Redaction finds emails, card numbers, IDs, and API keys on
-      device and covers them with unrecoverable fill rather than a blur.`,
-    href: '/docs/guide/redaction/',
-    hrefLabel: 'How redaction works',
+    label: 'Macs per license',
+    cleanshot: 'Multiple',
+    snagit: 'Not stated',
+    shottr: '1 user, up to 5 computers',
+    xnapper: 'Not stated',
+    sealshot: '2',
   },
   {
-    q: 'What happens to your library if you stop paying?',
-    why: `On a subscription, lapsing can mean losing access to your own past
-      work, or losing the app that opens it. That is a question worth asking
-      before the library is three years deep.`,
-    check: `Read what the vendor says happens at the end of a subscription or an
-      update window — specifically whether existing files stay openable.`,
-    ours: `One payment. The app and every version released inside your update
-      window keep working forever. Renewing only buys newer versions, and is
-      optional.`,
-    href: '/buy/',
-    hrefLabel: 'What a license includes',
+    label: 'Capture modes',
+    cleanshot: 'Area, window, fullscreen, self-timer',
+    snagit: 'Region, window, fullscreen',
+    shottr: 'Area, window, fullscreen, 3s delay',
+    xnapper: 'Window, screenshot',
+    sealshot: 'Area, window, fullscreen, delayed',
   },
   {
-    q: 'Can what it stores be encrypted at rest?',
-    why: `Captures sit on disk for years. Full-disk encryption protects a
-      powered-off Mac; it does nothing about anyone using an unlocked one.`,
-    check: `Turn the feature on, then go looking for the files yourself and try
-      to open them outside the app while it is locked.`,
-    ours: `Enhanced Security encrypts everything Sealshot stores with AES-256-GCM
-      behind Touch ID, and re-locks on sleep, screen lock, and an idle timeout you
-      set. It is opt-in, and off until you turn it on.`,
-    href: '/docs/guide/security/',
-    hrefLabel: 'Enhanced Security',
+    label: 'Scrolling capture',
+    cleanshot: 'Yes',
+    snagit: 'Yes',
+    shottr: 'Yes',
+    xnapper: 'Not mentioned',
+    sealshot: 'Yes, with automatic stitching',
   },
   {
-    q: 'Does sharing go through the vendor?',
-    why: `A share link means a copy on someone else's servers, reachable by
-      anyone holding the URL, for as long as that vendor chooses to keep it —
-      often after you have forgotten it exists.`,
-    check: `Share something and look at where the recipient's copy actually
-      lives. Then work out how to make it stop existing.`,
-    ours: `Sealshot exports a package you send however you like — email, a drive,
-      a USB stick — optionally passcode-encrypted with an expiry date. Nothing is
-      hosted, so there is nothing to revoke.`,
-    href: '/docs/guide/sharing/',
-    hrefLabel: 'Sharing and export',
+    label: 'Screen recording',
+    cleanshot: 'Yes — mic, system audio, webcam',
+    snagit: 'Yes — webcam, GIF',
+    shottr: 'Not mentioned',
+    xnapper: 'Not mentioned',
+    sealshot: 'Yes — mic, system audio',
   },
   {
-    q: 'Where do the AI features run?',
-    why: `"AI-powered" usually means the image is sent to a server. For OCR,
-      titles, or summaries of a screenshot, that is precisely the content you were
-      most careful about.`,
-    check: `Run the network monitor again, and this time exercise every AI
-      feature — text recognition, summaries, data extraction.`,
-    ours: `On your Mac. Apple Intelligence where the hardware has it, a built-in
-      model everywhere else. The docs say which features need which hardware
-      rather than leaving you to find out.`,
-    href: '/docs/guide/ai/#which-macs-run-what',
-    hrefLabel: 'Which Macs run what',
+    label: 'Finds sensitive data for you',
+    cleanshot: 'No — manual blur',
+    snagit: 'Yes',
+    shottr: 'No — manual',
+    xnapper: 'Yes — emails, cards, IPs, API keys',
+    sealshot: 'Yes — emails, cards, IDs, API keys',
+    note: true,
   },
   {
-    q: 'Can you check any of this without taking their word for it?',
-    why: `Every tool in this category claims to respect your privacy. The
-      question is whether the claim is specific enough to be tested, and whether
-      the answer stays true after the next release.`,
-    check: `Look for a privacy policy that names each network request rather than
-      describing a posture. Vague is not the same as harmless.`,
-    ours: `Ours lists all three requests, says which setting turns two of them
-      off, and states that no request carries a license ID, an identifier, or your
-      content.`,
-    href: '/privacy/',
-    hrefLabel: 'Read the privacy policy',
+    label: 'What redaction leaves behind',
+    cleanshot: 'Blur or pixelate',
+    snagit: '“Automatically blur”',
+    shottr: 'Pixelate or blur',
+    xnapper: '“Hide” — method not stated',
+    sealshot: 'Unrecoverable fill',
+    note: true,
+  },
+  {
+    label: 'Text recognition (OCR)',
+    cleanshot: 'Yes, on device',
+    snagit: 'Yes',
+    shottr: 'Yes, plus QR',
+    xnapper: 'Yes, on device',
+    sealshot: 'Yes, on device',
+  },
+  {
+    label: 'Extracts tables and form fields',
+    cleanshot: 'Not mentioned',
+    snagit: 'Not mentioned',
+    shottr: 'Not mentioned',
+    xnapper: 'Not mentioned',
+    sealshot: 'Yes',
+  },
+  {
+    label: 'Capture library',
+    cleanshot: 'Yes — 1 month of history',
+    snagit: 'Yes — searchable, taggable',
+    shottr: 'Not mentioned',
+    xnapper: 'Yes — screenshot history',
+    sealshot: 'Yes — collections, tags, OCR search',
+  },
+  {
+    label: 'Encryption at rest',
+    cleanshot: 'Not stated',
+    snagit: 'Not stated',
+    shottr: 'Not stated',
+    xnapper: 'Not stated',
+    sealshot: 'Yes — AES-256-GCM behind Touch ID, opt-in',
+    note: true,
+  },
+  {
+    label: 'Cloud upload',
+    cleanshot: 'Optional — CleanShot Cloud',
+    snagit: 'YouTube, Drive, Dropbox',
+    shottr: 'Your own S3 bucket',
+    xnapper: '“Coming soon”',
+    sealshot: 'None',
+  },
+  {
+    label: 'Account required',
+    cleanshot: 'No — “not required to use the app”',
+    snagit: 'Not stated',
+    shottr: 'Not stated',
+    xnapper: 'Not stated',
+    sealshot: 'No — activation works offline',
+  },
+  {
+    label: 'Platforms',
+    cleanshot: 'macOS 10.15+',
+    snagit: 'Windows and Mac',
+    shottr: 'macOS 10.15+',
+    xnapper: 'Mac',
+    sealshot: 'macOS 14+',
   },
 ];
 
-const LIMITS = [
-  'macOS 14 or later. There is no Windows or Linux version, and none planned.',
-  'No team library, shared workspace, or per-seat administration.',
-  'No hosted share links or short URLs — by design, but it does mean no "send someone a URL" flow.',
-  'Screen recording captures and exports; it is not a video editor.',
-  'Some AI features need Apple silicon, and a few need macOS 26. Everything core works on Intel.',
+// Cards on narrow screens put us first — nobody swipes to a fifth column.
+const CARD_ORDER = [APPS[4], APPS[0], APPS[1], APPS[2], APPS[3]];
+
+const ELSEWHERE = [
+  ['You need Windows', 'Snagit is the only one here that runs on it.'],
+  ['You want it free', 'Shottr and Xnapper both have real free tiers. Sealshot has a 14-day trial and then costs money.'],
+  ['You want a share link', 'CleanShot Cloud, or a team tool like Zight, Droplr, or Monosnap. Sealshot deliberately hosts nothing, so there is no URL to send.'],
+  ['Presentation screenshots are the job', 'Xnapper exists for exactly that — balanced padding, backgrounds, ready to drop in a deck.'],
+  ['You manage seats for a team', 'Snagit’s business plans, or the team tools above. Sealshot has no per-seat administration.'],
+];
+
+const CHECKS = [
+  ['Watch the network', 'Point Little Snitch, Proxyman, or tcpdump at any of these for an hour of real work. Capture, edit, search, export, and use every AI feature. What it contacts, and when, is a fact rather than a claim.'],
+  ['Attack your own redaction', 'Redact something, export it, then try to get it back: zoom, push levels and contrast, run OCR over it, open it in another editor. Test the layered package as well as the flat image — they can behave differently.'],
+  ['Pull the plug', 'Install on a machine with no network and try to work. Then try activating a paid license offline.'],
+  ['Read the privacy policy for specifics', 'Look for one that names each network request rather than describing a posture. Vague is not the same as harmless.'],
 ];
 ---
 
 <SiteLayout
-  title="What to require of a screenshot tool — Sealshot"
-  description="Eight questions worth asking of any Mac screenshot app when your screenshots contain things you would not paste into a public channel — and how to check the answers yourself."
+  title="Sealshot compared — Mac screenshot apps, feature by feature"
+  description="How Sealshot compares with CleanShot X, Snagit, Shottr, and Xnapper on capture, redaction, encryption, cloud, and price — taken from each vendor's own documentation, with sources."
 >
-  <section class="section wrap" aria-labelledby="compare-title">
-    <p class="kicker">Choosing a tool</p>
-    <h1 id="compare-title">What to require of a screenshot tool</h1>
+  <section class="section wrap" aria-labelledby="cmp-title">
+    <p class="kicker">Comparison</p>
+    <h1 id="cmp-title">Sealshot compared</h1>
     <p class="sub">
-      Screenshots are the most casually sensitive files on a computer. They
-      capture whatever was on screen — a token, a customer's address, a contract
-      — and most of us take them without thinking. These are the questions worth
-      asking of any capture app, including this one, and how to check the answers
-      rather than believe them.
+      Five Mac screenshot tools, feature by feature. Every cell about another app
+      is what that vendor's own page said on {COMPARED_ON} — not our reading of
+      it, and not lifted from a round-up. Where a page says nothing, this table
+      says “not stated” rather than guessing, because silence is not evidence.
     </p>
 
-    <ol class="crit-list">
-      {
-        CRITERIA.map((c) => (
-          <li class="crit">
-            <h2>{c.q}</h2>
-            <p class="crit-why">{c.why}</p>
-            <p class="crit-check"><strong>Check it yourself.</strong> {c.check}</p>
-            <p class="crit-ours">
-              <strong>Sealshot.</strong> {c.ours} <a href={c.href}>{c.hrefLabel}</a>
-            </p>
-          </li>
-        ))
-      }
-    </ol>
-
-    <div class="crit-limits">
-      <h2>Where Sealshot is not the answer</h2>
-      <p>
-        A comparison with nothing but ticks in our own column would not be worth
-        reading. If any of these matter to you, something else will suit you
-        better:
-      </p>
-      <ul>
-        {LIMITS.map((l) => <li>{l}</li>)}
-      </ul>
+    <div class="cmp-scroll">
+      <table class="cmp">
+        <caption class="visually-hidden">
+          Feature comparison of CleanShot X, Snagit, Shottr, Xnapper, and Sealshot
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Feature</th>
+            {APPS.map((a) => (
+              <th scope="col" class={a.ours ? 'is-ours' : undefined}>{a.name}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {ROWS.map((r) => (
+            <tr>
+              <th scope="row">{r.label}</th>
+              {APPS.map((a) => (
+                <td class={[a.ours ? 'is-ours' : '', r.note && a.ours ? 'is-key' : '']
+                  .filter(Boolean).join(' ') || undefined}>{r[a.key]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
 
-    <p class="crit-foot">
-      Something here wrong, or a question we have not covered?
-      <a href="/support/">Tell us</a> — corrections to this page are welcome, and
-      we would rather fix it than defend it.
+    <div class="cmp-cards">
+      {CARD_ORDER.map((a) => (
+        <article class={a.ours ? 'cmp-card is-ours' : 'cmp-card'}>
+          <h2>{a.name}</h2>
+          <dl>
+            {ROWS.map((r) => (
+              <>
+                <dt>{r.label}</dt>
+                <dd>{r[a.key]}</dd>
+              </>
+            ))}
+          </dl>
+        </article>
+      ))}
+    </div>
+
+    <p class="cmp-sources">
+      Compared {COMPARED_ON}, from each vendor's own pages:
+      {APPS.filter((a) => !a.ours).map((a, i) => (
+        <>{i > 0 ? ' · ' : ' '}<a href={a.source} rel="nofollow noopener">{a.name}</a></>
+      ))}. Prices are the publicly listed individual ones and exclude tax.
+      Something out of date or wrong? <a href="/support/">Tell us</a> — we would
+      rather fix it than defend it.
+    </p>
+
+    <h2 id="elsewhere">When one of the others is the better buy</h2>
+    <p>
+      A comparison with nothing but wins in our own column would not be worth
+      reading. These are the cases where we would point you elsewhere:
+    </p>
+    <dl class="cmp-else">
+      {ELSEWHERE.map(([when, what]) => (
+        <>
+          <dt>{when}</dt>
+          <dd>{what}</dd>
+        </>
+      ))}
+    </dl>
+
+    <h2 id="checks">How to check any of this yourself</h2>
+    <p>
+      Every tool in this category says it respects your privacy. These are the
+      tests that turn that into something you can see — and they work on us as
+      well as on them.
+    </p>
+    <dl class="cmp-else">
+      {CHECKS.map(([title, how]) => (
+        <>
+          <dt>{title}</dt>
+          <dd>{how}</dd>
+        </>
+      ))}
+    </dl>
+
+    <p class="cmp-foot">
+      Not compared here: the screenshot tool built into macOS, which is free and
+      on every Mac — if ⌘⇧5 already does what you need, use it. Nor the
+      link-first team tools (Zight, Droplr, Monosnap), which solve sharing rather
+      than capture.
     </p>
   </section>
 </SiteLayout>
 
 <style>
-  .crit-list {
-    list-style: none;
-    counter-reset: crit;
-    margin: 2.5rem 0 0;
-    padding: 0;
-  }
+  .cmp-scroll { overflow-x: auto; margin: 2rem 0 1rem; }
 
-  .crit {
-    counter-increment: crit;
-    border-top: 1px solid var(--border-subtle);
-    padding: 1.75rem 0 0;
-    margin: 0 0 1.75rem;
-    max-width: 46rem;
-  }
-
-  /* The number is the only ornament on the page; it earns its place because
-     these really are a sequence to work through, not a decorated list. */
-  .crit h2 {
-    font-size: 1.2rem;
-    margin: 0 0 0.6rem;
-    display: flex;
-    gap: 0.7rem;
-    align-items: baseline;
-  }
-
-  .crit h2::before {
-    content: counter(crit);
-    color: var(--orange-700);
-    font-variant-numeric: tabular-nums;
+  .cmp {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 54rem;
     font-size: 0.9rem;
-    flex: none;
   }
 
-  .crit p { margin: 0 0 0.7rem; }
-  .crit-why { color: var(--slate-600); }
-  .crit-check,
-  .crit-ours { font-size: 0.95rem; }
-  .crit-check { color: var(--slate-600); }
-
-  .crit-ours {
-    background: var(--surface-band);
-    border-left: 2px solid var(--orange-600);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    padding: 0.8rem 1rem;
-    margin-bottom: 0;
+  .cmp th,
+  .cmp td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.6rem 0.7rem;
+    border-bottom: 1px solid var(--border-subtle);
   }
 
-  .crit-limits {
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-card);
-    padding: 1.5rem;
-    margin: 1rem 0 2rem;
-    max-width: 46rem;
+  .cmp thead th {
+    border-bottom: 2px solid var(--navy-900);
+    font-size: 0.95rem;
   }
 
-  .crit-limits h2 { font-size: 1.125rem; margin: 0 0 0.5rem; }
-  .crit-limits p { color: var(--slate-600); margin: 0 0 0.75rem; }
-  .crit-limits ul { margin: 0; padding-left: 1.25rem; color: var(--slate-600); }
-  .crit-limits li { margin-bottom: 0.4rem; }
-  .crit-foot { color: var(--slate-600); max-width: 46rem; }
+  .cmp tbody th {
+    font-weight: 600;
+    color: var(--navy-900);
+    width: 12rem;
+  }
+
+  .cmp td { color: var(--slate-600); }
+
+  /* Our column is tinted rather than ticked — the point is that a reader can see
+     where it differs, not that it looks like a winner's podium. */
+  .cmp .is-ours { background: var(--surface-band); color: var(--navy-900); }
+  .cmp thead .is-ours { color: var(--orange-700); }
+  .cmp .is-key { font-weight: 600; }
+
+  .cmp-cards { display: none; }
+
+  .cmp-sources,
+  .cmp-foot { color: var(--slate-600); font-size: 0.9rem; max-width: 46rem; }
+  .cmp-sources { margin-bottom: 2.5rem; }
+
+  .section h2 { font-size: 1.3rem; margin: 2rem 0 0.5rem; }
+
+  .cmp-else { max-width: 46rem; margin: 1rem 0 0; }
+  .cmp-else dt { font-weight: 600; margin-top: 0.9rem; }
+  .cmp-else dd { margin: 0.2rem 0 0; color: var(--slate-600); }
+
+  /* Below this the table needs six columns in about 350px, which no amount of
+     scrolling makes readable. One card per app instead, ours first — nobody
+     swipes sideways to reach a fifth column. */
+  @media (max-width: 60rem) {
+    .cmp-scroll { display: none; }
+    .cmp-cards { display: grid; gap: 1rem; margin: 2rem 0 1rem; }
+
+    .cmp-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-card);
+      padding: 1.25rem;
+    }
+
+    .cmp-card.is-ours { background: var(--surface-band); border-color: var(--orange-600); }
+    .cmp-card h2 { font-size: 1.15rem; margin: 0 0 0.75rem; }
+    .cmp-card.is-ours h2 { color: var(--orange-700); }
+    .cmp-card dl { margin: 0; display: grid; grid-template-columns: 1fr; gap: 0.1rem; }
+    .cmp-card dt { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--slate-400); margin-top: 0.7rem; }
+    .cmp-card dd { margin: 0; font-size: 0.95rem; }
+  }
 </style>
