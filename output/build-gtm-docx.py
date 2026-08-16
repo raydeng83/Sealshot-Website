@@ -256,34 +256,35 @@ table(['Product', 'Model', 'Account required'],
       [['CleanShot X', '$29 one Mac, $49 two Macs, $19/yr optional updates. 30-day money-back guarantee', 'No'],
        ['Snagit', '$39 per user per year, subscription, non-transferable', 'Yes — "just sign in"'],
        ['Shottr', '$12 one-time', 'No'],
-       ['Sealshot', '$49 perpetual, two Macs, updates optional', 'None']],
+       ['Sealshot', '$29.99 perpetual, three Macs, updates optional', 'None']],
       widths=[1.1, 3.9, 1.5], bold_first=True)
 
 rich(('Snagit is the comparison being under-used. ', {'bold': True}),
-     ('It is the mainstream incumbent, and it charges the same $39 that Sealshot '
-      'charges as a one-time founding price — except theirs recurs every year '
-      'and requires an account to unlock the software. "Perpetual, no account, '
-      'nothing leaves your Mac" against "$39/year, sign in to unlock" is the '
-      'sharpest single line available, and the positioning statement does not '
-      'reach for it.', {}))
+     ('It is the mainstream incumbent, and it charges $39 per user every year, '
+      'with an account required to unlock the software. Sealshot is $29.99 once '
+      '— so Snagit costs more in its first year than Sealshot costs ever, and '
+      'more again every year after. "Perpetual, no account, nothing leaves your '
+      'Mac" against "$39/year, sign in to unlock" is the sharpest single line '
+      'available, and the positioning statement does not reach for it.', {}))
 
-para('Shottr owns the cheap end at $12, so competing on price would be both '
+para('Shottr owns the cheap end at $12, and the price cut to $29.99 narrows '
+     'that gap without closing it — so competing on price is still both '
      'difficult and strategically weak. Sealshot earns its premium through '
      'privacy, encryption, automatic redaction, offline licensing and a '
      'perpetual license.')
 
 para('Keep', style='Heading 3')
-bullet(('Founding: ', {'bold': True}), '$39, two Macs, 18 months of updates.')
-bullet(('1.0 onward: ', {'bold': True}), '$49, two Macs, 12 months of updates.')
-bullet(('Renewal: ', {'bold': True}), '$24, optional, another 12 months.')
+bullet(('Founding: ', {'bold': True}), '$14.99, three Macs, 18 months of updates.')
+bullet(('1.0 onward: ', {'bold': True}), '$29.99, three Macs, 12 months of updates.')
+bullet(('Renewal: ', {'bold': True}), '$17.99, optional, another 12 months — 40% off a new license.')
 
 para('Add no further discounts. End the founding offer on the actual 1.0 date — '
      'the endsAt in src/config/promos.ts is still a placeholder, and selling '
-     '"founding" after 1.0 ships means charging $39 for a tier that no longer '
+     '"founding" after 1.0 ships means charging $14.99 for a tier that no longer '
      'exists.')
 
 para('Two gaps on the buy page, both now closed', style='Heading 3')
-bullet('"One user, two Macs, commercial use included" was buried in the FAQ and '
+bullet('"One user, three Macs, commercial use included" was buried in the FAQ and '
        'is now on the buy page, where a buyer looks for terms.')
 bullet('Refund terms did not exist. CleanShot publishes a 30-day guarantee at '
        'the same price; /refunds now states the same, linked from the buy page '
@@ -294,7 +295,9 @@ para('3. The paid founding cohort — 3 to 4 weeks', style='Heading 2')
 
 para('Recruit 20–30 people by hand:')
 bullet('5 complimentary design partners, chosen for feedback quality.')
-bullet('15–25 paying the real $39 founding price.')
+bullet('15–25 paying the real $14.99 founding price. At the new price that is '
+       '$225–375 in cohort revenue rather than $585–975 — the cohort is for '
+       'evidence that people will pay at all, not for money.')
 bullet('At least five buyers who are not friends or close contacts.')
 
 para('Recruit from Mac developers and indie app makers, technical support and '
@@ -374,8 +377,10 @@ para('Article targets: "How to redact a screenshot safely on Mac", "Why '
      'from bug-report screenshots".')
 
 rich(('No paid ads yet. ', {'bold': True}),
-     ('A $39 perpetual product cannot absorb much acquisition cost before you '
-      'understand conversion and renewal behavior.', {}))
+     ('A $29.99 perpetual product cannot absorb much acquisition cost before you '
+      'understand conversion and renewal behavior — and at $14.99 founding, a '
+      'paid click costing more than a few dollars needs a conversion rate no new '
+      'product has evidence for.', {}))
 
 # ═══════════════════════════════════════════════════════════════ 6 measurement
 para('6. Measure the business without compromising the product', style='Heading 2')

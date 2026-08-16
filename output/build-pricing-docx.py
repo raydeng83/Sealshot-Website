@@ -153,9 +153,9 @@ para('2. Pricing', style='Heading 2')
 table(
     ['Offer', 'Price', 'What it covers'],
     [
-        ['Individual license', '$49', 'One user, two Macs, commercial use, 12 months of updates'],
-        ['Founding license', '$39', 'One user, two Macs, 18 months of updates. Available to buyers before the v1.0 release only'],
-        ['Update renewal', '$24', 'Another 12 months of updates. Entirely optional'],
+        ['Individual license', '$29.99', 'One user, three Macs, commercial use, 12 months of updates'],
+        ['Founding license', '$14.99', 'One user, three Macs, 18 months of updates. Available to buyers before the v1.0 release only'],
+        ['Update renewal', '$17.99', 'Another 12 months of updates. Entirely optional'],
         ['Business volume', 'Contact us', 'Offline organization license, contracted seat count, one invoice'],
     ],
     widths=[1.5, 0.85, 4.3], right_align=(1,),
@@ -166,9 +166,15 @@ para('Prices are in USD, one-time unless stated. Tax is calculated at checkout.'
 para('Volume pricing', style='Heading 3')
 table(
     ['Users', 'Price per user'],
-    [['1–9', '$49'], ['10–24', '$44'], ['25–99', '$39'], ['100 or more', 'Custom quote']],
+    [['1–9', '$29.99'], ['10–24', '$26.99'], ['25–99', '$23.99'],
+     ['100 or more', 'Custom quote']],
     widths=[1.6, 1.6], right_align=(1,),
 )
+para('Re-derived from the $29.99 individual price: 10% off at 10 users, 20% at '
+     '25. The previous ladder ($44 / $39) came from a $49 price and, once '
+     'individual dropped, sat above it — a 25-seat customer would have paid more '
+     'per seat than a single buyer.',
+     italic=True, color=MUTED, size=9.5)
 
 # ======================= 3. PERPETUAL vs UPDATES =======================
 para('3. Perpetual access and the update window', style='Heading 2')
@@ -236,7 +242,7 @@ code_block([
     'App access:       Perpetual',
     'Updates through:  2028-09-15',
     'Users:            1',
-    'Macs per user:    2',
+    'Macs per user:    3',
     '',
     'This license does not expire. It permits use of every Sealshot',
     'release whose entitlement date is on or before 2028-09-15.',
@@ -259,7 +265,7 @@ code_block([
     'App access:       Perpetual',
     'Updates through:  2028-09-15',
     'User seats:       10',
-    'Macs per user:    2',
+    'Macs per user:    3',
     '',
     'This is an offline, organization-wide license for up to 10 users.',
     'Sealshot does not transmit installation or usage information.',
@@ -281,7 +287,7 @@ for i, step in enumerate([
 rich('Activation is ', ('offline', {'bold': True}),
      '. There is no activation server, no device fingerprinting, and no '
      'registration. Sealshot never reports that you installed it.')
-para('Use the same file on both of your Macs.')
+para('Use the same file on each of your Macs.')
 
 # ======================= 8. RENEWAL =======================
 para('8. Renewing your update window', style='Heading 2')
@@ -344,7 +350,7 @@ para('10. Business volume licensing', style='Heading 2')
 para('For organizations, Sealshot is licensed per named user under a contract, '
      'with no activation infrastructure — consistent with a product that '
      'transmits nothing.')
-bullet('one named user, on up to two Macs.', bold_lead='A seat is ')
+bullet('one named user, on up to three Macs.', bold_lead='A seat is ')
 bullet('containing the organization name, seat count, and update date.',
        bold_lead='You receive one signed license file ')
 bullet('internally; there is nothing to deploy per machine.',
@@ -382,7 +388,7 @@ faq = [
      'No. You buy the license once. Renewal buys another year of new releases '
      'and is entirely optional.'),
     ('How many Macs can I use?',
-     'Two, for your own use. Install the same license file on both.'),
+     'Three, for your own use. Install the same license file on each.'),
     ('Can I use Sealshot commercially?',
      'Yes. The individual license includes commercial use.'),
     ('What if I lose my license file?',
