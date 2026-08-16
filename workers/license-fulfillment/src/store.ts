@@ -98,7 +98,7 @@ export type LicenseRecord = {
   /**
    * Set when the purchase behind this licence was refunded. The renewal path
    * refuses to extend a refunded licence — without this, a refunded customer
-   * could buy a $24 renewal and have their revoked licence quietly reinstated
+   * could buy a renewal and have their revoked licence quietly reinstated
    * with a fresh window.
    *
    * Note this does NOT revoke anything by itself. Revocation means publishing

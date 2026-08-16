@@ -56,9 +56,16 @@ EMAIL_FROM = "Sealshot <onboarding@resend.dev>"
 # loses 6 months, and a renewal mints a SECOND licence instead of extending
 # the first. Nothing fails loudly; see the unmapped-product alert in Task 12.
 #
-#   e8d2217b… Sealshot            $49  new,     12 months
-#   d5a0e9c3… Sealshot Founding   $39  new,     18 months
-#   877dd2e8… Sealshot Renewal    $24  renewal, 12 months
+#   e8d2217b… Sealshot            new,     12 months — site price $29.99
+#   d5a0e9c3… Sealshot Founding   new,     18 months — site price $14.99
+#   877dd2e8… Sealshot Renewal    renewal, 12 months — site price $17.99
+#
+# ⚠️ Those amounts are what src/config/promos.ts ADVERTISES, not what these
+# products charge: the sandbox products are still priced at the old $49/$39/$24.
+# Polar decides the charge — neither this file nor the site does — so all three
+# have to be re-priced in Polar (or recreated at these amounts in production)
+# before any real sale, or the page advertises one price and the checkout takes
+# another. Nothing in this repo can detect that mismatch.
 PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","months":12},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","months":18},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","months":12}}'
 # The From subdomain is send-only, so replies need somewhere real to land.
 REPLY_TO = "support@seal-shot.com"
