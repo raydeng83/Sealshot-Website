@@ -35,12 +35,13 @@ export const CHECKOUT_IS_SANDBOX = true;
  * are still at the old $39/$49, so a sandbox test purchase will not match the page
  * until the production products are created at these amounts.
  */
-export const REGULAR_PRICE_CENTS = 2499;
+export const REGULAR_PRICE_CENTS = 2999;
 
 /**
- * NOT UPDATED with the price cut, and it no longer makes sense: renewal at $24 is
- * within a penny of a whole new regular license at $24.99. Needs a decision before
- * /renew reads coherently — roughly half of regular would be $12.49.
+ * Renewal is 80% of a regular license, which is the part still worth a look: it
+ * buys 12 more months of updates where the same $24 as a new license buys the
+ * license too. It was incoherent at the old $24.99 regular (a penny apart) and is
+ * merely close now, so this is the number to revisit if renewals do not convert.
  */
 export const RENEWAL_PRICE_CENTS = 2400;
 
@@ -79,7 +80,7 @@ export const OFFERS: Offer[] = [
     label: 'Founding price',
     checkoutUrl:
       'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_TYsHg17rjvhPYrCXOVtDSYKXLC1c9hZvSaCIm4W9y7y/redirect',
-    priceCents: 1199,
+    priceCents: 1499,
     updateMonths: 18,
     startsAt: '2026-08-01T00:00:00Z',
     // TODO: this is a PLACEHOLDER. The founding tier is for buyers before the

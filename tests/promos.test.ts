@@ -15,7 +15,7 @@ describe('activeOffer', () => {
   it('returns the founding offer inside its window', () => {
     const o = activeOffer(new Date('2026-09-01T00:00:00Z'));
     expect(o?.id).toBe('founding');
-    expect(o?.priceCents).toBe(1199);
+    expect(o?.priceCents).toBe(1499);
     expect(o?.updateMonths).toBe(18);
   });
   it('returns null before the window', () => {
@@ -36,7 +36,7 @@ describe('formatUSD', () => {
 
 describe('prices', () => {
   it('match the v1.0 pricing document', () => {
-    expect(REGULAR_PRICE_CENTS).toBe(2499);
+    expect(REGULAR_PRICE_CENTS).toBe(2999);
     expect(RENEWAL_PRICE_CENTS).toBe(2400);   // see the note in promos.ts
     expect(REGULAR_UPDATE_MONTHS).toBe(12);
   });
