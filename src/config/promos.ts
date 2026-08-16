@@ -51,6 +51,13 @@ export const RENEWAL_PRICE_CENTS = Math.floor(REGULAR_PRICE_CENTS * 0.6);
 /** Months of updates included with the regular license. */
 export const REGULAR_UPDATE_MONTHS = 12;
 
+/**
+ * Months a renewal adds. Same number as the regular license today, but a
+ * different fact — this one must match the renewal entry in the Worker's
+ * PRODUCT_MAP, which is what actually extends the window.
+ */
+export const RENEWAL_UPDATE_MONTHS = 12;
+
 /** Full-price checkout — the fallback when no time-limited offer is running. */
 export const BASE_CHECKOUT_URL =
   'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_FGg6cR9hQvHj6Ojx9XAZKx4zYUg4iQWklT8V52uIGai/redirect';

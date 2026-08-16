@@ -102,8 +102,9 @@ exportable.** Your data is never held hostage.
 No. [Buying Sealshot](/buy/) is a **one-time purchase** of a perpetual
 license — the app never stops working, and nothing renews automatically.
 Your purchase includes an update window (new versions released during it
-are yours forever); when it ends you can optionally renew to keep
-receiving updates, or simply keep using what you have.
+are yours forever); when it ends you can optionally
+[renew](/renew/) to keep receiving updates, or simply keep using what you
+have.
 
 ### What exactly do I get when I buy?
 
@@ -161,14 +162,16 @@ we'll reissue yours — your purchase and your update window don't change.
 
 Nothing, until you want a newer version. The app — and every version
 released during your window — **keeps working forever**. Renewing from
-**Settings → License** (or the [buy page](/buy/)) is entirely optional
-and extends your window for another year of updates.
+**Settings → License** (or the [renewal page](/renew/)) is entirely
+optional and extends your window for another year of updates. Renewing
+early loses you nothing: unused time is added on top of what you have.
 
 ### What if I install a version newer than my license covers?
 
 New captures and recordings pause, and everything you've captured stays
-fully viewable, editable, and exportable. To keep capturing, either renew
-your updates or go back to the newest version your license covers.
+fully viewable, editable, and exportable. To keep capturing, either
+[renew your updates](/renew/) or go back to the newest version your
+license covers.
 
 ### Can I use an Individual license for work?
 
