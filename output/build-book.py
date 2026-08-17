@@ -161,6 +161,7 @@ page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <style>
   :root {{ --ink:#0e1524; --muted:#4f5a72; --faint:#7f8aa1; --accent:#c2410c;
            --line:#e2e6ee; --soft:#f4f6f9;
+           --list-indent: 40px;
            --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
            --mono:ui-monospace,"SF Mono",Menlo,monospace; }}
   @page {{ size: letter; margin: 22mm 18mm 20mm;
@@ -173,7 +174,32 @@ page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
   * {{ box-sizing: border-box; }}
   body {{ font: 10.5px/1.55 var(--sans); color: var(--ink); margin: 0; }}
   a {{ color: var(--accent); text-decoration: none; }}
-  img {{ max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }}
+  /* Screenshots are staged at 1600px, so max-width:100% made every one of them
+     span the full 176mm text column — a menu-bar detail printed as wide as the
+     page. Capped and centred instead. The height cap is not redundant: three of
+     the screenshots are portrait (up to 1:1.84), and width alone would give them
+     a 239mm height on a 237mm page.
+
+     A length, not a percentage: several screenshots appear both at chapter level
+     and inside a numbered step, and 74% resolved against the list item's narrower
+     measure — the same screenshot printed 503px wide in one chapter and 474px in
+     another. */
+  img {{ display: block; max-width: 130mm; max-height: 118mm; height: auto;
+         margin: 1.15em auto; border: 1px solid var(--line); border-radius: 6px; }}
+  /* Declared at the UA default so no list reflows — it exists so the rule below
+     can reference the same number. */
+  ol, ul {{ padding-inline-start: var(--list-indent); }}
+  /* A figure inside a numbered step centres on the step's measure, which leaves
+     it half an indent right of every other figure on the page. Pulled back so it
+     centres on the column: the same screenshot appears both ways in this book, and
+     the two should not sit in different places. Corrects one level of nesting,
+     which is all the docs use.
+
+     A transform rather than a negative start margin: that margin replaces the
+     `auto` from the shorthand above, so the image stops being centred at all and
+     slams into the left edge. This shifts the painted box and leaves layout —
+     and therefore pagination — untouched. */
+  li img {{ transform: translateX(calc(var(--list-indent) / -2)); }}
   code {{ font: 9.5px var(--mono); background: var(--soft); padding: 1px 4px; border-radius: 3px; }}
   kbd {{ font: 9.5px var(--mono); background: var(--soft); border:1px solid var(--line); border-bottom-width:2px; border-radius:3px; padding:0 4px; }}
   table {{ border-collapse: collapse; width: 100%; margin: 8px 0; }}
@@ -189,7 +215,7 @@ page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
   .starlight-aside__title {{ font-weight: 700; font-size: 10px; margin-bottom: 3px; display:flex; gap:4px; align-items:center; }}
   .starlight-aside__title svg {{ width: 11px; height: 11px; }}
   .cover {{ page: cover; text-align: center; padding-top: 140px; }}
-  .cover img {{ width: 76px; border: 0; }}
+  .cover img {{ width: 76px; max-width: none; max-height: none; border: 0; margin: 0 auto; }}
   .cover .kicker {{ color: var(--accent); font-weight: 700; font-size: 10px; letter-spacing: .1em; margin-top: 42px; }}
   .cover h1 {{ font-size: 40px; margin: 8px 0 6px; }}
   .cover .sub {{ font-size: 15px; color: var(--muted); }}
