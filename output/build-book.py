@@ -73,6 +73,7 @@ SECTIONS = [
     ]),
     ('Reference', ['docs/faq']),
     ('Release history', [
+        'docs/changelog/v0-7-5', 'docs/changelog/v0-7-4',
         'docs/changelog/v0-7-3', 'docs/changelog/v0-7-2', 'docs/changelog/v0-7-1',
         'docs/changelog/v0-7-0', 'docs/changelog/v0-6-0', 'docs/changelog/v0-5-1',
         'docs/changelog/v0-5-0', 'docs/changelog/v0-4-0',
@@ -90,6 +91,13 @@ REVISIONS = [
     ('Jul 31, 2026', 'Getting started replaced by a three-page Quickstart — install and permissions, the parts of Sealshot, your first capture. FAQ grouped into sections with licensing and purchase answers expanded.'),
     ('Aug 3, 2026', 'Documentation reconciled with release 0.7.3: Lock when Sealshot starts, the license ID and Renew card in Settings, annotations that extend past the edge of an image, and an FAQ entry for the new license-file format, which is not compatible in either direction. Mac App Store references removed — there is one build. US English throughout.'),
     ('Aug 14, 2026', 'Network activity corrected everywhere to three downloads, not two, after the revocation blocklist shipped: the update check, the revoked-license list, and the optional redaction model. The first two follow the "Automatically check for updates" setting. Privacy policy scoped its license-ID claim and disclosed the renewal link. Third consolidated PDF edition (snapshot of release 0.7.3).'),
+    ('Aug 17, 2026', 'Releases 0.7.4 and 0.7.5 added to the release history — the '
+     'background-effort fix for recording descriptions on Intel Macs, and the floating '
+     'capture window. FAQ gained the founding-license answers: what happens to a '
+     'founding license when 1.0 ships (nothing), and whether the founding price can '
+     'still be had afterwards (no). The renewal answers now link the renewal page '
+     'rather than the buy page, and state that renewing early loses no unused time. '
+     'Fourth consolidated PDF edition (snapshot of release 0.7.5).'),
 ]
 
 def extract(slug):
@@ -126,7 +134,10 @@ def extract(slug):
                   r'src="/print/img/\1.jpg"', body)
     return title, desc, body
 
-today = 'July 29, 2026'
+# The day this edition was printed. Computed, because it is the one line on the
+# cover nobody remembers to change: the third edition shipped in August still
+# claiming a snapshot date of July 29.
+today = datetime.date.today().strftime('%B %-d, %Y')
 toc, chapters = [], []
 for sec_title, slugs in SECTIONS:
     sec_id = 'sec-' + re.sub(r'[^a-z]+', '-', sec_title.lower())
@@ -218,7 +229,7 @@ page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
   <div class="sub">Capture, edit, redact, organize, and share — privately on your Mac.</div>
   <div class="rule"></div>
   <div class="meta">Guide + workflows + tips + FAQ + release history<br>
-  Documentation snapshot: {today} | Current release: 0.7.3</div>
+  Documentation snapshot: {today} | Current release: 0.7.5</div>
   <div class="blurb">Sealshot is a privacy-first screenshot and screen-recording app for macOS.
   Capture, OCR, redaction, AI metadata, and search all run on the device.</div>
 </div>
