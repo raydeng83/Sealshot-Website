@@ -28,6 +28,11 @@ const { title, description, noindex = false, hideOffer = false } = Astro.props;
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="icon" href="/favicon.png" />
+    {/* The docs get one from Starlight; these pages had none. Built from the
+        pathname only, so the query strings we ourselves add — /support/?sent=1,
+        /renew/?…, anything UTM-tagged from a campaign — all collapse to one
+        canonical URL instead of looking like separate pages. */}
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL('/og-image.png', Astro.site)} />

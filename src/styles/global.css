@@ -663,7 +663,10 @@ h1, h2, h3 {
   gap: 2rem;
 }
 
-.site-footer h3 {
+/* h2, not h3: these are the footer's own top-level sections. As h3 they broke
+   the document outline on every page whose body has no h2 — /buy, /compare and
+   /download jumped straight from h1 to h3. */
+.site-footer h2 {
   font-size: 0.95rem;
   color: var(--slate-600);
 }
