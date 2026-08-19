@@ -190,6 +190,7 @@ export default {
     let licenseId = existing?.licenseId ?? crypto.randomUUID().toUpperCase();
     let updatesThrough = addMonthsUTC(purchaseDay, terms.months);
     let name = order.name;
+    let addressLines = order.addressLines;
     let licenseType: 'individual' | 'business-volume' = 'individual';
     let seats = 1;
 
@@ -202,6 +203,11 @@ export default {
         licenseId = target.licenseId;
         updatesThrough = renewalThrough(target.rec.updatesThrough, purchaseDay, terms.months);
         name = target.rec.name;
+        // Same rule as the name above: a renewal replaces the file, not the
+        // owner, so it must not quietly rewrite who the license says it belongs
+        // to. Falls back to this order's address for licenses issued before the
+        // field existed, which is how they acquire one.
+        addressLines = target.rec.address ?? addressLines;
         licenseType = target.rec.licenseType;
         seats = target.rec.seats;
 
@@ -246,6 +252,10 @@ export default {
       licenseId,
       email: order.email,
       name,
+      // Frozen with the rest of the record: a retry re-issues identical bytes,
+      // and an address that changed at Polar between attempts cannot produce two
+      // different files for one purchase.
+      ...(existing?.address ?? addressLines ? { address: existing?.address ?? addressLines } : {}),
       issued: purchaseDay,
       // Reuse the frozen window on a redelivery. Recomputing it would read a
       // license record an earlier attempt may already have advanced, extending

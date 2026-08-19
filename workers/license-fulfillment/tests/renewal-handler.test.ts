@@ -51,7 +51,7 @@ async function signedRequest(body: string, id = 'msg_1') {
 
 function order(opts: {
   id?: string; productId: string; email?: string; name?: string;
-  referenceId?: string; paidAt?: string;
+  referenceId?: string; paidAt?: string; address?: Record<string, string>;
 }) {
   return JSON.stringify({
     type: 'order.paid',
@@ -60,6 +60,7 @@ function order(opts: {
       created_at: opts.paidAt ?? '2026-07-20T10:00:00Z',
       product_id: opts.productId,
       customer: { email: opts.email ?? 'jane@example.com', name: opts.name ?? 'Jane Doe' },
+      ...(opts.address ? { billing_address: opts.address } : {}),
       ...(opts.referenceId ? { metadata: { reference_id: opts.referenceId } } : {}),
     },
   });
@@ -117,6 +118,25 @@ describe('new purchases', () => {
     const { env, sent } = makeEnv();
     await post(env, order({ productId: PROD_FOUNDING }));
     expect(windowInFile(sent[0])).toBe('2028-01-20');
+  });
+
+  it('states the billing address in the delivered file, and keeps it on the license', async () => {
+    const { env, sent } = makeEnv();
+    await post(env, order({
+      productId: PROD_NEW,
+      address: { line1: '1 High St', city: 'Boston', state: 'MA', postal_code: '02110', country: 'US' },
+    }));
+    expect(sent[0]).toContain('Billing address:  1 High St,');
+    expect(sent[0]).toContain('                  Boston, MA 02110, US');
+    const rec = JSON.parse((await env.ORDERS.get('order:ord_1'))!);
+    expect((await getLicense(env.ORDERS, rec.licenseId))!.address)
+      .toEqual(['1 High St,', 'Boston, MA 02110, US']);
+  });
+
+  it('omits the field entirely when Polar sends no address', async () => {
+    const { env, sent } = makeEnv();
+    await post(env, order({ productId: PROD_NEW }));
+    expect(sent[0]).not.toContain('Billing address');
   });
 
   it('does not record a license when delivery fails', async () => {
@@ -179,6 +199,33 @@ describe('renewals', () => {
       name: 'J. Doe-Smith (new card)', paidAt: '2027-06-01T00:00:00Z',
     }));
     expect(sent[0]).toContain('Licensed to:      Jane Doe');
+  });
+
+  it('carries the billing address from the license, not the renewing order', async () => {
+    // Same reason as the name: a renewal replaces the file, not the owner. A
+    // buyer who moved house still holds the license the original states.
+    const { env, sent } = await withLicense('2027-07-20', {
+      address: ['1 High St,', 'Boston, MA 02110, US'],
+    });
+    await post(env, order({
+      id: 'ord_2', productId: PROD_RENEWAL, referenceId: 'LIC-1',
+      paidAt: '2027-06-01T00:00:00Z',
+      address: { line1: '9 New Rd', city: 'Cambridge', state: 'MA', country: 'US' },
+    }));
+    expect(sent[0]).toContain('Billing address:  1 High St,');
+    expect(sent[0]).not.toContain('9 New Rd');
+  });
+
+  it('gives a pre-address license its address from the renewing order', async () => {
+    // Licenses issued before the field exists have none. Taking the renewal's
+    // address is how they acquire one, and it cannot overwrite anything.
+    const { env, sent } = await withLicense();
+    await post(env, order({
+      id: 'ord_2', productId: PROD_RENEWAL, referenceId: 'LIC-1',
+      paidAt: '2027-06-01T00:00:00Z',
+      address: { line1: '9 New Rd', city: 'Cambridge', state: 'MA', country: 'US' },
+    }));
+    expect(sent[0]).toContain('Billing address:  9 New Rd,');
   });
 
   it('is idempotent on a plain redelivery of a pending order', async () => {

@@ -79,15 +79,34 @@ export function buildPreamble(p: {
   updatesThrough: string;
   seats: number;
   licenseType: LicenseTypeSlug;
+  /**
+   * Billing address, already normalized to one array entry per rendered line
+   * (see normalizeAddress in polar.ts). Omitted entirely when absent, which is
+   * what keeps the byte parity above honest: with no address the output is
+   * identical to the Swift template and the shared golden fixtures still match.
+   *
+   * Only licenses minted from a Polar order carry it. A licensegen-issued
+   * volume license has no single billing address to state, and the app verifies
+   * whatever preamble the file contains — it hashes the text rather than
+   * rebuilding it — so the extra field cannot make a license fail to activate.
+   */
+  addressLines?: string[];
 }): string {
   const field = (label: string, value: string) =>
     label.padEnd(Math.max(label.length, LABEL_COLUMN), ' ') + value;
+  // Continuation lines sit under the value, not the label, so the address reads
+  // as one block rather than several unlabelled fields.
+  const addressBlock = (lines: string[]) => [
+    field('Billing address:', lines[0]),
+    ...lines.slice(1).map((l) => ' '.repeat(LABEL_COLUMN) + l),
+  ];
   const isVolume = p.licenseType === 'business-volume';
   const lines = [
     'Sealshot License',
     '='.repeat(16),
     field('Licensed to:', p.name),
     field(isVolume ? 'Purchaser email:' : 'Email:', p.email),
+    ...(p.addressLines?.length ? addressBlock(p.addressLines) : []),
     field('License ID:', p.id),
     field('License type:', TYPE_LABEL[p.licenseType]),
     field('License issued:', p.issued),

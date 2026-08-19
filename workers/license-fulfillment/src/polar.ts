@@ -1,4 +1,5 @@
 import { utf8ToBytes } from './base64';
+import { normalizeLine } from './sanitize';
 
 function timingSafeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
@@ -58,6 +59,8 @@ export type ParsedOrder = {
   productId: string;
   /** The license this order renews, when the renewal page supplied one. */
   referenceId?: string;
+  /** Billing address as rendered preamble lines; absent if Polar sent none. */
+  addressLines?: string[];
 };
 
 /**
@@ -77,6 +80,32 @@ function extractReferenceId(d: any): string | undefined {
   return typeof raw === 'string' && raw.trim() ? raw.trim() : undefined;
 }
 
+/**
+ * Render Polar's billing address into preamble lines.
+ *
+ * Two lines at most, because that is what an address needs to be legible in a
+ * fixed-column block: the street, then everything that locates it.
+ *
+ *   1725 Revere Beach Pkwy,
+ *   Everett, MA 02149, US
+ *
+ * Read from several candidate paths on purpose. Polar has carried the address on
+ * both the order and its customer across API versions, and an order arriving
+ * without one must not cost the buyer their license — an absent or unrecognised
+ * shape yields undefined and the field is simply left out.
+ */
+export function normalizeAddress(d: any): string[] | undefined {
+  const a = d?.billing_address ?? d?.customer?.billing_address ?? d?.customer_billing_address;
+  if (!a || typeof a !== 'object') return undefined;
+  const part = (v: unknown) => (typeof v === 'string' ? normalizeLine(v) : '');
+  const street = [part(a.line1), part(a.line2)].filter(Boolean).join(', ');
+  const region = [part(a.state), part(a.postal_code)].filter(Boolean).join(' ');
+  const locality = [part(a.city), region, part(a.country)].filter(Boolean).join(', ');
+  if (street && locality) return [street + ',', locality];
+  const single = street || locality;
+  return single ? [single] : undefined;
+}
+
 export function parseOrderPaid(rawBody: string): ParsedOrder | null {
   let evt: any;
   try { evt = JSON.parse(rawBody); } catch { return null; }
@@ -90,7 +119,11 @@ export function parseOrderPaid(rawBody: string): ParsedOrder | null {
   // Absent product id resolves to the default terms rather than rejecting the
   // order — a buyer who paid must still get a license.
   const productId = d.product_id ?? d.product?.id ?? '';
-  return { orderId, email, name, paidAtISO, productId, referenceId: extractReferenceId(d) };
+  return {
+    orderId, email, name, paidAtISO, productId,
+    referenceId: extractReferenceId(d),
+    addressLines: normalizeAddress(d),
+  };
 }
 
 /**

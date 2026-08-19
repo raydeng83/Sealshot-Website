@@ -10,6 +10,8 @@ export type LicenseInput = {
   seats: number;
   id: string;             // uppercase UUID
   licenseType: LicenseTypeSlug;
+  /** Rendered billing-address lines, or absent. Preamble only — see below. */
+  addressLines?: string[];
 };
 
 /** yyyy-MM-dd (UTC) + N months, deterministic (JS Date month rollover). */
@@ -26,7 +28,7 @@ export async function issueLicense(input: LicenseInput, privateKeyBytes: Uint8Ar
   const preamble = buildPreamble({
     name: input.name, email: input.email, id: input.id,
     issued: input.issued, updatesThrough: input.updatesThrough, seats: input.seats,
-    licenseType: input.licenseType,
+    licenseType: input.licenseType, addressLines: input.addressLines,
   });
   // Hash the CANONICALIZED preamble (matches licensegen main.swift:197).
   const hash = await textHash(canonicalize(preamble));
@@ -37,6 +39,10 @@ export async function issueLicense(input: LicenseInput, privateKeyBytes: Uint8Ar
   // (LicenseFormat.swift:33) — but the FIELD NAMES must match exactly.
   // `licenseType` replaced the unused `edition`, and the app decodes it as
   // non-optional: omit it and the payload fails to decode at all.
+  // The address is deliberately NOT in the payload. textHash covers the preamble
+  // text, so the address is already tamper-evident; adding a key here would
+  // change the signed bytes for a value the shipped app cannot display anyway
+  // (it reads identity from the payload, and 0.7.5 has no address field).
   const payload = {
     email: input.email,
     id: input.id,

@@ -78,14 +78,16 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       Payments are handled by <a href="https://polar.sh" rel="nofollow">Polar</a>,
       our merchant of record. Your card details go to Polar and its payment
       processor and never reach us — we never see or store them. Polar holds
-      your name, email address, and invoice history as the seller of record.
+      your name, billing address, email address, and invoice history as the
+      seller of record, and passes the first three to us so your license can
+      name its owner.
     </p>
     <p>
       To deliver your license and let you renew it later, we store the
       following ourselves, in Cloudflare's key-value storage:
     </p>
     <ul>
-      <li>your name and email address, as given at checkout</li>
+      <li>your name, billing address, and email address, as given at checkout</li>
       <li>your license ID, and the dates it was issued and covers updates through</li>
       <li>whether it is an individual or volume license, and how many users it covers</li>
       <li>whether delivery succeeded, so a failed send can be retried</li>
@@ -94,10 +96,17 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       Your license file is emailed to you through
       <a href="https://resend.com" rel="nofollow">Resend</a>, our transactional
       email provider, which holds the message — including the attached license
-      file, in which your name and email appear as readable text — for a limited
-      period. We use these records only to deliver your license, to honor a
+      file, in which your name, billing address, and email appear as readable
+      text — for a limited period. We use these records only to deliver your license, to honor a
       renewal, and to answer support requests about your purchase. They are
       never sold, shared, or used for marketing.
+    </p>
+    <p>
+      Your license names you, and now also states the billing address you bought
+      it with. That is deliberate: a license file is personal, and one that
+      identifies its owner is one you are less likely to pass around. It also
+      means the file is worth keeping to yourself — treat it like a receipt, not
+      something to attach to a public bug report.
     </p>
     <p>
       We keep them for as long as the license exists, because a renewal has to
