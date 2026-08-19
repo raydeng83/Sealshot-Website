@@ -1,9 +1,24 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import sitemap from '@astrojs/sitemap';
+
+/**
+ * Pages that carry `noindex` and must therefore stay out of the sitemap.
+ *
+ * The sitemap invites indexing; the page forbids it. Search engines honour the
+ * page, so nothing leaked — but Search Console reports every such URL as
+ * "Excluded by 'noindex' tag", which reads like a fault for as long as it is
+ * listed. tests/sitemap.test.ts fails if this list and the built pages disagree.
+ */
+const NOINDEX = ['/thanks/', '/subscribed/'];
 
 export default defineConfig({
   site: 'https://seal-shot.com',
   integrations: [
+    // Ours rather than Starlight's: it adds @astrojs/sitemap itself unless an
+    // integration by that name is already present, and its own config is empty
+    // for a single-language site — so this replaces nothing but the filter.
+    sitemap({ filter: (page) => !NOINDEX.some((p) => new URL(page).pathname === p) }),
     starlight({
       title: 'Sealshot',
       logo: { src: './src/assets/icon.png', alt: 'Sealshot' },

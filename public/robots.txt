@@ -1,0 +1,21 @@
+# Sealshot — https://seal-shot.com
+#
+# Everything is welcome, including AI crawlers. Someone asking an assistant for a
+# private, on-device screenshot tool for the Mac is exactly the person this site
+# is written for, and a crawler that cannot read the docs cannot answer them.
+#
+# This file also overrides Cloudflare's managed robots.txt, which was blocking
+# GPTBot, ClaudeBot, CCBot, Google-Extended, Applebot-Extended, Bytespider,
+# Amazonbot and meta-externalagent by default. That block was advisory only —
+# those user agents were never refused at the edge (checked 2026-08-18, all 200).
+# If Cloudflare's managed block reappends itself below, turn the setting off in
+# the dashboard: robots.txt alone cannot out-vote it.
+#
+# Content-Signal, per contentsignals.org: search, AI input (retrieval and
+# grounding) and AI training are all permitted.
+
+User-agent: *
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+Allow: /
+
+Sitemap: https://seal-shot.com/sitemap-index.xml
