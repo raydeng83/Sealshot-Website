@@ -24,6 +24,14 @@ export default defineConfig({
       logo: { src: './src/assets/icon.png', alt: 'Sealshot' },
       favicon: '/favicon.png',
       customCss: ['./src/styles/starlight.css'],
+      // Starlight emits no og:image, so every docs page — the most-linked pages
+      // on the site — shared as a bare link with no card. The marketing pages
+      // set these in SiteLayout; this is the same pair for the docs.
+      head: [
+        { tag: 'meta', attrs: { property: 'og:image', content: 'https://seal-shot.com/og-image.png' } },
+        { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
+        { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://seal-shot.com/og-image.png' } },
+      ],
       // Docs are light-only for now; both overrides together remove the
       // theme picker and pin data-theme. Delete both lines to restore
       // light/dark switching.

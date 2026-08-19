@@ -58,6 +58,22 @@ h1, h2, h3 {
   white-space: nowrap;
 }
 
+/* The geometry has to outrank component rules that style inputs by element name.
+   `.form-card input { width: 100% }` is (0,1,1) and sits later in this file, so
+   it beat both `.visually-hidden` (0,1,0) AND `input.visually-hidden` (0,1,1 —
+   a tie, decided by source order). That turned the /support honeypot into a
+   375px absolutely-positioned box and pushed the page 61px sideways on a phone,
+   with nothing visibly wrong because the field is clipped either way: the only
+   symptom was horizontal scroll.
+
+   Repeating the class makes this (0,2,0), which wins on class count whatever the
+   order. Bootstrap solves the same collision with !important; this keeps the
+   cascade honest instead. */
+.visually-hidden.visually-hidden {
+  width: 1px;
+  height: 1px;
+}
+
 .skip-link:focus {
   position: fixed;
   top: 1rem;
@@ -647,7 +663,10 @@ h1, h2, h3 {
   gap: 2rem;
 }
 
-.site-footer h3 {
+/* h2, not h3: these are the footer's own top-level sections. As h3 they broke
+   the document outline on every page whose body has no h2 — /buy, /compare and
+   /download jumped straight from h1 to h3. */
+.site-footer h2 {
   font-size: 0.95rem;
   color: var(--slate-600);
 }
