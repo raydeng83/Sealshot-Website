@@ -31,6 +31,16 @@ type = "ratelimit"
 namespace_id = "1001"
 simple = { limit = 10, period = 60 }
 
+# 5 support-form posts per IP per minute. Lower than the verify limit because a
+# human writing a bug report sends one, and because each post costs an email.
+# Absent binding degrades OPEN, same as above — a misconfiguration must not take
+# the only contact form on the site down.
+[[unsafe.bindings]]
+name = "FEEDBACK_LIMITER"
+type = "ratelimit"
+namespace_id = "1002"
+simple = { limit = 5, period = 60 }
+
 [vars]
 # Verified sending identity on mail.seal-shot.com (Resend; DNS added and
 # verified 2026-08-10). The subdomain is send-only — its MX exists purely to
@@ -69,6 +79,9 @@ EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
 PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","months":12},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","months":18},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","months":12}}'
 # The From subdomain is send-only, so replies need somewhere real to land.
 REPLY_TO = "support@seal-shot.com"
+# Where the /support form delivers. Same inbox as REPLY_TO today; separate so a
+# feedback firehose can be pointed elsewhere without touching license replies.
+FEEDBACK_TO = "support@seal-shot.com"
 # Where fulfilment alerts are emailed. Must be an address the current
 # EMAIL_FROM can actually reach — now any address, since EMAIL_FROM is a
 # verified domain. Under the test sender this had to be the Resend account

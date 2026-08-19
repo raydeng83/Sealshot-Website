@@ -15,3 +15,11 @@ export const LICENSE_WORKER_ORIGIN = 'https://license-fulfillment.ray-deng83.wor
 
 /** Confirms an {email, licenseId} pair before checkout. See src/verify.ts. */
 export const VERIFY_URL = `${LICENSE_WORKER_ORIGIN}/renew/verify`;
+
+/**
+ * Where the /support form posts. Ours rather than a third party's, and a plain
+ * form `action` rather than a fetch: the page then works with JavaScript off,
+ * and there is no key to forget to set — which is exactly how the previous
+ * arrangement failed, silently, in production.
+ */
+export const FEEDBACK_URL = `${LICENSE_WORKER_ORIGIN}/feedback`;

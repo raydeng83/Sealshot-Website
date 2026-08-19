@@ -635,8 +635,13 @@ the account owner might buy.**
         lost, and it is the one message that has to arrive. If the policy is
         later tightened as the Phase 3 note suggests, unaligned becomes
         **rejected** and this stops being a soft failure
-  - [ ] `PUBLIC_WEB3FORMS_KEY` — without it `/support` shows "the feedback
-        form isn't wired up in this build"
+  - [x] ~~`PUBLIC_WEB3FORMS_KEY`~~ — **no longer needed.** The key was never
+        set, so the live `/support` page showed "the feedback form isn't wired up
+        in this build" and fell back to a mailto that Cloudflare's email
+        obfuscation renders as `[email protected]` without JavaScript: the page had
+        no working contact path at all. The form now posts to the Worker's
+        `/feedback` endpoint, which emails support@ via Resend. Nothing to
+        configure, so nothing to forget
 - [ ] Redeploy, then **verify both forms render and submit while the site is
       still gated** — that's what the private preview is for
 - [ ] **Do not auto-add buyers to the marketing list.** Polar collects email

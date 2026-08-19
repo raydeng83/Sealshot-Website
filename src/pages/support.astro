@@ -1,7 +1,22 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import { FEEDBACK_URL } from '../config/worker';
 
-const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
+/*
+  The form posts to our own Worker (workers/license-fulfillment/src/feedback.ts),
+  which emails support@ and answers with a 303 back here.
+
+  It used to post to Web3Forms behind an `import.meta.env.PUBLIC_WEB3FORMS_KEY`
+  check — and that key was never set in production, so the live page showed "the
+  feedback form isn't wired up in this build" and offered a mailto instead. Behind
+  Cloudflare's email obfuscation, which renders as [email protected] without
+  JavaScript. The support page had no working contact path at all, and nothing
+  failed loudly enough to say so. A hardcoded endpoint cannot regress that way.
+
+  Deliberately a plain `action`/`method` form with no JavaScript in the path: the
+  audience for a privacy-first tool includes people browsing with scripts off,
+  and this is the page they need most.
+*/
 ---
 
 <SiteLayout
@@ -13,71 +28,143 @@ const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY;
     <h1 id="support-title">Feedback &amp; support</h1>
     <p class="sub">
       Found a bug? Missing a feature? Check the <a href="/docs/faq/">FAQ</a>
-      first — and if that doesn't cover it, tell us below.
+      first — and if that doesn't cover it, tell us below. We read everything,
+      and usually reply within a day or two.
     </p>
 
     <div id="sent-notice" class="notice" role="status" hidden>
       Thanks — your feedback is on its way. We read everything.
     </div>
 
-    {
-      accessKey ? (
-        <form
-          class="form-card"
-          action="https://api.web3forms.com/submit"
-          method="post"
-        >
-          <input type="hidden" name="access_key" value={accessKey} />
-          <input
-            type="hidden"
-            name="redirect"
-            value={new URL('/support/?sent=1', Astro.site).href}
-          />
-          <input
-            type="checkbox"
-            name="botcheck"
-            class="visually-hidden"
-            tabindex="-1"
-            autocomplete="off"
-          />
+    {/* Nothing is stored on our side, so a failed send is a lost message. Saying
+        so, with the address, beats a page that claims success either way. */}
+    <div id="fail-notice" class="notice warn" role="alert" hidden>
+      That didn't send — something went wrong at our end, and we'd rather tell
+      you than lose it. Please email
+      <a href="mailto:support@seal-shot.com">support@seal-shot.com</a> instead.
+    </div>
 
-          <label for="fb-name">Name (optional)</label>
-          <input id="fb-name" type="text" name="name" />
+    <div id="slow-notice" class="notice warn" role="alert" hidden>
+      That's a lot of messages from one place in a short time. Wait a minute and
+      try again, or email
+      <a href="mailto:support@seal-shot.com">support@seal-shot.com</a>.
+    </div>
 
-          <label for="fb-email">Email (optional — only if you want a reply)</label>
-          <input id="fb-email" type="email" name="email" />
+    <form class="form-card" action={FEEDBACK_URL} method="post">
+      {/* Hidden from people, irresistible to form-fillers. */}
+      <input
+        type="checkbox"
+        name="botcheck"
+        class="visually-hidden"
+        tabindex="-1"
+        autocomplete="off"
+      />
 
-          <label for="fb-type">Type</label>
-          <select id="fb-type" name="type">
-            <option value="" disabled selected>Choose a type…</option>
-            <option>Bug report</option>
-            <option>Feature request</option>
-            <option>General feedback</option>
-          </select>
+      <label for="fb-name">Name (optional)</label>
+      <input id="fb-name" type="text" name="name" autocomplete="name" />
 
-          <label for="fb-message">Message</label>
-          <textarea id="fb-message" name="message" rows="6" required></textarea>
+      <label for="fb-email">Email (optional — only if you want a reply)</label>
+      <input id="fb-email" type="email" name="email" autocomplete="email" />
 
-          <button class="button" type="submit">
-            Send feedback
-          </button>
-          <p class="fine-print">
-            Delivered to our inbox via Web3Forms. Used only to respond to you —
-            see our <a href="/privacy/">privacy policy</a>.
-          </p>
-        </form>
-      ) : (
-        <p>
-          The feedback form isn't wired up in this build — email us instead at
-          <a href="mailto:support@seal-shot.com">support@seal-shot.com</a>.
-        </p>
-      )
-    }
+      <label for="fb-type">Type</label>
+      <select id="fb-type" name="type">
+        <option value="" disabled selected>Choose a type…</option>
+        <option>Bug report</option>
+        <option>Feature request</option>
+        <option>General feedback</option>
+      </select>
+
+      <label for="fb-message">Message</label>
+      <textarea id="fb-message" name="message" rows="6" required></textarea>
+
+      <button class="button" type="submit">
+        Send feedback
+      </button>
+      <p class="fine-print">
+        Delivered to our inbox by email. Used only to answer you — we store
+        nothing here, and it never reaches a marketing list. See our
+        <a href="/privacy/">privacy policy</a>. If this form ever fails you,
+        email <a href="mailto:support@seal-shot.com">support@seal-shot.com</a>
+        directly.
+      </p>
+    </form>
+
+    {/* Bug reports are better from inside the app: it can attach the diagnostics
+        we would otherwise have to ask for, and only if you agree to it. */}
+    <div class="routes">
+      <h2>Faster routes</h2>
+      <dl>
+        <dt>Reporting a bug</dt>
+        <dd>
+          Use <strong>Help ▸ Send Feedback…</strong> in Sealshot. It can attach a
+          diagnostics summary — your macOS and Sealshot versions and recent
+          errors, shown to you first, sent only if you agree — which usually
+          saves a round trip of questions.
+        </dd>
+
+        <dt>Your license didn't arrive</dt>
+        <dd>
+          Check the spam folder first: a message with an attachment from a new
+          sender often lands there. If it isn't there after ten minutes, email us
+          and we'll resend it — your purchase is recorded either way.
+        </dd>
+
+        <dt>You need a receipt or invoice</dt>
+        <dd>
+          Those are issued by <a href="https://polar.sh" rel="nofollow">Polar</a>,
+          our merchant of record, not by us — their customer portal can produce a
+          copy. Ask us if you can't find it and we'll point you at yours.
+        </dd>
+
+        <dt>Renewing, or a lapsed update window</dt>
+        <dd>
+          Everything you own keeps working regardless — see
+          <a href="/renew/">renewing your updates</a>, or the
+          <a href="/docs/faq/#buying-licensing--renewal">licensing FAQ</a>.
+        </dd>
+      </dl>
+    </div>
   </section>
 </SiteLayout>
 
-<script is:inline>
-  if (new URLSearchParams(location.search).get('sent') === '1') {
-    document.getElementById('sent-notice').hidden = false;
+<style>
+  .notice.warn {
+    background: #fef3c7;
+    color: #713f12;
   }
+
+  .routes {
+    max-width: 40rem;
+    margin: 3rem auto 0;
+  }
+
+  .routes h2 {
+    font-size: 1.25rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .routes dl {
+    margin: 0;
+  }
+
+  .routes dt {
+    font-weight: 600;
+    color: var(--navy-900);
+    margin-top: 1.1rem;
+  }
+
+  .routes dd {
+    margin: 0.2rem 0 0;
+    color: var(--slate-600);
+  }
+</style>
+
+<script is:inline>
+  // The Worker redirects back with one of these. `sent=1` is also what a
+  // honeypot submission gets, deliberately.
+  (() => {
+    const sent = new URLSearchParams(location.search).get('sent');
+    const id = { '1': 'sent-notice', '0': 'fail-notice', slow: 'slow-notice' }[sent];
+    if (id) document.getElementById(id).hidden = false;
+  })();
 </script>

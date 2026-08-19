@@ -25,9 +25,15 @@ export function hasUnsafeChars(s: string): boolean {
  * fixed-column text block that people read.
  */
 export function normalizeLine(s: string, maxLength = 96): string {
-  const stripped = [...s]
-    .filter((ch) => !UNSAFE_CHARS.test(ch))
-    .join('')
+  const stripped = s
+    // Bidi controls are invisible formatting: they leave no gap, so removing
+    // them is right.
+    .replace(/[\u202A-\u202E\u2066-\u2069]/gu, '')
+    // Every other control character is a SEPARATOR — a newline between two words
+    // means they were on different lines. Deleting it welds them together
+    // ("Jane\nBcc:" → "JaneBcc:"), which both misreads the input and hides the
+    // very thing worth seeing, so they become spaces and the run collapses.
+    .replace(/\p{Cc}/gu, ' ')
     .replace(/\s+/g, ' ')
     .trim();
   return stripped.length > maxLength ? stripped.slice(0, maxLength).trimEnd() : stripped;

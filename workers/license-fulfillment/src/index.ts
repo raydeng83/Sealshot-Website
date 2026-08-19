@@ -5,12 +5,13 @@ import {
 import { hasUnsafeChars } from './sanitize';
 import { deliverLicense, isDue, type FulfillEnv } from './fulfill';
 import { handleVerify, corsHeaders, type VerifyEnv } from './verify';
+import { handleFeedback, type FeedbackEnv } from './feedback';
 import { resolveProduct, renewalThrough, isMappedProduct } from './product';
 import { resolveRenewalTarget } from './renewal';
 import { addMonthsUTC } from './license';
 import { alert } from './alert';
 
-export interface Env extends FulfillEnv, VerifyEnv {
+export interface Env extends FulfillEnv, VerifyEnv, FeedbackEnv {
   ORDERS: KVNamespace;
   SIGNING_KEY_B64: string;
   POLAR_WEBHOOK_SECRET: string;
@@ -115,6 +116,13 @@ export default {
         return handleVerify(request, env, new Date().toISOString().slice(0, 10));
       }
       return new Response('method not allowed', { status: 405 });
+    }
+
+    // The support form posts here natively — no preflight, because a form post
+    // is a navigation rather than an XHR, which is also why it works with
+    // JavaScript off.
+    if (url.pathname === '/feedback') {
+      return handleFeedback(request, env);
     }
 
     if (request.method !== 'POST' || url.pathname !== '/webhooks/polar') {
