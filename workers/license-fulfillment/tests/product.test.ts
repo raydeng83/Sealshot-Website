@@ -73,7 +73,10 @@ describe('the deployed PRODUCT_MAP', () => {
 
   it('parses, rather than silently falling back to the default', () => {
     expect(() => JSON.parse(raw!)).not.toThrow();
-    expect(Object.keys(JSON.parse(raw!)).length).toBe(3);
+    // Six: the three sandbox ids and the three production ones, both mapped so
+    // neither environment has an unmapped window during the cutover. Drops back
+    // to three when the sandbox products are retired.
+    expect(Object.keys(JSON.parse(raw!)).length).toBe(6);
   });
 
   it('maps every configured id to terms resolveProduct accepts', () => {
@@ -86,9 +89,19 @@ describe('the deployed PRODUCT_MAP', () => {
     }
   });
 
-  it('covers exactly one renewal product and two new-purchase terms', () => {
+  it('covers the same three terms in each environment, and nothing else', () => {
     const values = Object.values(JSON.parse(raw!)) as { kind: string; months: number }[];
-    expect(values.filter((v) => v.kind === 'renewal')).toHaveLength(1);
-    expect(values.filter((v) => v.kind === 'new').map((v) => v.months).sort()).toEqual([12, 18]);
+    // One renewal and one of each new term per environment. Counting shapes
+    // rather than ids is what catches the mistake that matters: a founding id
+    // mapped to 12 months, or a renewal mapped as `new`, both of which parse
+    // and validate and quietly sell the wrong thing.
+    const shape = (v: { kind: string; months: number }) => `${v.kind}/${v.months}`;
+    const counts = new Map<string, number>();
+    for (const v of values) counts.set(shape(v), (counts.get(shape(v)) ?? 0) + 1);
+    expect([...counts.entries()].sort()).toEqual([
+      ['new/12', 2],
+      ['new/18', 2],
+      ['renewal/12', 2],
+    ]);
   });
 });

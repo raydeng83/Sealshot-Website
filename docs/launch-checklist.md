@@ -738,15 +738,25 @@ curl -sI https://seal-shot.com/docs/workflows/remember/        # → /docs/workf
 Each of these is committed and marked in-file. None of them errors — that is
 exactly why they need a checklist.
 
-- [ ] **`src/config/promos.ts`** — replace the three **sandbox** checkout URLs
-      with production ones and set `CHECKOUT_IS_SANDBOX = false`. A test fails
-      if the flag and the URLs disagree, so a half-done swap can't ship.
-- [ ] **`PRODUCT_MAP` in `workers/license-fulfillment/wrangler.toml`** — swap
-      sandbox product ids for production ones. Nothing fails if you forget:
-      every purchase quietly resolves to a 12-month new license, so a founding
-      buyer silently loses six months and a renewal mints a *second* license.
-      The only signal is the unmapped-product alert.
+- [x] **`src/config/promos.ts`** — production checkout links in, and
+      `CHECKOUT_IS_SANDBOX = false`. **Done 2026-08-19**, and
+      `npm run check:prices` confirms Polar charges $29.99 / $14.99 / $17.99 on
+      those three links. A test fails if the flag and the URLs disagree, so a
+      half-done swap can't ship. ⚠️ Not merged to main until the production
+      webhook secret is installed — a live checkout whose webhook 401s takes
+      money and delivers nothing.
+- [x] **`PRODUCT_MAP` in `workers/license-fulfillment/wrangler.toml`** —
+      **done 2026-08-19, and not as a swap.** Both environments are mapped, all
+      six ids, so neither has an unmapped window during the cutover. The swap
+      version of this step had a failure mode with no error: an unmapped product
+      resolves to a 12-month new license, so a founding buyer silently loses six
+      months and a renewal mints a *second* license, with only the
+      unmapped-product alert to say so. Drop the sandbox three when sandbox is
+      retired.
 - [ ] **`POLAR_WEBHOOK_SECRET`** — set to the *production* endpoint's secret.
+      **This is now the only thing that cuts over**, since PRODUCT_MAP covers
+      both environments. Setting it stops sandbox webhooks verifying, which is
+      expected — do any remaining sandbox testing first.
       Leave the sandbox one and every real webhook returns 401; after ten
       consecutive failures Polar disables the endpoint and orders go
       unfulfilled with no error anywhere.
