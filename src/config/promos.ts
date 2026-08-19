@@ -13,20 +13,28 @@
  */
 
 /**
- * ⚠️ These are SANDBOX checkout links. Real money is not involved and the
- * product ids they resolve to exist only in Polar's sandbox.
+ * PRODUCTION checkout links. Real cards, real money.
  *
- * At launch, all of the following must change together:
- *   1. the three URLs below, to their production equivalents
- *      (`api.polar.sh`, not `sandbox-api.polar.sh`)
- *   2. this flag, to false
- *   3. PRODUCT_MAP in the Worker, to the production product ids
- *   4. POLAR_WEBHOOK_SECRET, to the production endpoint's secret
+ * `tests/promos.test.ts` fails if this flag and the URLs disagree, so the pair
+ * cannot be half-swapped. What it still cannot see:
+ *   - PRODUCT_MAP in the Worker. Both environments are mapped there now, so
+ *     neither has an unmapped window; nothing to do at cutover.
+ *   - POLAR_WEBHOOK_SECRET, which is single-valued and is therefore the thing
+ *     that actually cuts over. Set to the production endpoint's secret, every
+ *     sandbox webhook returns 401 — expected — and every production one
+ *     verifies. Left on the sandbox secret, real orders 401 instead, and after
+ *     about ten consecutive failures Polar disables the endpoint. Nothing in
+ *     this repo can detect either state.
  *
- * `tests/promos.test.ts` fails if this flag and the URLs disagree, so a
- * half-finished swap can't ship quietly. It cannot catch step 3 or 4.
+ * `npm run check:prices` reads all three links back from Polar and picks its API
+ * host from this flag, so it verifies production once this is false.
+ *
+ * The `/v1/checkout-links/<id>/redirect` form is used rather than the
+ * `buy.polar.sh/<id>` URL the dashboard hands out. Both redirect to the same
+ * checkout and both carry query parameters through (verified 2026-08-19), but
+ * this is the shape the sandbox path was proven with.
  */
-export const CHECKOUT_IS_SANDBOX = true;
+export const CHECKOUT_IS_SANDBOX = false;
 
 /**
  * DISPLAY ONLY, as the header says — Polar decides what a customer is charged.
@@ -60,16 +68,22 @@ export const RENEWAL_UPDATE_MONTHS = 12;
 
 /** Full-price checkout — the fallback when no time-limited offer is running. */
 export const BASE_CHECKOUT_URL =
-  'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_FGg6cR9hQvHj6Ojx9XAZKx4zYUg4iQWklT8V52uIGai/redirect';
+  'https://api.polar.sh/v1/checkout-links/polar_cl_PoAdTGTzzEdfhMfOXEwOyeqr8LsCbPHHtJhTq0NZfoi/redirect';
 
 /**
  * Renewal checkout. The /renew page appends `reference_id=<licenseId>` and
- * `customer_email=<email>`; Polar copies both into the Checkout Session
- * metadata and then onto the order, which is how the Worker attaches the
- * renewal to an existing license instead of minting a new one.
+ * `customer_email=<email>`. Both are documented checkout-link parameters and
+ * Polar attaches them to the Checkout Session metadata, which propagates to the
+ * order — that is how the Worker attaches a renewal to an existing license
+ * instead of minting a new one.
+ *
+ * Note the public client endpoint (`/v1/checkouts/client/<secret>`) does NOT
+ * echo metadata, so a probe there shows nothing and proves nothing. Only a real
+ * renewal order confirms it end to end, and that is still unexercised by live
+ * traffic — see docs/launch-checklist.md Phase 4.
  */
 export const RENEWAL_CHECKOUT_URL =
-  'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_6xX6nk2EJZhqLq2jmFoGlrOfSc5PVFYKHAUT80I1WzB/redirect';
+  'https://api.polar.sh/v1/checkout-links/polar_cl_3FkZ8HQH1c9nD6pULAG4j270YACf4N3KlycHG0uPSaM/redirect';
 
 export type Offer = {
   id: string;
@@ -89,7 +103,7 @@ export const OFFERS: Offer[] = [
     id: 'founding',
     label: 'Founding price',
     checkoutUrl:
-      'https://sandbox-api.polar.sh/v1/checkout-links/polar_cl_TYsHg17rjvhPYrCXOVtDSYKXLC1c9hZvSaCIm4W9y7y/redirect',
+      'https://api.polar.sh/v1/checkout-links/polar_cl_WzQoSv8rzAKQIfomkyGW4XTIZVibhvB6alATt3jUs64/redirect',
     priceCents: 1499,
     updateMonths: 18,
     startsAt: '2026-08-01T00:00:00Z',
