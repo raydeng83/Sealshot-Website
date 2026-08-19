@@ -114,6 +114,11 @@ update window — every version released during that window is yours to
 keep. Current pricing and update-window terms are on the
 [buy page](/buy/).
 
+The file names you: your name, billing address, and email appear in it as
+readable text, cryptographically signed along with the rest. That is what
+makes it yours rather than a key anyone could pass around — so keep it as
+you would a receipt, and don't attach it to a public bug report.
+
 ### What is the Founding license?
 
 An offer for buyers **before the 1.0 release**: the same perpetual

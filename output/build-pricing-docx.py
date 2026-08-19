@@ -236,6 +236,8 @@ code_block([
     '================',
     'Licensed to:      Jane Doe',
     'Email:            jane@example.com',
+    'Billing address:  1725 Revere Beach Pkwy,',
+    '                  Everett, MA 02149, US',
     'License ID:       5B4894D2-7DD5-4BDA-89D2-DC30954E2EE4',
     'License type:     Individual',
     'License issued:   2027-08-01',

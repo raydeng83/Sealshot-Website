@@ -5,6 +5,12 @@ export type OrderRecord = {
   email: string;
   /** Buyer name — kept so a retry can re-issue the identical license. */
   name: string;
+  /**
+   * Billing-address lines as they appear in the preamble, for the same reason as
+   * the name: a retry must reproduce the same bytes. Optional — records written
+   * before the field existed have none, and orders can arrive without one.
+   */
+  address?: string[];
   issued: string;
   /**
    * Frozen when the order is first recorded, never recomputed.
@@ -90,6 +96,13 @@ export async function listPending(
 export type LicenseRecord = {
   name: string;
   email: string;
+  /**
+   * Billing-address lines as the license states them. Lives here as well as on
+   * the order because this is the record a renewal reads: the replacement file
+   * must say what the original said, not what the renewing buyer's billing
+   * address happens to be today. Absent on licenses issued before the field.
+   */
+  address?: string[];
   licenseType: 'individual' | 'business-volume';
   issued: string;
   updatesThrough: string;

@@ -68,6 +68,7 @@ export async function deliverLicense(
         seats: rec.seats,
         id: rec.licenseId,
         licenseType: rec.licenseType,
+        addressLines: rec.address,
       },
       base64ToBytes(env.SIGNING_KEY_B64)
     );
@@ -97,6 +98,7 @@ export async function deliverLicense(
       await putLicense(env.ORDERS, rec.licenseId, {
         name: rec.name,
         email: rec.email,
+        ...(rec.address ? { address: rec.address } : {}),
         licenseType: rec.licenseType,
         issued: rec.issued,
         updatesThrough: rec.updatesThrough,
