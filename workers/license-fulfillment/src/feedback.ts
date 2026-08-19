@@ -30,7 +30,20 @@ const MAX_FIELD = 200;
 /** A whole request bigger than this is not a bug report. */
 const MAX_BODY_BYTES = 16_000;
 
-const TYPES = ['Bug report', 'Feature request', 'General feedback'];
+/**
+ * The types the form offers. This list is the authority: anything else falls
+ * back to 'General feedback', so an option added to the page and not here
+ * would be silently flattened. tests/support-types.test.ts in the site suite
+ * compares the two.
+ */
+const TYPES = [
+  'Bug report',
+  'Feature request',
+  'Purchase or payment',
+  'License or activation',
+  'Refund request',
+  'General feedback',
+];
 
 /**
  * Strict enough to be safe as a `reply_to`: one address, no display name, no
@@ -98,7 +111,7 @@ export async function handleFeedback(request: Request, env: FeedbackEnv): Promis
   const emailRaw = normalizeLine(str('email'), MAX_FIELD);
   const email = EMAIL_RE.test(emailRaw) ? emailRaw : '';
   const typeRaw = normalizeLine(str('type'), MAX_FIELD);
-  // Only the three the form offers, so the subject line cannot be dictated.
+  // Only what the form offers, so the subject line cannot be dictated.
   const type = TYPES.includes(typeRaw) ? typeRaw : 'General feedback';
 
   const to = env.FEEDBACK_TO ?? env.REPLY_TO ?? 'support@seal-shot.com';

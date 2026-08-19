@@ -95,6 +95,17 @@ describe('POST /feedback', () => {
     expect(sent[0].text).toContain('unusable as reply-to');
   });
 
+  it('accepts each type the form offers', async () => {
+    // The subject is how support triages, so a new option must actually change it
+    // rather than collapsing into the fallback.
+    for (const [i, type] of ['Purchase or payment', 'License or activation', 'Refund request'].entries()) {
+      const { env, sent } = makeEnv();
+      await worker.fetch(post({ message: `m${i}`, type }), env);
+      expect(sent[0].subject).toBe(`Sealshot ${type.toLowerCase()}`);
+      expect(sent[0].text).toContain(`Type:    ${type}`);
+    }
+  });
+
   it('cannot dictate the subject line', async () => {
     const { env, sent } = makeEnv();
     await worker.fetch(post({ message: 'hi', type: 'URGENT: wire transfer' }), env);

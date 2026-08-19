@@ -68,9 +68,15 @@ import { FEEDBACK_URL } from '../config/worker';
 
       <label for="fb-type">Type</label>
       <select id="fb-type" name="type">
+        {/* Must match TYPES in workers/license-fulfillment/src/feedback.ts — the
+            Worker flattens anything it does not recognise to General feedback,
+            which would quietly lose the distinction being added here. */}
         <option value="" disabled selected>Choose a type…</option>
         <option>Bug report</option>
         <option>Feature request</option>
+        <option>Purchase or payment</option>
+        <option>License or activation</option>
+        <option>Refund request</option>
         <option>General feedback</option>
       </select>
 
