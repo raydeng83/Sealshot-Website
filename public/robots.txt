@@ -1,48 +1,21 @@
 # Sealshot — https://seal-shot.com
 #
-# This file exists mainly for the Sitemap line: the sitemap is generated on every
-# build and nothing else advertises it. Cloudflare's managed robots.txt (AI crawl
-# control) served the rules below when this file did not exist; they are repeated
-# here so they survive that setting being toggled off. Cloudflare may still append
-# its own managed block — duplicate groups with identical directives are harmless.
+# Everything is welcome, including AI crawlers. Someone asking an assistant for a
+# private, on-device screenshot tool for the Mac is exactly the person this site
+# is written for, and a crawler that cannot read the docs cannot answer them.
 #
-# Content-Signal declares how this content may be used, per contentsignals.org:
-# search is allowed, training AI models is not, and reference use is permitted.
-# A restriction expressed this way is an express reservation of rights under
-# Article 4 of EU Directive 2019/790.
+# This file also overrides Cloudflare's managed robots.txt, which was blocking
+# GPTBot, ClaudeBot, CCBot, Google-Extended, Applebot-Extended, Bytespider,
+# Amazonbot and meta-externalagent by default. That block was advisory only —
+# those user agents were never refused at the edge (checked 2026-08-18, all 200).
+# If Cloudflare's managed block reappends itself below, turn the setting off in
+# the dashboard: robots.txt alone cannot out-vote it.
+#
+# Content-Signal, per contentsignals.org: search, AI input (retrieval and
+# grounding) and AI training are all permitted.
 
 User-agent: *
-Content-Signal: search=yes,ai-train=no,use=reference
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
 Allow: /
-
-# Crawlers that collect content for AI training. Search crawlers are welcome; a
-# privacy-first product being used as training data is a different proposition,
-# and one nobody asked us for.
-User-agent: Amazonbot
-Disallow: /
-
-User-agent: Applebot-Extended
-Disallow: /
-
-User-agent: Bytespider
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: ClaudeBot
-Disallow: /
-
-User-agent: CloudflareBrowserRenderingCrawler
-Disallow: /
-
-User-agent: Google-Extended
-Disallow: /
-
-User-agent: GPTBot
-Disallow: /
-
-User-agent: meta-externalagent
-Disallow: /
 
 Sitemap: https://seal-shot.com/sitemap-index.xml
