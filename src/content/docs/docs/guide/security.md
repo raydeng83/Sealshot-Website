@@ -3,6 +3,12 @@ title: Enhanced Security
 description: Encrypt your captures at rest and lock viewing behind Touch ID.
 ---
 
+:::caution
+There is no account and no cloud backup. If you lose **both** your Mac's
+unlock methods **and** your recovery code, your encrypted captures cannot be
+recovered. That's the price of true on-device privacy.
+:::
+
 Enhanced Security encrypts everything Sealshot stores on your Mac and locks
 viewing behind Touch ID. Capturing always works — even while locked — so you
 never miss a shot; only *viewing* your library requires you to unlock.

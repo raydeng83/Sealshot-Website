@@ -12,6 +12,10 @@ import {
   the Buy button charges, and it renders nothing at all once the window closes —
   there is no bar to remember to take down.
 
+  No end date, and no countdown: endsAt in promos.ts is still a placeholder, so a
+  timer would count down to a made-up day. The bar therefore says what the offer
+  is, not how long it lasts.
+
   Deliberately without a dismiss button: that needs client JS and per-visitor
   state, and a slim two-clause bar does not earn either. If it turns out to
   annoy, dismissal is a small addition later.
@@ -37,13 +41,6 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
           what earns the click. */}
       <span class="detail">
         , with {offer.updateMonths} months of updates instead of {REGULAR_UPDATE_MONTHS}
-      </span>
-      <span class="until">
-        {/* No date, and no countdown: endsAt in promos.ts is still a placeholder,
-            so a timer would count down to a made-up day. "Ending soon" only stays
-            true while 1.0 actually is near — if the release slips, this is the
-            line to change. */}
-        · Ending soon
       </span>
       <a href="/buy/">Get it</a>
     </p>
@@ -81,11 +78,10 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
     letter-spacing: 0.01em;
   }
 
-  .offer-bar .until {
-    opacity: 0.85;
-  }
-
   .offer-bar a {
+    /* "Ending soon" used to separate the sentence from the link. Without it the
+       6px flex gap left "…instead of 12 Get it" reading as one phrase. */
+    margin-inline-start: 0.35rem;
     color: #ffffff;
     font-weight: 600;
     text-decoration: underline;
