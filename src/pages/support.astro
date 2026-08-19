@@ -134,14 +134,25 @@ import { FEEDBACK_URL } from '../config/worker';
 </SiteLayout>
 
 <style>
+  /* One column: one left edge, one measure.
+     The page had three alignments at once — the notices ran the full 1104px of
+     the wrap, the form card was left-aligned at 36rem, and Faster routes was
+     CENTRED at 40rem, so it started 230px right of everything above it. The card
+     sets the measure because it is the widest thing that has to hold a form. */
+  .notice,
+  .form-card,
+  .routes {
+    max-width: 36rem;
+    margin-inline: 0;
+  }
+
   .notice.warn {
     background: #fef3c7;
     color: #713f12;
   }
 
   .routes {
-    max-width: 40rem;
-    margin: 3rem auto 0;
+    margin-top: 3rem;
   }
 
   .routes h2 {
