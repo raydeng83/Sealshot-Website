@@ -27,3 +27,64 @@
 .pagination-links svg {
   font-size: 1.25rem;
 }
+
+/* ── Wide displays ───────────────────────────────────────────────────────────
+   Starlight pins the sidebar to the window edge and lets the columns absorb
+   every extra pixel. Past about 1500px that reads as broken rather than roomy:
+   at 1975 the reading column sat 272px clear of the sidebar with its right edge
+   jammed against a contents column 620px wide holding 270px of links.
+
+   Measured against the Ping Identity docs, which do two different things: below
+   ~1500px they cap the row at 1350px and centre it; above ~1700px the row goes
+   to 98% and the article grows as viewport − 555px, which at 3000px means body
+   text 2180px wide — around 240 characters a line. Filling the screen, at the
+   cost of the thing a docs page is for.
+
+   So: grow the measure with the window up to a ceiling of 72rem (~130
+   characters), then stop and centre the whole frame. Wide screens fill; the
+   prose stays readable.
+
+   The two obvious shortcuts are worse, which is why this was measured rather
+   than guessed. Centring the text inside its panel makes the gaps symmetric but
+   moves it FURTHER from the window's centre — 160px off, against 24px before.
+   And capping .main-frame alone desyncs the columns from the sidebar and header,
+   which are position:fixed at left:0 and do not move with it — hence the insets
+   below, which keep all three in one grid.
+
+   Nothing here applies under 100rem: at 1440 the gap this fixes is already only
+   5px. */
+@media (min-width: 100rem) {
+  :root {
+    /* 100vw − 55rem is 45rem exactly at 100rem, so the measure grows out of
+       Starlight's default with no jump at the breakpoint, and stops at 72rem —
+       reached at 127rem, where the cap below takes over. */
+    --sl-content-width: clamp(45rem, calc(100vw - 55rem), 72rem);
+  }
+
+  /* Centre the measure in the panel rather than letting it hug the contents
+     column, now that it is wide enough for the remaining gap to look deliberate. */
+  .content-panel .sl-container {
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 127rem) {
+  :root {
+    /* Half the overflow past the cap — the margin each side of the frame. */
+    --frame-inset: calc((100vw - 127rem) / 2);
+  }
+
+  .sidebar-pane {
+    left: var(--frame-inset);
+  }
+
+  .main-frame {
+    padding-inline-start: calc(var(--frame-inset) + var(--sl-sidebar-width));
+    padding-inline-end: var(--frame-inset);
+  }
+
+  /* The bar stays full-bleed; its contents line up with the columns below. */
+  header.header {
+    padding-inline: calc(var(--frame-inset) + var(--sl-nav-pad-x));
+  }
+}

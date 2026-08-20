@@ -32,6 +32,20 @@ Open **Settings → Privacy & Security** and turn on **Enhanced security**.
 Sealshot encrypts your existing captures (a progress bar shows the work) and
 then walks you through the recovery-key ceremony.
 
+The plain, unencrypted search index — which holds text read out of your captures,
+along with titles and tags — is deleted as the switch is thrown, rather than
+being left until the first encrypted save. A locked Sealshot also refuses to read
+such a file even if it finds one.
+
+:::caution[If you turned encryption on before 0.7.5]
+On a library where Enhanced Security had been on, off, and then on again, the
+switch could stop halfway: Sealshot set up new keys and reported the library
+protected while nothing was actually encrypted. Fixed in
+[0.7.5](/docs/changelog/v0-7-5/). If your captures are still readable in the
+Finder with Enhanced Security showing as on, turn it off and on again after
+updating.
+:::
+
 ![The Enhanced security setting](/manual/security-setting.jpg)
 *Enable Enhanced security in Settings → Privacy & Security.*
 
@@ -49,6 +63,26 @@ encryption key itself.
 ![The recovery-key ceremony](/manual/security-recovery-key.png)
 *Save the recovery code somewhere safe.*
 
+### The monthly check
+
+Every **30 days**, after you unlock, Sealshot asks you to type your recovery
+code once. It is a memory check, not a sign that anything is wrong: a code
+transcribed with a typo, or saved somewhere you can no longer find, is already
+useless the day you write it down — and without a check you would discover that
+on the one day it matters. The prompt says when the next check falls.
+
+Type it correctly and the 30 days restart. Get it wrong and Sealshot offers
+**Generate New Code…**, which takes you to **Settings → Privacy & Security** to
+make a fresh one. **Remind Me Later** defers the check by a week — deliberately
+much less than a month, because putting it off is itself a sign the code may not
+be to hand.
+
+Anything that proves you still have a working code counts, so the prompt does
+not ask twice: acknowledging a newly generated code, unlocking with the code on
+the lock screen, and restoring a locked archive with it all restart the clock.
+The prompt only appears while Enhanced Security is on and a recovery keystore
+exists, never while the library is locked, and at most once per launch.
+
 :::caution
 There is no account and no cloud backup. If you lose **both** your Mac's
 unlock methods **and** your recovery code, your encrypted captures cannot be
@@ -62,6 +96,12 @@ Touch ID, Apple Watch, or your password to view your captures.
 
 ![The lock screen](/manual/lock-screen.png)
 *Unlock with Touch ID, Apple Watch, or your Mac password.*
+
+Locked means locked: while the lock screen is up, nothing else opens over it —
+not Settings, not the floating capture window. If your trial has ended, pressing
+a capture shortcut brings up the lock screen with an explanation that new
+captures are paused; unlock from there and Settings opens on the **License**
+page, so activating a license is two clicks from the shortcut that was blocked.
 
 ## Locking
 

@@ -25,7 +25,7 @@ Related repos:
 | Docs | Starlight (Astro integration) | Sidebar nav, Pagefind full-text search, dark mode, mobile layout — all built in |
 | Hosting | Cloudflare Pages | Free tier, git-push deploys, custom domain seal-shot.com with SSL |
 | Feedback form | Web3Forms | Free form endpoint; submissions delivered to email; honeypot spam protection |
-| Newsletter | Kit (ConvertKit) | Embedded signup form; free to 10,000 subscribers; double opt-in |
+| Newsletter | Kit (ConvertKit) | Embedded signup form; double opt-in. Free plan is **1,000** subscribers (corrected 2026-08-19 — the 10,000 written here was wrong), with unlimited forms and unlimited broadcasts; automations, sequences and integrations are Creator-only |
 
 Everything is free / open-source; the only recurring cost is the domain.
 The site is purely static — no servers, no databases, no Pages Functions.

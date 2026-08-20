@@ -57,6 +57,12 @@ tables become real Markdown tables — with **Copy**, **Export…** (saved
 under the capture's name), and **Re-extract** buttons. The result is cached
 in the capture's `.seal` package, so it's instant next time.
 
+Tabs across the top of the window switch between the formatted views, a **Text**
+tab, and a **Markdown** tab showing the raw markdown — pick whichever suits where
+the result is going, a document or a code block. A table wider than the window
+scrolls sideways, and the scroll bar stays out of the way when everything already
+fits.
+
 When the [enhanced on-device model](/docs/guide/redaction/#the-enhanced-on-device-model)
 is downloaded, extraction uses it too, recognizing entities by meaning
 rather than pattern.
