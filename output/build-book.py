@@ -73,6 +73,7 @@ SECTIONS = [
     ]),
     ('Reference', ['docs/faq']),
     ('Release history', [
+        'docs/changelog/v0-7-7', 'docs/changelog/v0-7-6',
         'docs/changelog/v0-7-5', 'docs/changelog/v0-7-4',
         'docs/changelog/v0-7-3', 'docs/changelog/v0-7-2', 'docs/changelog/v0-7-1',
         'docs/changelog/v0-7-0', 'docs/changelog/v0-6-0', 'docs/changelog/v0-5-1',
@@ -255,7 +256,7 @@ page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
   <div class="sub">Capture, edit, redact, organize, and share — privately on your Mac.</div>
   <div class="rule"></div>
   <div class="meta">Guide + workflows + tips + FAQ + release history<br>
-  Documentation snapshot: {today} | Current release: 0.7.5</div>
+  Documentation snapshot: {today} | Current release: 0.7.7</div>
   <div class="blurb">Sealshot is a privacy-first screenshot and screen-recording app for macOS.
   Capture, OCR, redaction, AI metadata, and search all run on the device.</div>
 </div>
