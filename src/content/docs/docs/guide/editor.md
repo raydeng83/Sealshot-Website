@@ -19,7 +19,13 @@ Pick a tool from the toolbar, then draw on the canvas. Left to right:
 - **Line**.
 - **Arrow** — one grouped pill holding **Line Arrow** (straight) and
   **Free Arrow** (drawn by hand), with adjustable end-caps and
-  solid/dashed/dotted styles.
+  solid/dashed/dotted styles. The **Shaft** control switches between
+  **Tapered** — widest at the head, narrowing to the tail, so it reads as a
+  stroke of the pen rather than a drawn shape — and **Uniform**. Tapered is the
+  default for new arrows; a double-headed arrow tapers from wide to narrow
+  across its length, dashed arrows taper too, and a free arrow stays an even
+  width. The control is in the arrow tool's settings and on the panel for an
+  arrow you have already selected.
 - **Shapes** — one grouped pill holding **Rectangle** and **Ellipse**.
 - **Text** — click to type; a full font picker with rich styling, a weight
   slider, and per-word colour and size. Typography is remembered per tool.
@@ -131,6 +137,15 @@ Add another image on top of your capture — a logo, a second screenshot — via
 **File → Insert Image on Canvas…** (⇧⌘I), or just drop a file onto the
 canvas. Inserted images move, resize, and rotate like any other object.
 
+Dropping works on a canvas that already holds a capture, not only an empty one,
+and the image arrives as an overlay wherever you drop it. Drag from the recent
+strip, the Library, or the Finder.
+
+Pasting follows the same rule with one difference: paste into an **empty** canvas
+and the canvas takes the image's own size at full resolution, the same as
+**File → New from Clipboard**, rather than shrinking it into the default
+800 × 500. Paste onto a capture and it arrives as a movable overlay.
+
 ## Start from a blank canvas
 
 The editor doesn't need a capture to start from:
@@ -164,6 +179,17 @@ Annotate over the whole scene with any tool, then **Export to Image** (⌘S)
 to flatten the wallpaper, windows, and annotations into one picture — just
 like any other capture.
 
+## A narrow window
+
+The editor no longer stops resizing while still nearly a thousand points wide.
+Drag it narrow and related buttons tuck themselves into small menus instead —
+the capture modes gather under **Capture**, the two recording buttons pair up,
+the AI actions share one button, and the drawing tools group the way Arrow and
+Shape already do. The zoom controls along the bottom do the same. Nothing is
+taken away: everything is one click further, and it all comes back as you widen
+the window, so the editor works at little more than half its old minimum width —
+useful beside the app you are documenting.
+
 ## Zoom and navigation
 
 - **⌘-scroll** zooms toward the cursor from any tool; **⌘+ / ⌘− / ⌘0** zoom
@@ -191,8 +217,25 @@ for actions, or **drag a thumbnail out** to Finder, Mail, or any app.
 Videos show a play badge — click it to play, or click the thumbnail to
 open paused.
 
+Dragging a capture somewhere the Sealshot window is covering? Hold **⌃**
+(control) while you drag and the window gets out of your way so you can see the
+drop target; let go and it comes straight back. The drag shows the reminder
+while you are holding the file.
+
 ![The recent-captures strip](/manual/library-strip.png)
 *Jump between recent captures without leaving the editor.*
+
+## Right-click on the canvas
+
+Right-click an **object** for **Cut**, **Copy**, **Paste** and **Duplicate**
+alongside the arrange, flip and delete actions. **⌘D** duplicates the selection
+directly, dropping the copy slightly below and to the right, and it leaves your
+clipboard alone. The same actions are in the **Edit** menu.
+
+Right-click an **empty part of the canvas** for **Export to Image**, **Export to
+Package…** and — for a recording — **Export to Video…**, next to Show in Finder
+and Show in Library. It is the same set the recent strip offers, so you can
+export the capture you are editing without leaving it.
 
 ## Undo that survives relaunch
 

@@ -62,6 +62,8 @@ them in **Settings → Shortcuts**, which groups them the same way.
 | --- | --- |
 | Undo / Redo | ⌘Z / ⇧⌘Z |
 | Copy | ⌘C |
+| Duplicate the selected object | ⌘D |
+| Hide the window while dragging a capture out | hold ⌃ |
 | Find in Image | ⌘F |
 | Zoom in / out / actual size | ⌘+ / ⌘− / ⌘0 |
 | Zoom toward cursor | ⌘-scroll |
