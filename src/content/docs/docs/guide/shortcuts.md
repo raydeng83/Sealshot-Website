@@ -13,6 +13,7 @@ them in **Settings → Shortcuts**, which groups them the same way.
 | Command | Default |
 | --- | --- |
 | Smart Capture (area or window) | ⌘⇧C |
+| Repeat last capture (same area again) | ⌘⇧A |
 | Delayed capture | ⌘⇧D |
 | Scrolling capture | ⌘⇧W |
 | Capture fullscreen | ⌘⇧F |

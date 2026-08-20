@@ -102,6 +102,77 @@ windows and windows on other Spaces aren't included.
 choose with a Save panel. This is a one-off export — it doesn't add the
 capture to your library or touch the clipboard.
 
+## Repeat the last capture
+
+**Default: ⌘⇧A.** Takes the same area you captured last — no overlay, no
+dragging, no reselecting. The outline flashes so you can see what it took.
+
+The menu item names the size, **Capture ▸ Repeat Last Capture (640 × 480)**,
+because repeat fires with no overlay and no confirmation: the menu is the only
+place that can tell you what is about to be grabbed. The area is remembered
+between launches, so a run of step-by-step screenshots stays one keystroke each.
+
+If the screen that area lived on has gone — a monitor unplugged, a resolution
+changed — Sealshot asks you to drag a new area rather than guessing at one, and
+that becomes the area from then on.
+
+## The floating capture window
+
+A small panel that stays on top of your other apps, so you can take one capture
+after another without the editor opening in front of what you are documenting.
+Useful on a laptop, where macOS sometimes has no room left for the Sealshot icon
+in the menu bar.
+
+Open it from the button at the top right of the editor window, or from
+**View ▸ Floating Capture Window**.
+
+### What is on it
+
+- **The face button** shows the kind of capture you used last, so repeating it
+  is one click.
+- **Full screen, scrolling and record** have pills of their own beside it.
+- **⋯** holds the rest — Smart Capture, Save as, delayed, Live Capture and
+  record-selection — plus **Hide to Edge Automatically**. While a recording is
+  running, it holds **Pause** and **Stop** instead.
+- **Your three newest captures** appear as thumbnails with a count, videos
+  badged with a play symbol. Capture from anywhere — the panel, a shortcut, the
+  menu bar — and the newest appears; delete one, even in the Finder, and its
+  thumbnail goes. The panel and the editor's strip always agree.
+- **Drag a thumbnail straight out** to the Finder, Mail, or any app, exactly as
+  you can from the strip.
+- **The pin** keeps the panel above other windows, which is how it starts.
+  Unpin it and other windows cover it — useful when it is in the way but you are
+  not finished with it. An unpinned panel comes back when the editor does.
+- **⤢** brings the editor back, on whatever tab you left it.
+- **The close button** dismisses the panel, and it stays closed next time you
+  open Sealshot.
+
+### Where it sits
+
+Drag it anywhere; guide lines show the edges it will snap to, and letting go
+near a corner parks it there. It dims while you are not using it, turns solid as
+soon as you point at it, remembers its place on each of your displays, and
+follows you to whichever screen your pointer is on.
+
+**Tuck it away** by dragging it past any screen edge: it collapses to a slim
+line hugging that edge with an arrow pointing back into the screen. Click the
+arrow — or rest your pointer on the line for a moment — and it opens again where
+it sits, rather than jumping to a corner. Pull the line right off the edge to
+restore the full panel. A tucked-away panel comes back tucked away next time,
+same edge, same spot.
+
+Turn on **Hide to Edge Automatically** in the ⋯ menu and it tucks itself away as
+soon as your pointer leaves it, or when you click elsewhere, so it does not
+linger after a cancelled capture. Off unless you turn it on.
+
+If you lose it — behind the Dock, under a notch, or on a display you have
+unplugged — **View ▸ Reset Floating Window Position** undocks it, opens it if it
+was closed, and puts it in the middle of the screen you are using. It is in the
+menu bar rather than the panel's own menu precisely because the situation it
+exists for is one where you cannot reach the panel.
+
+While Sealshot is [locked](/docs/guide/security/), the panel stays out of sight.
+
 ## Recording
 
 Sealshot records video too — the screen, a window, or a region, with audio.
