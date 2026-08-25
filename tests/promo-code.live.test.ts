@@ -32,12 +32,23 @@ const OFFER_ID = process.env.PROMO_OFFER ?? 'founding';
 
 const offer = OFFERS.find((o) => o.id === OFFER_ID);
 
+/**
+ * Polar's amount fields, and which one is the money:
+ *   amount           the product's BASE price — stays 1499 even when discounted
+ *   discount_amount  what came off
+ *   subtotal_amount  amount − discount
+ *   total_amount     what the buyer pays (subtotal + tax)
+ *
+ * The first version of this file asserted on `amount` and would have failed
+ * against a discount that was working perfectly.
+ */
 type Checkout = {
   amount: number;
   discount_amount: number;
   subtotal_amount: number;
+  total_amount: number;
   product: { name: string };
-  discount: unknown;
+  discount: { code?: string } | null;
 };
 
 /** Follow a checkout link and read back what Polar would charge. */
@@ -72,15 +83,24 @@ describe.skipIf(!process.env.LIVE_POLAR)(`promo code ${CODE}`, () => {
         + `"${withCode.product.name}".`
     ).not.toBeNull();
 
-    expect(withCode.amount).toBe(EXPECTED);
-    expect(withCode.discount_amount).toBe(withCode.subtotal_amount - EXPECTED);
+    expect(withCode.total_amount, 'the payable total, not the base price').toBe(EXPECTED);
+    expect(withCode.discount_amount).toBe(withCode.amount - EXPECTED);
   }, 30_000);
 
-  it('discounts the offer it is meant to, at the price the site advertises', async () => {
-    // Guards the other direction: a code that "works" because the PRODUCT was
-    // repriced, rather than because a discount applied, would otherwise pass.
+  it('does not discount the link the SITE uses', async () => {
+    // The failure this exists for, met on 2026-08-25: setting the discount as the
+    // Preset discount on the site's own founding link attached it to every
+    // checkout that link creates. The site advertised $14.99 and charged $9.99 to
+    // everyone, and the launch had nothing exclusive left to offer. A preset
+    // belongs on a SEPARATE link used only in the listing.
     const plain = await checkout(offer!.checkoutUrl);
-    expect(plain.amount).toBe(offer!.priceCents);
+    expect(
+      plain.discount,
+      `the site's ${OFFER_ID} link has a discount attached (${plain.discount?.code ?? '—'}), `
+        + `so every visitor pays ${plain.total_amount} instead of ${offer!.priceCents}. `
+        + `Clear "Preset discount" on that link and put it on a launch-only link.`
+    ).toBeNull();
+    expect(plain.total_amount).toBe(offer!.priceCents);
     expect(plain.discount_amount).toBe(0);
   }, 30_000);
 });
