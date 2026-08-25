@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
 import {
   activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS, TRIAL_DAYS,
 } from '../config/promos';
@@ -40,6 +41,12 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
         </a>
       </div>
       <p class="fine-print" id="dmg-meta">Direct download (.dmg)</p>
+
+      {/* Below the button, not above it: someone on this page has decided to
+          try it, and the video is for the ones who want one more look first. */}
+      <div class="download-video">
+        <VideoEmbed id="nY8Bvqxe2gA" title="Sealshot Promotional Video" />
+      </div>
     </div>
   </section>
 </SiteLayout>
@@ -75,3 +82,10 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
       .catch(useReleasesPageLabel);
   })();
 </script>
+
+<style>
+  .download-video {
+    max-width: 46rem;
+    margin: 2.5rem auto 0;
+  }
+</style>

@@ -2,6 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import ComparisonTable from '../components/ComparisonTable.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
 import '@splidejs/splide/css';
 import {
   activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
@@ -234,6 +235,18 @@ const features = [
     </div>
   </section>
 
+  {/*
+    Directly after the hero, not inside it: the hero already carries the
+    headline, the download button and the carousel, and a video competing with
+    those is noise. This is where someone who read the headline goes next.
+  */}
+  <section class="section" aria-labelledby="video-heading">
+    <div class="wrap video-wrap">
+      <h2 id="video-heading">Sealshot in motion</h2>
+      <VideoEmbed id="nY8Bvqxe2gA" title="Sealshot Promotional Video" />
+    </div>
+  </section>
+
   <section class="section alt" aria-labelledby="pillars-heading">
     <div class="wrap">
       <p class="kicker">Why Sealshot</p>
@@ -363,3 +376,19 @@ const features = [
     reducedMotion: { speed: 0, rewindSpeed: 0, autoplay: 'pause' },
   }).mount();
 </script>
+
+<style>
+  /* This section centres, unlike its neighbours: it is one heading over one
+     object, and with no kicker or subtitle to anchor a left edge, left-aligned
+     text beside a centred video reads as a mistake. The video itself is narrower
+     than the wrap, so it needs the auto margins — flush left put 443px on one
+     side and 715px on the other. */
+  .video-wrap {
+    text-align: center;
+  }
+
+  .video-wrap :global(.video) {
+    max-width: 52rem;
+    margin: 1.5rem auto 0;
+  }
+</style>
