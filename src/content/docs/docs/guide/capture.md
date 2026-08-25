@@ -185,6 +185,11 @@ What happens to a finished capture — copy to the **Clipboard**, save to a
 along with the filename format. The default is **Both**. Saved files land in
 the folder chosen under **Settings → General → Storage**.
 
+Whether a capture joins your library is a separate choice: **Settings → Capture
+→ Add captures to Library** is on by default, and turning it off keeps the
+editor and clipboard behaviour while leaving the library untouched — see
+[Scratch](/docs/guide/library/#scratch).
+
 Captures that produce a file open in the [editor](/docs/guide/editor/),
 ready to annotate. A **Clipboard-only** capture skips the editor — it goes
 straight to your clipboard so you can paste and move on.

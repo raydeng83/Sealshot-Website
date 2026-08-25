@@ -22,6 +22,33 @@ The sidebar organizes everything:
 Below the sections, filter by **tag** or by **date** (year/month), and use
 the media filter to show **all items, images, or videos** only.
 
+## Scratch
+
+Not every capture is worth keeping. **Settings → Capture → Add captures to
+Library** is on by default; turn it off and captures behave exactly as before —
+they open in the editor and copy to the clipboard — but your Library stays
+untouched. Good for a session of throwaway shots you only mean to paste
+somewhere.
+
+They are not gone in the meantime. A **Scratch** section appears in the Library
+sidebar, above Trash, whenever unkept captures exist, with the same actions as
+the rest of the Library: preview, export, duplicate, rename, delete. Unkept
+captures are deleted after **7 days**, and the sidebar row shows how much space
+they are using — as do All Files and Trash — so the sweep is never a surprise.
+
+Keep one with **Add to Library** in its right-click menu. Marking a capture as a
+favourite or putting it in a collection files it into the Library first, since
+an unkept capture would otherwise be swept up by the clean-up.
+
+**Settings → Recording → Add recordings to Library** is the same switch for
+recordings, deliberately separate: an unkept recording is gigabytes where an
+unkept screenshot is kilobytes, and a scratch pile of one is not necessarily a
+scratch pile of the other.
+
+With [Enhanced Security](/docs/guide/security/) on, unkept captures are
+encrypted exactly like the rest — waiting in Scratch is not a way out of
+encryption.
+
 ## Collections and favorites
 
 Group captures into **collections** — create one from the sidebar or select
