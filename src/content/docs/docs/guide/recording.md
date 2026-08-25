@@ -61,8 +61,30 @@ controls whether the pointer appears in the recording.
 
 Recordings are saved as **video `.seal` packages** in the same folder as
 your captures, appear in the Library and recent strip with thumbnails, and
-play right in the editor. With Enhanced Security on, recordings are
-encrypted at rest like everything else.
+play right in the editor. With Enhanced Security on, a package is encrypted at
+rest like everything else.
+
+### Package or movie file
+
+**Settings → Recording → Save recordings as** chooses between them:
+
+| | Package (default) | Movie file |
+| --- | --- | --- |
+| Tags, searchable text, summary | Yes | No |
+| Encrypted with Enhanced Security | Yes | **No** |
+| Ready to send without exporting | No — use Export to Video… | Yes, it is a `.mov`/`.mp4` |
+
+A movie file lands in your save folder ready to attach to anything, and carries
+a small **MOV** or **MP4** tag on its thumbnail so you can tell at a glance
+which recordings need no export. It still appears in the recent strip and the
+Library and plays normally.
+
+The cost is the second row. A movie file is written **unencrypted even with
+Enhanced Security on** — as Sealshot puts it when you switch, anyone with access
+to this Mac, or to a backup or synced copy, can open it. Switching is therefore
+a confirmation rather than a toggle. Existing recordings and all screenshots
+stay encrypted, and switching back to **Package** encrypts new recordings again.
+See [Enhanced Security](/docs/guide/security/).
 
 When you need a regular video file, use **File → Export to Video…** to write
 a `.mov` — for one recording or a whole selection at once. See

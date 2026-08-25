@@ -17,7 +17,8 @@ never miss a shot; only *viewing* your library requires you to unlock.
 
 When Enhanced Security is on:
 
-- Stored captures **and recordings** are **encrypted on disk** (AES-256-GCM).
+- Stored captures **and recordings** are **encrypted on disk** (AES-256-GCM) —
+  with one exception you choose yourself, below.
 - The **search index, undo history, and extracted OCR text** are encrypted
   too.
 - Viewing requires **Touch ID**, your Apple Watch, or your Mac's password.
@@ -25,6 +26,27 @@ When Enhanced Security is on:
   lost.
 - The **Privacy & Security settings themselves** require authentication to
   open, so no one can quietly change them.
+- Captures that [skip the Library](/docs/guide/library/#scratch) are encrypted
+  exactly like the rest — waiting in Scratch is not a way out of encryption.
+- Outside Sealshot, a protected capture shows **no Finder preview**. That is
+  deliberate: the preview extension holds no keys and never asks for them.
+
+:::caution[Recordings saved as movie files are not encrypted]
+**Settings → Recording → Save recordings as** offers **Package** (the default)
+or **Movie file**. A movie file is an ordinary `.mov`/`.mp4` you can send
+anywhere without exporting — and it is written **unencrypted, even with Enhanced
+Security on**. In Sealshot's own words when you switch: new recordings become
+plain movie files that anyone with access to this Mac, or to a backup or synced
+copy, can open.
+
+Screenshots and recordings you already have stay encrypted; only new recordings
+are affected, and switching back to **Package** encrypts new ones again. The
+setting asks you to confirm for this reason, and the Privacy & Security page
+says so where it would otherwise claim recordings are encrypted.
+
+See [Screen recording](/docs/guide/recording/) for the rest of the trade —
+a movie file also has no tags, no searchable text and no summary.
+:::
 
 ## Turning it on
 

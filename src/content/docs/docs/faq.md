@@ -34,6 +34,23 @@ It can be. Turn on [Enhanced Security](/docs/guide/security/) to encrypt
 your captures, recordings, search index, and OCR text at rest and lock
 viewing behind Touch ID.
 
+There is one exception, and it is one you choose: if you set
+**Settings → Recording → Save recordings as** to **Movie file**, new recordings
+are written as plain `.mov`/`.mp4` files **without encryption**, even with
+Enhanced Security on. That is the trade for a file you can send without
+exporting — Sealshot asks you to confirm it, and switching back to **Package**
+encrypts new recordings again. Screenshots are never affected.
+
+### A capture isn't in my Library — where did it go?
+
+Probably Scratch. If **Settings → Capture → Add captures to Library** is off,
+captures open in the editor and copy to the clipboard but stay out of the
+Library, waiting in the **Scratch** section of the sidebar (above Trash) for
+**7 days**. Keep one with **Add to Library** in its right-click menu; the
+sidebar row shows how much space is sitting there. Recordings have their own
+switch under Settings → Recording. See
+[Scratch](/docs/guide/library/#scratch).
+
 ### What if I lose my recovery key?
 
 If you can still unlock (Touch ID or password), open **Settings → Privacy
