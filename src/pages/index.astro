@@ -242,7 +242,6 @@ const features = [
   */}
   <section class="section" aria-labelledby="video-heading">
     <div class="wrap video-wrap">
-      <p class="kicker">See it work</p>
       <h2 id="video-heading">Sealshot in motion</h2>
       <VideoEmbed id="nY8Bvqxe2gA" title="Sealshot Promotional Video" />
     </div>
@@ -379,8 +378,17 @@ const features = [
 </script>
 
 <style>
+  /* This section centres, unlike its neighbours: it is one heading over one
+     object, and with no kicker or subtitle to anchor a left edge, left-aligned
+     text beside a centred video reads as a mistake. The video itself is narrower
+     than the wrap, so it needs the auto margins — flush left put 443px on one
+     side and 715px on the other. */
+  .video-wrap {
+    text-align: center;
+  }
+
   .video-wrap :global(.video) {
     max-width: 52rem;
-    margin-top: 1.5rem;
+    margin: 1.5rem auto 0;
   }
 </style>
