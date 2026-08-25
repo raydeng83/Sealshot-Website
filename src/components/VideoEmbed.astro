@@ -1,0 +1,166 @@
+---
+import { Image } from 'astro:assets';
+import promoPoster from '../assets/promo-poster.jpg';
+
+interface Props {
+  /** YouTube video id. */
+  id: string;
+  /** Accessible name and caption. */
+  title: string;
+  /** Poster still. Defaults to the promo video's. */
+  poster?: ImageMetadata;
+  /** `eager` only if the video sits above the fold on its page. */
+  loading?: 'eager' | 'lazy';
+}
+
+const { id, title, poster = promoPoster, loading = 'lazy' } = Astro.props;
+
+/*
+  A click-to-play facade, not an iframe.
+
+  A normal YouTube embed contacts Google on page LOAD: ~130 KB of embed HTML
+  before any player JS, requests to ytimg and googlevideo, and cookies — on a
+  site whose entire argument is that nothing leaves your Mac, and whose privacy
+  policy says this one "sets no cookies". Nothing here loads from Google until
+  the visitor asks for it, so the claim stays true for everyone who doesn't
+  press play, and the landing page keeps the weight we worked to get rid of
+  (2.6 MB → 320 KB).
+
+  `youtube-nocookie.com` on playback rather than `youtube.com`: Google's own
+  wording is that it stores nothing "unless the user plays the video", which is
+  only meaningful when the iframe doesn't exist until they do.
+
+  It is an <a> to the real video, upgraded by script — so with JavaScript off it
+  is a working link rather than a dead thumbnail, the same reasoning as the
+  support form posting natively.
+*/
+---
+
+<figure class="video">
+  <a
+    class="video-facade"
+    href={`https://www.youtube.com/watch?v=${id}`}
+    data-video-id={id}
+    data-video-title={title}
+    aria-label={`Play: ${title}`}
+  >
+    <Image src={poster} alt="" width={1280} height={720} loading={loading} decoding="async" />
+    <span class="video-play" aria-hidden="true">
+      <span class="video-play-button">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+          <path d="M8 5.5v13l11-6.5z" />
+        </svg>
+      </span>
+    </span>
+  </a>
+</figure>
+
+<style>
+  .video {
+    margin: 0;
+  }
+
+  .video-facade {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border-subtle);
+    line-height: 0;
+  }
+
+  .video-facade img {
+    width: 100%;
+    height: auto;
+  }
+
+  .video-play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    /* Dark enough to read the button against a bright frame, light enough to
+       leave the still legible — it is doing half the selling. */
+    background: rgba(11, 18, 32, 0.34);
+    color: #ffffff;
+    transition: background 0.15s ease;
+  }
+
+  /* The circle is a sized wrapper, not padding on the <svg>: padding does not lay
+     out on a replaced element the way it does on a box, which collapsed this to a
+     37px dot the first time — the button was in the DOM, correct in every
+     computed style, and invisible. */
+  .video-play-button {
+    display: grid;
+    place-items: center;
+    width: 76px;
+    height: 76px;
+    border-radius: var(--radius-pill);
+    background: var(--orange-700);
+    box-shadow: 0 6px 20px rgba(11, 18, 32, 0.4);
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+
+  .video-play svg {
+    /* Optical centring: a triangle's visual mass sits left of its box. */
+    margin-left: 4px;
+  }
+
+  .video-facade:hover .video-play {
+    background: rgba(11, 18, 32, 0.18);
+  }
+
+  .video-facade:hover .video-play-button {
+    transform: scale(1.06);
+    background: var(--orange-600);
+  }
+
+  .video-facade:focus-visible {
+    outline: 3px solid var(--orange-600);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-play,
+    .video-play-button {
+      transition: none;
+    }
+
+    .video-facade:hover .video-play-button {
+      transform: none;
+    }
+  }
+
+  /* The player replaces the facade in place, so the page does not jump. */
+  .video :global(iframe) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+  }
+</style>
+
+<script>
+  // Bound by query, not by id: this component can render more than once on a
+  // page, and duplicate ids cost us a working newsletter form once already.
+  for (const facade of document.querySelectorAll<HTMLAnchorElement>('.video-facade')) {
+    facade.addEventListener('click', (event) => {
+      const id = facade.dataset.videoId;
+      if (!id) return;                       // no id: leave the link alone
+      event.preventDefault();
+
+      const frame = document.createElement('iframe');
+      // nocookie + autoplay: they asked for the video by clicking, so play it.
+      frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      frame.title = facade.dataset.videoTitle ?? 'Video';
+      frame.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; '
+        + 'gyroscope; picture-in-picture; web-share';
+      frame.allowFullscreen = true;
+      facade.replaceWith(frame);
+      frame.focus();
+    });
+  }
+</script>
