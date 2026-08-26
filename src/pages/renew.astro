@@ -8,8 +8,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
   It is NOT deleted, and the URL must not 404. Sealshot 0.7.8 and earlier ship a
   "Renew License…" button in Settings ▸ License that opens
   /renew/?license_id=…&email=…, and a link compiled into a binary cannot be taken
-  back — someone will click it years from now. The FAQ and the refunds page point
-  here too. So the page answers the question the button was asking.
+  back — someone will click it years from now. 0.8.0 keeps the same URL behind
+  "How Replacements Work…" on its Permanent Updates card, without the query
+  params. The FAQ and the refunds page point here too. So the page answers the
+  question the button was asking, whichever button it was.
 
   The license-file verification, the /renew/verify lookup and the volume-license
   branch all went with the checkout. The Worker endpoint stays (it is tested and

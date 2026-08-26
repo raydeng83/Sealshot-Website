@@ -73,7 +73,8 @@ SECTIONS = [
     ]),
     ('Reference', ['docs/faq']),
     ('Release history', [
-        'docs/changelog/v0-7-8', 'docs/changelog/v0-7-7', 'docs/changelog/v0-7-6',
+        'docs/changelog/v0-8-0', 'docs/changelog/v0-7-8',
+        'docs/changelog/v0-7-7', 'docs/changelog/v0-7-6',
         'docs/changelog/v0-7-5', 'docs/changelog/v0-7-4',
         'docs/changelog/v0-7-3', 'docs/changelog/v0-7-2', 'docs/changelog/v0-7-1',
         'docs/changelog/v0-7-0', 'docs/changelog/v0-6-0', 'docs/changelog/v0-5-1',
@@ -99,6 +100,13 @@ REVISIONS = [
      'still be had afterwards (no). The renewal answers now link the renewal page '
      'rather than the buy page, and state that renewing early loses no unused time. '
      'Fourth consolidated PDF edition (snapshot of release 0.7.5).'),
+    ('Aug 26, 2026', 'Documentation rewritten for the business model in release 0.8.0: '
+     'Sealshot is free to use, with no trial and no feature held back, and what a '
+     'license buys is that the app stops asking plus every future update, permanently. '
+     'Update windows and renewals are gone from the guide, the FAQ and the comparison '
+     'table; the renewal page now explains that licenses issued before the change are '
+     'replaced free. Settings documents the Permanent Updates card and the "Free to '
+     'use" status line. Fifth consolidated PDF edition (snapshot of release 0.8.0).'),
 ]
 
 def extract(slug):
@@ -256,7 +264,7 @@ page = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
   <div class="sub">Capture, edit, redact, organize, and share — privately on your Mac.</div>
   <div class="rule"></div>
   <div class="meta">Guide + workflows + tips + FAQ + release history<br>
-  Documentation snapshot: {today} | Current release: 0.7.8</div>
+  Documentation snapshot: {today} | Current release: 0.8.0</div>
   <div class="blurb">Sealshot is a privacy-first screenshot and screen-recording app for macOS.
   Capture, OCR, redaction, AI metadata, and search all run on the device.</div>
 </div>

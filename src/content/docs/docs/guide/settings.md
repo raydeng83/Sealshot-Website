@@ -114,13 +114,14 @@ update:
   Sealshot…** takes you to the store if you don't have one yet.
 - Your **license ID** and license type are shown here, with a button to copy
   the ID — quote it if you ever write to support.
-- The status line reads **Free to use** without a license, or *Includes every
-  future update* with one.
+- The status line reads **Free to use** without a license, or **Licensed to
+  ‹your name›** with one.
 - **Remove License…** deactivates this Mac. Nothing stops working; the
   reminder comes back.
-- A **Renew** card appears only for a license issued before updates became
-  permanent (August 2026), and those are replaced free — see
-  [renewing](/renew/).
+- A **Permanent Updates** card appears only for a license issued before
+  updates became permanent (August 2026). Those are replaced at no cost —
+  email support with the license ID above, and open the file that comes back.
+  See [replacements](/renew/).
 
 ## Privacy & Security
 
