@@ -1,0 +1,107 @@
+---
+/*
+  The sitewide bar. It states the business model, which is the thing a first-time
+  visitor is least likely to guess: every feature works without paying, and a
+  license is support rather than access.
+
+  It used to be the founding-price bar — "$14.99 instead of $29.99 — 50% off".
+  That was the right bar while buying was how you kept using the app. Now that it
+  isn't, leading with a discount answers a question nobody asked and makes the
+  cheaper thing sound like the point.
+
+  No price here on purpose. The bar renders on all 54 pages including every docs
+  page, where a number is least useful and most likely to go stale; the price
+  lives on /, /download and /buy, all of which derive it from promos.ts. Dropping
+  it also means this file cannot contradict what Polar charges.
+
+  Renders unconditionally, unlike the offer bar it replaces, because the sentence
+  is true whether or not an offer is running. That gives up the old "no bar to
+  remember to take down" property — if it should ever be temporary again, gate it
+  on a dated constant rather than on `activeOffer`, which now describes only the
+  price.
+
+  Deliberately without a dismiss button: that needs client JS and per-visitor
+  state, and a slim two-clause bar does not earn either.
+
+  Styles are local rather than in global.css because the docs run on Starlight
+  and never load that file. The marketing tokens get fallbacks for the same
+  reason — inside the docs, `--orange-700` and friends do not exist.
+*/
+---
+
+<div class="support-bar">
+  <p>
+    <strong>Free to use</strong>
+    {/* Short enough that the docs form still fits one line at the narrowest the
+        content column gets — 532px, around 832px viewport, where Starlight has
+        just given the sidebar its width but the window is still small. "no
+        trial" was in here and cost the line; nothing expires says it, and a
+        trial nobody was offered is not worth the words. */}
+    <span class="lede">— every feature, nothing expires</span>
+    {/* First to go on a narrow screen and inside the docs column, where the bar
+        gets ~690px rather than the window. The ask still survives there, in the
+        link's own label — which is why the link says what it is for rather than
+        "Get it". */}
+    <span class="detail">· a license is optional, and supports the work</span>
+    <a href="/buy/">Support Sealshot</a>
+  </p>
+</div>
+
+<style>
+  .support-bar {
+    background: var(--orange-700, #c2410c);
+    color: #ffffff;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .support-bar p {
+    margin: 0 auto;
+    max-width: var(--max-width, 72rem);
+    padding: 0.5rem 1.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0 0.4rem;
+    text-align: center;
+  }
+
+  .support-bar strong {
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .support-bar a {
+    /* Without this the 6px flex gap left the sentence running straight into the
+       link, reading as one phrase. */
+    margin-inline-start: 0.35rem;
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .support-bar a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* Below this the full sentence runs to three lines and starts reading as a
+     paragraph. The claim and the link survive; the optional-license clause is
+     on /buy and in the bar on wider screens. */
+  @media (max-width: 52rem) {
+    .support-bar .detail {
+      display: none;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .support-bar {
+      font-size: 0.85rem;
+    }
+
+    .support-bar p {
+      padding-inline: 1rem;
+    }
+  }
+</style>

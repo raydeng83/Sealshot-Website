@@ -32,6 +32,10 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
 <SiteLayout
   title="Support Sealshot"
   description="Sealshot is free to use. A one-time purchase supports the work and includes every future update. Signed, notarized, on-device only."
+  {/* The support bar says "free to use, a license supports the work" and links
+      here. Directly above a page whose headline says the same thing and whose
+      panel is the link's destination, it is pure duplication. */}
+  hideBar
 >
   <section class="buy">
     <div class="wrap buy-grid">
