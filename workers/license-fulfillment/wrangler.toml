@@ -61,22 +61,30 @@ EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
 #
 # BOTH environments are mapped, deliberately. The obvious cutover — swap sandbox
 # ids for production ones — leaves a window where whichever environment is
-# unmapped resolves every purchase to a 12-month new license: a founding buyer
-# silently loses 6 months and a renewal mints a SECOND license. Mapping six ids
-# costs nothing and removes the window entirely. The only genuinely single-valued
-# thing is POLAR_WEBHOOK_SECRET, so that secret is what actually cuts over.
+# unmapped resolves every purchase to the default terms and a renewal mints a
+# SECOND license. Mapping six ids costs nothing and removes the window entirely.
+# The only genuinely single-valued thing is POLAR_WEBHOOK_SECRET, so that secret
+# is what actually cuts over.
+#
+# Every product is `permanent` as of 2026-08-26: a purchase covers every future
+# release, so there is no month count to get wrong and no window to renew. The
+# license carries this as an EMPTY updatesThrough — see src/product.ts.
 #
 #   sandbox                                            production
-#   e8d2217b… Sealshot            new,     12 months   5d97bf6b…  — $29.99
-#   d5a0e9c3… Sealshot Founding   new,     18 months   aa68d65d…  — $14.99
-#   877dd2e8… Sealshot Renewal    renewal, 12 months   a769ede2…  — $17.99
+#   e8d2217b… Sealshot            new,     permanent   5d97bf6b…  — $29.99
+#   d5a0e9c3… Sealshot Founding   new,     permanent   aa68d65d…  — $14.99
+#   877dd2e8… Sealshot Renewal    renewal, permanent   a769ede2…  — $17.99
+#
+# The Renewal product is retired — permanent updates leave it nothing to sell —
+# but it stays mapped until it is archived in Polar, so a straggling order
+# reissues the buyer's own license rather than minting a second one.
 #
 # Prices are what the products charge AND what src/config/promos.ts advertises —
 # sandbox verified 2026-08-16, production 2026-08-19. The two can drift, since
 # Polar decides the charge and neither this file nor the site does, so check it
 # rather than believe this comment: `npm run check:prices` in the site repo reads
 # each checkout link back from Polar.
-PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","months":12},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","months":18},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","months":12},"5d97bf6b-2fa8-45c6-9d8b-a30ad2a71062":{"kind":"new","months":12},"aa68d65d-f713-4a6f-86f1-61188b7c567a":{"kind":"new","months":18},"a769ede2-8e48-4c28-b8f3-692524a2bc6c":{"kind":"renewal","months":12}}'
+PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","permanent":true},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","permanent":true},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","permanent":true},"5d97bf6b-2fa8-45c6-9d8b-a30ad2a71062":{"kind":"new","permanent":true},"aa68d65d-f713-4a6f-86f1-61188b7c567a":{"kind":"new","permanent":true},"a769ede2-8e48-4c28-b8f3-692524a2bc6c":{"kind":"renewal","permanent":true}}'
 # The From subdomain is send-only, so replies need somewhere real to land.
 REPLY_TO = "support@seal-shot.com"
 # Where the /support form delivers. Same inbox as REPLY_TO today; separate so a

@@ -120,10 +120,10 @@ Touch ID, Apple Watch, or your password to view your captures.
 *Unlock with Touch ID, Apple Watch, or your Mac password.*
 
 Locked means locked: while the lock screen is up, nothing else opens over it —
-not Settings, not the floating capture window. If your trial has ended, pressing
-a capture shortcut brings up the lock screen with an explanation that new
-captures are paused; unlock from there and Settings opens on the **License**
-page, so activating a license is two clicks from the shortcut that was blocked.
+not Settings, not the floating capture window. Pressing a capture shortcut while
+locked brings up the lock screen with an explanation that new captures are
+paused until you unlock — the one case where capture waits, and it has nothing
+to do with licensing.
 
 ## Locking
 

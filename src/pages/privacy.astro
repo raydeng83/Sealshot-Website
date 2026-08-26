@@ -54,11 +54,12 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     <p>
       One thing worth naming, because it is the only time anything about your
       license crosses the network: when you click <strong>Buy</strong> or
-      <strong>Renew</strong>, Sealshot opens this website in your browser. The
-      renewal link includes your license ID and email address, so we can find
-      the purchase you are renewing and send the new file to the right place.
-      That is your browser, at your request, as part of buying something — not
-      Sealshot reporting in. Nothing is sent if you never click it.
+      <strong>Support Sealshot</strong>, Sealshot opens this website in your
+      browser. Older versions also had a <strong>Renew</strong> button, whose
+      link carried your license ID and email address so the purchase could be
+      matched to your existing license. Either way that is your browser, at your
+      request, as part of buying something — not Sealshot reporting in. Nothing
+      is sent if you never click it.
     </p>
 
     <h2>This website</h2>
@@ -93,12 +94,12 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       name its owner.
     </p>
     <p>
-      To deliver your license and let you renew it later, we store the
+      To deliver your license, and to be able to reissue it later, we store the
       following ourselves, in Cloudflare's key-value storage:
     </p>
     <ul>
       <li>your name, billing address, and email address, as given at checkout</li>
-      <li>your license ID, and the dates it was issued and covers updates through</li>
+      <li>your license ID, the date it was issued, and what it covers</li>
       <li>whether it is an individual or volume license, and how many users it covers</li>
       <li>whether delivery succeeded, so a failed send can be retried</li>
     </ul>
@@ -107,9 +108,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       <a href="https://resend.com" rel="nofollow">Resend</a>, our transactional
       email provider, which holds the message — including the attached license
       file, in which your name, billing address, and email appear as readable
-      text — for a limited period. We use these records only to deliver your license, to honor a
-      renewal, and to answer support requests about your purchase. They are
-      never sold, shared, or used for marketing.
+      text — for a limited period. We use these records only to deliver your
+      license, to reissue it if you need a replacement, and to answer support
+      requests about your purchase. They are never sold, shared, or used for
+      marketing.
     </p>
     <p>
       Your license names you, and now also states the billing address you bought
@@ -119,11 +121,11 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       something to attach to a public bug report.
     </p>
     <p>
-      We keep them for as long as the license exists, because a renewal has to
-      find a license bought a year or more earlier and support requests can
+      We keep them for as long as the license exists, because a replacement has
+      to find a license bought a year or more earlier and support requests can
       arrive long after a purchase. If you would like your purchase records
-      deleted, <a href="/support/">ask us</a> and we will remove them —
-      note that this also removes our ability to reissue or renew that license.
+      deleted, <a href="/support/">ask us</a> and we will remove them — note that
+      this also removes our ability to reissue that license.
     </p>
 
     <h2>Feedback form</h2>

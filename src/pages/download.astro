@@ -1,7 +1,7 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import {
-  activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS, TRIAL_DAYS,
+  activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS,
 } from '../config/promos';
 
 const offer = activeOffer(new Date());
@@ -25,9 +25,9 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
         Silicon and Intel, macOS 14 or later.
       </p>
       <p class="buy-signal">
-        Free for {TRIAL_DAYS} days, then <strong>{formatUSDCompact(priceCents)} {priceQualifier}</strong>{
-          offer && <> ({percent}% off)</>
-        } — <a href="/buy/">see what's included</a>
+        <strong>Free to use</strong>, with every feature unlocked. {formatUSDCompact(priceCents)}
+        {' '}{priceQualifier}{offer && <> ({percent}% off)</>} if you want to support it —
+        <a href="/buy/">what that buys</a>
       </p>
       <div class="actions">
         <a

@@ -3,6 +3,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { resolveProduct, renewalThrough } from '../src/product';
 
+// Vestigial since updates became permanent: nothing on sale has a window to
+// extend. Kept because the renewal product still exists in Polar, so the path is
+// still reachable until it is archived.
 describe('renewalThrough', () => {
   // Both headline cases come from the v1.0 pricing document, §8.
   it('early renewal keeps unused time', () => {
@@ -27,34 +30,45 @@ describe('renewalThrough', () => {
 });
 
 describe('resolveProduct', () => {
+  const PERMANENT = { kind: 'new', permanent: true };
   const env = {
     PRODUCT_MAP:
-      '{"prod_new":{"kind":"new","months":12},' +
-      '"prod_found":{"kind":"new","months":18},' +
-      '"prod_renew":{"kind":"renewal","months":12}}',
+      '{"prod_new":{"kind":"new","permanent":true},' +
+      '"prod_found":{"kind":"new","permanent":true},' +
+      '"prod_renew":{"kind":"renewal","permanent":true},' +
+      '"prod_legacy":{"kind":"new","months":18}}',
   };
   it('maps configured products', () => {
-    expect(resolveProduct(env, 'prod_found')).toEqual({ kind: 'new', months: 18 });
-    expect(resolveProduct(env, 'prod_renew')).toEqual({ kind: 'renewal', months: 12 });
+    expect(resolveProduct(env, 'prod_found')).toEqual({ kind: 'new', permanent: true });
+    expect(resolveProduct(env, 'prod_renew')).toEqual({ kind: 'renewal', permanent: true });
   });
-  it('falls back to a 12-month new purchase for an unknown product', () => {
-    expect(resolveProduct(env, 'prod_mystery')).toEqual({ kind: 'new', months: 12 });
+  it('still honours a dated entry, for terms issued before updates were permanent', () => {
+    expect(resolveProduct(env, 'prod_legacy')).toEqual({ kind: 'new', months: 18 });
+  });
+  it('falls back to a PERMANENT new purchase for an unknown product', () => {
+    // The direction matters: the buyer has paid, so the fallback must err in
+    // their favour, and permanent is what every live product grants.
+    expect(resolveProduct(env, 'prod_mystery')).toEqual(PERMANENT);
   });
   it('falls back when the map is missing or malformed', () => {
-    expect(resolveProduct({}, 'anything')).toEqual({ kind: 'new', months: 12 });
-    expect(resolveProduct({ PRODUCT_MAP: 'not json' }, 'x')).toEqual({ kind: 'new', months: 12 });
-    expect(resolveProduct({ PRODUCT_MAP: '[]' }, 'x')).toEqual({ kind: 'new', months: 12 });
+    expect(resolveProduct({}, 'anything')).toEqual(PERMANENT);
+    expect(resolveProduct({ PRODUCT_MAP: 'not json' }, 'x')).toEqual(PERMANENT);
+    expect(resolveProduct({ PRODUCT_MAP: '[]' }, 'x')).toEqual(PERMANENT);
   });
   it('rejects entries with a bad kind or a non-positive term', () => {
     // A typo in PRODUCT_MAP must degrade to the safe default rather than
     // producing a license with a zero- or negative-length update window.
+    // `{months: 0}` is in here on purpose: it is the plausible way someone
+    // would try to spell "no expiry", and it must NOT be read as permanent —
+    // it would otherwise mint a license covering nothing.
     const bad = {
       PRODUCT_MAP:
         '{"a":{"kind":"gift","months":12},"b":{"kind":"new","months":0},' +
-        '"c":{"kind":"renewal","months":-12},"d":{"kind":"new"}}',
+        '"c":{"kind":"renewal","months":-12},"d":{"kind":"new"},' +
+        '"e":{"kind":"new","permanent":"yes"}}',
     };
-    for (const id of ['a', 'b', 'c', 'd']) {
-      expect(resolveProduct(bad, id)).toEqual({ kind: 'new', months: 12 });
+    for (const id of ['a', 'b', 'c', 'd', 'e']) {
+      expect(resolveProduct(bad, id)).toEqual(PERMANENT);
     }
   });
 });
@@ -84,24 +98,24 @@ describe('the deployed PRODUCT_MAP', () => {
     // from an unmapped product.
     for (const id of Object.keys(JSON.parse(raw!))) {
       const terms = resolveProduct(env, id);
-      expect(terms.months).toBeGreaterThan(0);
       expect(['new', 'renewal']).toContain(terms.kind);
+      expect(terms.permanent === true || (terms.months ?? 0) > 0).toBe(true);
     }
   });
 
-  it('covers the same three terms in each environment, and nothing else', () => {
-    const values = Object.values(JSON.parse(raw!)) as { kind: string; months: number }[];
-    // One renewal and one of each new term per environment. Counting shapes
-    // rather than ids is what catches the mistake that matters: a founding id
-    // mapped to 12 months, or a renewal mapped as `new`, both of which parse
-    // and validate and quietly sell the wrong thing.
-    const shape = (v: { kind: string; months: number }) => `${v.kind}/${v.months}`;
+  it('grants permanent updates on every product, in both environments', () => {
+    // The failure this catches: one id left on a month count after the switch,
+    // which parses, validates, and quietly sells a windowed license at the
+    // price of a permanent one. Counting shapes rather than ids also catches a
+    // renewal mapped as `new`.
+    const values = Object.values(JSON.parse(raw!)) as { kind: string; permanent?: boolean }[];
+    const shape = (v: { kind: string; permanent?: boolean }) =>
+      `${v.kind}/${v.permanent === true ? 'permanent' : 'windowed'}`;
     const counts = new Map<string, number>();
     for (const v of values) counts.set(shape(v), (counts.get(shape(v)) ?? 0) + 1);
     expect([...counts.entries()].sort()).toEqual([
-      ['new/12', 2],
-      ['new/18', 2],
-      ['renewal/12', 2],
+      ['new/permanent', 4],
+      ['renewal/permanent', 2],
     ]);
   });
 });

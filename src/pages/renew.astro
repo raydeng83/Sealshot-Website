@@ -1,319 +1,68 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { RENEWAL_PRICE_CENTS, formatUSD } from '../config/promos';
+
+/*
+  This page used to be a renewal checkout: drop your license file, see the window
+  you'd get, pay. Updates are permanent now, so there is nothing to sell here.
+
+  It is NOT deleted, and the URL must not 404. Sealshot 0.7.8 and earlier ship a
+  "Renew License…" button in Settings ▸ License that opens
+  /renew/?license_id=…&email=…, and a link compiled into a binary cannot be taken
+  back — someone will click it years from now. 0.8.0 keeps the same URL behind
+  "How Replacements Work…" on its Permanent Updates card, without the query
+  params. The FAQ and the refunds page point here too. So the page answers the
+  question the button was asking, whichever button it was.
+
+  The license-file verification, the /renew/verify lookup and the volume-license
+  branch all went with the checkout. The Worker endpoint stays (it is tested and
+  harmless) in case a lookup surface is wanted again.
+*/
 ---
 
 <SiteLayout
-  title="Renew your Sealshot license — Sealshot"
-  description="Extend your Sealshot license by another 12 months of updates. Confirm what you're renewing before you pay."
+  title="Renewing your Sealshot license — Sealshot"
+  description="Nothing to renew: a Sealshot license now includes every future update, permanently."
 >
-  <section class="section wrap" aria-labelledby="renew-title">
+  <section class="section wrap prose" aria-labelledby="renew-title">
     <p class="kicker">Renew</p>
-    <h1 id="renew-title">Another 12 months of updates</h1>
+    <h1 id="renew-title">There's nothing to renew</h1>
     <p class="sub">
-      Sealshot keeps working whether or not you renew — your license is
-      perpetual. Renewing adds 12 more months of new versions, for
-      {formatUSD(RENEWAL_PRICE_CENTS)}.
+      A Sealshot license includes <strong>every future update, permanently</strong>.
+      No window, no expiry, and no renewal to remember — if you have a license,
+      you are done.
     </p>
 
-    <div id="step-identify">
-      <div class="renew-card" id="drop-card">
-        <h2>Start with your license file</h2>
-        <p class="muted">
-          Drag your <code>.sealshotlicense</code> file here, or choose it below.
-          It's checked in your browser and never uploaded.
-        </p>
-        <label class="button secondary" for="file-input">Choose license file…</label>
-        <input id="file-input" type="file" accept=".sealshotlicense,text/plain" />
-      </div>
+    <h2>If you bought before this changed</h2>
+    <p>
+      Licenses issued up to August 2026 covered a fixed number of months of
+      updates. Those are being replaced with permanent ones at no cost — you are
+      not being asked to pay for what you already bought. Email
+      <a href="mailto:support@seal-shot.com">support@seal-shot.com</a> with the
+      <strong>License ID</strong> from <strong>Settings ▸ License</strong> and a
+      replacement file will come back to you.
+    </p>
 
-      <details class="fallback">
-        <summary>I don't have the file</summary>
-        <form id="pair-form" class="form-card" novalidate>
-          <p class="muted">
-            Enter the email you bought with and your license ID. You'll find both
-            in Sealshot under Settings ▸ License, and in your purchase email.
-          </p>
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required />
-          <label for="license-id">License ID</label>
-          <input id="license-id" name="licenseId" type="text" spellcheck="false"
-                 placeholder="550E8400-E29B-41D4-A716-446655440000" required />
-          <button class="button" type="submit">Look up my license</button>
-        </form>
-      </details>
-    </div>
+    <h2>How to tell which one you have</h2>
+    <p>
+      Open your <code>.sealshotlicense</code> file in any text editor, or look at
+      <strong>Settings ▸ License</strong> in Sealshot. A permanent license reads
+      <em>Updates — All future versions</em>. An older one names a date it runs
+      through.
+    </p>
 
-    <div id="step-confirm" hidden>
-      <div class="renew-card confirm">
-        <h2>Confirm your renewal</h2>
-        <dl class="summary">
-          <dt>Licensed to</dt><dd id="s-name"></dd>
-          <dt>Email</dt><dd id="s-email"></dd>
-          <dt>License ID</dt><dd id="s-id" class="mono"></dd>
-          <dt>Updates through</dt><dd id="s-current"></dd>
-          <dt>After renewing</dt><dd id="s-projected" class="emphasis"></dd>
-        </dl>
-        <p class="muted" id="s-early" hidden>
-          You're renewing early, so the time you haven't used yet is added on top
-          — you don't lose it.
-        </p>
-        <a class="button" id="checkout-link" href="#">
-          Renew for {formatUSD(RENEWAL_PRICE_CENTS)}
-        </a>
-        <p class="fine-print">
-          Your license ID travels with the purchase so the renewal attaches to
-          this license instead of creating a new one. The renewed file arrives by
-          email; open it or drag it onto Settings ▸ License.
-        </p>
-        <p><button type="button" class="linky" id="start-over">Use a different license</button></p>
-      </div>
-    </div>
+    <h2>What happens if you do nothing</h2>
+    <p>
+      Sealshot keeps working, and so does every version your license already
+      covers. Newer versions install and run in full too — the app is
+      <a href="/buy/">free to use</a>, so a version outside an old window is
+      never a lockout. The only difference is that the occasional support
+      reminder comes back, and a replacement license turns it off again.
+    </p>
 
-    <div id="renew-error" class="notice error" role="alert" hidden></div>
-
-    <div id="volume-notice" class="renew-card volume" hidden>
-      <h2>This is a volume license</h2>
-      <p>
-        Volume licenses are renewed by invoice, not through this page — the
-        self-serve product covers a single user, so using it would extend
-        <span id="v-seats"></span> for the price of one.
-      </p>
-      <p>
-        Email <a href="mailto:support@seal-shot.com">support@seal-shot.com</a>
-        with your license ID and we'll send a quote.
-      </p>
-      <dl class="summary">
-        <dt>Licensed to</dt><dd id="v-name"></dd>
-        <dt>Updates through</dt><dd id="v-current"></dd>
-      </dl>
-    </div>
+    <p class="fine-print">
+      Volume licenses are handled the same way — reply to your invoice or email
+      <a href="mailto:support@seal-shot.com">support@seal-shot.com</a> with the
+      license ID, and every seat is replaced at once.
+    </p>
   </section>
 </SiteLayout>
-
-<script>
-  import {
-    verifyLicenseFile, projectedThrough, todayUTC, formatDay,
-  } from '../lib/license-client';
-  import { RENEWAL_CHECKOUT_URL } from '../config/promos';
-  import { VERIFY_URL } from '../config/worker';
-
-  const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-
-  const stepIdentify = $('step-identify');
-  const stepConfirm = $('step-confirm');
-  const errorBox = $('renew-error');
-  const volumeBox = $('volume-notice');
-
-  /** Human wording for each verification failure. */
-  const FAILURE_TEXT: Record<string, string> = {
-    notALicense:
-      "That doesn't look like a Sealshot license file. Look for a file ending in .sealshotlicense — it came attached to your purchase email.",
-    malformed:
-      "That license file couldn't be read. If you edited or re-saved it, try the original from your purchase email.",
-    unknownKey:
-      'That license was signed with a key this page does not recognize. Email support@seal-shot.com and we will sort it out.',
-    badSignature:
-      "That license file didn't pass its signature check. Use the original from your purchase email, or email support@seal-shot.com.",
-    textTampered:
-      'That license file has been changed since it was issued, so we can’t confirm what it covers. Use the original from your purchase email.',
-  };
-
-  function showError(message: string) {
-    errorBox.textContent = message;
-    errorBox.hidden = false;
-    stepConfirm.hidden = true;
-    volumeBox.hidden = true;
-    stepIdentify.hidden = false;
-  }
-
-  function clearError() {
-    errorBox.hidden = true;
-    errorBox.textContent = '';
-  }
-
-  type Summary = {
-    name: string; email: string; licenseId: string;
-    licenseType: string; updatesThrough: string; projectedThrough: string; seats: number;
-  };
-
-  function showVolume(s: Summary) {
-    clearError();
-    stepIdentify.hidden = true;
-    stepConfirm.hidden = true;
-    $('v-name').textContent = s.name;
-    $('v-current').textContent = formatDay(s.updatesThrough);
-    $('v-seats').textContent = s.seats === 1 ? 'it' : `all ${s.seats} seats`;
-    volumeBox.hidden = false;
-  }
-
-  function showConfirm(s: Summary) {
-    clearError();
-    // Volume licenses are quoted and invoiced. The app already withholds the
-    // self-serve link for them, but this page must refuse independently — the
-    // checkout link can be reached directly.
-    if (s.licenseType === 'business-volume') return showVolume(s);
-
-    $('s-name').textContent = s.name;
-    $('s-email').textContent = s.email;
-    $('s-id').textContent = s.licenseId;
-    $('s-current').textContent = formatDay(s.updatesThrough);
-    $('s-projected').textContent = formatDay(s.projectedThrough);
-    ($('s-early') as HTMLElement).hidden = !(s.updatesThrough > todayUTC());
-
-    const url = new URL(RENEWAL_CHECKOUT_URL);
-    // Polar copies these into the Checkout Session metadata and then onto the
-    // order, which is how the Worker attaches the renewal to this license.
-    url.searchParams.set('reference_id', s.licenseId);
-    url.searchParams.set('customer_email', s.email);
-    ($('checkout-link') as HTMLAnchorElement).href = url.toString();
-
-    stepIdentify.hidden = true;
-    volumeBox.hidden = true;
-    stepConfirm.hidden = false;
-    stepConfirm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  async function handleFile(file: File) {
-    clearError();
-    const text = await file.text();
-    const res = await verifyLicenseFile(text);
-    if (!res.ok) return showError(FAILURE_TEXT[res.reason] ?? FAILURE_TEXT.malformed);
-
-    const p = res.payload;
-    showConfirm({
-      name: p.name, email: p.email, licenseId: p.id, licenseType: p.licenseType,
-      updatesThrough: p.updatesThrough,
-      projectedThrough: projectedThrough(p.updatesThrough, todayUTC()),
-      seats: p.seats,
-    });
-  }
-
-  async function lookupPair(email: string, licenseId: string) {
-    clearError();
-    let resp: Response;
-    try {
-      resp = await fetch(VERIFY_URL, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ email, licenseId }),
-      });
-    } catch {
-      return showError(
-        "We couldn't reach the license service. Check your connection and try again, or use your license file instead."
-      );
-    }
-
-    if (resp.status === 429) {
-      return showError('Too many attempts. Wait a minute and try again.');
-    }
-    if (resp.status === 404) {
-      return showError(
-        "That email and license ID don't match a license we have. Check both, or use your license file instead — it's the surest way."
-      );
-    }
-    if (!resp.ok) {
-      return showError('Something went wrong looking that up. Try again in a moment.');
-    }
-
-    const d = await resp.json();
-    showConfirm({
-      name: d.name, email: d.email, licenseId, licenseType: d.licenseType,
-      updatesThrough: d.updatesThrough, projectedThrough: d.projectedThrough, seats: d.seats,
-    });
-  }
-
-  // ── File input and drag-and-drop ───────────────────────────────────────────
-  const fileInput = $<HTMLInputElement>('file-input');
-  fileInput.addEventListener('change', () => {
-    const f = fileInput.files?.[0];
-    if (f) void handleFile(f);
-  });
-
-  const dropCard = $('drop-card');
-  for (const type of ['dragenter', 'dragover']) {
-    dropCard.addEventListener(type, (e) => {
-      e.preventDefault();
-      dropCard.classList.add('dragging');
-    });
-  }
-  for (const type of ['dragleave', 'drop']) {
-    dropCard.addEventListener(type, () => dropCard.classList.remove('dragging'));
-  }
-  dropCard.addEventListener('drop', (e) => {
-    e.preventDefault();
-    const f = (e as DragEvent).dataTransfer?.files?.[0];
-    if (f) void handleFile(f);
-  });
-
-  // ── Typed email + license id ───────────────────────────────────────────────
-  $<HTMLFormElement>('pair-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = $<HTMLInputElement>('email').value.trim();
-    const licenseId = $<HTMLInputElement>('license-id').value.trim();
-    if (!email || !licenseId) return showError('Enter both your email and your license ID.');
-    void lookupPair(email, licenseId);
-  });
-
-  $('start-over').addEventListener('click', () => {
-    stepConfirm.hidden = true;
-    volumeBox.hidden = true;
-    stepIdentify.hidden = false;
-    fileInput.value = '';
-    clearError();
-  });
-
-  // ── Deep link from the app's Renew button ──────────────────────────────────
-  // LicensingConfig.renewURL sends ?license_id=…&email=…, so a customer who
-  // clicked Renew in Sealshot skips straight to the confirmation step.
-  const params = new URLSearchParams(location.search);
-  const deepId = params.get('license_id');
-  const deepEmail = params.get('email');
-  if (deepId && deepEmail) {
-    const details = document.querySelector('.fallback') as HTMLDetailsElement | null;
-    if (details) details.open = true;
-    $<HTMLInputElement>('email').value = deepEmail;
-    $<HTMLInputElement>('license-id').value = deepId;
-    void lookupPair(deepEmail, deepId);
-  }
-</script>
-
-<style>
-  .renew-card {
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-card);
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    background: var(--surface-page);
-  }
-  .renew-card h2 { margin: 0 0 0.5rem; font-size: 1.125rem; }
-  .renew-card.confirm { background: var(--surface-band); }
-  .renew-card.volume { background: var(--surface-tint); }
-
-  #drop-card { border-style: dashed; text-align: center; }
-  #drop-card.dragging { border-color: var(--orange-600); background: var(--mint-50); }
-  #file-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-
-  .muted { color: var(--slate-600); }
-  .fallback { margin-top: 1rem; }
-  .fallback summary { cursor: pointer; color: var(--orange-700); }
-
-  .summary { display: grid; grid-template-columns: max-content 1fr; gap: 0.4rem 1.25rem; margin: 1rem 0 1.25rem; }
-  .summary dt { color: var(--slate-600); font-size: 0.9rem; }
-  .summary dd { margin: 0; }
-  .summary .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem; }
-  .summary .emphasis { font-weight: 700; }
-
-  .notice.error { border-left: 3px solid var(--orange-700); }
-
-  .linky {
-    background: none; border: 0; padding: 0;
-    color: var(--orange-700); text-decoration: underline; cursor: pointer; font: inherit;
-  }
-
-  @media (max-width: 30rem) {
-    .summary { grid-template-columns: 1fr; gap: 0.1rem 0; }
-    .summary dd { margin-bottom: 0.6rem; }
-  }
-</style>

@@ -34,9 +34,9 @@ what](/docs/guide/ai/#which-macs-run-what).
 Direct downloads are signed and notarized by Apple, so they launch without
 Gatekeeper warnings, and they update themselves automatically via Sparkle.
 
-Sealshot starts with a **14-day free trial** — no account needed. After it,
-everything you've already captured stays fully viewable, editable, and
-exportable; a license is only needed for new captures. See
+Sealshot is **free to use** — every feature, no account needed, nothing that
+expires. Buying a license supports the work and stops the app's occasional
+reminder; apply one from
 [Settings → License](/docs/guide/settings/#license).
 
 ## Grant Screen Recording permission

@@ -1,31 +1,39 @@
 import { addMonthsUTC } from './license';
 
 export type PurchaseKind = 'new' | 'renewal';
-export type ProductTerms = { kind: PurchaseKind; months: number };
+/**
+ * `permanent: true` is the normal case from 2026-08-26: a purchase covers every
+ * future release, and `months` is then irrelevant. The two forms coexist so a
+ * license issued under the old windowed terms can still be reasoned about.
+ */
+export type ProductTerms =
+  | { kind: PurchaseKind; permanent: true; months?: number }
+  | { kind: PurchaseKind; permanent?: false; months: number };
 
-const DEFAULT_TERMS: ProductTerms = { kind: 'new', months: 12 };
+const DEFAULT_TERMS: ProductTerms = { kind: 'new', permanent: true };
 
 /**
  * Polar product id → license terms, read from the PRODUCT_MAP var so adding a
  * product or changing a term is a config change rather than a deploy.
  *
- * An unknown product falls back to a 12-month NEW purchase. That direction is
+ * An unknown product falls back to a PERMANENT new purchase. That direction is
  * deliberate: the buyer has paid, so they must get a working license, and
  * treating an unrecognized purchase as `new` mints a fresh license instead of
  * touching an existing one. The opposite default would let a misconfigured
- * product id rewrite a customer's window.
+ * product id rewrite a customer's terms. Erring towards permanent errs in the
+ * customer's favour, and matches every product currently sold.
  */
 export function resolveProduct(env: { PRODUCT_MAP?: string }, productId: string): ProductTerms {
   try {
     const map = JSON.parse(env.PRODUCT_MAP ?? '{}') as Record<string, ProductTerms>;
     const terms = map[productId];
-    if (
-      terms &&
-      (terms.kind === 'new' || terms.kind === 'renewal') &&
-      Number.isFinite(terms.months) &&
-      terms.months > 0
-    ) {
-      return terms;
+    if (terms && (terms.kind === 'new' || terms.kind === 'renewal')) {
+      // Permanent needs no month count. Note that `{months: 0}` deliberately
+      // does NOT qualify as permanent: a zero-month window is a
+      // misconfiguration, not a way to spell "forever", and it falls through to
+      // the default rather than issuing a license that covers nothing.
+      if (terms.permanent === true) return { kind: terms.kind, permanent: true };
+      if (Number.isFinite(terms.months) && (terms.months as number) > 0) return terms;
     }
   } catch {
     /* malformed map — fall through to the safe default */
@@ -39,8 +47,7 @@ export function resolveProduct(env: { PRODUCT_MAP?: string }, productId: string)
  *
  * The fallback is deliberately silent so a buyer always gets a license, which
  * means a wholly wrong PRODUCT_MAP — sandbox ids left in place at launch being
- * the obvious one — produces correct-looking 12-month licenses forever and
- * never errors. Callers use this to alert, so the misconfiguration surfaces on
+ * the obvious one — produces correct-looking licenses forever and never errors. Callers use this to alert, so the misconfiguration surfaces on
  * the first sale rather than at the first renewal a year later.
  */
 export function isMappedProduct(env: { PRODUCT_MAP?: string }, productId: string): boolean {
@@ -55,6 +62,11 @@ export function isMappedProduct(env: { PRODUCT_MAP?: string }, productId: string
 /**
  * The entire renewal date rule: extend from whichever is later, the existing
  * window or the purchase day.
+ *
+ * Vestigial since updates became permanent — nothing on sale has a window to
+ * extend. Kept, with its tests, because the renewal PRODUCT still exists in
+ * Polar and a straggling order must still be handled correctly rather than
+ * meeting an unimplemented path.
  *
  * Renewing early keeps unused time (the customer is never punished for
  * renewing before they had to); renewing after a lapse starts from today

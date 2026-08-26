@@ -2,124 +2,219 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import OfferBadge from '../components/OfferBadge.astro';
 import {
-  activeOffer, formatUSD, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
-  RENEWAL_PRICE_CENTS, RENEWAL_UPDATE_MONTHS, BASE_CHECKOUT_URL,
+  activeOffer, formatUSD, savingsPercent, REGULAR_PRICE_CENTS, BASE_CHECKOUT_URL,
 } from '../config/promos';
 
 const offer = activeOffer(new Date());
 const checkoutUrl = offer?.checkoutUrl ?? BASE_CHECKOUT_URL;
 const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
-// The founding product grants a LONGER window, not just a lower price, so the
-// term has to come from the active offer. Hardcoding 12 would under-sell what
-// the Worker actually issues.
-const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
 const percent = offer ? savingsPercent(offer.priceCents) : 0;
 ---
 
+{/*
+  Two columns, not a centred hero. As a hero this page stacked seven blocks down
+  the middle at four different widths — a 58rem headline, a 38rem lede, 34rem
+  paragraphs, and a 22rem pair of price cards — all centred, some left-aligned
+  inside. On a wide display that reads as a ragged ribbon with the sides empty,
+  and no single left edge to follow.
+
+  So: the argument on the left, the transaction on the right, one left edge each.
+  It is also the shape of the decision — read why, then buy — and the panel keeps
+  the price and the button together instead of separated by two paragraphs of
+  terms.
+
+  The pitch is in two pieces so that stacking works without an `order` hack: on a
+  phone the source order is headline → panel → detail, which puts the price high
+  without opening the page on a bare number. (Panel first read as "$14.99" with
+  the explanation of what for below the fold.) On a wide screen grid-template-areas
+  puts both pieces in the left column with the panel beside them.
+*/}
 <SiteLayout
-  title="Buy Sealshot"
-  description={`Buy Sealshot for Mac — a one-time purchase with ${updateMonths} months of updates. Signed, notarized, on-device only.`}
+  title="Support Sealshot"
+  description="Sealshot is free to use. A one-time purchase supports the work and includes every future update. Signed, notarized, on-device only."
 >
-  <section class="hero">
-    <div class="wrap">
-      <p class="kicker">Buy Sealshot</p>
-      <h1>One purchase. Yours to keep.</h1>
-
-      <p class="price">
-        {offer && <span class="was">{formatUSD(REGULAR_PRICE_CENTS)}</span>}
-        <span class="now">{formatUSD(priceCents)}</span>
-        {offer && <OfferBadge label={`${offer.label} — ${percent}% off`} />}
-      </p>
-
-      <div class="actions">
-        <a class="button" href={checkoutUrl}>Buy Sealshot — {formatUSD(priceCents)}</a>
+  <section class="buy">
+    <div class="wrap buy-grid">
+      <div class="pitch-head">
+        <p class="kicker">Support Sealshot</p>
+        <h1>Free to use. Buy it to keep it being built.</h1>
       </div>
 
-      {offer && (
-        <>
-          {/* What the price alone cannot say: that this is a phase, and what the
-              other side of it looks like. The page used to state "18 months of
-              updates included" without ever mentioning that regular gets 12,
-              which is half of what founding actually buys. */}
-          <div class="phase" aria-label="Founding price compared with the regular price">
-            <div class="phase-col is-now">
-              <p class="phase-when">Before 1.0</p>
-              <p class="phase-price">{formatUSD(offer.priceCents)}</p>
-              <p class="phase-term">{offer.updateMonths} months of updates</p>
+      <div class="panel">
+        <p class="price">
+          {offer && <span class="was">{formatUSD(REGULAR_PRICE_CENTS)}</span>}
+          <span class="now">{formatUSD(priceCents)}</span>
+        </p>
+        {offer && <OfferBadge label={`${offer.label} — ${percent}% off`} />}
+
+        <a class="button buy-cta" href={checkoutUrl}>
+          Buy Sealshot — {formatUSD(priceCents)}
+        </a>
+
+        {offer && (
+          <>
+            {/* Founding is now a price and nothing else: updates are permanent
+                on every product, so the two columns compare one figure each. The
+                longer-window half of this block went with the update windows. */}
+            <div class="phase" aria-label="Founding price compared with the regular price">
+              <div class="phase-col is-now">
+                <p class="phase-when">Before 1.0</p>
+                <p class="phase-price">{formatUSD(offer.priceCents)}</p>
+                <p class="phase-term">All future updates</p>
+              </div>
+              <div class="phase-col">
+                <p class="phase-when">From 1.0</p>
+                <p class="phase-price">{formatUSD(REGULAR_PRICE_CENTS)}</p>
+                <p class="phase-term">All future updates</p>
+              </div>
             </div>
-            <div class="phase-col">
-              <p class="phase-when">From 1.0</p>
-              <p class="phase-price">{formatUSD(REGULAR_PRICE_CENTS)}</p>
-              <p class="phase-term">{REGULAR_UPDATE_MONTHS} months of updates</p>
-            </div>
-          </div>
-          <p class="phase-note">
-            The founding price is for buyers before the 1.0 release. When it ends the
-            price goes up and the update window shortens — but nothing about a license
-            already bought changes: it stays perpetual, and its
-            {' '}{offer.updateMonths} months stay {offer.updateMonths} months.
-            <a href="/docs/faq/#what-is-the-founding-license">More about the founding license</a>
-          </p>
-        </>
-      )}
+            <p class="phase-note">
+              The founding price is for buyers before the 1.0 release. When it ends
+              the price goes up — but nothing about a license already bought
+              changes: it stays perpetual, it keeps every future update, and it is
+              never re-priced.
+              <a href="/docs/faq/#what-is-the-founding-license">More about the founding license</a>
+            </p>
+          </>
+        )}
 
-      <ul class="whatyouget">
-        <li>Perpetual license — the app never stops working.</li>
-        <li>One user, up to three Macs. Commercial use included.</li>
-        <li>{updateMonths} months of updates included.</li>
-        <li>14-day free trial, no account required.</li>
-        <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
-        <li>macOS 14 or later · Apple Silicon &amp; Intel.</li>
-      </ul>
+        {/* Where the "After your update window" paragraph used to be. It named the
+            renewal price, which was the second number a buyer of a time-windowed
+            license needed. There is no second number now — that is the point, and
+            the absence says it better than a paragraph explaining the absence. */}
 
-      {/* The renewal price belongs on the pricing page: this page said nothing
-          about renewing at all, while the FAQ sent people here for exactly that
-          ("current pricing and update-window terms are on the buy page"), so the
-          question had nowhere to land. It is also the second number a buyer of a
-          time-windowed license wants — what happens after the window is what
-          makes the first price meaningful. */}
-      <p class="after">
-        <strong>After your update window:</strong> renewing is optional —
-        {' '}{formatUSD(RENEWAL_PRICE_CENTS)} for another {RENEWAL_UPDATE_MONTHS} months
-        of new versions, or keep the version you have, indefinitely.
-        <a href="/renew/">How renewal works</a>
-      </p>
+        <p class="fine-print">
+          Delivered instantly by email as a license file. Prices in USD; tax handled
+          at checkout. <a href="/refunds/">Refundable within 30 days</a>, no
+          questions required. Already bought? Your license arrived in your purchase
+          email — open it or drag it onto Settings ▸ License.
+        </p>
+      </div>
+      <div class="pitch-body">
+        {/* The honest version of the pitch. Every feature works without paying,
+            so the page cannot sell access — it has to say what buying actually
+            does, and be straight about the one thing it removes. */}
+        <p class="pitch-sub">
+          Every feature is unlocked whether or not you ever pay: full-resolution
+          captures and recordings, redaction, encryption, data extraction, the
+          whole Library. Nothing expires and nothing is watermarked. A license
+          funds the work, includes every future update, and turns off the
+          occasional reminder.
+        </p>
 
-      <p class="fine-print">
-        Delivered instantly by email as a license file. Prices in USD; tax handled at checkout.
-        <a href="/refunds/">Refundable within 30 days</a>, no questions required.
-        Already bought? Your license arrived in your purchase email — open it or drag it onto
-        Settings ▸ License.
-      </p>
+        <ul class="whatyouget">
+          <li>Perpetual license — the app never stops working.</li>
+          <li>One user, up to three Macs. Commercial use included.</li>
+          <li>Every future update included — permanently, with nothing to renew.</li>
+          <li>No more support reminders, on any of your Macs.</li>
+          <li>Free to use before and after — buying is a choice, not a gate.</li>
+          <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
+          <li>macOS 14 or later · Apple Silicon &amp; Intel.</li>
+        </ul>
+      </div>
     </div>
   </section>
 </SiteLayout>
 
 <style>
-  /* Flex children ignore the hero's text-align, so centre them explicitly —
-     without this the price row packs to the left of a centred page. */
-  .price {
-    font-size: 2rem; display: flex; align-items: baseline; gap: .6rem;
-    flex-wrap: wrap; justify-content: center;
+  /* padding-block, never the `padding: 4rem 0` shorthand: .wrap's inline padding
+     lives on the child, but a shorthand here would still be the rule that a
+     future edit copies to a `class="section wrap"` page and silently zero its
+     side margins. That exact bug shipped on seven pages once. */
+  .buy {
+    padding-block: 4.5rem 3.5rem;
   }
-  .price .was { text-decoration: line-through; opacity: .55; font-size: 1.3rem; }
-  .price .now { font-weight: 700; }
-  /* Two columns, not a table: it is one comparison of two things, and a table
-     here would announce a data structure that isn't there. Even widths so the
-     founding column does not look bigger than what it is being compared to. */
+
+  .buy-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  /* No cap on the columns themselves: they fill their grid track, so their left
+     edge is the site's own wrap edge — the same line the header's logo starts on.
+     The READING measures are capped individually below, which is the part that
+     matters; capping the whole column instead just moved the gutter inwards and
+     left a phantom gap before the panel. */
+  .pitch-head h1 {
+    /* Smaller than a full-width hero headline — it is a column now, and 3.5rem
+       here would break "Free to use." across two lines on a laptop. */
+    font-size: clamp(2rem, 3.2vw, 2.75rem);
+    margin: 0.35rem 0 0.75rem;
+    text-wrap: balance;
+  }
+
+  /* 34rem ≈ 60 characters at this size. The h1 above may run wider than this —
+     a headline is scanned, not read in lines. */
+  .pitch-sub {
+    color: var(--slate-600);
+    font-size: 1.15rem;
+    margin: 0;
+    max-width: 34rem;
+  }
+
+  /* padding-left hangs the markers in the gutter, on the column's own left edge,
+     with the text indented from them. Both arrangements are respectable
+     typography; what is not is the previous page, where the list text and the
+     paragraph above it sat 18px apart for no reason anyone chose. */
+  .whatyouget {
+    margin: 1.75rem 0 0;
+    padding-left: 1.15rem;
+    max-width: 34rem;
+    line-height: 1.9;
+  }
+
+  /* The transaction, in one box: price, badge, button, terms. Nothing between
+     the number and the button. */
+  .panel {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    background: var(--surface-page);
+    padding: 1.5rem;
+  }
+
+  .price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0;
+    font-size: 2.25rem;
+  }
+
+  .price .was {
+    text-decoration: line-through;
+    opacity: 0.55;
+    font-size: 1.3rem;
+  }
+
+  .price .now {
+    font-weight: 700;
+  }
+
+  /* Full width: a pill floating at the left of a 26rem panel reads as one
+     option among several, which is the wrong impression for the only action on
+     the page. */
+  .buy-cta {
+    display: block;
+    margin-top: 1.25rem;
+    text-align: center;
+  }
+
+  /* Two equal columns of whatever the panel gives them, rather than two fixed
+     11rem cards that sat in the middle with air on both sides. */
   .phase {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 11rem));
-    gap: 1rem;
-    justify-content: center;
-    margin: 2rem auto 0;
-    text-align: left;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.5rem;
   }
 
   .phase-col {
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
-    padding: 0.9rem 1rem;
+    padding: 0.8rem 0.9rem;
   }
 
   .phase-col.is-now {
@@ -136,54 +231,65 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
     color: var(--slate-400);
   }
 
-  .phase-col.is-now .phase-when { color: var(--orange-700); }
+  .phase-col.is-now .phase-when {
+    color: var(--orange-700);
+  }
 
   .phase-price {
     margin: 0.2rem 0 0;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     line-height: 1.2;
   }
 
   .phase-term {
     margin: 0.1rem 0 0;
+    font-size: 0.82rem;
+    color: var(--slate-600);
+  }
+
+  .phase-note,
+  .panel .fine-print {
+    margin: 1.25rem 0 0;
     font-size: 0.85rem;
     color: var(--slate-600);
   }
 
-  .phase-note {
-    max-width: 34rem;
-    margin: 1rem auto 0;
-    font-size: 0.9rem;
-    color: var(--slate-600);
-    text-align: left;
-  }
-
-  /* Its own line: as an inline tail it wrapped mid-phrase, which reads like the
-     sentence continues into the link. */
+  /* Its own line, always: as an inline-block it fitted onto the end of the last
+     sentence when the panel happened to be wide enough, so "…is never re-priced.
+     More about the founding license" read as one continuing clause. */
   .phase-note a {
-    display: inline-block;
-    margin-top: 0.4rem;
-  }
-  /* A centred list reads badly: the markers stay at the list's left edge while
-     the text drifts to the middle, so nothing lines up. Centre the BLOCK and
-     left-align the text inside it. */
-  .whatyouget {
-    margin: 2rem auto; line-height: 1.9;
-    max-width: 34rem; text-align: left;
-    padding-left: 1.25rem;
-  }
-  /* Reads as a footnote to the price, not a second offer: same measure as the
-     list above it, quieter than the headline, and no button of its own. */
-  .after {
-    max-width: 34rem;
-    margin: 1.5rem auto 0;
-    text-align: left;
-    color: var(--slate-600);
+    display: block;
+    margin-top: 0.5rem;
   }
 
-  .after strong { color: var(--navy-900); }
-  .after a { margin-inline-start: 0.35rem; }
+  @media (min-width: 64rem) {
+    .buy-grid {
+      /* The panel is sized, the argument takes the rest. minmax(0, …) on the
+         first track so a long unbreakable word cannot push the panel off.
+         Named areas rather than order/row juggling: the panel sits beside BOTH
+         pieces of the pitch, which is not something source order can express in
+         one column and two at the same time. */
+      grid-template-columns: minmax(0, 1fr) 24rem;
+      grid-template-areas:
+        "head panel"
+        "body panel";
+      column-gap: 4rem;
+      row-gap: 1.25rem;
+    }
 
-  .fine-print { max-width: 34rem; margin: 1.5rem auto 0; }
+    .pitch-head { grid-area: head; }
+    .pitch-body { grid-area: body; }
+    .panel { grid-area: panel; }
+  }
+
+  @media (max-width: 63.99rem) {
+    /* Stacked: headline, then price, then the detail. One measure for all three
+       so the single column has one right edge as well as one left. */
+    .panel,
+    .pitch-head,
+    .pitch-body {
+      max-width: 34rem;
+    }
+  }
 </style>

@@ -48,42 +48,22 @@ export const CHECKOUT_IS_SANDBOX = false;
  */
 export const REGULAR_PRICE_CENTS = 2999;
 
-/**
- * Renewal: 40% off a regular license — $17.99 today. Derived rather than typed
- * in, so the discount survives the next price change instead of drifting into
- * the near-full-price figure it was before ($24 against a $29.99 license).
- * Floored to the cent: 60% of $29.99 is $17.994.
+/*
+ * There are no update windows and no renewals any more. Every product grants
+ * PERMANENT updates: a purchase covers every future release. The license carries
+ * that as an empty `updatesThrough` — see the Worker's PRODUCT_MAP and
+ * src/product.ts.
+ *
+ * REGULAR_UPDATE_MONTHS, RENEWAL_UPDATE_MONTHS and RENEWAL_PRICE_CENTS are gone
+ * rather than zeroed, so a page that still wants a month count fails the build
+ * instead of rendering "0 months of updates". /renew survives as an explanation
+ * only: shipped builds up to 0.7.8 link to it from Settings ▸ License, and a
+ * link inside a binary cannot be taken back.
  */
-export const RENEWAL_PRICE_CENTS = Math.floor(REGULAR_PRICE_CENTS * 0.6);
-
-/** Months of updates included with the regular license. */
-export const REGULAR_UPDATE_MONTHS = 12;
-
-/**
- * Months a renewal adds. Same number as the regular license today, but a
- * different fact — this one must match the renewal entry in the Worker's
- * PRODUCT_MAP, which is what actually extends the window.
- */
-export const RENEWAL_UPDATE_MONTHS = 12;
 
 /** Full-price checkout — the fallback when no time-limited offer is running. */
 export const BASE_CHECKOUT_URL =
   'https://api.polar.sh/v1/checkout-links/polar_cl_PoAdTGTzzEdfhMfOXEwOyeqr8LsCbPHHtJhTq0NZfoi/redirect';
-
-/**
- * Renewal checkout. The /renew page appends `reference_id=<licenseId>` and
- * `customer_email=<email>`. Both are documented checkout-link parameters and
- * Polar attaches them to the Checkout Session metadata, which propagates to the
- * order — that is how the Worker attaches a renewal to an existing license
- * instead of minting a new one.
- *
- * Note the public client endpoint (`/v1/checkouts/client/<secret>`) does NOT
- * echo metadata, so a probe there shows nothing and proves nothing. Only a real
- * renewal order confirms it end to end, and that is still unexercised by live
- * traffic — see docs/launch-checklist.md Phase 4.
- */
-export const RENEWAL_CHECKOUT_URL =
-  'https://api.polar.sh/v1/checkout-links/polar_cl_3FkZ8HQH1c9nD6pULAG4j270YACf4N3KlycHG0uPSaM/redirect';
 
 export type Offer = {
   id: string;
@@ -92,8 +72,6 @@ export type Offer = {
   checkoutUrl: string;
   /** DISPLAY only — Polar is authoritative on the charge. */
   priceCents: number;
-  /** Months of updates this product grants. Must match PRODUCT_MAP. */
-  updateMonths: number;
   startsAt: string; // ISO 8601
   endsAt: string;   // ISO 8601, exclusive
 };
@@ -105,7 +83,6 @@ export const OFFERS: Offer[] = [
     checkoutUrl:
       'https://api.polar.sh/v1/checkout-links/polar_cl_WzQoSv8rzAKQIfomkyGW4XTIZVibhvB6alATt3jUs64/redirect',
     priceCents: 1499,
-    updateMonths: 18,
     startsAt: '2026-08-01T00:00:00Z',
     // TODO: this is a PLACEHOLDER. The founding tier is for buyers before the
     // 1.0 release, so this must be set to the actual v1.0 release day — not
@@ -145,12 +122,12 @@ export function savingsPercent(priceCents: number, regularCents = REGULAR_PRICE_
   return Math.round((1 - priceCents / regularCents) * 100);
 }
 
-/**
- * Free-trial length, in days.
+/*
+ * There is no TRIAL_DAYS any more. Sealshot is free to use: every feature works,
+ * nothing expires, and no capture is ever refused. What a license buys is
+ * permanent updates, and that the app's occasional support reminder stops.
  *
- * Authoritative value is `LicenseKeys.trialDays` in the app repo — the binary
- * decides when a trial ends, not this file. Kept here because the marketing
- * pages cannot import across repos, so if that constant changes this one has to
- * be changed with it.
+ * The constant was removed rather than set to 0 so that no page can render "free
+ * for 0 days" — and so that anything still importing it fails the build instead
+ * of quietly advertising a trial that does not exist.
  */
-export const TRIAL_DAYS = 14;

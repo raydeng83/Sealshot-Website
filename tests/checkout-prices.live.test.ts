@@ -18,9 +18,7 @@ import { describe, it, expect } from 'vitest';
 import {
   OFFERS,
   BASE_CHECKOUT_URL,
-  RENEWAL_CHECKOUT_URL,
   REGULAR_PRICE_CENTS,
-  RENEWAL_PRICE_CENTS,
   CHECKOUT_IS_SANDBOX,
 } from '../src/config/promos';
 
@@ -45,9 +43,11 @@ async function charged(checkoutUrl: string) {
   return body;
 }
 
+// No renewal row: updates are permanent, so the renewal product has nothing to
+// sell and the site no longer links to it. It stays alive in Polar (and mapped in
+// the Worker) only until it is archived.
 const cases: Array<[string, string, number]> = [
   ['regular', BASE_CHECKOUT_URL, REGULAR_PRICE_CENTS],
-  ['renewal', RENEWAL_CHECKOUT_URL, RENEWAL_PRICE_CENTS],
   ...OFFERS.map((o) => [o.id, o.checkoutUrl, o.priceCents] as [string, string, number]),
 ];
 

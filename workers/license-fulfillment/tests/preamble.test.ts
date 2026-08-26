@@ -98,6 +98,49 @@ describe('buildPreamble', () => {
     expect(buildPreamble(INDIVIDUAL)).toBe(fixture('golden-preamble-v2.txt'));
   });
 
+  it('says "All future versions" when updates are permanent', () => {
+    // Empty updatesThrough is how a permanent license is issued: every gate in
+    // the app reads the field through UTCDay.parse and treats an unparseable
+    // value as "no limit", so blank means unlimited on builds already shipped.
+    // The label changes with it — "Updates through:  " with nothing after it
+    // reads as a missing field on the one document the customer keeps.
+    expect(buildPreamble({ ...INDIVIDUAL, issued: '2026-08-26', updatesThrough: '' })).toBe(
+      [
+        'Sealshot License',
+        '================',
+        'Licensed to:      Jane Doe',
+        'Email:            jane@example.com',
+        'License ID:       550E8400-E29B-41D4-A716-446655440000',
+        'License type:     Individual',
+        'License issued:   2026-08-26',
+        'App access:       Perpetual',
+        'Updates:          All future versions',
+        'Users:            1',
+        'Macs per user:    3',
+        '',
+        'This license does not expire. It permits use of every Sealshot',
+        'release, including all future versions.',
+        '',
+        'Keep this file exactly as received. The information above is',
+        'cryptographically signed; modifying it invalidates the license.',
+      ].join('\n')
+    );
+  });
+
+  it('reproduces the shared golden fixture for a permanent license', () => {
+    expect(buildPreamble({ ...INDIVIDUAL, issued: '2026-08-26', updatesThrough: '' })).toBe(
+      fixture('golden-preamble-v2-permanent.txt')
+    );
+  });
+
+  it('never leaves a dangling date in the permanent wording', () => {
+    // The failure this guards: editing one of the two conditionals and not the
+    // other, which ships "on or before ." to a paying customer.
+    const out = buildPreamble({ ...INDIVIDUAL, updatesThrough: '' });
+    expect(out).not.toContain('on or before');
+    expect(out).not.toContain('Updates through');
+  });
+
   it('reproduces the shared golden fixture for a business volume license', () => {
     // The app repo has no volume fixture yet — this file is the canonical
     // bytes and should be adopted there as golden-preamble-v2-volume.txt.
