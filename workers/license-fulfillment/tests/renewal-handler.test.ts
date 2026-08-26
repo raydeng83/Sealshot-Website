@@ -17,14 +17,21 @@ import { canonicalize } from '../src/canonical';
 // Key is the raw UTF-8 bytes of the whole secret, as Polar signs. See src/polar.ts.
 const SECRET = 'whsec_unit_test_secret_value';
 
+// Dated products, deliberately: the window arithmetic still has to be right for
+// anything issued before updates became permanent, and dates are what make the
+// renewal rules observable at all. PROD_PERMANENT below covers the live terms.
 const PROD_NEW = 'prod_new';
 const PROD_FOUNDING = 'prod_founding';
 const PROD_RENEWAL = 'prod_renewal';
+const PROD_PERMANENT = 'prod_permanent';
+const PROD_RENEWAL_PERMANENT = 'prod_renewal_permanent';
 
 const PRODUCT_MAP = JSON.stringify({
   [PROD_NEW]: { kind: 'new', months: 12 },
   [PROD_FOUNDING]: { kind: 'new', months: 18 },
   [PROD_RENEWAL]: { kind: 'renewal', months: 12 },
+  [PROD_PERMANENT]: { kind: 'new', permanent: true },
+  [PROD_RENEWAL_PERMANENT]: { kind: 'renewal', permanent: true },
 });
 
 function fakeCtx() {
@@ -90,9 +97,18 @@ function makeEnv(extra: Record<string, unknown> = {}) {
   };
 }
 
-/** `Updates through:` as it appears in the delivered license file. */
+/**
+ * The update terms as they appear in the delivered license file: either the
+ * `Updates through:` date, or 'permanent' for the `Updates: All future versions`
+ * form. Reading the FILE rather than the KV record on purpose — the file is what
+ * the customer gets and what the app hashes.
+ */
 function windowInFile(fileText: string): string {
-  return /^Updates through:\s+(\S+)$/m.exec(canonicalize(fileText))![1];
+  const text = canonicalize(fileText);
+  const dated = /^Updates through:\s+(\S+)$/m.exec(text);
+  if (dated) return dated[1];
+  if (/^Updates:\s+All future versions$/m.test(text)) return 'permanent';
+  throw new Error(`no update terms in license file:\n${text}`);
 }
 
 async function post(env: any, body: string, msgId = 'msg_1') {
@@ -334,8 +350,56 @@ describe('unmapped products', () => {
     const { env, sent } = makeEnv();
     await post(env, order({ productId: 'prod_from_another_environment' }));
 
-    expect(windowInFile(sent[0])).toBe('2027-07-20'); // default 12 months
+    // The default errs in the buyer's favour: permanent, not a guessed window.
+    expect(windowInFile(sent[0])).toBe('permanent');
     expect(err.mock.calls.flat().join('\n')).toContain('unmapped product');
     err.mockRestore();
+  });
+});
+
+describe('permanent updates', () => {
+  it('issues a license with no window at all', async () => {
+    const { env, sent } = makeEnv();
+    await post(env, order({ productId: PROD_PERMANENT }));
+
+    expect(windowInFile(sent[0])).toBe('permanent');
+    // Empty in the record too, not a sentinel date: this is the value the app
+    // reads, and every gate treats an unparseable date as "no limit".
+    expect(JSON.parse((await env.ORDERS.get('order:ord_1'))!).updatesThrough).toBe('');
+  });
+
+  it('never downgrades a permanent license to a window', async () => {
+    // Reachable while the retired renewal product is still live in Polar: a
+    // permanent licensee buys a renewal they do not need. Honour it, but the
+    // license must not come back with LESS than it had.
+    const { env, sent } = makeEnv();
+    await post(env, order({ productId: PROD_PERMANENT }));
+    const licenseId = JSON.parse((await env.ORDERS.get('order:ord_1'))!).licenseId;
+
+    await post(
+      env,
+      order({ id: 'ord_2', productId: PROD_RENEWAL, referenceId: licenseId, paidAt: '2026-08-01T10:00:00Z' }),
+      'msg_2'
+    );
+
+    expect(windowInFile(sent[1])).toBe('permanent');
+  });
+
+  it('upgrades a windowed license when a permanent renewal lands on it', async () => {
+    const { env, sent } = makeEnv();
+    await post(env, order({ productId: PROD_NEW }));
+    const licenseId = JSON.parse((await env.ORDERS.get('order:ord_1'))!).licenseId;
+    expect(windowInFile(sent[0])).toBe('2027-07-20');
+
+    await post(
+      env,
+      order({
+        id: 'ord_2', productId: PROD_RENEWAL_PERMANENT, referenceId: licenseId,
+        paidAt: '2026-08-01T10:00:00Z',
+      }),
+      'msg_2'
+    );
+
+    expect(windowInFile(sent[1])).toBe('permanent');
   });
 });

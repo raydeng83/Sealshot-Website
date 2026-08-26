@@ -2,23 +2,18 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import OfferBadge from '../components/OfferBadge.astro';
 import {
-  activeOffer, formatUSD, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
-  RENEWAL_PRICE_CENTS, RENEWAL_UPDATE_MONTHS, BASE_CHECKOUT_URL,
+  activeOffer, formatUSD, savingsPercent, REGULAR_PRICE_CENTS, BASE_CHECKOUT_URL,
 } from '../config/promos';
 
 const offer = activeOffer(new Date());
 const checkoutUrl = offer?.checkoutUrl ?? BASE_CHECKOUT_URL;
 const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
-// The founding product grants a LONGER window, not just a lower price, so the
-// term has to come from the active offer. Hardcoding 12 would under-sell what
-// the Worker actually issues.
-const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
 const percent = offer ? savingsPercent(offer.priceCents) : 0;
 ---
 
 <SiteLayout
   title="Support Sealshot"
-  description={`Sealshot is free to use. A one-time purchase supports the work and includes ${updateMonths} months of updates. Signed, notarized, on-device only.`}
+  description="Sealshot is free to use. A one-time purchase supports the work and includes every future update. Signed, notarized, on-device only."
 >
   <section class="hero">
     <div class="wrap">
@@ -32,8 +27,8 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
         Every feature is unlocked whether or not you ever pay: full-resolution
         captures and recordings, redaction, encryption, data extraction, the whole
         Library. Nothing expires and nothing is watermarked. A license funds the
-        work, includes {updateMonths} months of updates, and turns off the
-        occasional reminder.
+        work, includes every future update, and turns off the occasional
+        reminder.
       </p>
 
       <p class="price">
@@ -48,27 +43,25 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
 
       {offer && (
         <>
-          {/* What the price alone cannot say: that this is a phase, and what the
-              other side of it looks like. The page used to state "18 months of
-              updates included" without ever mentioning that regular gets 12,
-              which is half of what founding actually buys. */}
+          {/* Founding is now a price and nothing else: updates are permanent on
+              every product, so the two columns compare one figure each. The
+              longer-window half of this block went with the update windows. */}
           <div class="phase" aria-label="Founding price compared with the regular price">
             <div class="phase-col is-now">
               <p class="phase-when">Before 1.0</p>
               <p class="phase-price">{formatUSD(offer.priceCents)}</p>
-              <p class="phase-term">{offer.updateMonths} months of updates</p>
+              <p class="phase-term">All future updates</p>
             </div>
             <div class="phase-col">
               <p class="phase-when">From 1.0</p>
               <p class="phase-price">{formatUSD(REGULAR_PRICE_CENTS)}</p>
-              <p class="phase-term">{REGULAR_UPDATE_MONTHS} months of updates</p>
+              <p class="phase-term">All future updates</p>
             </div>
           </div>
           <p class="phase-note">
             The founding price is for buyers before the 1.0 release. When it ends the
-            price goes up and the update window shortens — but nothing about a license
-            already bought changes: it stays perpetual, and its
-            {' '}{offer.updateMonths} months stay {offer.updateMonths} months.
+            price goes up — but nothing about a license already bought changes: it
+            stays perpetual, it keeps every future update, and it is never re-priced.
             <a href="/docs/faq/#what-is-the-founding-license">More about the founding license</a>
           </p>
         </>
@@ -77,25 +70,17 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
       <ul class="whatyouget">
         <li>Perpetual license — the app never stops working.</li>
         <li>One user, up to three Macs. Commercial use included.</li>
-        <li>{updateMonths} months of updates included.</li>
+        <li>Every future update included — permanently, with nothing to renew.</li>
         <li>No more support reminders, on any of your Macs.</li>
         <li>Free to use before and after — buying is a choice, not a gate.</li>
         <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
         <li>macOS 14 or later · Apple Silicon &amp; Intel.</li>
       </ul>
 
-      {/* The renewal price belongs on the pricing page: this page said nothing
-          about renewing at all, while the FAQ sent people here for exactly that
-          ("current pricing and update-window terms are on the buy page"), so the
-          question had nowhere to land. It is also the second number a buyer of a
-          time-windowed license wants — what happens after the window is what
-          makes the first price meaningful. */}
-      <p class="after">
-        <strong>After your update window:</strong> renewing is optional —
-        {' '}{formatUSD(RENEWAL_PRICE_CENTS)} for another {RENEWAL_UPDATE_MONTHS} months
-        of new versions, or keep the version you have, indefinitely.
-        <a href="/renew/">How renewal works</a>
-      </p>
+      {/* Where the "After your update window" paragraph used to be. It named the
+          renewal price, which was the second number a buyer of a time-windowed
+          license needed. There is no second number now — that is the point, and
+          the absence says it better than a paragraph explaining the absence. */}
 
       <p class="fine-print">
         Delivered instantly by email as a license file. Prices in USD; tax handled at checkout.

@@ -1,6 +1,6 @@
 ---
 import {
-  activeOffer, formatUSD, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
+  activeOffer, formatUSD, savingsPercent, REGULAR_PRICE_CENTS,
 } from '../config/promos';
 
 /*
@@ -36,11 +36,12 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
       <span class="lede">
         {formatUSD(offer.priceCents)} instead of {formatUSD(REGULAR_PRICE_CENTS)} — {percent}% off
       </span>
-      {/* The update window is the half people miss: founding is longer, not just
-          cheaper. First to go on a narrow screen all the same, since the price is
-          what earns the click. */}
+      {/* Founding is now only cheaper — updates are permanent on every product,
+          so there is no longer a second, longer-window half to the offer. The
+          detail slot carries the thing that is easiest to disbelieve instead.
+          First to go on a narrow screen, since the price is what earns the click. */}
       <span class="detail">
-        , with {offer.updateMonths} months of updates instead of {REGULAR_UPDATE_MONTHS}
+        , with every future update included
       </span>
       <a href="/buy/">Get it</a>
     </p>
@@ -93,7 +94,7 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
   }
 
   /* Below this the full sentence runs to three lines and starts reading as a
-     paragraph. Price, saving and the link survive; the update window is on /buy
+     paragraph. Price, saving and the link survive; the rest is on /buy
      and in the bar on wider screens. */
   @media (max-width: 52rem) {
     .offer-bar .detail {

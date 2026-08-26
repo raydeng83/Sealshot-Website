@@ -101,6 +101,11 @@ export function buildPreamble(p: {
     ...lines.slice(1).map((l) => ' '.repeat(LABEL_COLUMN) + l),
   ];
   const isVolume = p.licenseType === 'business-volume';
+  // Empty updatesThrough = updates are permanent. A blank value after
+  // "Updates through:" would read as an omission on the one document a customer
+  // keeps, so the LABEL changes with it. Must match the Swift copy byte for
+  // byte — see app/Sources/Sealshot/Licensing/LicenseFormat.swift.
+  const isPermanent = p.updatesThrough === '';
   const lines = [
     'Sealshot License',
     '='.repeat(16),
@@ -111,7 +116,9 @@ export function buildPreamble(p: {
     field('License type:', TYPE_LABEL[p.licenseType]),
     field('License issued:', p.issued),
     field('App access:', 'Perpetual'),
-    field('Updates through:', p.updatesThrough),
+    isPermanent
+      ? field('Updates:', 'All future versions')
+      : field('Updates through:', p.updatesThrough),
     field(isVolume ? 'User seats:' : 'Users:', String(p.seats)),
     field('Macs per user:', String(MACS_PER_USER)),
     '',
@@ -127,7 +134,9 @@ export function buildPreamble(p: {
   } else {
     lines.push(
       'This license does not expire. It permits use of every Sealshot',
-      `release whose entitlement date is on or before ${p.updatesThrough}.`,
+      isPermanent
+        ? 'release, including all future versions.'
+        : `release whose entitlement date is on or before ${p.updatesThrough}.`,
       '',
       'Keep this file exactly as received. The information above is',
       'cryptographically signed; modifying it invalidates the license.'

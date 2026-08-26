@@ -106,17 +106,21 @@ a button to the right System Settings pane.
 
 ## License
 
-Your license and its update window:
+What this Mac is licensed for. Sealshot is free to use either way — a
+license silences the occasional support reminder and covers every future
+update:
 
 - **Open License File…** activates a license you've bought; **Buy
   Sealshot…** takes you to the store if you don't have one yet.
 - Your **license ID** and license type are shown here, with a button to copy
   the ID — quote it if you ever write to support.
-- **Remove License…** deactivates this Mac.
-- A **Renew** card appears in the month before your update window closes, and
-  whenever you're running a version released outside it. Renewing issues a new
-  license file, which you open here to unlock. Volume licenses renew by
-  invoice, so that card explains how instead of linking to the store.
+- The status line reads **Free to use** without a license, or *Includes every
+  future update* with one.
+- **Remove License…** deactivates this Mac. Nothing stops working; the
+  reminder comes back.
+- A **Renew** card appears only for a license issued before updates became
+  permanent (August 2026), and those are replaced free — see
+  [renewing](/renew/).
 
 ## Privacy & Security
 

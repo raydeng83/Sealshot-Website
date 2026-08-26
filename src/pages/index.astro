@@ -5,7 +5,7 @@ import ComparisonTable from '../components/ComparisonTable.astro';
 import VideoEmbed from '../components/VideoEmbed.astro';
 import '@splidejs/splide/css';
 import {
-  activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
+  activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS,
 } from '../config/promos';
 
 // Never hardcode the price here. It has to agree with what Polar actually
@@ -13,7 +13,6 @@ import {
 // would be a consumer-facing problem rather than a broken href.
 const offer = activeOffer(new Date());
 const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
-const updateMonths = offer?.updateMonths ?? REGULAR_UPDATE_MONTHS;
 // "founding price" while that offer runs, plain "once" when it has ended.
 const priceQualifier = offer ? offer.label.toLowerCase() : 'once';
 // The saving is the part of the offer nobody was told: half price went unsaid on
@@ -195,7 +194,7 @@ const features = [
         <strong>Free to use</strong> — every feature, nothing expires ·
         {formatUSDCompact(priceCents)} {priceQualifier}{
           offer && <> ({percent}% off)</>
-        } to support it, no subscription · {updateMonths} months of updates ·
+        } to support it, no subscription · every future update included ·
         <a href="/buy/">Why buy</a>
       </p>
       <ul class="trust-strip" aria-label="Privacy guarantees">

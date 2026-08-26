@@ -105,7 +105,7 @@ only when you take a capture or recording, and the pixels never leave your
 device. Microphone permission is only requested if you record your voice;
 Accessibility only if you use auto-scroll.
 
-## Buying, licensing & renewal
+## Buying & licensing
 
 ### Is Sealshot really free?
 
@@ -122,19 +122,15 @@ you already have. A license turns it off for good, and pays for the work.
 ### Is Sealshot a subscription?
 
 No. [Buying Sealshot](/buy/) is a **one-time purchase** of a perpetual
-license — the app never stops working, and nothing renews automatically.
-Your purchase includes an update window (new versions released during it
-are yours forever); when it ends you can optionally
-[renew](/renew/) to keep receiving updates, or simply keep using what you
-have.
+license, and it includes **every future update, permanently**. Nothing
+renews, nothing expires, and there is no second payment — not next year,
+not at 1.0.
 
 ### What exactly do I get when I buy?
 
 A **license file**, delivered instantly to your purchase email. It covers
-**one user on three Macs**, includes **commercial use**, and comes with an
-update window — every version released during that window is yours to
-keep. Current pricing and update-window terms are on the
-[buy page](/buy/).
+**one user on three Macs**, includes **commercial use**, and includes every
+future version of Sealshot. Current pricing is on the [buy page](/buy/).
 
 The file names you: your name, billing address, and email appear in it as
 readable text, cryptographically signed along with the rest. That is what
@@ -143,25 +139,24 @@ you would a receipt, and don't attach it to a public bug report.
 
 ### What is the Founding license?
 
-An offer for buyers **before the 1.0 release**: the same perpetual
-license, at a lower price and with a *longer* update window than the
-regular license. It's a thank-you for early supporters, not a cut-down
-edition — see the [buy page](/buy/) for the current figures while it
+An offer for buyers **before the 1.0 release**: the same license, at a
+lower price. Nothing is held back — every license includes permanent
+updates, so founding is a thank-you for early supporters rather than a
+different tier. See the [buy page](/buy/) for the current price while it
 lasts.
 
 ### What happens to my Founding license when 1.0 ships?
 
-Nothing. The price goes up for new buyers and the update window goes
-back to the regular length, but a license already bought is untouched:
-still perpetual, still covering the longer window you paid for, and
-never re-priced. There is no upgrade to buy at 1.0 and no action for you
-to take.
+Nothing. The price goes up for new buyers, but a license already bought is
+untouched: still perpetual, still covering every future version, and never
+re-priced. There is no upgrade to buy at 1.0 and no action for you to
+take.
 
 ### Can I still get the founding price after 1.0?
 
 No — that's what makes it a founding price. Once 1.0 is out, new
-purchases are at the regular price with the regular update window. If you
-expect to buy at some point, buying before 1.0 is the cheaper path.
+purchases are at the regular price. If you expect to buy at some point,
+buying before 1.0 is the cheaper path.
 
 ### How do I activate my license? Do I need an account or internet?
 
@@ -182,24 +177,21 @@ safe, like any other important document.
 Sealshot 0.7.3 changed the license-file format, and it is not compatible in
 either direction: a file issued before 0.7.3 won't open in 0.7.3 or later, and
 a newer file won't open in 0.7.2 or earlier. Write to support@seal-shot.com and
-we'll reissue yours — your purchase and your update window don't change.
+we'll reissue yours — your purchase and what it covers don't change.
 
-### What happens when my update window ends?
+### Do updates ever run out?
 
-Nothing, until you want a newer version. The app — and every version
-released during your window — **keeps working forever**. Renewing from
-**Settings → License** (or the [renewal page](/renew/)) is entirely
-optional and extends your window for another year of updates. Renewing
-early loses you nothing: unused time is added on top of what you have.
+No. A license covers **every future version**, permanently. Licenses issued
+up to August 2026 included a fixed number of months instead; those are being
+replaced with permanent ones at no charge — see
+[renewing](/renew/), which is now a page about there being nothing to renew.
 
-### What if I install a version newer than my license covers?
+### How can I tell what my license covers?
 
-It works in full — the app is free to use, so a newer version is never a
-lockout. What comes back is the occasional support reminder, since your
-license no longer covers the version you're running.
-[Renewing your updates](/renew/) turns it off again and brings the newer
-versions inside your window; going back to the newest version your license
-covers works too.
+Open the `.sealshotlicense` file in any text editor, or look at
+**Settings → License**. A permanent license reads *Updates — All future
+versions*; an older one names the date it runs through. Either way the app
+itself never expires.
 
 ### Can I use an Individual license for work?
 

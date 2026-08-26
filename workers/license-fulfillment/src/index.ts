@@ -82,7 +82,7 @@ async function handleRefund(env: Env, orderId: string): Promise<void> {
       `Order ${orderId} was refunded.\n` +
       `  licence: ${order.licenseId || '(none issued)'}\n` +
       `  buyer:   ${order.email}\n` +
-      `  issued:  ${order.issued}, updates through ${order.updatesThrough}\n\n` +
+      `  issued:  ${order.issued}, updates ${order.updatesThrough || 'permanent'}\n\n` +
       `Recorded as refunded, and the licence is flagged so a renewal cannot\n` +
       `reinstate it. REVOCATION IS STILL MANUAL — the app checks a signed\n` +
       `blocklist in the Sealshot-Release repo, which this Worker cannot commit to:\n\n` +
@@ -196,7 +196,11 @@ export default {
     }
 
     let licenseId = existing?.licenseId ?? crypto.randomUUID().toUpperCase();
-    let updatesThrough = addMonthsUTC(purchaseDay, terms.months);
+    // Empty = permanent: the license covers every future release. Every gate in
+    // the app parses this field as a date and treats an unparseable value as
+    // "no limit", so blank is understood by builds that shipped long before
+    // permanent updates existed — no app release was needed to grant them.
+    let updatesThrough = terms.permanent ? '' : addMonthsUTC(purchaseDay, terms.months as number);
     let name = order.name;
     let addressLines = order.addressLines;
     let licenseType: 'individual' | 'business-volume' = 'individual';
@@ -209,7 +213,13 @@ export default {
       });
       if (target) {
         licenseId = target.licenseId;
-        updatesThrough = renewalThrough(target.rec.updatesThrough, purchaseDay, terms.months);
+        // A renewal must never take terms AWAY. If either side is permanent —
+        // the product bought or the license being renewed — the result is
+        // permanent; only a dated renewal of a dated license extends a window.
+        updatesThrough =
+          terms.permanent || target.rec.updatesThrough === ''
+            ? ''
+            : renewalThrough(target.rec.updatesThrough, purchaseDay, terms.months as number);
         name = target.rec.name;
         // Same rule as the name above: a renewal replaces the file, not the
         // owner, so it must not quietly rewrite who the license says it belongs
@@ -250,7 +260,7 @@ export default {
           body:
             `${order.email} bought a renewal but no license matched — neither the\n` +
             `reference id (${order.referenceId ?? 'absent'}) nor the email index.\n\n` +
-            `Issued NEW license ${licenseId} with a full window so they are not left\n` +
+            `Issued NEW license ${licenseId} on full terms so they are not left\n` +
             `empty-handed. Merge it with their real license by hand.`,
         }));
       }

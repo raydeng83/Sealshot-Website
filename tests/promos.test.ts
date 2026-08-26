@@ -5,19 +5,16 @@ import {
   OFFERS,
   REGULAR_PRICE_CENTS,
   savingsPercent,
-  RENEWAL_PRICE_CENTS,
-  REGULAR_UPDATE_MONTHS,
   BASE_CHECKOUT_URL,
-  RENEWAL_CHECKOUT_URL,
   CHECKOUT_IS_SANDBOX,
 } from '../src/config/promos';
+import * as promos from '../src/config/promos';
 
 describe('activeOffer', () => {
   it('returns the founding offer inside its window', () => {
     const o = activeOffer(new Date('2026-09-01T00:00:00Z'));
     expect(o?.id).toBe('founding');
     expect(o?.priceCents).toBe(1499);
-    expect(o?.updateMonths).toBe(18);
   });
   it('returns null before the window', () => {
     expect(activeOffer(new Date('2026-01-01T00:00:00Z'))).toBeNull();
@@ -54,16 +51,6 @@ describe('savingsPercent', () => {
 describe('prices', () => {
   it('match the v1.0 pricing document', () => {
     expect(REGULAR_PRICE_CENTS).toBe(2999);
-    expect(RENEWAL_PRICE_CENTS).toBe(1799);   // 40% off, see the note in promos.ts
-    expect(REGULAR_UPDATE_MONTHS).toBe(12);
-  });
-
-  it('keeps renewal a real discount on a whole new license', () => {
-    // Not merely cheaper: renewing has to be visibly worth it, or the page is
-    // asking near full price for updates alone. It sat a penny under regular
-    // once, which is how that happens.
-    expect(RENEWAL_PRICE_CENTS).toBeLessThan(REGULAR_PRICE_CENTS);
-    expect(RENEWAL_PRICE_CENTS / REGULAR_PRICE_CENTS).toBeCloseTo(0.6, 2);
   });
 
   it('never shows an offer that costs more than the regular price', () => {
@@ -72,22 +59,31 @@ describe('prices', () => {
     for (const o of OFFERS) expect(o.priceCents).toBeLessThan(REGULAR_PRICE_CENTS);
   });
 
-  it('gives every offer at least as many update months as the regular license', () => {
-    // Founding is cheaper AND longer. An offer that were shorter would have the
-    // /buy page advertising a downgrade as a deal.
-    for (const o of OFFERS) expect(o.updateMonths).toBeGreaterThanOrEqual(REGULAR_UPDATE_MONTHS);
+  it('has no update windows or renewal price left to advertise', () => {
+    // Updates are permanent on every product. These exports are GONE rather
+    // than zeroed, so a page still reaching for a month count fails the build
+    // instead of rendering "0 months of updates" or a renewal price for a
+    // renewal that no longer exists.
+    for (const name of [
+      'REGULAR_UPDATE_MONTHS', 'RENEWAL_UPDATE_MONTHS', 'RENEWAL_PRICE_CENTS',
+      'RENEWAL_CHECKOUT_URL', 'TRIAL_DAYS',
+    ]) {
+      expect(promos, `${name} is back — permanent updates leave it nothing to mean`)
+        .not.toHaveProperty(name);
+    }
+    for (const o of OFFERS) expect(o).not.toHaveProperty('updateMonths');
   });
 });
 
 describe('checkout links', () => {
-  const all = [BASE_CHECKOUT_URL, RENEWAL_CHECKOUT_URL, ...OFFERS.map((o) => o.checkoutUrl)];
+  const all = [BASE_CHECKOUT_URL, ...OFFERS.map((o) => o.checkoutUrl)];
 
   it('are all Polar links over https', () => {
     for (const url of all) expect(url).toMatch(/^https:\/\/(sandbox-)?api\.polar\.sh\//);
   });
 
   it('are distinct — one product per link', () => {
-    // A shared link would sell the wrong update term at the wrong price.
+    // A shared link would sell the wrong product at the wrong price.
     expect(new Set(all).size).toBe(all.length);
   });
 
