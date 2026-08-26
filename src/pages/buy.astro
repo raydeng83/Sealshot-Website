@@ -17,13 +17,24 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
 ---
 
 <SiteLayout
-  title="Buy Sealshot"
-  description={`Buy Sealshot for Mac — a one-time purchase with ${updateMonths} months of updates. Signed, notarized, on-device only.`}
+  title="Support Sealshot"
+  description={`Sealshot is free to use. A one-time purchase supports the work and includes ${updateMonths} months of updates. Signed, notarized, on-device only.`}
 >
   <section class="hero">
     <div class="wrap">
-      <p class="kicker">Buy Sealshot</p>
-      <h1>One purchase. Yours to keep.</h1>
+      <p class="kicker">Support Sealshot</p>
+      <h1>Free to use. Buy it to keep it being built.</h1>
+
+      {/* The honest version of the pitch. Every feature works without paying, so
+          the page cannot sell access — it has to say what buying actually does,
+          and be straight about the one thing it removes. */}
+      <p class="sub">
+        Every feature is unlocked whether or not you ever pay: full-resolution
+        captures and recordings, redaction, encryption, data extraction, the whole
+        Library. Nothing expires and nothing is watermarked. A license funds the
+        work, includes {updateMonths} months of updates, and turns off the
+        occasional reminder.
+      </p>
 
       <p class="price">
         {offer && <span class="was">{formatUSD(REGULAR_PRICE_CENTS)}</span>}
@@ -67,7 +78,8 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
         <li>Perpetual license — the app never stops working.</li>
         <li>One user, up to three Macs. Commercial use included.</li>
         <li>{updateMonths} months of updates included.</li>
-        <li>14-day free trial, no account required.</li>
+        <li>No more support reminders, on any of your Macs.</li>
+        <li>Free to use before and after — buying is a choice, not a gate.</li>
         <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
         <li>macOS 14 or later · Apple Silicon &amp; Intel.</li>
       </ul>

@@ -145,12 +145,12 @@ export function savingsPercent(priceCents: number, regularCents = REGULAR_PRICE_
   return Math.round((1 - priceCents / regularCents) * 100);
 }
 
-/**
- * Free-trial length, in days.
+/*
+ * There is no TRIAL_DAYS any more. Sealshot is free to use: every feature works,
+ * nothing expires, and no capture is ever refused. What a license buys is the
+ * update window above, and that the app's occasional support reminder stops.
  *
- * Authoritative value is `LicenseKeys.trialDays` in the app repo — the binary
- * decides when a trial ends, not this file. Kept here because the marketing
- * pages cannot import across repos, so if that constant changes this one has to
- * be changed with it.
+ * The constant was removed rather than set to 0 so that no page can render "free
+ * for 0 days" — and so that anything still importing it fails the build instead
+ * of quietly advertising a trial that does not exist.
  */
-export const TRIAL_DAYS = 14;

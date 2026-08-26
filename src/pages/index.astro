@@ -6,7 +6,6 @@ import VideoEmbed from '../components/VideoEmbed.astro';
 import '@splidejs/splide/css';
 import {
   activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS, REGULAR_UPDATE_MONTHS,
-  TRIAL_DAYS,
 } from '../config/promos';
 
 // Never hardcode the price here. It has to agree with what Polar actually
@@ -193,10 +192,11 @@ const features = [
         <a class="button secondary" href="/docs/">Read the docs</a>
       </div>
       <p class="buy-signal">
-        Free for {TRIAL_DAYS} days · <strong>{formatUSDCompact(priceCents)} {priceQualifier}</strong>{
+        <strong>Free to use</strong> — every feature, nothing expires ·
+        {formatUSDCompact(priceCents)} {priceQualifier}{
           offer && <> ({percent}% off)</>
-        }, no subscription · {updateMonths} months of updates ·
-        <a href="/buy/">What you get</a>
+        } to support it, no subscription · {updateMonths} months of updates ·
+        <a href="/buy/">Why buy</a>
       </p>
       <ul class="trust-strip" aria-label="Privacy guarantees">
         {trustPoints.map((point) => <li>{point}</li>)}

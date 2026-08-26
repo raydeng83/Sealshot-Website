@@ -107,12 +107,17 @@ Accessibility only if you use auto-scroll.
 
 ## Buying, licensing & renewal
 
-### How does the free trial work?
+### Is Sealshot really free?
 
-Every install starts with a **14-day free trial** — full-featured, no
-account, no card. When it ends, new captures and recordings pause, but
-**everything you've already captured stays fully viewable, editable, and
-exportable.** Your data is never held hostage.
+Yes. Every feature is unlocked whether or not you ever pay — full-resolution
+captures and recordings, redaction, encryption, data extraction, the whole
+Library — with no account, no card, no watermark, and no expiry. No capture is
+ever refused.
+
+What a license buys is that the app stops asking. Once you've used Sealshot for
+a while, an occasional reminder appears *after* a capture — never before one,
+and no more than once a fortnight — with a way to buy, to dismiss it, or to say
+you already have. A license turns it off for good, and pays for the work.
 
 ### Is Sealshot a subscription?
 
@@ -155,9 +160,8 @@ to take.
 ### Can I still get the founding price after 1.0?
 
 No — that's what makes it a founding price. Once 1.0 is out, new
-purchases are at the regular price with the regular update window. If
-you're on the trial and expect to buy, buying before 1.0 is the cheaper
-path.
+purchases are at the regular price with the regular update window. If you
+expect to buy at some point, buying before 1.0 is the cheaper path.
 
 ### How do I activate my license? Do I need an account or internet?
 
@@ -190,10 +194,12 @@ early loses you nothing: unused time is added on top of what you have.
 
 ### What if I install a version newer than my license covers?
 
-New captures and recordings pause, and everything you've captured stays
-fully viewable, editable, and exportable. To keep capturing, either
-[renew your updates](/renew/) or go back to the newest version your
-license covers.
+It works in full — the app is free to use, so a newer version is never a
+lockout. What comes back is the occasional support reminder, since your
+license no longer covers the version you're running.
+[Renewing your updates](/renew/) turns it off again and brings the newer
+versions inside your window; going back to the newest version your license
+covers works too.
 
 ### Can I use an Individual license for work?
 
