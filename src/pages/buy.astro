@@ -55,43 +55,23 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
           Buy Sealshot — {formatUSD(priceCents)}
         </a>
 
+        {/* The founding phase used to be a two-card grid AND a four-line
+            paragraph, on top of the struck-through price and the badge — the
+            same fact four times. The struck price shows the discount, the badge
+            names it, and this says the one thing neither can: that the price
+            moves, and that buying now fixes it. Everything else about the
+            founding license is a click away rather than on the page. */}
         {offer && (
-          <>
-            {/* Founding is now a price and nothing else: updates are permanent
-                on every product, so the two columns compare one figure each. The
-                longer-window half of this block went with the update windows. */}
-            <div class="phase" aria-label="Founding price compared with the regular price">
-              <div class="phase-col is-now">
-                <p class="phase-when">Before 1.0</p>
-                <p class="phase-price">{formatUSD(offer.priceCents)}</p>
-                <p class="phase-term">All future updates</p>
-              </div>
-              <div class="phase-col">
-                <p class="phase-when">From 1.0</p>
-                <p class="phase-price">{formatUSD(REGULAR_PRICE_CENTS)}</p>
-                <p class="phase-term">All future updates</p>
-              </div>
-            </div>
-            <p class="phase-note">
-              The founding price is for buyers before the 1.0 release. When it ends
-              the price goes up — but nothing about a license already bought
-              changes: it stays perpetual, it keeps every future update, and it is
-              never re-priced.
-              <a href="/docs/faq/#what-is-the-founding-license">More about the founding license</a>
-            </p>
-          </>
+          <p class="phase-note">
+            {formatUSD(REGULAR_PRICE_CENTS)} from 1.0. A license already bought is
+            never re-priced.
+            <a href="/docs/faq/#what-is-the-founding-license">About the founding license</a>
+          </p>
         )}
 
-        {/* Where the "After your update window" paragraph used to be. It named the
-            renewal price, which was the second number a buyer of a time-windowed
-            license needed. There is no second number now — that is the point, and
-            the absence says it better than a paragraph explaining the absence. */}
-
         <p class="fine-print">
-          Delivered instantly by email as a license file. Prices in USD; tax handled
-          at checkout. <a href="/refunds/">Refundable within 30 days</a>, no
-          questions required. Already bought? Your license arrived in your purchase
-          email — open it or drag it onto Settings ▸ License.
+          Delivered by email as a license file; tax handled at checkout.
+          <a href="/refunds/">Refundable within 30 days</a>, no questions required.
         </p>
       </div>
       <div class="pitch-body">
@@ -99,21 +79,19 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
             so the page cannot sell access — it has to say what buying actually
             does, and be straight about the one thing it removes. */}
         <p class="pitch-sub">
-          Every feature is unlocked whether or not you ever pay: full-resolution
-          captures and recordings, redaction, encryption, data extraction, the
-          whole Library. Nothing expires and nothing is watermarked. A license
-          funds the work, includes every future update, and turns off the
-          occasional reminder.
+          Every feature works whether or not you ever pay — nothing is withheld,
+          watermarked, or timed out. Buying a license is how the work gets funded.
         </p>
 
+        {/* Four terms, not seven. The three that went: "free before and after"
+            (the headline), "signed & notarized, on-device only" and the macOS
+            requirements — both facts about the download, which is where they
+            already live. What is left is only what the LICENSE is. */}
         <ul class="whatyouget">
-          <li>Perpetual license — the app never stops working.</li>
+          <li>Perpetual — the app never stops working.</li>
+          <li>Every future update included, with nothing to renew.</li>
           <li>One user, up to three Macs. Commercial use included.</li>
-          <li>Every future update included — permanently, with nothing to renew.</li>
           <li>No more support reminders, on any of your Macs.</li>
-          <li>Free to use before and after — buying is a choice, not a gate.</li>
-          <li>Signed &amp; notarized. On-device only — your screenshots never leave your Mac.</li>
-          <li>macOS 14 or later · Apple Silicon &amp; Intel.</li>
         </ul>
       </div>
     </div>
@@ -204,52 +182,6 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
     display: block;
     margin-top: 1.25rem;
     text-align: center;
-  }
-
-  /* Two equal columns of whatever the panel gives them, rather than two fixed
-     11rem cards that sat in the middle with air on both sides. */
-  .phase {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-  }
-
-  .phase-col {
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius);
-    padding: 0.8rem 0.9rem;
-  }
-
-  .phase-col.is-now {
-    border-color: var(--orange-600);
-    background: var(--mint-50);
-  }
-
-  .phase-when {
-    margin: 0;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--slate-400);
-  }
-
-  .phase-col.is-now .phase-when {
-    color: var(--orange-700);
-  }
-
-  .phase-price {
-    margin: 0.2rem 0 0;
-    font-size: 1.4rem;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .phase-term {
-    margin: 0.1rem 0 0;
-    font-size: 0.82rem;
-    color: var(--slate-600);
   }
 
   .phase-note,
