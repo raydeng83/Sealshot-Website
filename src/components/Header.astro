@@ -14,8 +14,9 @@ import icon from '../assets/icon.png';
          visitor skipped the headline and the price line to reach a grid they were
          already scrolling toward. The #features id stays, for the footer link and
          any external one. (Removing it did NOT by itself unwrap the nav on a
-         phone: "Pricing" is wider than "Buy" was, so it gave the width back. The
-         wrap is fixed in global.css by tightening the mobile column gap.) -->
+         phone — the wrap is fixed in global.css by tightening the mobile column
+         gap. That fix was measured with the wider "Pricing" label, so "Buy"
+         only gives width back.) -->
     <a href="/docs/">Docs</a>
     <!-- FAQ sits between Docs and Support because it is where most support
          questions are already answered: reaching it before Support saves the
@@ -23,12 +24,12 @@ import icon from '../assets/icon.png';
          page lives — same target as the footer link. -->
     <a href="/docs/faq/">FAQ</a>
     <a href="/support/">Support</a>
-    <!-- Pricing rather than Buy: it is the word people scan a nav for, and it
-         describes the page, which answers "how much" before asking for a sale.
-         Outlined while Download is filled, so the free download stays the
-         primary entry point — two filled pills would compete rather than rank,
-         and the app is free to use, so downloading is the honest first step. -->
-    <a class="cta outline" href="/buy/">Pricing</a>
+    <!-- Buy, not Pricing: with the app free to use there is no "how much to get
+         it" question left for a Pricing page to answer, so the label says what
+         the page is actually for. Outlined while Download is filled, so the free
+         download stays the primary entry point — two filled pills would compete
+         rather than rank. -->
+    <a class="cta outline" href="/buy/">Buy</a>
     <a class="cta" href="/download/">Download</a>
   </nav>
 </header>
