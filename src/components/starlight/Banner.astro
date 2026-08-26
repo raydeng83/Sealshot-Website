@@ -1,11 +1,11 @@
 ---
-import OfferBar from '../OfferBar.astro';
+import SupportBar from '../SupportBar.astro';
 
 /*
   Starlight renders <Banner /> on every docs page and its default implementation
   draws nothing unless the page's frontmatter sets `banner`. Overriding it is
-  therefore the way to put a sitewide bar in the docs without wrapping the whole
-  layout — and OfferBar itself decides whether there is an offer to show.
+  therefore the way to put the sitewide bar in the docs without wrapping the
+  whole layout.
 
   Page-level `banner:` frontmatter is given up in the trade. Nothing uses it; if
   something needs to later, read Astro.locals.starlightRoute.entry.data.banner
@@ -13,15 +13,15 @@ import OfferBar from '../OfferBar.astro';
 */
 ---
 
-<div class="docs-offer-bar"><OfferBar /></div>
+<div class="docs-support-bar"><SupportBar /></div>
 
 <style>
   /* Starlight puts the banner inside the content column, not across the window,
      so the bar has ~690px rather than the full width and the long form wraps to
-     two lines. The viewport media query in OfferBar cannot see that — the
-     viewport is wide, the container is not — so the update-window clause is
-     dropped here instead. */
-  .docs-offer-bar :global(.detail) {
+     two lines. The viewport media query in SupportBar cannot see that — the
+     viewport is wide, the container is not — so the optional-license clause is
+     dropped here instead. The ask still lands: it is also the link's label. */
+  .docs-support-bar :global(.detail) {
     display: none;
   }
 </style>
