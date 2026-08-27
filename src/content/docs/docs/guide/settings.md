@@ -104,24 +104,18 @@ a button to the right System Settings pane.
 ![Settings → Permissions](/manual/settings-permissions.jpg)
 *Check and grant permissions from one place.*
 
-## License
+## Support
 
-What this Mac is licensed for. Sealshot is free to use either way — a
-license silences the occasional support reminder and covers every future
-update:
+Sealshot is donation-supported, and this tab is the whole of it:
 
-- **Open License File…** activates a license you've bought; **Buy
-  Sealshot…** takes you to the store if you don't have one yet.
-- Your **license ID** and license type are shown here, with a button to copy
-  the ID — quote it if you ever write to support.
-- The status line reads **Free to use** without a license, or **Licensed to
-  ‹your name›** with one.
-- **Remove License…** deactivates this Mac. Nothing stops working; the
-  reminder comes back.
-- A **Permanent Updates** card appears only for a license issued before
-  updates became permanent (August 2026). Those are replaced at no cost —
-  email support with the license ID above, and open the file that comes back.
-  See [replacements](/renew/).
+- **Donate…** opens [the donation page](/donate/) — any amount, once.
+- **"I've donated — stop the occasional reminder"** is the honor system in
+  one checkbox. Tick it after donating and the reminder never returns;
+  nothing verifies it, and unticking it brings the ask back.
+- If you bought a license before Sealshot became donation-supported, this
+  tab shows it as your **supporter license** with your name — it keeps
+  working forever, there is nothing to activate or renew, and on a new Mac
+  the checkbox does the same job as the file.
 
 ## Privacy & Security
 

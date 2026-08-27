@@ -52,14 +52,14 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       Sealshot reports anything back.
     </p>
     <p>
-      One thing worth naming, because it is the only time anything about your
-      license crosses the network: when you click <strong>Buy</strong> or
-      <strong>Support Sealshot</strong>, Sealshot opens this website in your
-      browser. Older versions also had a <strong>Renew</strong> button, whose
-      link carried your license ID and email address so the purchase could be
-      matched to your existing license. Either way that is your browser, at your
-      request, as part of buying something — not Sealshot reporting in. Nothing
-      is sent if you never click it.
+      One thing worth naming: when you click <strong>Donate…</strong> (or
+      <strong>Buy</strong> in older versions), Sealshot opens this website in
+      your browser. Some older versions also had a <strong>Renew</strong>
+      button whose link carried your license ID and email address so a purchase
+      could be matched to an existing license. Either way that is your browser,
+      at your request — not Sealshot reporting in. Nothing is sent if you never
+      click it, and the "I've donated" checkbox sends nothing at all: it is a
+      setting on your Mac, and we never verify it.
     </p>
 
     <h2>This website</h2>
@@ -84,48 +84,30 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       this site, so even the thumbnail costs you nothing.
     </p>
 
-    <h2>Buying a license</h2>
+    <h2>Donating</h2>
     <p>
       Payments are handled by <a href="https://polar.sh" rel="nofollow">Polar</a>,
       our merchant of record. Your card details go to Polar and its payment
       processor and never reach us — we never see or store them. Polar holds
-      your name, billing address, email address, and invoice history as the
-      seller of record, and passes the first three to us so your license can
-      name its owner.
+      your name, billing address, email address, and receipt history as the
+      seller of record.
     </p>
     <p>
-      To deliver your license, and to be able to reissue it later, we store the
-      following ourselves, in Cloudflare's key-value storage:
-    </p>
-    <ul>
-      <li>your name, billing address, and email address, as given at checkout</li>
-      <li>your license ID, the date it was issued, and what it covers</li>
-      <li>whether it is an individual or volume license, and how many users it covers</li>
-      <li>whether delivery succeeded, so a failed send can be retried</li>
-    </ul>
-    <p>
-      Your license file is emailed to you through
-      <a href="https://resend.com" rel="nofollow">Resend</a>, our transactional
-      email provider, which holds the message — including the attached license
-      file, in which your name, billing address, and email appear as readable
-      text — for a limited period. We use these records only to deliver your
-      license, to reissue it if you need a replacement, and to answer support
-      requests about your purchase. They are never sold, shared, or used for
-      marketing.
+      For each donation we keep one record of our own — your name, email
+      address, the date, and the order id — in Cloudflare's key-value storage,
+      so support questions about a donation can be answered. We do not store
+      your billing address, and nothing is emailed to you by us: Polar's
+      receipt is the only mail. These records are never sold, shared, or used
+      for marketing, and <a href="/support/">on request</a> we delete them.
     </p>
     <p>
-      Your license names you, and now also states the billing address you bought
-      it with. That is deliberate: a license file is personal, and one that
-      identifies its owner is one you are less likely to pass around. It also
-      means the file is worth keeping to yourself — treat it like a receipt, not
-      something to attach to a public bug report.
-    </p>
-    <p>
-      We keep them for as long as the license exists, because a replacement has
-      to find a license bought a year or more earlier and support requests can
-      arrive long after a purchase. If you would like your purchase records
-      deleted, <a href="/support/">ask us</a> and we will remove them — note that
-      this also removes our ability to reissue that license.
+      Licenses bought before Sealshot became donation-supported are still on
+      file — name, billing address, email, license ID, and what was issued —
+      because answering support questions about a past purchase requires them.
+      The license file itself names its owner in signed text; that was the
+      sharing deterrent of the old model, and it is why the file is worth
+      treating like a receipt rather than attaching to a public bug report.
+      These records are deletable on request too.
     </p>
 
     <h2>Feedback form</h2>
