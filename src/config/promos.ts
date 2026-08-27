@@ -46,88 +46,48 @@ export const CHECKOUT_IS_SANDBOX = false;
  * comment — `npm run check:prices` reads each checkout back from Polar — and run
  * it again after creating the production products.
  */
-export const REGULAR_PRICE_CENTS = 2999;
+/*
+ * Sealshot is donation-supported. There is no price: the checkout is a Polar
+ * pay-what-you-want product, so the buyer names the amount and Polar (still
+ * merchant of record — tax, receipts) charges it. Every donation at or above
+ * Polar's configured minimum issues the same permanent supporter license
+ * through the existing Worker pipeline.
+ *
+ * SUGGESTED_CENTS is DISPLAY ONLY, like the prices before it: Polar's product
+ * carries its own suggested amount, and the two have to be edited together or
+ * the page hints one number and the checkout preselects another. The MINIMUM
+ * lives only in Polar — the site never states it, because "donate at least $X"
+ * reads as a price with extra steps.
+ */
+export const SUGGESTED_CENTS = 1500;
 
 /*
- * There are no update windows and no renewals any more. Every product grants
- * PERMANENT updates: a purchase covers every future release. The license carries
- * that as an empty `updatesThrough` — see the Worker's PRODUCT_MAP and
- * src/product.ts.
- *
- * REGULAR_UPDATE_MONTHS, RENEWAL_UPDATE_MONTHS and RENEWAL_PRICE_CENTS are gone
- * rather than zeroed, so a page that still wants a month count fails the build
- * instead of rendering "0 months of updates". /renew survives as an explanation
- * only: shipped builds up to 0.7.8 link to it from Settings ▸ License, and a
- * link inside a binary cannot be taken back.
+ * The pay-what-you-want "Support Sealshot" checkout (product e6f4da17-…, mapped
+ * in the Worker's PRODUCT_MAP). `npm run check:prices` reads this link back
+ * from Polar and asserts the donor really can name the amount — the failure it
+ * exists for is a fixed-price product behind a button that says "any amount".
  */
+export const DONATE_CHECKOUT_URL =
+  'https://api.polar.sh/v1/checkout-links/polar_cl_z17UZHVHcdTOL6eeLNaQrHvFlqZ7jYP8YZ52T1LzS8k/redirect';
 
-/** Full-price checkout — the fallback when no time-limited offer is running. */
-export const BASE_CHECKOUT_URL =
-  'https://api.polar.sh/v1/checkout-links/polar_cl_PoAdTGTzzEdfhMfOXEwOyeqr8LsCbPHHtJhTq0NZfoi/redirect';
-
-export type Offer = {
-  id: string;
-  label: string;
-  /** Polar checkout link for this offer's own product. */
-  checkoutUrl: string;
-  /** DISPLAY only — Polar is authoritative on the charge. */
-  priceCents: number;
-  startsAt: string; // ISO 8601
-  endsAt: string;   // ISO 8601, exclusive
-};
-
-export const OFFERS: Offer[] = [
-  {
-    id: 'founding',
-    label: 'Founding price',
-    checkoutUrl:
-      'https://api.polar.sh/v1/checkout-links/polar_cl_WzQoSv8rzAKQIfomkyGW4XTIZVibhvB6alATt3jUs64/redirect',
-    priceCents: 1499,
-    startsAt: '2026-08-01T00:00:00Z',
-    // TODO: this is a PLACEHOLDER. The founding tier is for buyers before the
-    // 1.0 release, so this must be set to the actual v1.0 release day — not
-    // left to expire on a date picked for convenience. Selling "founding"
-    // after 1.0 ships means charging the founding price for a tier that no
-    // longer exists.
-    endsAt: '2027-01-01T00:00:00Z',
-  },
-];
-
-/** The single active offer (first whose window contains `now`), or null. */
-export function activeOffer(now: Date): Offer | null {
-  const t = now.getTime();
-  return OFFERS.find((o) => t >= Date.parse(o.startsAt) && t < Date.parse(o.endsAt)) ?? null;
-}
+/*
+ * The founding offer, the regular price, savingsPercent and activeOffer are
+ * GONE rather than zeroed: against pay-what-you-want there is nothing to
+ * discount and no price to compare, and anything still importing them should
+ * fail the build instead of rendering a struck-through number beside a field
+ * the visitor fills in themselves. This also finally retires the placeholder
+ * endsAt that every offer-window decision kept tripping over.
+ */
 
 export function formatUSD(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
 /**
- * Same price without a trailing `.00`. For running copy, where "$24.00 renewal"
- * reads worse than "$24 renewal". No current price is a whole dollar, so this is
- * a no-op today; it exists so one can be. The /buy page keeps the exact form,
- * since a headline price is where a customer checks the cents.
+ * Same amount without a trailing `.00`. The suggested donation is a whole
+ * dollar figure, so "Most people give $15" reads as a sentence rather than an
+ * invoice.
  */
 export function formatUSDCompact(cents: number): string {
   return cents % 100 === 0 ? `$${cents / 100}` : formatUSD(cents);
 }
-
-/**
- * Whole-percent discount an offer represents against the regular price. Computed
- * rather than written into copy, because "50% off" beside a pair of prices that
- * no longer divide that way is the kind of error nobody notices for months.
- */
-export function savingsPercent(priceCents: number, regularCents = REGULAR_PRICE_CENTS): number {
-  return Math.round((1 - priceCents / regularCents) * 100);
-}
-
-/*
- * There is no TRIAL_DAYS any more. Sealshot is free to use: every feature works,
- * nothing expires, and no capture is ever refused. What a license buys is
- * permanent updates, and that the app's occasional support reminder stops.
- *
- * The constant was removed rather than set to 0 so that no page can render "free
- * for 0 days" — and so that anything still importing it fails the build instead
- * of quietly advertising a trial that does not exist.
- */

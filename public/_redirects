@@ -43,3 +43,9 @@
 /manual/settings-permissions.png       /manual/settings-permissions.jpg       301
 /manual/settings-shortcuts.png         /manual/settings-shortcuts.jpg         301
 
+
+# Buying became donating (2026-08-27). The 0.8.0 app binaries link /buy from
+# the support reminder and Settings ▸ License, so this redirect is permanent
+# in the truest sense — a link compiled into a binary cannot be taken back.
+/buy    /donate/    301
+/buy/   /donate/    301

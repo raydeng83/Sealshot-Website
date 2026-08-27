@@ -47,8 +47,9 @@ encrypted, passcode-protected package for sending.
 ### Yours to keep
 
 Sealshot is **free to use** — every feature, no account, no card, nothing
-that expires. Buying it is a [one-time purchase](/buy/) that funds the work,
-includes every future update, and turns off the app's occasional reminder. The
+that expires. It is donation-supported: [give any amount](/donate/) and a
+supporter license arrives that covers every future update and turns off the
+app's occasional reminder. The
 license file activates entirely offline — no account, no activation server, and
 [nothing to renew](/docs/faq/#buying--licensing).
 

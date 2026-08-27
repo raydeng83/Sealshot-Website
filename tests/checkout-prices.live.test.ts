@@ -1,64 +1,46 @@
 /**
- * Does Polar charge what the site advertises?
+ * Is the donate checkout actually pay-what-you-want?
  *
  *     npm run check:prices
  *
- * Skipped by `npm test`, because it needs the network. Not because it is
- * optional: the comments in promos.ts and the Worker's wrangler.toml both used
- * to say "nothing in this repo can detect that mismatch", and a stale claim
- * about the prices survived several edits on the strength of that. It is
- * detectable — a checkout link redirects to a session whose amount is readable
- * from Polar's public client endpoint, no API key involved.
+ * Skipped by `npm test` (needs the network); run it after any change to the
+ * Polar product or the link. What it guards: the site says "any amount", so a
+ * checkout that turns out to carry a FIXED price is the site lying — which is
+ * exactly the state of the placeholder link during the donate cutover, and why
+ * this must pass before the page ships.
  *
- * Each run creates checkout sessions (unpaid, and in sandbox while
- * CHECKOUT_IS_SANDBOX is true). That is the cost of asking the question, and it
- * is why this is a command you run rather than part of the suite.
+ * Polar's client checkout exposes the pricing mode: a pay-what-you-want
+ * product answers with `amount_type: "custom"` (fixed products say "fixed").
  */
 import { describe, it, expect } from 'vitest';
-import {
-  OFFERS,
-  BASE_CHECKOUT_URL,
-  REGULAR_PRICE_CENTS,
-  CHECKOUT_IS_SANDBOX,
-} from '../src/config/promos';
+import { DONATE_CHECKOUT_URL, CHECKOUT_IS_SANDBOX } from '../src/config/promos';
 
-/** Follow a checkout link and read back what Polar would actually charge. */
-async function charged(checkoutUrl: string) {
-  const redirect = await fetch(checkoutUrl, { redirect: 'manual' });
+async function checkout(url: string) {
+  const redirect = await fetch(url, { redirect: 'manual' });
   const location = redirect.headers.get('location');
-  if (!location) {
-    throw new Error(`${checkoutUrl} did not redirect (${redirect.status})`);
-  }
-  // …/checkout/<client_secret> — the secret is what the public endpoint takes.
-  const clientSecret = location.split('/checkout/')[1];
-  // The API host has to match the link's environment, or the secret is unknown.
-  const apiHost = CHECKOUT_IS_SANDBOX ? 'sandbox-api.polar.sh' : 'api.polar.sh';
-  const res = await fetch(`https://${apiHost}/v1/checkouts/client/${clientSecret}`, {
+  if (!location) throw new Error(`${url} did not redirect (${redirect.status})`);
+  const secret = location.split('/checkout/')[1]?.split('?')[0];
+  const host = CHECKOUT_IS_SANDBOX ? 'sandbox-api.polar.sh' : 'api.polar.sh';
+  const res = await fetch(`https://${host}/v1/checkouts/client/${secret}`, {
     headers: { accept: 'application/json' },
   });
   if (!res.ok) throw new Error(`checkout lookup failed: ${res.status}`);
-  const body = (await res.json()) as {
-    amount: number; currency: string; product_id: string; product: { name: string };
+  return (await res.json()) as {
+    amount_type?: string;
+    product: { name: string };
+    product_price?: { amount_type?: string };
   };
-  return body;
 }
 
-// No renewal row: updates are permanent, so the renewal product has nothing to
-// sell and the site no longer links to it. It stays alive in Polar (and mapped in
-// the Worker) only until it is archived.
-const cases: Array<[string, string, number]> = [
-  ['regular', BASE_CHECKOUT_URL, REGULAR_PRICE_CENTS],
-  ...OFFERS.map((o) => [o.id, o.checkoutUrl, o.priceCents] as [string, string, number]),
-];
-
-describe.skipIf(!process.env.LIVE_POLAR)('what Polar charges', () => {
-  for (const [name, url, advertised] of cases) {
-    it(`${name}: charges the advertised ${advertised} cents`, async () => {
-      const c = await charged(url);
-      // Reported on failure, since "2999 !== 3900" alone does not say which
-      // Polar product is wrong.
-      expect({ product: c.product.name, id: c.product_id, amount: c.amount, currency: c.currency })
-        .toMatchObject({ amount: advertised, currency: 'usd' });
-    }, 30_000);
-  }
+describe.skipIf(!process.env.LIVE_POLAR)('the donate checkout', () => {
+  it('lets the donor name the amount', async () => {
+    const c = await checkout(DONATE_CHECKOUT_URL);
+    const mode = c.amount_type ?? c.product_price?.amount_type;
+    expect(
+      mode,
+      `"${c.product.name}" is not pay-what-you-want — the site promises "any ` +
+        `amount" and this checkout would charge a fixed price. If this is the ` +
+        `cutover placeholder, swap DONATE_CHECKOUT_URL for the PWYW link.`
+    ).toBe('custom');
+  }, 30_000);
 });

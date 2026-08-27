@@ -1,15 +1,5 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import {
-  activeOffer, formatUSDCompact, savingsPercent, REGULAR_PRICE_CENTS,
-} from '../config/promos';
-
-const offer = activeOffer(new Date());
-const priceCents = offer?.priceCents ?? REGULAR_PRICE_CENTS;
-// "founding price" while that offer runs, plain "once" when it has ended. Taken
-// from the offer's own label so a later offer renames itself in the copy.
-const priceQualifier = offer ? offer.label.toLowerCase() : 'once';
-const percent = offer ? savingsPercent(offer.priceCents) : 0;
 ---
 
 <SiteLayout
@@ -25,9 +15,8 @@ const percent = offer ? savingsPercent(offer.priceCents) : 0;
         Silicon and Intel, macOS 14 or later.
       </p>
       <p class="buy-signal">
-        <strong>Free to use</strong>, with every feature unlocked. {formatUSDCompact(priceCents)}
-        {' '}{priceQualifier}{offer && <> ({percent}% off)</>} if you want to support it —
-        <a href="/buy/">what that buys</a>
+        <strong>Free to use</strong>, with every feature unlocked.
+        Donation-supported — <a href="/donate/">give what you want</a>
       </p>
       <div class="actions">
         <a
