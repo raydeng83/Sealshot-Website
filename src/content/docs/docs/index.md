@@ -47,10 +47,10 @@ encrypted, passcode-protected package for sending.
 ### Yours to keep
 
 Sealshot is **free to use** — every feature, no account, no card, nothing
-that expires. It is donation-supported: [give any amount](/donate/) and a
-supporter license arrives that covers every future update and turns off the
-app's occasional reminder. The
-license file activates entirely offline — no account, no activation server, and
+that expires. It is donation-supported, on the honor system:
+[give any amount](/donate/) if it's useful, tick "I've donated" in
+Settings → Support, and the app's occasional reminder stops. No license
+keys, no activation, and
 [nothing to renew](/docs/faq/#buying--licensing).
 
 ## What you can do with it

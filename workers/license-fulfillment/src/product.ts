@@ -1,6 +1,11 @@
 import { addMonthsUTC } from './license';
 
-export type PurchaseKind = 'new' | 'renewal';
+/**
+ * 'donation' records the order and issues NOTHING — no license, no email.
+ * Sealshot moved to the honor system: the app's "I've donated" checkbox is the
+ * whole mechanism, so a signed file would be an artifact nobody checks.
+ */
+export type PurchaseKind = 'new' | 'renewal' | 'donation';
 /**
  * `permanent: true` is the normal case from 2026-08-26: a purchase covers every
  * future release, and `months` is then irrelevant. The two forms coexist so a
@@ -27,6 +32,7 @@ export function resolveProduct(env: { PRODUCT_MAP?: string }, productId: string)
   try {
     const map = JSON.parse(env.PRODUCT_MAP ?? '{}') as Record<string, ProductTerms>;
     const terms = map[productId];
+    if (terms?.kind === 'donation') return { kind: 'donation', permanent: true };
     if (terms && (terms.kind === 'new' || terms.kind === 'renewal')) {
       // Permanent needs no month count. Note that `{months: 0}` deliberately
       // does NOT qualify as permanent: a zero-month window is a

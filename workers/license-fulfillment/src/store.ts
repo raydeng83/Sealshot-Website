@@ -1,4 +1,10 @@
-export type OrderState = 'sent' | 'pending' | 'rejected' | 'failed' | 'refunded';
+/**
+ * 'donation' is terminal on arrival: the order is recorded for the books and
+ * nothing is issued or emailed — Polar's own receipt is the only mail. It is
+ * deliberately not 'sent' (nothing was) and not 'pending' (the cron would
+ * retry a delivery that is not supposed to happen).
+ */
+export type OrderState = 'sent' | 'pending' | 'rejected' | 'failed' | 'refunded' | 'donation';
 
 export type OrderRecord = {
   licenseId: string;

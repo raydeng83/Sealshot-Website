@@ -19,7 +19,7 @@ import { SUGGESTED_CENTS, DONATE_CHECKOUT_URL, formatUSDCompact } from '../confi
 
 <SiteLayout
   title="Donate — Sealshot"
-  description="Sealshot is free to use and donation-supported. Give any amount — every donation includes a supporter license with all future updates."
+  description="Sealshot is free to use and donation-supported. Give any amount — no license keys, no activation, nothing to manage."
   {/* The support bar's two clauses are this page's own headline, and its link
       points at the panel beside it. */}
   hideBar
@@ -40,13 +40,13 @@ import { SUGGESTED_CENTS, DONATE_CHECKOUT_URL, formatUSDCompact } from '../confi
           Donate — any amount
         </a>
         <p class="cta-hint">
-          Suggested: {formatUSDCompact(SUGGESTED_CENTS)}. Every donation includes
-          the supporter license.
+          Suggested: {formatUSDCompact(SUGGESTED_CENTS)}. One time, any amount.
         </p>
 
         <p class="fine-print">
           Handled by Polar, our merchant of record — card, receipt and tax all at
-          checkout. The license file arrives by email.
+          checkout. No license keys and nothing to activate: tick
+          "I've&nbsp;donated" in Settings ▸ Support and the reminder is gone.
           <a href="/refunds/">Refundable within 30 days</a>, no questions required.
         </p>
       </div>
@@ -57,11 +57,13 @@ import { SUGGESTED_CENTS, DONATE_CHECKOUT_URL, formatUSDCompact } from '../confi
           watermarked, or timed out. Donations are what fund the work.
         </p>
 
+        {/* Honor system: what a donation "gets you" is deliberately thin,
+            because everything was already included. Say that, plainly. */}
         <ul class="whatyouget">
-          <li>A supporter license, whatever the amount.</li>
-          <li>The occasional reminder turns off, on up to three Macs.</li>
-          <li>Every future update included, with nothing to renew.</li>
-          <li>Perpetual — the app and the license never stop working.</li>
+          <li>Everything is already yours — donating changes nothing about access.</li>
+          <li>The occasional reminder stops: tick a box, we take your word.</li>
+          <li>Every future update is free for everyone, donor or not.</li>
+          <li>Commercial use welcome, no seat counts, no keys to manage.</li>
         </ul>
       </div>
     </div>

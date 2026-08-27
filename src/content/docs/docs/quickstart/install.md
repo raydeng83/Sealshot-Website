@@ -35,9 +35,9 @@ Direct downloads are signed and notarized by Apple, so they launch without
 Gatekeeper warnings, and they update themselves automatically via Sparkle.
 
 Sealshot is **free to use** — every feature, no account needed, nothing that
-expires. Buying a license supports the work and stops the app's occasional
-reminder; apply one from
-[Settings → License](/docs/guide/settings/#license).
+expires. [Donating any amount](/donate/) supports the work; tick "I've
+donated" in [Settings → Support](/docs/guide/settings/#support) and the
+app's occasional reminder stops.
 
 ## Grant Screen Recording permission
 

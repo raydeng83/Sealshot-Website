@@ -122,76 +122,37 @@ say you already have. A donation turns it off for good, and pays for the work.
 ### Is Sealshot a subscription?
 
 No. Sealshot is **donation-supported**: [give any amount](/donate/), once,
-and you have a perpetual supporter license with **every future update,
-permanently**. Nothing renews, nothing expires, and there is no second
-payment — not next year, not at 1.0.
+if it's useful to you. Nothing renews, nothing expires, and nothing is ever
+owed — not next year, not at 1.0.
 
 ### What exactly do I get when I donate?
 
-A **supporter license file**, delivered instantly by email, whatever the
-amount. It covers **one user on three Macs**, includes **commercial use**,
-includes every future version of Sealshot — and turns off the occasional
-reminder.
+Honestly: a thank-you, and quiet. Everything was already yours — every
+feature, every future update, commercial use included. Donating funds the
+work, and the app's occasional reminder stops when you tick
+**"I've donated"** in **Settings → Support**. That's the honor system: no
+license keys, no activation, nothing to lose or manage. We take your word.
 
-The file names you: your name, billing address, and email appear in it as
-readable text, cryptographically signed along with the rest. That is what
-makes it yours rather than a key anyone could pass around — so keep it as
-you would a receipt, and don't attach it to a public bug report.
+### Why would I donate when everything is free?
+
+Because that's what keeps it being built. Sealshot has no investors, no
+telemetry to sell, and no subscription — the people who find it useful and
+chip in are the entire business model.
 
 ### I bought a license before Sealshot was donation-supported — what changes?
 
-Nothing. A bought license and a donated-for license are the same thing: a
-perpetual supporter license with every future update. Founding buyers keep
-exactly what they paid for, and nothing is ever re-priced or re-asked.
+Nothing. Your license file keeps working exactly as issued: Sealshot reads
+it, shows you as a supporter, and never reminds you — including licenses
+whose update window has lapsed, since there are no longer renewals for a
+lapse to sell. There is nothing to convert and no action to take. On a new
+Mac, you don't even need the file — tick **"I've donated"** in
+**Settings → Support** instead.
 
-### How do I activate my license? Do I need an account or internet?
+### Can I use Sealshot for work? What about a whole team?
 
-Open the license file from your email, or drag it onto
-**Settings → License**. Activation is **entirely offline** — no account,
-no activation server, nothing to sign in to. That also means Sealshot
-works on Macs that never touch the internet.
-
-### I got a new Mac — how do I move my license?
-
-Just activate the same license file on the new Mac (your license covers
-three). There's nothing to deactivate first — there's no activation server,
-so no seat to release. Keep the file (or the purchase email) somewhere
-safe, like any other important document.
-
-### My license file won't open after updating — why?
-
-Sealshot 0.7.3 changed the license-file format, and it is not compatible in
-either direction: a file issued before 0.7.3 won't open in 0.7.3 or later, and
-a newer file won't open in 0.7.2 or earlier. Write to support@seal-shot.com and
-we'll reissue yours — your purchase and what it covers don't change.
-
-### Do updates ever run out?
-
-No. A license covers **every future version**, permanently. Licenses issued
-up to August 2026 included a fixed number of months instead; those are being
-replaced with permanent ones at no charge — see
-[renewing](/renew/), which is now a page about there being nothing to renew.
-
-### How can I tell what my license covers?
-
-Open the `.sealshotlicense` file in any text editor, or look at
-**Settings → License**. A permanent license reads *Updates — All future
-versions*; an older one names the date it runs through. Either way the app
-itself never expires.
-
-### Can I use an Individual license for work?
-
-Yes — commercial use is included. The Business license exists for
-organizations that want contracted seat counts, one invoice, and volume
-pricing, not because individual licenses forbid work use.
-
-### How does business or volume licensing work?
-
-Businesses get an **offline organization license**: a contracted seat
-count on one invoice, with per-seat volume discounts as the count grows.
-No accounts to provision and no activation server to allow-list — it
-works on managed and air-gapped Macs alike. See the
-[contact us](/support/) for a quote.
+Yes — commercial use is included, for individuals and teams alike, with no
+seat counts and nothing to provision. If your organization wants an invoice
+for a larger donation, [contact us](/support/).
 
 ## Capturing & editing
 
