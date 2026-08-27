@@ -8,8 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "vitest run",
-    "check:prices": "LIVE_POLAR=1 vitest run tests/checkout-prices.live.test.ts",
-    "check:promo": "LIVE_POLAR=1 vitest run tests/promo-code.live.test.ts"
+    "check:prices": "LIVE_POLAR=1 vitest run tests/checkout-prices.live.test.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

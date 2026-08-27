@@ -116,51 +116,37 @@ ever refused.
 
 What a license buys is that the app stops asking. Once you've used Sealshot for
 a while, an occasional reminder appears *after* a capture — never before one,
-and no more than once a fortnight — with a way to buy, to dismiss it, or to say
-you already have. A license turns it off for good, and pays for the work.
+and no more than once a fortnight — with a way to donate, to dismiss it, or to
+say you already have. A donation turns it off for good, and pays for the work.
 
 ### Is Sealshot a subscription?
 
-No. [Buying Sealshot](/buy/) is a **one-time purchase** of a perpetual
-license, and it includes **every future update, permanently**. Nothing
-renews, nothing expires, and there is no second payment — not next year,
-not at 1.0.
+No. Sealshot is **donation-supported**: [give any amount](/donate/), once,
+and you have a perpetual supporter license with **every future update,
+permanently**. Nothing renews, nothing expires, and there is no second
+payment — not next year, not at 1.0.
 
-### What exactly do I get when I buy?
+### What exactly do I get when I donate?
 
-A **license file**, delivered instantly to your purchase email. It covers
-**one user on three Macs**, includes **commercial use**, and includes every
-future version of Sealshot. Current pricing is on the [buy page](/buy/).
+A **supporter license file**, delivered instantly by email, whatever the
+amount. It covers **one user on three Macs**, includes **commercial use**,
+includes every future version of Sealshot — and turns off the occasional
+reminder.
 
 The file names you: your name, billing address, and email appear in it as
 readable text, cryptographically signed along with the rest. That is what
 makes it yours rather than a key anyone could pass around — so keep it as
 you would a receipt, and don't attach it to a public bug report.
 
-### What is the Founding license?
+### I bought a license before Sealshot was donation-supported — what changes?
 
-An offer for buyers **before the 1.0 release**: the same license, at a
-lower price. Nothing is held back — every license includes permanent
-updates, so founding is a thank-you for early supporters rather than a
-different tier. See the [buy page](/buy/) for the current price while it
-lasts.
-
-### What happens to my Founding license when 1.0 ships?
-
-Nothing. The price goes up for new buyers, but a license already bought is
-untouched: still perpetual, still covering every future version, and never
-re-priced. There is no upgrade to buy at 1.0 and no action for you to
-take.
-
-### Can I still get the founding price after 1.0?
-
-No — that's what makes it a founding price. Once 1.0 is out, new
-purchases are at the regular price. If you expect to buy at some point,
-buying before 1.0 is the cheaper path.
+Nothing. A bought license and a donated-for license are the same thing: a
+perpetual supporter license with every future update. Founding buyers keep
+exactly what they paid for, and nothing is ever re-priced or re-asked.
 
 ### How do I activate my license? Do I need an account or internet?
 
-Open the license file from your purchase email, or drag it onto
+Open the license file from your email, or drag it onto
 **Settings → License**. Activation is **entirely offline** — no account,
 no activation server, nothing to sign in to. That also means Sealshot
 works on Macs that never touch the internet.
@@ -205,7 +191,7 @@ Businesses get an **offline organization license**: a contracted seat
 count on one invoice, with per-seat volume discounts as the count grows.
 No accounts to provision and no activation server to allow-list — it
 works on managed and air-gapped Macs alike. See the
-[buy page](/buy/) or [contact us](/support/) for a quote.
+[contact us](/support/) for a quote.
 
 ## Capturing & editing
 

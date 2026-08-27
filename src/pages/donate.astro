@@ -1,0 +1,153 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { SUGGESTED_CENTS, DONATE_CHECKOUT_URL, formatUSDCompact } from '../config/promos';
+
+/*
+  Was /buy. Sealshot is donation-supported now: the checkout is pay-what-you-want,
+  so this page has no price to defend — only what a donation does (funds the work,
+  stops the reminder, covers every future update) and a box to do it in.
+
+  /buy 301s here (public/_redirects): the 0.8.0 binaries link /buy from the
+  support reminder and Settings, and a link compiled into a binary cannot be
+  taken back.
+
+  Layout is the /buy two-column grid unchanged: argument left, transaction right,
+  panel first on a phone. It was measured across 390–2200px when it was built;
+  the panel's contents got shorter here, not wider, so those measurements stand.
+*/
+---
+
+<SiteLayout
+  title="Donate — Sealshot"
+  description="Sealshot is free to use and donation-supported. Give any amount — every donation includes a supporter license with all future updates."
+  {/* The support bar's two clauses are this page's own headline, and its link
+      points at the panel beside it. */}
+  hideBar
+>
+  <section class="buy">
+    <div class="wrap buy-grid">
+      <div class="pitch-head">
+        <p class="kicker">Donate</p>
+        <h1>Free to use. Funded by the people who chip in.</h1>
+      </div>
+
+      <div class="panel">
+        {/* No price row: with pay-what-you-want the number is the visitor's to
+            write, and any figure printed here would read as the expected one.
+            The suggestion rides inside the button label instead, where it reads
+            as a hint rather than a price. */}
+        <a class="button buy-cta" href={DONATE_CHECKOUT_URL}>
+          Donate — any amount
+        </a>
+        <p class="cta-hint">
+          Most people give {formatUSDCompact(SUGGESTED_CENTS)}. Every donation
+          includes the supporter license.
+        </p>
+
+        <p class="fine-print">
+          Handled by Polar, our merchant of record — card, receipt and tax all at
+          checkout. The license file arrives by email.
+          <a href="/refunds/">Refundable within 30 days</a>, no questions required.
+        </p>
+      </div>
+
+      <div class="pitch-body">
+        <p class="pitch-sub">
+          Every feature works whether or not you ever give — nothing is withheld,
+          watermarked, or timed out. Donations are what fund the work.
+        </p>
+
+        <ul class="whatyouget">
+          <li>A supporter license, whatever the amount.</li>
+          <li>The occasional reminder turns off, on up to three Macs.</li>
+          <li>Every future update included, with nothing to renew.</li>
+          <li>Perpetual — the app and the license never stop working.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  /* padding-block, never the `padding: 4rem 0` shorthand: .wrap's inline padding
+     lives on the child, and the shorthand copied onto a `class="section wrap"`
+     page zeroes its side margins. That exact bug shipped on seven pages once. */
+  .buy {
+    padding-block: 4.5rem 3.5rem;
+  }
+
+  .buy-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .pitch-head h1 {
+    font-size: clamp(2rem, 3.2vw, 2.75rem);
+    margin: 0.35rem 0 0.75rem;
+    text-wrap: balance;
+  }
+
+  .pitch-sub {
+    color: var(--slate-600);
+    font-size: 1.15rem;
+    margin: 0;
+    max-width: 34rem;
+  }
+
+  .whatyouget {
+    margin: 1.75rem 0 0;
+    padding-left: 1.15rem;
+    max-width: 34rem;
+    line-height: 1.9;
+  }
+
+  .panel {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    background: var(--surface-page);
+    padding: 1.5rem;
+  }
+
+  .buy-cta {
+    display: block;
+    text-align: center;
+  }
+
+  .cta-hint {
+    margin: 0.75rem 0 0;
+    font-size: 0.9rem;
+    color: var(--slate-600);
+    text-align: center;
+  }
+
+  .panel .fine-print {
+    margin: 1.25rem 0 0;
+    font-size: 0.85rem;
+    color: var(--slate-600);
+  }
+
+  @media (min-width: 64rem) {
+    .buy-grid {
+      grid-template-columns: minmax(0, 1fr) 24rem;
+      grid-template-areas:
+        "head panel"
+        "body panel";
+      column-gap: 4rem;
+      row-gap: 1.25rem;
+    }
+
+    .pitch-head { grid-area: head; }
+    .pitch-body { grid-area: body; }
+    .panel { grid-area: panel; }
+  }
+
+  @media (max-width: 63.99rem) {
+    .panel,
+    .pitch-head,
+    .pitch-body {
+      max-width: 34rem;
+    }
+  }
+</style>

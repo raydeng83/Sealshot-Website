@@ -56,7 +56,7 @@ describe.skipIf(!built)('sitemap', () => {
 
   it('still lists the pages that matter', () => {
     const paths = sitemapPaths();
-    for (const p of ['/', '/buy/', '/download/', '/compare/', '/renew/', '/docs/faq/']) {
+    for (const p of ['/', '/donate/', '/download/', '/compare/', '/renew/', '/docs/faq/']) {
       expect(paths).toContain(p);
     }
   });
