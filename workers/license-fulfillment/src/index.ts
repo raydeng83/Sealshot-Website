@@ -189,10 +189,30 @@ export default {
         subject: `Sealshot: unmapped product on order ${order.orderId}`,
         body:
           `product_id ${order.productId || '(absent)'} is not in PRODUCT_MAP.\n` +
-          `Defaulted to a 12-month new purchase. If this was a founding or\n` +
-          `renewal purchase the customer has the wrong window — check\n` +
-          `PRODUCT_MAP in wrangler.toml against the live Polar product ids.`,
+          `Defaulted to a permanent new license. Check PRODUCT_MAP in\n` +
+          `wrangler.toml against the live Polar product ids — if this was a\n` +
+          `donation, the buyer got a license email they were not promised.`,
       }));
+    }
+
+    // A donation is recorded and nothing more. No license id, no address (we
+    // have no delivery to justify keeping it), no email — Polar's receipt is
+    // the thank-you. Returns before the fulfillment path so the cron never
+    // sees it as undelivered.
+    if (terms.kind === 'donation') {
+      await putOrder(env.ORDERS, order.orderId, {
+        licenseId: '',
+        email: order.email,
+        name: order.name,
+        issued: purchaseDay,
+        updatesThrough: '',
+        licenseType: 'individual',
+        seats: 1,
+        state: 'donation',
+        attempts: 0,
+        firstSeenAt: existing?.firstSeenAt ?? new Date().toISOString(),
+      });
+      return new Response('ok', { status: 200 });
     }
 
     let licenseId = existing?.licenseId ?? crypto.randomUUID().toUpperCase();

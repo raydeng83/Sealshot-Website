@@ -98,17 +98,17 @@ describe('the deployed PRODUCT_MAP', () => {
     // from an unmapped product.
     for (const id of Object.keys(JSON.parse(raw!))) {
       const terms = resolveProduct(env, id);
-      expect(['new', 'renewal']).toContain(terms.kind);
+      expect(['new', 'renewal', 'donation']).toContain(terms.kind);
       expect(terms.permanent === true || (terms.months ?? 0) > 0).toBe(true);
     }
   });
 
-  it('maps the live pay-what-you-want product', () => {
-    // The donation cutover in one assertion: the id the donate checkout sells
-    // resolves to a permanent new license. Wrong or missing, every donor gets
-    // the fallback (also permanent — but the alert fires on every sale).
+  it('maps the live pay-what-you-want product as a donation', () => {
+    // The honor-system cutover in one assertion: the id the donate checkout
+    // sells resolves to 'donation' — record the order, issue nothing. Wrong or
+    // missing, every donor gets a license email they were not promised.
     expect(resolveProduct(env, 'e6f4da17-79c5-4632-b94b-51ccf0708aef'))
-      .toEqual({ kind: 'new', permanent: true });
+      .toEqual({ kind: 'donation', permanent: true });
   });
 
   it('grants permanent updates on every product, in both environments', () => {
@@ -118,11 +118,12 @@ describe('the deployed PRODUCT_MAP', () => {
     // renewal mapped as `new`.
     const values = Object.values(JSON.parse(raw!)) as { kind: string; permanent?: boolean }[];
     const shape = (v: { kind: string; permanent?: boolean }) =>
-      `${v.kind}/${v.permanent === true ? 'permanent' : 'windowed'}`;
+      v.kind === 'donation' ? 'donation' : `${v.kind}/${v.permanent === true ? 'permanent' : 'windowed'}`;
     const counts = new Map<string, number>();
     for (const v of values) counts.set(shape(v), (counts.get(shape(v)) ?? 0) + 1);
     expect([...counts.entries()].sort()).toEqual([
-      ['new/permanent', 5],
+      ['donation', 1],
+      ['new/permanent', 4],
       ['renewal/permanent', 2],
     ]);
   });

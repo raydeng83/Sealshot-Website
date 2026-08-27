@@ -25,6 +25,7 @@ const PROD_FOUNDING = 'prod_founding';
 const PROD_RENEWAL = 'prod_renewal';
 const PROD_PERMANENT = 'prod_permanent';
 const PROD_RENEWAL_PERMANENT = 'prod_renewal_permanent';
+const PROD_DONATION = 'prod_donation';
 
 const PRODUCT_MAP = JSON.stringify({
   [PROD_NEW]: { kind: 'new', months: 12 },
@@ -32,6 +33,7 @@ const PRODUCT_MAP = JSON.stringify({
   [PROD_RENEWAL]: { kind: 'renewal', months: 12 },
   [PROD_PERMANENT]: { kind: 'new', permanent: true },
   [PROD_RENEWAL_PERMANENT]: { kind: 'renewal', permanent: true },
+  [PROD_DONATION]: { kind: 'donation' },
 });
 
 function fakeCtx() {
@@ -401,5 +403,29 @@ describe('permanent updates', () => {
     );
 
     expect(windowInFile(sent[1])).toBe('permanent');
+  });
+});
+
+describe('donations (honor system)', () => {
+  it('records the order and sends NOTHING', async () => {
+    const { env, sent } = makeEnv();
+    await post(env, order({ productId: PROD_DONATION, address: { line1: '1 Main St', city: 'Boston' } }));
+
+    expect(sent.length, 'no license email — Polar\'s receipt is the only mail').toBe(0);
+    const rec = JSON.parse((await env.ORDERS.get('order:ord_1'))!);
+    expect(rec.state).toBe('donation');
+    expect(rec.licenseId).toBe('');
+    // No delivery to justify keeping it, so the address is not stored — the
+    // privacy page's claim about what we keep has to stay true.
+    expect(rec.address).toBeUndefined();
+  });
+
+  it('is idempotent — a Polar redelivery does not double-record or mail', async () => {
+    const { env, sent } = makeEnv();
+    await post(env, order({ productId: PROD_DONATION }));
+    await post(env, order({ productId: PROD_DONATION }), 'msg_2');
+
+    expect(sent.length).toBe(0);
+    expect(JSON.parse((await env.ORDERS.get('order:ord_1'))!).state).toBe('donation');
   });
 });
