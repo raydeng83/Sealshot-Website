@@ -87,10 +87,10 @@ describe('the deployed PRODUCT_MAP', () => {
 
   it('parses, rather than silently falling back to the default', () => {
     expect(() => JSON.parse(raw!)).not.toThrow();
-    // Six: the three sandbox ids and the three production ones, both mapped so
-    // neither environment has an unmapped window during the cutover. Drops back
-    // to three when the sandbox products are retired.
-    expect(Object.keys(JSON.parse(raw!)).length).toBe(6);
+    // Seven: three sandbox ids, three retired production ids, and the live
+    // pay-what-you-want Support Sealshot product. Retired ids stay mapped so a
+    // straggling order fulfills instead of tripping the unmapped alert.
+    expect(Object.keys(JSON.parse(raw!)).length).toBe(7);
   });
 
   it('maps every configured id to terms resolveProduct accepts', () => {
@@ -101,6 +101,14 @@ describe('the deployed PRODUCT_MAP', () => {
       expect(['new', 'renewal']).toContain(terms.kind);
       expect(terms.permanent === true || (terms.months ?? 0) > 0).toBe(true);
     }
+  });
+
+  it('maps the live pay-what-you-want product', () => {
+    // The donation cutover in one assertion: the id the donate checkout sells
+    // resolves to a permanent new license. Wrong or missing, every donor gets
+    // the fallback (also permanent — but the alert fires on every sale).
+    expect(resolveProduct(env, 'e6f4da17-79c5-4632-b94b-51ccf0708aef'))
+      .toEqual({ kind: 'new', permanent: true });
   });
 
   it('grants permanent updates on every product, in both environments', () => {
@@ -114,7 +122,7 @@ describe('the deployed PRODUCT_MAP', () => {
     const counts = new Map<string, number>();
     for (const v of values) counts.set(shape(v), (counts.get(shape(v)) ?? 0) + 1);
     expect([...counts.entries()].sort()).toEqual([
-      ['new/permanent', 4],
+      ['new/permanent', 5],
       ['renewal/permanent', 2],
     ]);
   });

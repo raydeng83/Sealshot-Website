@@ -62,14 +62,13 @@ export const CHECKOUT_IS_SANDBOX = false;
 export const SUGGESTED_CENTS = 1500;
 
 /*
- * TODO(donate-cutover): still the old fixed-price $29.99 product. Replace with
- * the pay-what-you-want checkout link once it exists in Polar, and add its
- * product id to the Worker's PRODUCT_MAP in the same change. Until then the
- * donate page takes real money at a fixed price, so it must not ship — the
- * placeholder is here only so the branch builds.
+ * The pay-what-you-want "Support Sealshot" checkout (product e6f4da17-…, mapped
+ * in the Worker's PRODUCT_MAP). `npm run check:prices` reads this link back
+ * from Polar and asserts the donor really can name the amount — the failure it
+ * exists for is a fixed-price product behind a button that says "any amount".
  */
 export const DONATE_CHECKOUT_URL =
-  'https://api.polar.sh/v1/checkout-links/polar_cl_PoAdTGTzzEdfhMfOXEwOyeqr8LsCbPHHtJhTq0NZfoi/redirect';
+  'https://api.polar.sh/v1/checkout-links/polar_cl_z17UZHVHcdTOL6eeLNaQrHvFlqZ7jYP8YZ52T1LzS8k/redirect';
 
 /*
  * The founding offer, the regular price, savingsPercent and activeOffer are

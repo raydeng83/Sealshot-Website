@@ -71,9 +71,16 @@ EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
 # license carries this as an EMPTY updatesThrough — see src/product.ts.
 #
 #   sandbox                                            production
-#   e8d2217b… Sealshot            new,     permanent   5d97bf6b…  — $29.99
-#   d5a0e9c3… Sealshot Founding   new,     permanent   aa68d65d…  — $14.99
-#   877dd2e8… Sealshot Renewal    renewal, permanent   a769ede2…  — $17.99
+#   e8d2217b… Sealshot            new,     permanent   5d97bf6b…  — $29.99 (retired)
+#   d5a0e9c3… Sealshot Founding   new,     permanent   aa68d65d…  — $14.99 (retired)
+#   877dd2e8… Sealshot Renewal    renewal, permanent   a769ede2…  — $17.99 (retired)
+#
+#   production only (2026-08-27):
+#   e6f4da17… Support Sealshot    new,     permanent   pay-what-you-want, $5 min
+#
+# Support Sealshot is the ONLY product the site links. The retired ids stay
+# mapped so a straggling order — an old checkout tab, a Polar retry — still
+# fulfills correctly instead of tripping the unmapped-product alert.
 #
 # The Renewal product is retired — permanent updates leave it nothing to sell —
 # but it stays mapped until it is archived in Polar, so a straggling order
@@ -84,7 +91,7 @@ EMAIL_FROM = "Sealshot <license@mail.seal-shot.com>"
 # Polar decides the charge and neither this file nor the site does, so check it
 # rather than believe this comment: `npm run check:prices` in the site repo reads
 # each checkout link back from Polar.
-PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","permanent":true},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","permanent":true},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","permanent":true},"5d97bf6b-2fa8-45c6-9d8b-a30ad2a71062":{"kind":"new","permanent":true},"aa68d65d-f713-4a6f-86f1-61188b7c567a":{"kind":"new","permanent":true},"a769ede2-8e48-4c28-b8f3-692524a2bc6c":{"kind":"renewal","permanent":true}}'
+PRODUCT_MAP = '{"e8d2217b-25bc-45d0-8f7e-e0783a8d3762":{"kind":"new","permanent":true},"d5a0e9c3-a6c8-48ab-8010-932b8b1395d8":{"kind":"new","permanent":true},"877dd2e8-4edc-408c-99b0-d9919eccf6cd":{"kind":"renewal","permanent":true},"5d97bf6b-2fa8-45c6-9d8b-a30ad2a71062":{"kind":"new","permanent":true},"aa68d65d-f713-4a6f-86f1-61188b7c567a":{"kind":"new","permanent":true},"a769ede2-8e48-4c28-b8f3-692524a2bc6c":{"kind":"renewal","permanent":true},"e6f4da17-79c5-4632-b94b-51ccf0708aef":{"kind":"new","permanent":true}}'
 # The From subdomain is send-only, so replies need somewhere real to land.
 REPLY_TO = "support@seal-shot.com"
 # Where the /support form delivers. Same inbox as REPLY_TO today; separate so a
