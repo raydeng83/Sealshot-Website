@@ -66,6 +66,7 @@ const heroSlides = [
 
 const trustPoints = [
   'On-device only',
+  'Open source',
   'No account',
   'No telemetry',
   'Data Encrypted',
@@ -137,8 +138,8 @@ const features = [
 ---
 
 <SiteLayout
-  title="Sealshot — privacy-first screenshots and recordings for Mac"
-  description="Capture, record, annotate, and redact with everything processed on device. No account, no telemetry, no cloud."
+  title="Sealshot — professional screen capture for Mac, free and open source"
+  description="Capture, record, annotate, redact, and extract data with everything processed on device. Free and open source (GPL-3), no account, no telemetry, no cloud."
 >
   {/*
     Card glyph sprite — defined once, referenced by <use> on each card. Inline
@@ -166,18 +167,21 @@ const features = [
   <section class="hero">
     <div class="wrap">
       <p class="kicker">For macOS 14+</p>
-      <h1>Smart Screenshots, Enhanced Security and <span class="nobreak">On-Device Only</span></h1>
+      {/* Two sentences, one claim each: what it is, and what it costs. The
+          proof for both lives in the signal line below the buttons — the
+          headline asserts, the credentials line substantiates. */}
+      <h1>Professional screen capture. <span class="nobreak">Free and open source.</span></h1>
       <p class="sub">
-        Capture, record, annotate, redact, and extract data from any
-        screenshot. No account. No telemetry. No cloud.
+        Capture, record, annotate, redact, and extract data — everything
+        processed on your Mac. No account. No telemetry. No cloud.
       </p>
       <div class="actions">
         <a class="button" href="/download/">Download for Mac</a>
-        <a class="button secondary" href="/docs/">Read the docs</a>
+        <a class="button secondary" href="https://github.com/ldeng83/Sealshot">View on GitHub</a>
       </div>
       <p class="buy-signal">
-        <strong>Free to use</strong> — every feature, nothing expires ·
-        donation-supported, give what you want ·
+        GPL-3 open source · every feature free, nothing expires ·
+        donations keep it being built ·
         <a href="/donate/">Why donate</a>
       </p>
       <ul class="trust-strip" aria-label="Privacy guarantees">
