@@ -55,11 +55,11 @@ export const CHECKOUT_IS_SANDBOX = false;
  *
  * SUGGESTED_CENTS is DISPLAY ONLY, like the prices before it: Polar's product
  * carries its own suggested amount, and the two have to be edited together or
- * the page hints one number and the checkout preselects another. The MINIMUM
- * lives only in Polar — the site never states it, because "donate at least $X"
- * reads as a price with extra steps.
+ * the page hints one number and the checkout preselects another — which is
+ * exactly how this constant started life as 1500 against a $5 preset. Verified
+ * against the live checkout 2026-08-27: preset 500, no minimum.
  */
-export const SUGGESTED_CENTS = 1500;
+export const SUGGESTED_CENTS = 500;
 
 /*
  * The pay-what-you-want "Support Sealshot" checkout (product e6f4da17-…, mapped
