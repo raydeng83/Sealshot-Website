@@ -23,7 +23,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           class="button"
           id="dmg-link"
           aria-describedby="dmg-meta"
-          href="https://github.com/raydeng83/Sealshot-Release/releases/latest"
+          href="https://github.com/ldeng83/Sealshot/releases/latest"
         >
           Download for Mac
         </a>
@@ -44,7 +44,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     }
 
     fetch(
-      'https://api.github.com/repos/raydeng83/Sealshot-Release/releases/latest'
+      'https://api.github.com/repos/ldeng83/Sealshot/releases/latest'
     )
       .then(function (r) {
         return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status));
