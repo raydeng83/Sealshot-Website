@@ -29,6 +29,16 @@ import icon from '../assets/icon.png';
          page lives — same target as the footer link. -->
     <a href="/docs/faq/">FAQ</a>
     <a href="/support/">Support</a>
+    <!-- Community after Support: both are "talk to a person", and this one is
+         the public half of that pair — issues, releases, the repo. It ranks
+         below Support because someone with a problem should reach the inbox
+         that answers them first, not a tracker.
+
+         The seventh item is what pushed the header past the width of a tablet:
+         every label is one word, so nothing shrinks, and the nav's min-content
+         went from 525px to 640px. The fluid gap in global.css is what absorbs
+         that between 704px and 838px. -->
+    <a href="/community/">Community</a>
     <!-- The two pills are wrapped so they wrap together. `display: contents` on
          a wide screen means this span is not there at all — the flex row is
          byte-identical to what it was. Below 640px it becomes a flex group, so
