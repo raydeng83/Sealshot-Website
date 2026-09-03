@@ -169,22 +169,46 @@ h1, h2, h3 {
   box-shadow: inset 0 0 0 1px var(--orange-800);
 }
 
+/* Donate and Download are wrapped in a span so they can wrap as a pair on a
+   phone (see Header.astro). `display: contents` removes the wrapper from layout
+   entirely, so at desktop widths the nav is the same one-row flex line of six
+   children it would be without it. */
+.site-header nav .nav-actions {
+  display: contents;
+}
+
 @media (max-width: 640px) {
   .site-header {
     flex-wrap: wrap;
     gap: 0.75rem;
   }
 
-  /* Five items including two pills need 347px at 390px wide, against 327px of
+  /* Five items including two pills needed 347px at 390px wide, against 327px of
      usable header — so the overflow was dropping Download, the primary action,
      onto a row of its own. An 8px column gap and a slightly smaller size on the
-     three text links bring it back under, and the nav sits on one line. flex-wrap
+     text links brought it back under, and the nav sat on one line. flex-wrap
      stays as the backstop for narrower screens, where it wraps rather than
-     pushing the page sideways. */
+     pushing the page sideways.
+
+     Guides makes six, and six do not fit at any phone width — roughly 395px of
+     content against 342px. So the nav wraps again, but WHERE it wraps is now
+     chosen rather than left to whichever item runs out of room: the .nav-actions
+     rule below keeps the four text links on the first line and both pills
+     together on the second. Download is never alone on a line, which was the
+     whole point of the numbers above. */
   .site-header nav {
     gap: 0.5rem;
     flex-wrap: wrap;
     justify-content: flex-end;
+  }
+
+  /* `gap: inherit` rather than a literal: the group then follows whatever column
+     gap the nav is on, including the tighter 6px of the 23.5rem tier below, so
+     the pills never sit at a different rhythm from the links above them. */
+  .site-header nav .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: inherit;
   }
 
   /* The pills keep their size: they are the actions. The text links give up the

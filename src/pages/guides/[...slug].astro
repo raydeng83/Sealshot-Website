@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+/*
+  One route for every file in src/content/guides/. The markdown file name is the
+  URL: search-screenshots-mac.md → /guides/search-screenshots-mac/.
+
+  Drafts are excluded here as well as on the landing page, so a `draft: true`
+  guide has no page at all rather than an unlisted one that search engines can
+  still find.
+*/
+export async function getStaticPaths() {
+  const guides = await getCollection('guides', ({ data }) => !data.draft);
+  return guides.map((guide) => ({ params: { slug: guide.id }, props: { guide } }));
+}
+
+const { guide } = Astro.props;
+const { Content } = await render(guide);
+---
+
+<SiteLayout title={`${guide.data.title} — Sealshot`} description={guide.data.description}>
+  <section class="section wrap" aria-labelledby="guide-title">
+    {/* The kicker doubles as the way back up a level. It is the only navigation
+        a guide needs: the header carries the rest. */}
+    <p class="kicker"><a class="guide-back" href="/guides/">← Guides</a></p>
+    <h1 id="guide-title">{guide.data.title}</h1>
+    <div class="prose">
+      <Content />
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  /* `.kicker` already supplies the colour, weight and letterspacing; the link
+     only has to stop announcing itself with an underline until you reach for
+     it. */
+  .guide-back {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .guide-back:hover,
+  .guide-back:focus-visible {
+    text-decoration: underline;
+  }
+
+  /* An h1 followed straight by body copy: `.section .sub` gives the landing
+     pages this air, and a guide has no subtitle to do it. Matches the measure
+     `.prose` already sets, so the two edges agree. */
+  .prose {
+    margin-top: 1.5rem;
+  }
+
+  /* Italic sign-off on the placeholder guides — quieter than the body, and it
+     stays sensible once the real article replaces it. */
+  .prose :global(p:last-child em) {
+    color: var(--slate-400);
+  }
+</style>
