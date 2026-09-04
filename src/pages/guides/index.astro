@@ -1,0 +1,110 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+
+/*
+  The /guides/ landing grid.
+
+  Everything on it is derived from src/content/guides/*.md — adding the next
+  guide means adding that one file, not editing this page. The one thing kept
+  here is the glyph map, because the sprite is drawn on this page.
+
+  Cards reuse `.feature.workflow-card` from global.css — the same card-as-a-link
+  pattern the landing page uses for its workflow teasers — so the grid inherits
+  the site's spacing, radius, shadow, hover and responsive columns with no new
+  layout CSS.
+*/
+
+const guides = (await getCollection('guides', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title)
+);
+
+/* Slug → glyph. A guide with no entry falls back to the document glyph rather
+   than rendering a card with a hole in it, so writing a new guide is never
+   blocked on drawing an icon first. */
+const ICONS: Record<string, string> = {
+  'search-screenshots-mac': 'ic-g-search',
+  'redact-screenshots-mac': 'ic-g-redact',
+  'scrolling-screenshot-mac': 'ic-g-scroll',
+  'screenshot-ocr-mac': 'ic-g-table',
+  'screenshot-workflow-qa-bug-reports': 'ic-g-bug',
+  'open-source-cleanshot-x-alternative': 'ic-g-package',
+  'private-screenshot-app-mac': 'ic-g-lock',
+  'detect-api-keys-in-screenshots': 'ic-g-key',
+};
+const iconFor = (id: string) => ICONS[id] ?? 'ic-g-doc';
+---
+
+<SiteLayout
+  title="Guides — practical Mac screenshot workflows | Sealshot"
+  description="Practical guides to everyday Mac screenshot problems: searching old captures, redacting sensitive data, scrolling screenshots, OCR, QA bug reports, and keeping a screenshot library private."
+>
+  {/* Same technique as the landing page: one hidden sprite, referenced by <use>
+      from each card. Ids are prefixed ic-g- so they cannot collide with the
+      landing page's sprite should the two ever meet on one page. */}
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <symbol id="ic-g-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="5.8"/><path d="M14.8 14.8L20 20"/></symbol>
+      <symbol id="ic-g-redact" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="14" rx="2"/><rect x="6.5" y="9" width="8" height="2.6" rx="0.6" fill="currentColor" stroke="none"/><path d="M6.5 15h5"/></symbol>
+      <symbol id="ic-g-scroll" viewBox="0 0 24 24"><rect x="6" y="3.5" width="12" height="17" rx="2"/><path d="M12 8v8"/><path d="M9.2 13.2L12 16l2.8-2.8"/></symbol>
+      <symbol id="ic-g-table" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M3.5 10h17"/><path d="M9.5 10v9.5"/></symbol>
+      <symbol id="ic-g-bug" viewBox="0 0 24 24"><rect x="7.5" y="8.5" width="9" height="11" rx="4.5"/><path d="M9.5 8.5l-1-2M14.5 8.5l1-2"/><path d="M4.5 12.5h3M16.5 12.5h3M5 18l2.5-1.6M19 18l-2.5-1.6"/></symbol>
+      <symbol id="ic-g-package" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M4 7.5l8 4.5 8-4.5"/><path d="M12 12v9"/></symbol>
+      <symbol id="ic-g-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v2"/></symbol>
+      <symbol id="ic-g-key" viewBox="0 0 24 24"><circle cx="7.5" cy="12" r="3.5"/><path d="M11 12h9"/><path d="M17.5 12v3"/><path d="M14.5 12v2.2"/></symbol>
+      <symbol id="ic-g-doc" viewBox="0 0 24 24"><path d="M13.5 3.5H7A1.5 1.5 0 0 0 5.5 5v14A1.5 1.5 0 0 0 7 20.5h10a1.5 1.5 0 0 0 1.5-1.5V8.5z"/><path d="M13.5 3.5V8.5H18.5"/><path d="M8.5 13h7M8.5 16.5h4.5"/></symbol>
+    </defs>
+  </svg>
+
+  <section class="section wrap" aria-labelledby="guides-title">
+    <p class="kicker">Guides</p>
+    <h1 id="guides-title">Guides</h1>
+    <p class="sub">
+      Practical articles about the screenshot problems that come up on a Mac —
+      finding an old capture, getting a secret out of an image before you send
+      it, capturing a page taller than the screen, turning pixels back into
+      text. Written to be useful whichever tool you use, with the parts Sealshot
+      handles marked as such.
+    </p>
+
+    <div class="features guides-grid">
+      {guides.map((guide) => (
+        <a class="feature workflow-card" href={`/guides/${guide.id}/`}>
+          <svg class="card-icon" aria-hidden="true"><use href={`#${iconFor(guide.id)}`} /></svg>
+          <h2>{guide.data.title}</h2>
+          <p>{guide.data.summary}</p>
+          <span class="workflow-link">Read the guide →</span>
+        </a>
+      ))}
+    </div>
+
+    <p class="guides-note">
+      More on the way. Something you keep running into and cannot find an answer
+      for? <a href="/support/">Tell us</a> — this list is written from what people
+      actually ask.
+    </p>
+  </section>
+</SiteLayout>
+
+<style>
+  /* `.feature` is a grid with named areas, and global.css assigns the heading
+     area to h3. These headings are h2 — the page's h1 is "Guides", so a card
+     title is one level below it and an h3 would skip a level in the outline.
+     Without the grid-area the h2 would be auto-placed into a row of its own,
+     next to the glyph. Size matches `.feature h3` exactly; nothing here changes
+     how the card looks. */
+  .guides-grid h2 {
+    grid-area: h;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  /* Matches `.pillars-note` on the landing page: same step below a grid, same
+     measure, same muted weight. */
+  .guides-note {
+    margin: 2rem 0 0;
+    color: var(--slate-600);
+    font-size: 0.95rem;
+    max-width: 44rem;
+  }
+</style>

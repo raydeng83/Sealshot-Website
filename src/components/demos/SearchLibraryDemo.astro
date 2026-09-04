@@ -1,0 +1,809 @@
+---
+/*
+  A mock of the Sealshot Library, searching for text inside a screenshot.
+
+  This is a DRAWING of the app, not the app: every pixel here is CSS, there are
+  no images to load, and nothing talks to Sealshot. What it borrows from the real
+  Library is the vocabulary, because that is what makes it recognisable —
+
+    · the Editor · Library · Settings segmented pill
+    · "All Files" with "N items • Sorted by Date" beneath it
+      (LibraryView.swift:827 formats exactly that, singular at 1)
+    · the search placeholder, verbatim: "Search titles, tags & text in images"
+      (LibraryView.swift:2265)
+    · the Filters row — chip plus Clear All — that appears only while searching
+    · the card stack: thumbnail, title, OCR snippet, date
+    · the snippet itself, which the app renders with the matched span bolded
+      (searchSnippetDisplay in LibraryModel.swift:228 marks the hit range
+      .stronglyEmphasized and prefixes a "…" lead-in). The bold phrase below is
+      that behaviour, not decoration.
+
+  Deliberately NOT the site's orange: this is a picture of a Mac app, and
+  recolouring it to match the marketing page would make it look less like
+  Sealshot rather than more. The frame around it uses the site's own tokens so
+  it still sits inside the page.
+
+  Every screenshot in it is invented. No real capture, credential, key, customer
+  or company appears anywhere.
+
+  ── The timeline ──
+  One 9s loop. Every animated part runs `9s infinite` off the same clock, so the
+  percentages below are the storyboard and nothing needs JavaScript to stay in
+  step:
+
+     0.0s  full Library, "Three months later…"
+     1.2s  cursor to the search field, focus ring
+     2.2s  "permission denied" types in; Filters row slides in
+     3.0s  the seven unrelated captures fade out; 9 items → 1 item
+     4.2s  the match moves up into the first cell and selects
+     5.2s  it opens; the phrase highlights inside the image
+     7.2s  the closing line
+     8.6s  back to the start
+*/
+
+/* The Library's contents. `lines` are the bars drawn inside each thumbnail —
+   percentages of the tile width, which is all a screenshot of a screenshot is
+   at this size. Dates run back three months, so "Three months later…" is
+   literally true of the pile the search is aimed at. */
+const CARDS = [
+  { kind: 'docs',     title: 'API reference — pagination',      date: 'Aug 28 at 4:41 PM',  lines: [62, 96, 88, 74, 91, 40] },
+  { kind: 'sheet',    title: 'Invoice INV-2271 draft',          date: 'Aug 21 at 11:07 AM', lines: [90, 90, 90, 90, 90, 55] },
+  { kind: 'browser',  title: 'Staging build — checkout page',   date: 'Aug 14 at 9:52 AM',  lines: [70, 44, 88, 66, 30] },
+  { kind: 'settings', title: 'System Settings — Network',       date: 'Jul 30 at 3:18 PM',  lines: [80, 62, 74, 58, 68] },
+  /* The one that matters. Index 5 puts it first in the second row, so the move
+     into the first cell after filtering is a straight vertical hop the CSS can
+     compute without measuring anything. */
+  { kind: 'term',     title: 'Terminal — deploy.sh failing',    date: 'Jun 3 at 2:12 PM',   lines: [58, 84, 76, 97, 46, 34], match: true },
+  { kind: 'bug',      title: 'Bug report #418 — draft',         date: 'Jun 2 at 5:36 PM',   lines: [48, 92, 86, 70, 61] },
+  { kind: 'log',      title: 'nginx access log — tail',         date: 'May 27 at 8:05 AM',  lines: [94, 89, 96, 92, 87, 95] },
+  { kind: 'doc',      title: 'Onboarding doc — step 3',         date: 'May 19 at 1:24 PM',  lines: [66, 90, 82, 88, 52] },
+];
+
+const QUERY = 'permission denied';
+---
+
+<figure class="demo">
+  {/* The frame is decorative: it is a diagram of an interaction, and a screen
+      reader announcing forty empty bars would be noise. The figcaption below
+      carries the whole meaning in text, so the point survives with no CSS, no
+      JavaScript, and no animation. */}
+  <div class="stage" aria-hidden="true">
+    <div class="win">
+      <div class="titlebar">
+        <span class="lights"><i></i><i></i><i></i></span>
+        <span class="tabs">
+          <span>Editor</span><span class="on">Library</span><span>Settings</span>
+        </span>
+      </div>
+
+      <div class="toolbar">
+        <span class="heading">
+          <strong>All Files</strong>
+          <span class="count"
+            ><span class="swap"
+              ><span class="count-all">9 items</span
+              ><span class="count-one">1 item</span
+            ></span> • Sorted by Date</span
+          >
+        </span>
+
+        <span class="search">
+          <svg class="glyph" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.4"/><path d="M10.4 10.4L14 14"/></svg>
+          <span class="field">
+            <span class="ph">Search titles, tags &amp; text in images</span>
+            <span class="typed">{QUERY}</span>
+            <span class="caret"></span>
+          </span>
+          <span class="clear">✕</span>
+        </span>
+
+        <span class="tools">
+          <span class="sort">Sort: Date ⌄</span>
+          <span class="views"><i class="on"></i><i></i></span>
+        </span>
+      </div>
+
+      <div class="filters">
+        <span class="flabel">Filters</span>
+        <span class="chip">“{QUERY}” <b>✕</b></span>
+        <span class="clear-all">Clear All</span>
+      </div>
+
+      <div class="grid">
+        {CARDS.map((card, i) => (
+          <article class:list={['card', `k-${card.kind}`, card.match && 'is-match']} style={`--i:${i}`}>
+            <span class="thumb">
+              <span class="chrome"><i></i><i></i><i></i></span>
+              <span class="body">
+                {card.lines.map((w) => <i style={`width:${w}%`}></i>)}
+              </span>
+            </span>
+            <span class="badge">✓</span>
+            <span class="name">{card.title}</span>
+            {card.match && (
+              /* The app's own "why did this match" line: a "…" lead-in, the
+                 surrounding text in italic grey, the hit in bold. */
+              <span class="snippet">…Error: EACCES: <b>{QUERY}</b>, open '/var/log/deploy.log'</span>
+            )}
+            <span class="date">{card.date}</span>
+          </article>
+        ))}
+      </div>
+
+      {/* Space-to-preview, the fastest way to see a capture full size. This is
+          where the phrase becomes legible — a thumbnail can only ever be bars. */}
+      <div class="preview">
+        <div class="pv-bar"><span class="lights"><i></i><i></i><i></i></span><span class="pv-title">deploy.sh — staging</span></div>
+        <pre class="pv-body"><span class="p">$ ./deploy.sh --env staging</span>
+<span class="d">[14:02:11] connecting to build host…</span>
+<span class="d">[14:02:12] uploading artifact bundle</span>
+<span class="e">Error: EACCES: <mark class="hit">permission denied</mark>, open '/var/log/deploy.log'</span>
+<span class="d">    at Object.openSync (node:fs:596:3)</span>
+<span class="d">exit status 13</span></pre>
+      </div>
+
+      <p class="chip-time">Three months later…</p>
+      <p class="closing">You remember what was in the screenshot, not when you took it.</p>
+
+      <span class="cursor">
+        <svg viewBox="0 0 12 18"><path d="M1 1l9.4 8.1-4.3.5 2.6 5.6-2.1.9-2.5-5.6-3.1 3z"/></svg>
+      </span>
+    </div>
+  </div>
+
+  <figcaption>
+    Searching a Sealshot Library for the words <b>permission denied</b>. The
+    unrelated captures filter away, and the one screenshot with that phrase
+    inside it remains — with the matching line shown underneath, so you can see
+    why it matched.
+  </figcaption>
+</figure>
+
+<script>
+  // The only JavaScript here, and it does nothing to the animation except stop
+  // it while nobody is looking. This lands on an SEO page that people scroll
+  // past; a nine-second loop repainting forever below the fold is rude on a
+  // laptop battery for no benefit at all.
+  document.querySelectorAll('.demo .stage').forEach((stage) => {
+    if (!('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(
+      ([entry]) => stage.classList.toggle('is-paused', !entry.isIntersecting),
+      { threshold: 0.15 }
+    );
+    io.observe(stage);
+  });
+</script>
+
+<style>
+  /* ── Frame ───────────────────────────────────────────────────────────────
+     The figure belongs to the page, so it uses the site's tokens. Everything
+     inside the window belongs to macOS, so it does not. */
+  .demo {
+    margin: 2rem 0 2.5rem;
+    max-width: 46rem;
+  }
+
+  .stage {
+    /* Fixed ratio: the demo occupies its full height from first paint, so
+       nothing below it moves once styles or fonts arrive. */
+    aspect-ratio: 16 / 11;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    position: relative;
+    background: #f4f4f6;
+
+    /* Every size inside is in em off this one font-size, and the font-size is
+       a share of the container's width — so the mock scales as one piece
+       instead of needing a breakpoint per element. */
+    container-type: inline-size;
+  }
+
+  .win {
+    position: absolute;
+    inset: 0;
+    font-size: clamp(7px, 1.55cqw, 14px);
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    color: #1d1d1f;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr;
+    background: #fff;
+  }
+
+  .demo :where(i, b) { font-style: normal; }
+
+  /* ── Title bar ── */
+  .titlebar {
+    display: flex;
+    align-items: center;
+    padding: 0.7em 0.9em;
+    background: #f6f6f8;
+    border-bottom: 1px solid #e6e6e9;
+  }
+
+  .lights { display: flex; gap: 0.45em; }
+  .lights i {
+    width: 0.72em; height: 0.72em;
+    border-radius: 50%;
+    background: #ddd;
+  }
+  .lights i:nth-child(1) { background: #ff5f57; }
+  .lights i:nth-child(2) { background: #febc2e; }
+  .lights i:nth-child(3) { background: #28c840; }
+
+  .tabs {
+    margin: 0 auto;
+    display: flex;
+    gap: 0.15em;
+    background: #e9e9ec;
+    border-radius: 999px;
+    padding: 0.18em;
+    font-size: 0.95em;
+    color: #6e6e73;
+  }
+  .tabs span { padding: 0.22em 0.85em; border-radius: 999px; }
+  .tabs .on {
+    background: #fff;
+    color: #1d1d1f;
+    font-weight: 500;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 1.5fr) 1fr;
+    align-items: center;
+    gap: 0.8em;
+    padding: 0.75em 0.9em;
+  }
+
+  .heading { display: flex; flex-direction: column; gap: 0.15em; min-width: 0; }
+  .heading strong { font-size: 1.35em; font-weight: 700; letter-spacing: -0.01em; }
+  .count { font-size: 0.85em; color: #6e6e73; white-space: nowrap; }
+  /* Both counts occupy the same grid cell, so the slot is as wide as the wider
+     of them and "• Sorted by Date" never moves when 9 items becomes 1 item.
+     An inline-grid rather than absolute positioning: the text still measures
+     itself, so there is no width to hard-code and nothing to re-tune if the
+     numbers change. */
+  .swap { display: inline-grid; vertical-align: baseline; }
+  .count-all, .count-one { grid-area: 1 / 1; }
+
+  .search {
+    display: flex;
+    align-items: center;
+    gap: 0.45em;
+    background: #f1f1f4;
+    border: 1px solid #e2e2e5;
+    border-radius: 0.6em;
+    padding: 0.42em 0.6em;
+    min-width: 0;
+  }
+  .glyph {
+    width: 1em; height: 1em; flex: none;
+    fill: none; stroke: #86868b; stroke-width: 1.6;
+    stroke-linecap: round;
+  }
+  .field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    height: 1.25em;
+    font-size: 0.95em;
+  }
+  .ph {
+    position: absolute;
+    inset: 0;
+    color: #a1a1a6;
+    white-space: nowrap;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+  .typed {
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #1d1d1f;
+  }
+  .caret {
+    width: 1px;
+    height: 1.05em;
+    background: #1d1d1f;
+    opacity: 0;
+    margin-left: 0.5px;
+  }
+  .clear {
+    font-size: 0.7em;
+    color: #fff;
+    background: #c7c7cc;
+    border-radius: 50%;
+    width: 1.5em; height: 1.5em;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    flex: none;
+  }
+
+  .tools {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.7em;
+    font-size: 0.9em;
+    color: #1d1d1f;
+    white-space: nowrap;
+  }
+  .views { display: flex; gap: 0.25em; }
+  .views i {
+    width: 1.5em; height: 1.3em;
+    border-radius: 0.28em;
+    background: #ececef;
+  }
+  .views i.on { background: #007aff; }
+
+  /* ── Filters row — only exists while a search is active ── */
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0 0.9em;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    font-size: 0.9em;
+    border-bottom: 1px solid transparent;
+  }
+  .flabel { color: #6e6e73; }
+  .chip {
+    background: #e6f0ff;
+    color: #0a63c9;
+    border-radius: 999px;
+    padding: 0.15em 0.6em;
+    font-size: 0.95em;
+  }
+  .chip b { opacity: 0.55; margin-left: 0.2em; }
+  .clear-all { margin-left: auto; color: #007aff; font-weight: 500; }
+
+  /* ── Grid ── */
+  .grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-content: start;
+    gap: 0.9em;
+    padding: 0.9em;
+    overflow: hidden;
+    background: #f4f4f6;
+    /* The faintest possible stand-in for the Library's hex texture: enough to
+       stop the area reading as flat white, not enough to notice. */
+    background-image: radial-gradient(rgba(0, 0, 0, 0.045) 0.5px, transparent 0.5px);
+    background-size: 0.9em 0.9em;
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.28em;
+    background: #fff;
+    border: 1px solid #e4e4e7;
+    border-radius: 0.5em;
+    padding: 0.45em;
+    min-width: 0;
+  }
+
+  .thumb {
+    aspect-ratio: 4 / 3;
+    border-radius: 0.28em;
+    overflow: hidden;
+    background: #fbfbfd;
+    border: 1px solid #ededf0;
+    display: flex;
+    flex-direction: column;
+  }
+  .thumb .chrome {
+    display: flex;
+    gap: 0.2em;
+    padding: 0.25em 0.3em;
+    background: #f0f0f3;
+    border-bottom: 1px solid #e8e8ec;
+  }
+  .thumb .chrome i {
+    width: 0.28em; height: 0.28em;
+    border-radius: 50%;
+    background: #d3d3d8;
+  }
+  .thumb .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.28em;
+    padding: 0.35em;
+  }
+  .thumb .body i {
+    height: 0.24em;
+    border-radius: 0.12em;
+    background: #dcdce1;
+  }
+
+  /* Each kind is only a colourway — enough for the eye to read "different
+     apps" at thumbnail size, which is all a real thumbnail says either. */
+  .k-sheet .body i:nth-child(odd) { background: #e3e8ef; }
+  .k-browser .chrome { background: #eaeaee; }
+  .k-browser .body i:first-child { background: #cfd8e3; }
+  .k-settings .body { display: grid; grid-template-columns: 1fr 2.2fr; align-content: center; gap: 0.28em 0.4em; }
+  .k-settings .body i:nth-child(-n + 2) { background: #d6dae2; }
+  .k-bug .body i:first-child { background: #f0cdcd; }
+  .k-doc .body i:first-child,
+  .k-docs .body i:first-child { background: #cdd3dc; width: 60% !important; }
+
+  .k-term .thumb, .k-log .thumb { background: #1e1f22; border-color: #2a2b2f; }
+  .k-term .chrome, .k-log .chrome { background: #2a2b2f; border-bottom-color: #35363b; }
+  .k-term .chrome i, .k-log .chrome i { background: #4a4b51; }
+  .k-term .body i, .k-log .body i { background: #43454b; }
+  .k-term .body i:first-child { background: #5a8f63; }
+  .k-term .body i:nth-child(4) { background: #a3595c; }
+
+  .name {
+    font-size: 0.82em;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .date { font-size: 0.75em; color: #86868b; }
+
+  .snippet {
+    display: none;
+    font-size: 0.75em;
+    font-style: italic;
+    color: #6e6e73;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* The app bolds the hit inside the snippet — this is that, not emphasis for
+     its own sake. */
+  .snippet b { font-weight: 700; color: #1d1d1f; font-style: italic; }
+
+  .badge {
+    position: absolute;
+    top: 0.15em; right: 0.15em;
+    width: 1.25em; height: 1.25em;
+    border-radius: 50%;
+    background: #007aff;
+    color: #fff;
+    font-size: 0.75em;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    box-shadow: 0 0 0 0.15em #fff;
+  }
+
+  /* ── Preview ── */
+  .preview {
+    position: absolute;
+    left: 50%;
+    top: 54%;
+    width: 66%;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    background: #1e1f22;
+    border-radius: 0.6em;
+    overflow: hidden;
+    box-shadow: 0 1.5em 3em rgba(0, 0, 0, 0.35);
+  }
+  .pv-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.45em 0.6em;
+    background: #2a2b2f;
+  }
+  .pv-bar .lights i { width: 0.6em; height: 0.6em; }
+  .pv-title { color: #b8b9be; font-size: 0.78em; }
+  .pv-body {
+    margin: 0;
+    padding: 0.8em 0.9em 1em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72em;
+    line-height: 1.65;
+    color: #c8c9ce;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .pv-body .p { color: #7fb884; }
+  .pv-body .d { color: #8b8d94; }
+  .pv-body .e { color: #e6a3a3; }
+
+  .hit {
+    color: #1d1d1f;
+    background-image: linear-gradient(#ffe066, #ffe066);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    border-radius: 0.15em;
+    padding: 0 0.1em;
+  }
+
+  /* ── Captions and cursor ── */
+  .chip-time, .closing {
+    position: absolute;
+    margin: 0;
+    opacity: 0;
+  }
+  .chip-time {
+    left: 1.1em;
+    bottom: 1.1em;
+    background: rgba(29, 29, 31, 0.86);
+    color: #fff;
+    font-size: 0.85em;
+    padding: 0.4em 0.8em;
+    border-radius: 999px;
+  }
+  .closing {
+    left: 8%;
+    right: 8%;
+    bottom: 1.1em;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #e4e4e7;
+    box-shadow: 0 0.5em 1.5em rgba(0, 0, 0, 0.12);
+    border-radius: 0.5em;
+    padding: 0.55em 0.9em;
+    font-size: 0.95em;
+    font-weight: 500;
+  }
+
+  .cursor {
+    position: absolute;
+    left: 50%;
+    top: 3.6em;
+    width: 0.85em;
+    opacity: 0;
+    transform: translate(-7em, 9em);
+  }
+  .cursor svg { display: block; width: 100%; }
+  .cursor path {
+    fill: #fff;
+    stroke: #1d1d1f;
+    stroke-width: 1.1;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+  }
+
+  /* ── The 9-second loop ───────────────────────────────────────────────────
+     Every animation below is 9s, so a percentage is a timestamp: 10% = 0.9s.
+     Nothing is offset except the card fade, which is staggered on purpose. */
+  .stage.is-paused * { animation-play-state: paused !important; }
+
+  .chip-time { animation: chip-time 9s linear infinite; }
+  @keyframes chip-time {
+    0%, 3% { opacity: 0; transform: translateY(0.4em); }
+    8%, 20% { opacity: 1; transform: none; }
+    26%, 100% { opacity: 0; transform: none; }
+  }
+
+  .cursor { animation: cursor 9s cubic-bezier(0.32, 0.72, 0.3, 1) infinite; }
+  @keyframes cursor {
+    0%, 11% { opacity: 0; transform: translate(-7em, 9em); }
+    14% { opacity: 1; }
+    24% { opacity: 1; transform: translate(0.3em, 0.5em); }
+    28%, 100% { opacity: 0; transform: translate(0.3em, 0.5em); }
+  }
+
+  .search { animation: search-focus 9s linear infinite; }
+  @keyframes search-focus {
+    0%, 20% { border-color: #e2e2e5; background: #f1f1f4; box-shadow: none; }
+    24%, 88% { border-color: #7fb0ff; background: #fff; box-shadow: 0 0 0 0.2em rgba(0, 122, 255, 0.16); }
+    96%, 100% { border-color: #e2e2e5; background: #f1f1f4; box-shadow: none; }
+  }
+
+  .ph { animation: ph 9s linear infinite; }
+  @keyframes ph {
+    0%, 23% { opacity: 1; }
+    25%, 92% { opacity: 0; }
+    97%, 100% { opacity: 1; }
+  }
+
+  /* steps() so the phrase arrives a character at a time rather than sliding. */
+  .typed { animation: typed 9s steps(18) infinite; }
+  @keyframes typed {
+    0%, 24% { max-width: 0; }
+    40%, 93% { max-width: 9.5em; }
+    94%, 100% { max-width: 0; }
+  }
+
+  .caret {
+    animation: blink 0.9s steps(2, jump-none) infinite, caret-show 9s linear infinite;
+  }
+  @keyframes blink { to { opacity: 0.15; } }
+  @keyframes caret-show {
+    0%, 21% { opacity: 0; }
+    22%, 43% { opacity: 1; }
+    45%, 100% { opacity: 0; }
+  }
+
+  .clear { animation: clear-btn 9s linear infinite; }
+  @keyframes clear-btn {
+    0%, 38% { opacity: 0; }
+    42%, 92% { opacity: 1; }
+    96%, 100% { opacity: 0; }
+  }
+
+  .filters { animation: filters 9s ease infinite; }
+  @keyframes filters {
+    0%, 29% { height: 0; opacity: 0; border-bottom-color: transparent; }
+    35%, 92% { height: 2.2em; opacity: 1; border-bottom-color: #e6e6e9; }
+    97%, 100% { height: 0; opacity: 0; border-bottom-color: transparent; }
+  }
+
+  .count-all { animation: count-all 9s linear infinite; }
+  @keyframes count-all {
+    0%, 40% { opacity: 1; }
+    45%, 92% { opacity: 0; }
+    96%, 100% { opacity: 1; }
+  }
+  .count-one {
+    opacity: 0;
+    animation: count-one 9s linear infinite;
+  }
+  @keyframes count-one {
+    0%, 41% { opacity: 0; }
+    46%, 92% { opacity: 1; }
+    96%, 100% { opacity: 0; }
+  }
+
+  /* The seven that do not match. The stagger is a positive delay, which shifts
+     each card's whole cycle equally — so the sweep looks the same on every
+     loop instead of drifting. */
+  .card:not(.is-match) {
+    animation: filter-out 9s ease infinite;
+    animation-delay: calc(var(--i) * 0.04s);
+  }
+  @keyframes filter-out {
+    0%, 33% { opacity: 1; transform: scale(1); filter: blur(0); }
+    46%, 91% { opacity: 0; transform: scale(0.97); filter: blur(2px); }
+    97%, 100% { opacity: 1; transform: scale(1); filter: blur(0); }
+  }
+
+  /* The match hops into the first cell. A cell step is the card's own size plus
+     the grid gap, so the distance is expressible without measuring anything —
+     and the two counts are variables because the grid is four columns wide on a
+     desktop and two on a phone, which puts the match in a different cell. */
+  .is-match {
+    --rows-up: 1;
+    --cols-left: 0;
+    animation: match-move 9s cubic-bezier(0.32, 0.72, 0.3, 1) infinite;
+    z-index: 2;
+  }
+  @keyframes match-move {
+    0%, 44% { transform: none; border-color: #e4e4e7; background: #fff; }
+    52%, 91% {
+      transform: translate(
+        calc((-100% - 0.9em) * var(--cols-left)),
+        calc((-100% - 0.9em) * var(--rows-up))
+      );
+      border-color: #007aff;
+      background: #f2f8ff;
+      box-shadow: 0 0 0 1px #007aff;
+    }
+    97%, 100% { transform: none; border-color: #e4e4e7; background: #fff; box-shadow: none; }
+  }
+
+  .is-match .badge { animation: badge 9s ease infinite; }
+  @keyframes badge {
+    0%, 47% { opacity: 0; transform: scale(0.6); }
+    53%, 91% { opacity: 1; transform: scale(1); }
+    96%, 100% { opacity: 0; transform: scale(0.6); }
+  }
+
+  .is-match .snippet {
+    display: block;
+    animation: snippet 9s ease infinite;
+  }
+  @keyframes snippet {
+    0%, 48% { opacity: 0; }
+    55%, 91% { opacity: 1; }
+    96%, 100% { opacity: 0; }
+  }
+
+  .grid { animation: grid-dim 9s ease infinite; }
+  @keyframes grid-dim {
+    0%, 57% { filter: none; }
+    66%, 92% { filter: blur(1.5px) saturate(0.9); opacity: 0.55; }
+    97%, 100% { filter: none; opacity: 1; }
+  }
+
+  .preview { animation: preview 9s cubic-bezier(0.32, 0.72, 0.3, 1) infinite; }
+  @keyframes preview {
+    0%, 57% { opacity: 0; transform: translate(-50%, -46%) scale(0.9); }
+    65%, 92% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    96%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.97); }
+  }
+
+  .hit { animation: hit 9s ease infinite; }
+  @keyframes hit {
+    0%, 66% { background-size: 0% 100%; color: inherit; }
+    72%, 92% { background-size: 100% 100%; color: #1d1d1f; }
+    96%, 100% { background-size: 0% 100%; color: inherit; }
+  }
+
+  .closing { animation: closing 9s ease infinite; }
+  @keyframes closing {
+    0%, 79% { opacity: 0; transform: translateY(0.5em); }
+    85%, 93% { opacity: 1; transform: none; }
+    97%, 100% { opacity: 0; transform: translateY(0.5em); }
+  }
+
+  /* ── Caption ── */
+  .demo figcaption {
+    margin-top: 0.9rem;
+    color: var(--slate-600);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .demo figcaption b { color: var(--navy-900); font-weight: 600; }
+
+  /* ── Narrow ──
+     Two columns and four cards. Five would need a third row, and a third row
+     does not fit the taller-but-shorter phone frame — the row holding the match
+     would be clipped at the bottom edge, which is the one card that has to be
+     visible. Dropping card 4 as well leaves 1, 2, 3 and the match, so the match
+     sits bottom-right and travels one cell up and one cell left. */
+  @container (max-width: 31rem) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .card:nth-child(4),
+    .card:nth-child(n + 6) { display: none; }
+    .is-match { --rows-up: 1; --cols-left: 1; }
+    .preview { width: 84%; }
+    .tools .sort { display: none; }
+    .heading strong { font-size: 1.2em; }
+  }
+
+  /* An element cannot answer its own container query, so the frame's shape is a
+     media query. The threshold matches: inside `.section.wrap` the stage is the
+     viewport less 3rem of padding, so 34rem of viewport is 31rem of stage and
+     both switch together. */
+  @media (max-width: 34rem) {
+    .stage { aspect-ratio: 4 / 5; }
+  }
+
+  /* ── Reduced motion ──────────────────────────────────────────────────────
+     Not "hide the demo", and not the empty first frame either: this is the
+     7.5-second mark held still — the one frame that contains the whole story.
+     Search filled, filters on, one result with its bolded snippet, the capture
+     open with the phrase highlighted, and the closing line. */
+  @media (prefers-reduced-motion: reduce) {
+    .demo * { animation: none !important; transition: none !important; }
+
+    .ph, .caret, .chip-time, .cursor { opacity: 0; }
+    .typed { max-width: none; }
+    .clear { opacity: 1; }
+    .search { border-color: #7fb0ff; background: #fff; }
+    .filters { height: 2.2em; opacity: 1; border-bottom-color: #e6e6e9; }
+    .count-all { opacity: 0; }
+    .count-one { opacity: 1; }
+
+    .card:not(.is-match) { opacity: 0; }
+    .is-match {
+      transform: translate(
+        calc((-100% - 0.9em) * var(--cols-left)),
+        calc((-100% - 0.9em) * var(--rows-up))
+      );
+      border-color: #007aff;
+      background: #f2f8ff;
+      box-shadow: 0 0 0 1px #007aff;
+    }
+    .is-match .badge, .is-match .snippet { opacity: 1; }
+    .grid { filter: blur(1.5px) saturate(0.9); opacity: 0.55; }
+    .preview { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    .hit { background-size: 100% 100%; color: #1d1d1f; }
+    .closing { opacity: 1; transform: none; }
+  }
+</style>
