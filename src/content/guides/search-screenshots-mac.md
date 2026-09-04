@@ -2,12 +2,10 @@
 title: How to Search Screenshots on Mac
 description: Find an old screenshot by what is written inside it, not by the date in its filename — using macOS Spotlight, Preview, and Sealshot's on-device OCR search.
 summary: Your screenshots folder is a wall of "Screenshot 2026-03-14 at 09.41.22". Here is how to search the text inside them instead.
+hook: Screenshots are named after the moment you took them — the one thing you never remember. What you remember is what was inside the picture.
+demo: search-library
 order: 10
 ---
-
-Screenshots are named after the moment you took them, which is the one thing you
-never remember. What you remember is what was *in* the picture — an error string,
-an invoice number, somebody's name.
 
 This guide will cover what macOS gives you out of the box, where Spotlight stops
 being enough, and how a library that runs OCR on every capture turns "somewhere

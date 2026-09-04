@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import SearchLibraryDemo from '../../components/demos/SearchLibraryDemo.astro';
 
 /*
   One route for every file in src/content/guides/. The markdown file name is the
@@ -25,6 +26,11 @@ const { Content } = await render(guide);
         a guide needs: the header carries the rest. */}
     <p class="kicker"><a class="guide-back" href="/guides/">← Guides</a></p>
     <h1 id="guide-title">{guide.data.title}</h1>
+    {/* Hook, then demo, then the article. A guide with neither renders exactly
+        as it did before: both are optional, and both are absent from the other
+        seven. */}
+    {guide.data.hook && <p class="sub guide-hook">{guide.data.hook}</p>}
+    {guide.data.demo === 'search-library' && <SearchLibraryDemo />}
     <div class="prose">
       <Content />
     </div>
@@ -49,6 +55,14 @@ const { Content } = await render(guide);
      pages this air, and a guide has no subtitle to do it. Matches the measure
      `.prose` already sets, so the two edges agree. */
   .prose {
+    margin-top: 1.5rem;
+  }
+
+  /* Borrows `.sub` wholesale — same colour, size and 44rem measure as every
+     other lede on the site — and only adds the step down from the h1, which
+     `.section .sub` zeroes out for the landing pages. Where a demo follows,
+     its own 2rem top margin collapses against nothing and does the rest. */
+  .guide-hook {
     margin-top: 1.5rem;
   }
 

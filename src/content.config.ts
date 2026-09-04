@@ -27,6 +27,20 @@ export const collections = {
       description: z.string(),
       /** Card blurb on /guides/. Shorter and blunter than the description. */
       summary: z.string(),
+      /**
+       * One sentence above the demo, where a guide has one. It lives here
+       * rather than in the body because the demo is rendered between the two:
+       * body markdown is one block, so anything that must sit above it cannot
+       * also be inside it.
+       */
+      hook: z.string().optional(),
+      /**
+       * Which demo to render under the hook, if any. An enum rather than a
+       * free string so a typo fails the build instead of silently rendering
+       * nothing; adding a demo means adding a value here and a branch in
+       * src/pages/guides/[...slug].astro.
+       */
+      demo: z.enum(['search-library']).optional(),
       /** Sort order in the grid. Lower first; ties fall back to title. */
       order: z.number().default(100),
       /** Written but not ready: kept out of the grid and out of the build. */
