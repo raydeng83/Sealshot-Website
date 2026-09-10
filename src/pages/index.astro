@@ -176,7 +176,9 @@ const features = [
         processed on your Mac. No account. No telemetry. No cloud.
       </p>
       <div class="actions">
-        <a class="button" href="/download/">Download for Mac</a>
+        {/* This links to /download/, not to a file — so the count is download
+            INTENT, and the report labels it that way. See TrackDownload.astro. */}
+        <a class="button" href="/download/" data-track-download="home">Download for Mac</a>
         <a class="button secondary" href="https://github.com/ldeng83/Sealshot">View on GitHub</a>
       </div>
       <p class="buy-signal">

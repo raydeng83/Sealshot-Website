@@ -1,0 +1,78 @@
+name = "site-analytics"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+# Deliberately a SECOND Worker rather than more surface on license-fulfillment.
+# That one holds the licence signing key and the Polar webhook secret, and its
+# cron (*/5) is the delivery-retry loop. Hanging an unauthenticated public
+# counter off it would widen the blast radius of the most security-sensitive
+# component on the site, and a bot hammering /e would compete with fulfilment
+# for the same request budget. The price of splitting is one duplicated secret:
+# RESEND_API_KEY is set in both.
+
+# Without this, console.error is visible ONLY during a live `wrangler tail`.
+# The weekly report runs unattended once a week — if the send fails, the log is
+# the only evidence, so it has to outlive the invocation.
+[observability]
+enabled = true
+
+# Download clicks. One data point per click; see src/event.ts for the shape.
+# `dataset` is the table name the SQL API reads — src/clicks.ts must match it.
+[[analytics_engine_datasets]]
+binding = "SITE_EVENTS"
+dataset = "sealshot_site_events"
+
+# Monday 13:00 UTC. Cron Triggers are UTC-only — Cloudflare has no timezone
+# setting — so this is 9am Boston under EDT and 8am under EST, and the hour
+# drifts with US daylight saving. The report covers the previous complete
+# Mon–Sun in UTC days, which is the same day convention license-fulfillment
+# uses throughout (isoToUTCDay).
+[triggers]
+crons = ["0 13 * * 1"]
+
+# 20 events per IP per minute. The IP is used to derive the limiter key and is
+# never read into a data point, never logged, and never stored — see
+# src/event.ts. Absent binding degrades OPEN, matching the two limiters in
+# license-fulfillment: a misconfiguration must not start dropping events
+# silently. Rate limiting here is anti-noise, not anti-fraud; /e is
+# unauthenticated by design and the count is a marketing figure, not an audit.
+[[unsafe.bindings]]
+name = "EVENT_LIMITER"
+type = "ratelimit"
+namespace_id = "2001"
+simple = { limit = 20, period = 60 }
+
+[vars]
+# Same verified sending domain as licence delivery (Resend; mail.seal-shot.com
+# verified 2026-08-10). The subdomain is send-only, so the local part is free —
+# `reports` just makes the Worker obvious in a mail client. Using an
+# UNVERIFIED domain here fails with a silent 403, exactly as it did for licence
+# delivery on 2026-08-10.
+EMAIL_FROM = "Sealshot <reports@mail.seal-shot.com>"
+# Comma-separated; parsed into Resend's `to` array so both land on one message.
+REPORT_TO = "mingqian.chen@bostonidentity.com,le.deng@bostonidentity.com"
+# One Web Analytics site tag can cover several hostnames, and Pages injects the
+# beacon into PREVIEW deployments too. Rows are kept only for these hosts, so
+# *.pages.dev preview traffic cannot inflate the report. Also the Origin
+# allow-list for /e.
+SITE_HOSTS = "seal-shot.com,www.seal-shot.com"
+
+# ─── Fill these in before the first deploy; the Worker refuses to report
+#     without them rather than emailing zeroes that look like a quiet week. ───
+# Cloudflare dashboard → right sidebar → Account ID.
+CF_ACCOUNT_ID = "a59e6b64170af48591d2dc3bc6cd08a1"
+# The Web Analytics SITE TAG — the API identifier, from the Web Analytics
+# dashboard. NOT the site token: Cloudflare issues two different 32-hex values
+# per property, and the one in the beacon's `data-cf-beacon` attribute is the
+# TOKEN. They are not interchangeable, and using the token here would return an
+# EMPTY RESULT rather than an error — a report full of zeroes that reads like a
+# quiet week. Checked 2026-09-08: the live beacon carries 21c26aa7…, which is
+# the token; the tag below is what the GraphQL filter wants. If the first live
+# report comes back all zeroes, this line is the first thing to suspect.
+CF_RUM_SITE_TAG = "54239fffb3cd4fb5a480d7ff4c182607"
+
+# Secrets — `npx wrangler secret put <NAME>`, never in this file:
+#   CF_API_TOKEN     Account → Account Analytics → Read. One token serves both
+#                    the GraphQL RUM query and the Analytics Engine SQL API.
+#   RESEND_API_KEY   Same value as license-fulfillment. Rotating means rotating
+#                    in both Workers.

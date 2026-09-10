@@ -19,10 +19,15 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         Donation-supported — <a href="/donate/">give what you want</a>
       </p>
       <div class="actions">
+        {/* The real download. The href below is a fallback — the script at the
+            bottom of this page replaces it with the latest .dmg asset — which
+            is why the click is counted with a beacon rather than by routing
+            this link through a Worker: there is no fixed URL to route. */}
         <a
           class="button"
           id="dmg-link"
           aria-describedby="dmg-meta"
+          data-track-download="dmg"
           href="https://github.com/ldeng83/Sealshot/releases/latest"
         >
           Download for Mac
