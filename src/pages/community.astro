@@ -1,0 +1,318 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import {
+  REPO_URL,
+  ISSUES_URL,
+  RELEASES_URL,
+  SECURITY_ADVISORY_URL,
+  REPORT_BUG_URL,
+  REQUEST_FEATURE_URL,
+  FEEDBACK_HREF,
+  WORKFLOW_HREF,
+  IDEA_HREF,
+} from '../config/community';
+
+/*
+  /community/ — participation without a forum to run.
+
+  Every destination on this page already exists: the issue tracker, the releases
+  page, the security advisory form, and our own /support/ inbox. Nothing here is
+  a channel we would have to build, moderate, or keep alive, and nothing here is
+  a link that 404s today in the hope it will resolve later. The URLs all come
+  from src/config/community.ts, which explains what to change once GitHub
+  Discussions is enabled on the repo.
+
+  Layout is the site's existing vocabulary throughout — .hero, .section(.alt),
+  .features, .feature.workflow-card, .trust-strip, .notice — so the page needs no
+  responsive rules of its own: the card grid is the same auto-fit grid the
+  landing page and /guides/ use.
+*/
+
+/* The example fields in "Tell us how you use screenshots". Examples, not a
+   menu: the copy above them says so, and the last one is "or something else
+   entirely" for the same reason. A visitor who does not see their work here
+   should still feel invited. */
+const FIELDS = [
+  'Software development',
+  'QA and testing',
+  'Security and IT',
+  'Product and design',
+  'Customer support',
+  'Education and research',
+  'Content and documentation',
+  'Or something else entirely',
+];
+
+/* Directions we are already thinking about — shown so that an idea can land
+   somewhere, not to fence off what we will accept. */
+const DIRECTIONS = [
+  ['Better screenshot search', 'Finding the capture you half-remember, faster and with less typing.'],
+  ['Smarter sensitive-data detection', 'Catching more of what should never leave your machine, with fewer false alarms.'],
+  ['Capture and annotation', 'The everyday path — select, mark up, send — with less friction in it.'],
+  ['QA and bug-report workflows', 'Getting from "this is broken" to a report a developer can act on.'],
+  ['Local AI and metadata', 'More understanding of what is in a capture, still entirely on your Mac.'],
+  ['Organisation and library', 'Keeping thousands of captures navigable instead of merely stored.'],
+];
+---
+
+<SiteLayout
+  title="Sealshot Community"
+  description="Join the Sealshot community to share feedback, suggest features, report issues, test new builds, and help shape future development."
+>
+  {/* One hidden sprite referenced by <use>, the same technique the landing page
+      and /guides/ use. Ids are prefixed ic-c- so they cannot collide with
+      either of those sprites. */}
+  <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+    <defs>
+      <symbol id="ic-c-chat" viewBox="0 0 24 24"><path d="M20 14.5a2 2 0 0 1-2 2H8.5L4 20V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"/><path d="M8.5 9h7M8.5 12.5h4.5"/></symbol>
+      <symbol id="ic-c-spark" viewBox="0 0 24 24"><path d="M12 3l1.7 4.6L18.3 9.3l-4.6 1.7L12 15.6l-1.7-4.6L5.7 9.3l4.6-1.7L12 3z"/><path d="M18 16.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7.7-1.8z"/></symbol>
+      <symbol id="ic-c-bug" viewBox="0 0 24 24"><rect x="7.5" y="8.5" width="9" height="11" rx="4.5"/><path d="M9.5 8.5l-1-2M14.5 8.5l1-2"/><path d="M4.5 12.5h3M16.5 12.5h3M5 18l2.5-1.6M19 18l-2.5-1.6"/></symbol>
+      <symbol id="ic-c-build" viewBox="0 0 24 24"><path d="M12 3.5v10"/><path d="M8.4 10.2L12 13.8l3.6-3.6"/><path d="M4.5 15.5v3A1.5 1.5 0 0 0 6 20h12a1.5 1.5 0 0 0 1.5-1.5v-3"/></symbol>
+    </defs>
+  </svg>
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Community</p>
+      <h1>Join the Sealshot Community</h1>
+      <p class="sub">
+        Help shape Sealshot as we build it. Share feedback, suggest features,
+        report issues, and tell us how screenshots fit into your workflow.
+      </p>
+      <div class="actions">
+        <a class="button" href={FEEDBACK_HREF}>Share feedback</a>
+        <a class="button secondary" href={REPORT_BUG_URL}>Report an issue</a>
+      </div>
+      <p class="fine-print community-hero-note">
+        No account to create and nothing to join — everything below runs on our
+        support inbox and the public
+        <a href={REPO_URL}>GitHub repository</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="ways-heading">
+    <div class="wrap">
+      <p class="kicker">Ways to take part</p>
+      <h2 id="ways-heading">Four ways in</h2>
+      <p class="sub">
+        Pick whichever matches what you have. None of them needs more than a few
+        sentences to be useful to us.
+      </p>
+
+      <div class="features community-grid">
+        <a class="feature workflow-card" href={FEEDBACK_HREF}>
+          <svg class="card-icon" aria-hidden="true"><use href="#ic-c-chat" /></svg>
+          <h3>Share feedback</h3>
+          <p>
+            Tell us what works, what does not, and what would make Sealshot more
+            useful.
+          </p>
+          <span class="workflow-link">Share feedback →</span>
+        </a>
+
+        <a class="feature workflow-card" href={REQUEST_FEATURE_URL}>
+          <svg class="card-icon" aria-hidden="true"><use href="#ic-c-spark" /></svg>
+          <h3>Request a feature</h3>
+          <p>
+            Have an idea for a new workflow, capture feature, privacy
+            improvement, search feature, or anything else?
+          </p>
+          <span class="workflow-link">Suggest a feature →</span>
+        </a>
+
+        <a class="feature workflow-card" href={REPORT_BUG_URL}>
+          <svg class="card-icon" aria-hidden="true"><use href="#ic-c-bug" /></svg>
+          <h3>Report a bug</h3>
+          <p>
+            Found something broken, inconsistent, or unexpected? Sealshot's
+            <strong>Help ▸ Send Feedback…</strong> can attach the diagnostics we
+            would otherwise have to ask for.
+          </p>
+          <span class="workflow-link">Report a bug →</span>
+        </a>
+
+        {/* Not "Join beta testing": there is no beta programme, no prerelease
+            channel and no TestFlight to join, and a card promising one would be
+            an invitation to a room that does not exist. What IS true is that
+            every build ships publicly and early, which is the same offer
+            honestly described. */}
+        <a class="feature workflow-card" href={RELEASES_URL}>
+          <svg class="card-icon" aria-hidden="true"><use href="#ic-c-build" /></svg>
+          <h3>Test new builds</h3>
+          <p>
+            Try upcoming builds and features and help us catch issues before
+            wider release. Every version ships on GitHub as it lands — watch the
+            repository to hear about them first.
+          </p>
+          <span class="workflow-link">See the latest releases →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="workflow-heading">
+    <div class="wrap">
+      <p class="kicker">User research</p>
+      <h2 id="workflow-heading">Tell us how you use screenshots</h2>
+      <p class="sub">
+        We'd love to understand how Sealshot fits into different workflows. What
+        field do you work in, what do you use screenshots for, and what is the
+        biggest friction in your current screenshot workflow?
+      </p>
+      <p class="community-body">
+        A few examples of the kinds of work people tell us about — a list of
+        starting points, not a list to pick from. If none of them describes what
+        you do, that is the answer we most want to hear.
+      </p>
+      <ul class="trust-strip community-fields" aria-label="Example fields of work">
+        {FIELDS.map((field) => <li>{field}</li>)}
+      </ul>
+      <p class="cta-row">
+        <a class="button" href={WORKFLOW_HREF}>Share your workflow</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section alt" aria-labelledby="next-heading">
+    <div class="wrap">
+      <p class="kicker">Roadmap</p>
+      <h2 id="next-heading">Help Shape What We Build Next</h2>
+      <p class="sub">
+        These are the directions we are already weighing. Which of them matters
+        for your work — and in what order — is genuinely shaped by what people
+        tell us.
+      </p>
+      <ul class="directions">
+        {DIRECTIONS.map(([name, detail]) => (
+          <li>
+            <strong>{name}</strong>
+            <span>{detail}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="community-body">
+        None of this is fixed, and the list is not the limit. If the thing you
+        need is not here, that is worth telling us more than agreeing with
+        something that is.
+      </p>
+      <p class="cta-row">
+        <a class="button" href={IDEA_HREF}>Share an idea</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="open-heading">
+    <div class="wrap">
+      <h2 id="open-heading" class="visually-hidden">Open source</h2>
+      <div class="notice community-note">
+        <p>
+          <strong>Sealshot is open source.</strong> The app is on
+          <a href={REPO_URL}>GitHub</a> under GPL-3, and what gets built next is
+          decided largely by what people ask for in
+          <a href={ISSUES_URL}>the issue tracker</a> and in our inbox. There is
+          no roadmap committee here — reading what you send is the process.
+        </p>
+        <p class="community-security">
+          One exception: if you have found a security problem, please don't open
+          a public issue.
+          <a href={SECURITY_ADVISORY_URL}>Report it privately</a> instead, as the
+          repository's security policy asks.
+        </p>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  /* The hero note sits under `.actions`, which sets no bottom margin. */
+  .community-hero-note {
+    margin-top: 1.25rem;
+  }
+
+  /* `.feature` is a grid with named areas and global.css assigns the heading
+     area to h3 — which is also the right level here, since these cards sit
+     under the section's h2. Nothing to re-assign; this only removes the
+     default margin so the card's own row spacing is what shows. */
+  .community-grid h3 {
+    margin: 0;
+  }
+
+  /* Same measure and colour as `.section .sub`, one step quieter — for the
+     sentence that qualifies a list rather than introducing a section. */
+  .community-body {
+    color: var(--slate-600);
+    max-width: 44rem;
+    margin: 1.25rem 0 0;
+  }
+
+  /* `.trust-strip` is built for the centred hero: it centres its pills and
+     centres itself in the measure. In a left-aligned section both of those read
+     as a mistake, so the pills start at the same left edge as everything above
+     them. Everything else about the pill — size, weight, border, radius — is
+     inherited unchanged. */
+  .community-fields {
+    justify-content: flex-start;
+    margin-inline: 0;
+    margin-top: 1.25rem;
+    max-width: 48rem;
+  }
+
+  /* A paragraph wrapping one button: `.actions` is scoped to `.hero` in
+     global.css, so section-level calls to action need their own row. flex-wrap
+     is here for the day a second button joins one of them. */
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 2rem 0 0;
+  }
+
+  /* Two columns where there is room, one on a phone — the same auto-fit idea as
+     `.features`, at a narrower minimum because these are lines of text rather
+     than cards. */
+  .directions {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: 1.25rem 2rem;
+  }
+
+  .directions li {
+    border-left: 3px solid var(--orange-600);
+    padding-left: 0.9rem;
+  }
+
+  .directions strong {
+    display: block;
+    color: var(--navy-900);
+    font-weight: 600;
+  }
+
+  .directions span {
+    color: var(--slate-600);
+    font-size: 0.95rem;
+  }
+
+  /* `.notice` was written for a one-line status message: it carries a bottom
+     margin it does not need as a closing block, and no top padding to speak of
+     for two paragraphs. */
+  .community-note {
+    max-width: 44rem;
+    margin-bottom: 0;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .community-note p {
+    margin: 0;
+  }
+
+  /* Scoped through .community-note rather than given `!important`: `.notice p`
+     above is (0,1,1) and would otherwise win the margin back. */
+  .community-note .community-security {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+  }
+</style>

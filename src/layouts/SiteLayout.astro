@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import SupportBar from '../components/SupportBar.astro';
 import Footer from '../components/Footer.astro';
+import TrackDownload from '../components/TrackDownload.astro';
 
 interface Props {
   title: string;
@@ -53,5 +54,10 @@ const { title, description, noindex = false, hideBar = false } = Astro.props;
       <slot />
     </main>
     <Footer />
+    {/* Last in the body, and opt-in by attribute: it binds one delegated
+        listener and does nothing at all on pages with no download button.
+        Starlight renders its own layout, so the docs never load this — which
+        is correct, since no download button lives there. */}
+    <TrackDownload />
   </body>
 </html>

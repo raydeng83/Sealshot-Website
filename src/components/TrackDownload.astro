@@ -1,0 +1,62 @@
+---
+/**
+ * Counts clicks on the download buttons, and does nothing else.
+ *
+ * Rendered once by SiteLayout, but opt-in by attribute: only an element
+ * carrying `data-track-download` is counted, so this is inert on every page
+ * that has no download button. Two labels, because there are two buttons and
+ * they mean different things:
+ *
+ *   home — the homepage hero button. It links to /download/, NOT to a file,
+ *          so this measures download INTENT.
+ *   dmg  — the .dmg link on /download/, whose href is rewritten at runtime
+ *          from the GitHub releases API. This measures a download starting.
+ *
+ * `sendBeacon` rather than a redirect endpoint: the browser queues the POST
+ * and the click navigates immediately, so nothing is added to the critical
+ * path and no href changes — which matters, because the .dmg href does not
+ * exist until that page's own script has resolved it. Routing the homepage
+ * button through a Worker would also mean a round trip out and back for what
+ * is an ordinary internal navigation.
+ *
+ * The cost is that a visitor with JavaScript off or a blocker installed is not
+ * counted. Cloudflare Web Analytics is JS-based too, so both sides of the
+ * click-rate carry the same bias and the rate survives it better than the
+ * totals do.
+ *
+ * Nothing identifying is sent — the body is the event name and one of two
+ * fixed labels. See workers/site-analytics/src/event.ts.
+ */
+import { EVENT_URL } from '../config/worker';
+---
+
+<script is:inline define:vars={{ endpoint: EVENT_URL }}>
+  (function () {
+    if (!navigator.sendBeacon) return;
+
+    document.addEventListener('click', function (event) {
+      var target = event.target;
+      if (!(target instanceof Element)) return;
+      var el = target.closest('[data-track-download]');
+      if (!el) return;
+
+      var label = el.getAttribute('data-track-download');
+      if (!label) return;
+
+      try {
+        // text/plain is CORS-safelisted, so this never preflights and stays a
+        // single request. application/json would add an OPTIONS round trip for
+        // a body the endpoint answers with 204 anyway.
+        navigator.sendBeacon(
+          endpoint,
+          new Blob([JSON.stringify({ event: 'download_click', label: label })], {
+            type: 'text/plain',
+          })
+        );
+      } catch (err) {
+        // Never let counting a click interfere with performing it. No
+        // preventDefault anywhere in this file, and no rethrow here.
+      }
+    });
+  })();
+</script>

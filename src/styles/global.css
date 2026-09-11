@@ -133,10 +133,38 @@ h1, h2, h3 {
   color: var(--navy-900);
 }
 
+/* The gap is fluid, and that is load-bearing rather than decorative.
+   Every nav label is a single word, so no item can shrink below its own text,
+   and `gap` never shrinks at all — which makes the nav's min-content width a
+   hard floor that the header cannot go under without pushing the whole page
+   sideways. Seven items at a flat 2rem gap put that floor at 806px including
+   the brand and the padding: iPad portrait (768px), iPad mini (744px) and any
+   desktop window narrower than ~810px would all have scrolled horizontally.
+
+   Measured in SF at the sizes used here: the items themselves total 447.9px, so
+   the nav needs 447.9 + 6 gaps. clamp() gives back exactly the width the gaps
+   were costing, and gives it back smoothly:
+
+     >= 838px   2rem       — identical to what desktop had before Community
+     704–838px  0.5–2rem   — tightens as the window narrows; 838px needs 639.9
+                             of 671.6 available, 704px needs 495.9 of 537.6
+     <= 704px   0.5rem     — the wrap tier below takes over and sets its own
+
+   Stepped breakpoints were the obvious alternative and are what the rest of
+   this file uses. They are wrong here: the 25rem/23.5rem tiers below record
+   exactly how that goes — "splitting the pill padding and the gap into separate
+   breakpoints left 377–382px uncovered". A fluid value cannot leave a band
+   uncovered, because there are no bands. */
 .site-header nav {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: clamp(0.5rem, calc(0.5rem + (100vw - 44rem) * 0.18), 2rem);
+  /* Backstop, not a layout tool: with the gaps above there is always room, so
+     this never fires. If a future item ever proves that arithmetic wrong, the
+     nav wraps — and .nav-actions keeps the pills together when it does —
+     instead of the page gaining a horizontal scrollbar. */
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .site-header nav a {
@@ -169,22 +197,54 @@ h1, h2, h3 {
   box-shadow: inset 0 0 0 1px var(--orange-800);
 }
 
-@media (max-width: 640px) {
+/* Donate and Download are wrapped in a span so they can wrap as a pair on a
+   phone (see Header.astro). `display: contents` removes the wrapper from layout
+   entirely, so at desktop widths the nav is the same one-row flex line of seven
+   children it would be without it. */
+.site-header nav .nav-actions {
+  display: contents;
+}
+
+/* 44rem (704px), not 640px. The trigger moved out, not the rules: below 704px
+   the fluid gap above has already given back everything it has, so this is the
+   point at which one row stops being possible and the two-row layout has to
+   take over. 641–704px used to fall through to the desktop rule and overflow;
+   now it wraps like everything narrower. Phones are nowhere near this edge and
+   see no difference. */
+@media (max-width: 44rem) {
   .site-header {
     flex-wrap: wrap;
     gap: 0.75rem;
   }
 
-  /* Five items including two pills need 347px at 390px wide, against 327px of
+  /* Five items including two pills needed 347px at 390px wide, against 327px of
      usable header — so the overflow was dropping Download, the primary action,
      onto a row of its own. An 8px column gap and a slightly smaller size on the
-     three text links bring it back under, and the nav sits on one line. flex-wrap
-     stays as the backstop for narrower screens, where it wraps rather than
-     pushing the page sideways. */
+     text links brought it back under, and the nav sat on one line.
+
+     Guides made six and Community makes seven, and neither fits on one phone
+     row. So the nav wraps — but WHERE it wraps is chosen rather than left to
+     whichever item runs out of room: .nav-actions below is one flex item, so
+     the five text links take the first line and both pills travel to the second
+     together. Download alone on a line, the failure the numbers above were
+     measured to prevent, is now structurally impossible rather than merely
+     avoided.
+
+     Five links at the 25rem tier's size measure 256px against 272px of usable
+     header at 320px — the narrowest phone still in use — so the first line
+     holds all five the whole way down. flex-wrap and justify-content now live
+     on the base rule; only the gap is set here. */
   .site-header nav {
     gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+  }
+
+  /* `gap: inherit` rather than a literal: the group then follows whatever column
+     gap the nav is on, including the tighter 6px of the 23.5rem tier below, so
+     the pills never sit at a different rhythm from the links above them. */
+  .site-header nav .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: inherit;
   }
 
   /* The pills keep their size: they are the actions. The text links give up the
@@ -194,13 +254,18 @@ h1, h2, h3 {
   }
 }
 
-/* One tier, not two: the five items need 348px above 400px and 336px below it, so
-   splitting the pill padding and the gap into separate breakpoints left 377–382px
-   uncovered — the tighter rules had not engaged yet and the looser ones no longer
-   fitted, and Download dropped to a line of its own. Everything narrow tightens
-   together here: 6px gap, one notch off the text links, 11.2px pill padding.
-   That holds five items on one row down to 352px; below that flex-wrap takes
-   over rather than pushing the page sideways. */
+/* One tier, not two: back when all five items shared a row they needed 348px
+   above 400px and 336px below it, so splitting the pill padding and the gap into
+   separate breakpoints left 377–382px uncovered — the tighter rules had not
+   engaged yet and the looser ones no longer fitted, and Download dropped to a
+   line of its own. Everything narrow still tightens together here: 6px gap, one
+   notch off the text links, 11.2px pill padding.
+
+   What it buys now is the FIRST row. At this size the five text links measure
+   264px and the pill pair 177px, against 272px of usable header at 320px — so
+   the links stay on one line and the actions on the next, all the way down to
+   the narrowest phone in use. Without this tier the links would need 273px and
+   break into three rows below about 330px. */
 @media (max-width: 25rem) {
   .site-header nav {
     gap: 0.5rem;
