@@ -34,6 +34,25 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         </a>
       </div>
       <p class="fine-print" id="dmg-meta">Direct download (.dmg)</p>
+
+      {/* An alternative to the button above, not a replacement for it. Not
+          counted by TrackDownload: copying a command is not a download
+          starting, and that endpoint knows only its two fixed labels. */}
+      <div class="brew" aria-labelledby="brew-heading">
+        <h2 id="brew-heading">Or install with Homebrew</h2>
+        <p class="brew-label" id="brew-install-label">Install</p>
+        <div class="brew-row">
+          <code id="brew-install" aria-labelledby="brew-install-label" tabindex="0">brew install --cask ldeng83/tap/sealshot</code>
+          <button type="button" class="button secondary" data-copy="brew-install" aria-label="Copy install command">Copy</button>
+        </div>
+        <p class="brew-label" id="brew-uninstall-label">Uninstall</p>
+        <div class="brew-row">
+          <code id="brew-uninstall" aria-labelledby="brew-uninstall-label" tabindex="0">brew uninstall --cask sealshot</code>
+          <button type="button" class="button secondary" data-copy="brew-uninstall" aria-label="Copy uninstall command">Copy</button>
+        </div>
+        <p class="fine-print">Requires macOS 14 Sonoma or later.</p>
+        <p class="visually-hidden" id="brew-status" role="status"></p>
+      </div>
     </div>
   </section>
 </SiteLayout>
@@ -70,4 +89,113 @@ import SiteLayout from '../layouts/SiteLayout.astro';
   })();
 </script>
 
-<style></style>
+<script is:inline>
+  (function () {
+    var status = document.getElementById('brew-status');
+
+    document.querySelectorAll('[data-copy]').forEach(function (button) {
+      var code = document.getElementById(button.getAttribute('data-copy'));
+      if (!code) return;
+      var timer;
+
+      function report(label, message) {
+        button.textContent = label;
+        if (status) status.textContent = message;
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          button.textContent = 'Copy';
+        }, 2000);
+      }
+
+      // No clipboard access (an insecure origin, or permission refused): leave
+      // the command selected so Cmd+C finishes the job.
+      function selectInstead() {
+        var range = document.createRange();
+        range.selectNodeContents(code);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        report('Press ⌘C', 'Command selected. Press Command C to copy.');
+      }
+
+      button.addEventListener('click', function () {
+        if (!navigator.clipboard || !navigator.clipboard.writeText) {
+          selectInstead();
+          return;
+        }
+        navigator.clipboard
+          .writeText(code.textContent.trim())
+          .then(function () {
+            report('Copied', 'Command copied to clipboard.');
+          })
+          .catch(selectInstead);
+      });
+    });
+  })();
+</script>
+
+<style>
+  /* Same card as .form-card, restated here because that class also styles the
+     buttons and inputs inside it. Left-aligned inside the centred hero. */
+  .brew {
+    max-width: 36rem;
+    margin: 2.5rem auto 0;
+    padding: 1.5rem;
+    text-align: left;
+    background: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+  }
+
+  .brew h2 {
+    font-size: 1.15rem;
+    margin: 0;
+  }
+
+  .brew-label {
+    margin: 1rem 0 0.3rem;
+    color: var(--slate-600);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .brew-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  /* min-width: 0 lets the command shrink below its own length and scroll
+     inside its box, so a narrow phone never scrolls the page sideways. */
+  .brew-row code {
+    flex: 1;
+    min-width: 0;
+    padding: 0.6rem 0.8rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    background: var(--surface-footer);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9rem;
+  }
+
+  /* Fixed width so the label swapping to "Copied" does not shift the row. */
+  .brew-row .button {
+    flex: none;
+    min-width: 5.75rem;
+    padding: 0.5rem 0.75rem;
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .brew .fine-print {
+    margin: 1rem 0 0;
+  }
+</style>
